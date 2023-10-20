@@ -1,0 +1,542 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@900&display=swap');
+
+:root {
+    --color-primary: #5593E8;
+    --color-secondary: #406DBE;
+    --color-tertiary: #313131;
+    --color-letter: #F2B705;
+    --color-fondo-footer: #96d3f2;
+    --height-sessions: 170px;
+}
+
+body {
+    font-family: "Montserrat", sans-serif;
+    margin: 0;
+    padding: 0%;
+    line-height: 1.0;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: center;
+    align-items: stretch;
+    align-content: center;
+}
+
+#nav {
+    width: 100%;
+    padding: 0 0;
+    box-sizing: border-box;
+    position: sticky;
+    background-color: white !important;
+    top: 0px;
+    z-index: 1;
+}
+
+#Cnav1{
+    display: flex;
+    margin-right: 30px;
+    padding: 0;
+}
+
+#Cnav2{
+    margin-right: 30px;
+}
+
+#Cnav3{
+    display: flex;
+    padding: 0;
+    margin-right: 30px;
+}
+
+.user{
+    height: 45px;
+    width: 45px;
+}
+
+.navbar-flex {
+    height: 85px;
+    padding: 0 0 0 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.container_nav {
+    height: 100%;
+    margin: 0 45px 0 0;
+    padding-top: 24px;
+}
+
+#nav_e {
+    margin: 0;
+    cursor: default;
+    font-weight: 900;
+    color: black;
+}
+
+.container-op {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.nav_active {
+    height: 11px;
+    width: 107px;
+    margin-top: 5px;
+    margin: 15px 0px 0 8px;
+    background-color: var(--color-primary);
+}
+
+.nav_e1 {
+    text-decoration: none;
+    color: var(--color-tertiary) !important;
+    font-weight: bold !important;
+    height: auto;
+    transition: color 300ms !important;
+}
+
+.nav_e1:hover {
+    color: var(--color-primary) !important;
+}
+
+/* ..........................................Articulo Que es.................................................................... */
+
+#article_que_es {
+    height: 580px;
+    background-image: url(/img/backgrounds/fondo-que-es.png);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+}
+
+#article_que_es h1 {
+    font-size: 50px;
+    margin: 80px 0 5px 140px;
+    color: #313131;
+    font-weight: 900;
+    letter-spacing: 2px;
+    line-height: 1.1;
+}
+
+#article_que_es p {
+    margin: 2px 0 0 140px;
+    line-height: 1.5;
+    letter-spacing: 1px;
+    font-size: 20px;
+    color: #313131;
+    width: 65vw;
+}
+
+.amarillo {
+    color: rgb(255, 196, 0);
+}
+
+#flechas-azules {
+    height: 60px;
+    width: auto;
+    position: absolute;
+    right: 240px;
+    top: 25px;
+}
+
+/* ......................................Articulo Como funciona........................................................ */
+
+#article_como_funciona {
+    height: 550px;
+    background-image: url(/img/backgrounds/como_funciona.png);
+    background-repeat: no-repeat;
+    background-size: 100% 101%;
+    box-sizing: border-box;
+    background-position: -3px -2px;
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+    text-align: right;
+}
+
+#article_como_funciona h1 {
+    font-size: 50px;
+    margin-top: 90px;
+    margin-right: 85px;;
+    color: #313131;
+    font-weight: 900;
+    letter-spacing: 3.5px;
+    line-height: 90%;
+}
+
+#article_como_funciona p {
+    line-height: 1.5;
+    margin-right: 85px;;
+    font-size: 21px;
+    letter-spacing: 2.5px;
+    color: #313131;
+}
+
+.azul {
+    color: #5593E8;
+}
+
+#flechas-grises {
+    height: 95px;
+    width: auto;
+    position: absolute;
+    bottom: 0;
+}
+
+#flechas-azules-de {
+    height: 40px;
+    width: auto;
+    position: absolute;
+    top: 45px;
+    left: 50px;
+}
+
+#puntos {
+    height: 35px;
+    width: 35px;
+    position: absolute;
+    top: 140px;
+    right: 30px;
+}
+
+/* ...........................................Articulo icons....................................................... */
+
+#section-icons {
+    height: auto;
+    width: 100%;
+    padding: 50px 0;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.container_items {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    overflow: hidden;
+    height: 380px;
+    gap: 19px 19px;
+    width: 100%;
+}
+
+.item {
+    height: 170px;
+    width: 170px;
+    background-color: #dbdbdb;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icon-item {
+    height: 170px;
+    width: 170px;
+}
+
+/* .........................................Pantallas pequeñas....................................................... */
+
+@media screen and (max-width: 630px) {
+
+    #sesion-informativa {
+        height: auto;
+    }
+
+    #article_que_es {
+        height: 180px;
+    }
+
+    #article_que_es h1 {
+        margin: 30px 0 0 31px;
+        font-size: 19px;
+        letter-spacing: 0;
+        line-height: 1;
+    }
+
+    #article_que_es p {
+        font-size: 10px;
+        width: 65vw;
+        line-height: 1.2;
+        letter-spacing: 0;
+        margin: 0 0 0 31px;
+    }
+
+    #flechas-azules {
+        height: 15px;
+        width: 65px;
+        position: absolute;
+        right: 50px;
+        top: 10px;
+    }
+
+    #article_como_funciona {
+        height: 145px;
+    }
+
+    #article_como_funciona h1 {
+        font-size: 18px;
+        letter-spacing: 0;
+        line-height: 0.9;
+        margin: 21px 6px 0 0;
+    }
+
+    #article_como_funciona p {
+        font-size: 10px;
+        width: 60vw;
+        line-height: 1.2;
+        letter-spacing: 0;
+        margin: 0px 7px 0 0;
+        text-align: right;
+    }
+
+    #flechas-grises {
+        height: 15px;
+        width: auto;
+        position: absolute;
+        bottom: 0;
+    }
+
+    #flechas-azules-de {
+        height: 10px;
+        width: 50px;
+        position: absolute;
+        top: 12px;
+        left: 6px;
+        opacity: 0.9;
+    }
+
+    #puntos {
+        display: none;
+    }
+
+    #section-icons {
+        padding: 10px 0;
+        height: auto;
+    }
+
+    .container_items {
+        flex-wrap: wrap;
+        flex-direction: row;
+        height: auto;
+        gap: 7px 7px;
+    }
+
+    .item {
+        height: 50px;
+        width: 50px;
+    }
+
+    .icon-item {
+        height: 50px;
+        width: 50px;
+    }
+}
+
+@media screen and (min-width: 630px) and (max-width:980px) {
+    #sesion-informativa {
+        height: auto;
+    }
+
+    #article_que_es {
+        height: 380px;
+    }
+
+    #article_que_es h1 {
+        margin: 55px 0 0 66px;
+        font-size: 40px;
+        letter-spacing: 2px;
+        line-height: 1;
+    }
+
+    #article_que_es p {
+        font-size: 20px;
+        width: 70vw;
+        line-height: 1.5;
+        letter-spacing: 0;
+        margin: 0 0 0 66px;
+    }
+
+    #flechas-azules {
+        height: 30px;
+        width: 150px;
+        position: absolute;
+        right: 93px;
+        top: 10px;
+    }
+
+    #article_como_funciona {
+        height: 300px;
+    }
+
+    #article_como_funciona h1 {
+        font-size: 30px;
+        letter-spacing: 1px;
+        line-height: 0.9;
+        margin: 55px 28px 0 0;
+    }
+
+    #article_como_funciona p {
+        font-size: 16px;
+        width: 60vw;
+        line-height: 1.2;
+        letter-spacing: 0;
+        margin: 3px 28px 0 0;
+        text-align: right;
+    }
+
+    #flechas-grises {
+        height: 42px;
+        width: auto;
+        position: absolute;
+        bottom: 0;
+    }
+
+    #flechas-azules-de {
+        height: 25px;
+        width: 115px;
+        position: absolute;
+        top: 24px;
+        left: 16px;
+        opacity: 0.9;
+    }
+
+    #puntos {
+        top: 7px;
+        right: 15px;
+        opacity: 0.7;
+    }
+
+    #section-icons {
+        padding: 10px 0;
+        height: auto;
+    }
+
+    .container_items {
+        flex-wrap: wrap;
+        flex-direction: row;
+        height: auto;
+        gap: 13px 7px;
+        padding: 25px 0px;
+    }
+
+    .item {
+        height: 95px;
+        width: 95px;
+    }
+
+    .icon-item{
+        height: 90px;
+        width: 90px;
+    }
+
+}
+
+@media screen and (min-width: 980px) and (max-width: 1100px) {
+  
+    #sesion-informativa {
+        height: auto;
+    }
+
+    #article_que_es {
+        height: 380px;
+    }
+
+    #article_que_es h1 {
+        margin: 55px 0 0 66px;
+        font-size: 40px;
+        letter-spacing: 2px;
+        line-height: 1;
+    }
+
+    #article_que_es p {
+        font-size: 20px;
+        width: 600px;
+        line-height: 1.5;
+        letter-spacing: 0;
+        margin: 0 0 0 66px;
+    }
+
+    #flechas-azules {
+        height: 45px;
+        width: auto;
+        position: absolute;
+        right: 172px;
+        top: 22px;
+    }
+
+    #article_como_funciona {
+        height: 400px;
+    }
+
+    #article_como_funciona h1 {
+        font-size: 40px;
+        letter-spacing: 1px;
+        line-height: 0.9;
+        margin: 78px 28px 0 0;
+    }
+
+    #article_como_funciona p {
+        font-size: 20px;
+        width: 590px;
+        line-height: 1.2;
+        letter-spacing: 1px;
+        margin: 3px 28px 0 0;
+        text-align: right;
+    }
+
+    #flechas-grises {
+        height: 60px;
+        width: auto;
+        position: absolute;
+        bottom: 0;
+    }
+
+    #flechas-azules-de {
+        height: 37px;
+        width: 170px;
+        position: absolute;
+        top: 31px;
+        left: 10px;
+        opacity: 0.9;
+    }
+
+    #puntos {
+        top: 16px;
+        right: 15px;
+        opacity: 0.7;
+    }
+
+    #section-icons {
+        padding: 10px 0;
+        height: auto;
+    }
+
+    .container_items {
+        flex-wrap: wrap;
+        flex-direction: row;
+        height: auto;
+        gap: 13px 7px;
+        padding: 25px 0px;
+    }
+
+    .item {
+        height: 115px;
+        width: 115px;
+    }
+
+    .icon-item{
+        height: 110px;
+        width: 110px;
+    }
+
+}
+

@@ -1,0 +1,2676 @@
+:root {
+    --color-primary: #5593E8;
+    --color-secondary: #406DBE;
+    --color-tertiary: #313131;
+    --color-letter: #F2B705;
+    --color-fondo-footer: #96d3f2;
+    --height-sessions: 170px;
+}
+
+#logo {
+    height: 80px;
+    width: auto;
+    transition-property: transform;
+    transition-duration: 300ms;
+}
+
+#logo:hover {
+transform: scale(1.05);
+}
+
+#void1 {
+    height: 65px;
+    width: 60px;
+    margin: 20px 0 0 -36px;
+    position: absolute;
+    background-color: transparent;
+    z-index: 1;
+}
+
+#void2 {
+    height: 65px;
+    width: 32px;
+    margin: 28px 0 0 51px;
+    position: absolute;
+    background-color: transparent;
+    z-index: 1;
+}
+
+.container-body {
+    width: 92%;
+    box-sizing: border-box;
+    align-content: center;
+}
+
+.container_flex {
+    display: flex;
+    padding: 0;
+    margin-right: 20px;
+}
+
+#userDropdown {
+    width: 100%;
+    text-align: center;
+}
+
+/* Estilos para el botón */
+#scrollButton {
+    display: none;
+    /* Ocultar el botón por defecto */
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #5593E8;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    z-index: 1;
+}
+
+#nav_e2 {
+    margin: 0;
+    font-weight: 900;
+}
+
+/* Estilos para mostrar el botón al hacer scroll */
+#scrollButton.show {
+    display: block;
+}
+
+.overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+.loader {
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #3498db;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+
+#sesion-de-contacto-por-whatsapp {
+    height: auto;
+    background-image: url(/img/backgrounds/fondo_azul.png);
+    background-repeat: no-repeat;
+    background-color: #001330;
+    box-sizing: border-box;
+    display: flex;
+    background-size: 90% 80%;
+    background-position: center;
+    padding: 0 15%;
+    align-items: center;
+    justify-content: center;
+}
+
+#sesion-de-contacto-por-whatsapp #article_wsp {
+    height: 600px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.t1 {
+    /* margin: 40px 0 0 0; */
+    color: white;
+    font-size: 6em;
+    font-weight: 900;
+    background: linear-gradient(to right, #2672ff, #67a2f5, #b9d6ff, #deecff, white);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: 1px;
+    width: 100%;
+}
+
+#article_wsp .t2 {
+    margin-top: 0px;
+    color: white;
+    font-size: 2em;
+    margin-bottom: 0%;
+    font-weight: 900;
+    letter-spacing: 12px;
+}
+
+#WSP {
+    width: 250px;
+    max-height: 82px;
+    margin-top: 58px;
+    display: flex;
+    padding: 10px 16px;
+    background-color: #5593E8;
+    font-size: 21px;
+    text-decoration: none;
+    transform: scale(1);
+    gap: 0 10px;
+    color: #313131;
+    border-radius: 20px;
+    transition-property: background-color, transform;
+    transition-duration: 0.3s;
+    font-weight: 700;
+    align-items: center;
+}
+
+#WSP:hover {
+    background-color: rgb(97, 187, 255);
+    transform: scale(1.05);
+}
+
+#WSP i {
+    transition-property: transform;
+    transition-duration: 0.3s;
+}
+
+#WSP:hover i {
+    transform: scale(1.05);
+}
+
+#WSP span {
+    transition-property: transform;
+    transition-duration: 0.3s;
+    line-height: 1;
+}
+
+#WSP:hover span {
+    transform: scale(1.05);
+}
+/* end sesión de contacto por whatsapp */
+
+
+/***************** Start sesión de marcas y cotizaciones ***********************************************************************************/
+#sesion-de-marcas-y-cotizaciones {
+    height: 500px;
+    box-sizing: border-box;
+    opacity: 0;
+    display: block;
+    transform: scale(0.9);
+    transition: all 800ms;
+}
+
+#sesion-de-marcas-y-cotizaciones #article_marcas {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+#sesion-de-marcas-y-cotizaciones.visible {
+    opacity: 1;
+    transform: scale(1);
+}
+
+#sesion-de-marcas-y-cotizaciones #text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#sesion-de-marcas-y-cotizaciones #article_marcas h1 {
+    font-size: 45px;
+    font-weight: bold;
+    letter-spacing: 0;
+    margin: 0;
+}
+
+#sesion-de-marcas-y-cotizaciones #article_marcas h1 img {
+    width: 38px;
+    height: 38px;
+    margin: 0 0 0 3px;
+}
+
+#sesion-de-marcas-y-cotizaciones #article_marcas p {
+    letter-spacing: 2px;
+    font-size: 20px;
+    margin: 4px 0 0 0;
+    color: var(--color-tertiary);
+    font-weight: 500;
+}
+
+.font_size_article_marcas {
+    font-size: 40px;
+    line-height: 0.9;
+    font-weight: 700;
+    color: var(--color-letter);
+    margin-top: 5px;
+}
+
+.font_size_article_marcas2 {
+    font-size: 40px;
+    line-height: 0.9;
+    font-weight: 700;
+}
+
+.content_marcas {
+    width: 100%;
+    overflow: hidden !important;
+}
+
+#logo_marca_bmw {
+    background-color: rgb(235, 234, 234);
+    width: 120px !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 100px;
+}
+
+#logo_marca_bmw img {
+    height: 100px !important;
+    width: 100px !important;
+    transition-property: height, width;
+    transition-duration: 0.3s;
+}
+
+#logo_marca_bmw:hover img {
+    height: 110px !important;
+    width: 110px !important;
+}
+
+#logo_marca_f {
+    height: 120px !important;
+    width: 120px !important;
+    background-color: rgb(235, 234, 234);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 100px;
+}
+
+#logo_marca_f img {
+    height: 85px !important;
+    width: 80px !important;
+    margin-top: 5px;
+    transition-property: height, width;
+    transition-duration: 0.3s;
+}
+
+#logo_marca_f:hover img {
+    height: 95px !important;
+    width: 90px !important;
+}
+
+#logo_marca_jaguar {
+    height: 120px !important;
+    width: 120px !important;
+    background-color: rgb(235, 234, 234);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 100px;
+}
+
+#logo_marca_jaguar img {
+    height: 95px !important;
+    width: 90px !important;
+    transition-property: height, width;
+    transition-duration: 0.3s;
+}
+
+#logo_marca_jaguar:hover img {
+    height: 105px !important;
+    width: 100px !important;
+}
+
+#logo_marca_audi {
+    height: 120px !important;
+    width: 120px !important;
+    background-color: rgb(235, 234, 234);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 100px;
+}
+
+#logo_marca_audi img {
+    height: 90px !important;
+    width: 90px !important;
+    transition-property: height, width;
+    transition-duration: 0.3s;
+}
+
+#logo_marca_audi:hover img {
+    height: 100px !important;
+    width: 100px !important;
+}
+
+#logo_marca_lambo {
+    height: 120px !important;
+    width: 120px !important;
+    background-color: rgb(235, 234, 234);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 100px;
+}
+
+#logo_marca_lambo img {
+    height: 90px !important;
+    width: 150px !important;
+    transition-property: height, width;
+    transition-duration: 0.3s;
+}
+
+#logo_marca_lambo:hover img {
+    height: 100px !important;
+    width: 160px !important;
+}
+
+#logo_marca_suba {
+    height: 120px !important;
+    width: 120px !important;
+    background-color: rgb(235, 234, 234);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 100px;
+}
+
+#logo_marca_suba img {
+    height: 130px !important;
+    width: 150px !important;
+    transition-property: height, width;
+    transition-duration: 0.3s;
+}
+
+#logo_marca_suba:hover img {
+    height: 140px !important;
+    width: 160px !important;
+}
+
+#logo_marca_susu {
+    height: 120px !important;
+    width: 120px !important;
+    background-color: rgb(235, 234, 234);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 100px;
+}
+
+#logo_marca_susu img {
+    height: 85px !important;
+    width: 85px !important;
+    transition-property: height, width;
+    transition-duration: 0.3s;
+}
+
+#logo_marca_susu:hover img {
+    height: 95px !important;
+    width: 95px !important;
+}
+
+#logo_marca_volvo {
+    height: 120px !important;
+    width: 120px !important;
+    background-color: rgb(235, 234, 234);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 100px;
+}
+
+#logo_marca_volvo img {
+    height: 90px !important;
+    width: 90px !important;
+    transition-property: height, width;
+    transition-duration: 0.3s;
+}
+
+#logo_marca_volvo:hover img {
+    height: 100px !important;
+    width: 100px !important;
+}
+
+#logo_marca_kawa {
+    height: 120px !important;
+    width: 120px !important;
+    background-color: rgb(235, 234, 234);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 100px;
+}
+
+#logo_marca_kawa img {
+    height: 85px !important;
+    width: 120px !important;
+    transition-property: height, width;
+    transition-duration: 0.3s;
+}
+
+#logo_marca_kawa:hover img {
+    height: 95px !important;
+    width: 130px !important;
+}
+
+.logo_marca {
+    height: 120px;
+    width: 120px !important;
+    background-color: rgb(235, 234, 234);
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    border-radius: 100px;
+}
+
+.logo_marca img {
+    background-color: transparent;
+    height: 100px !important;
+    width: 120px !important;
+    transition-property: height, width;
+    transition-duration: 0.3s;
+}
+
+.logo_marca:hover img {
+    height: 110px !important;
+    width: 130px !important;
+}
+
+/* End sesión de articulos y marcas */
+
+/* *********** FOOTER ************************************************************************************* */
+
+#footer {
+    height: 500px;
+    display: block;
+    box-sizing: border-box;
+    background-color: var(--color-fondo-footer);
+    color: var(--color-tertiary);
+}
+
+.logo_footer {
+    height: 130px;
+    width: 470px;
+    margin: 0;
+    padding: 0;
+}
+
+.content_f {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.t_blue {
+    color: var(--color-primary);
+    margin: 0 0px 0 0;
+    font-weight: 900;
+}
+
+.t_white {
+    color: white;
+    margin-bottom: 5px;
+}
+
+#font_size_acerca_de h1 {
+    font-size: 25px;
+    font-weight: 900;
+}
+
+#acerca_de {
+    margin: 0;
+    text-align: center;
+    list-style-type: none;
+    padding: 0;
+    line-height: 0.7;
+}
+
+.li_acerca {
+    color: white;
+    line-height: 1.8;
+    text-decoration: none;
+    transition-property: letter-spacing;
+    transition-duration: 0.2s;
+    font-size: 20px;
+}
+
+.li_acerca:hover {
+    letter-spacing: 1px;
+}
+
+.content_contactos {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    height: 100%;
+    align-items: center;
+}
+
+.content_contacto {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    margin: 80px 0 0 0;
+}
+
+.contenedor_icons {
+    display: flex;
+    width: 100%;
+    height: 50px;
+    gap: 10px;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.contenedor_icon {
+    height: 40px;
+    width: 40px;
+    border-radius: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition-property: height width;
+    transition-duration: 300ms;
+}
+
+.contenedor_icon:hover {
+    height: 50px;
+    width: 70px;
+}
+
+.icons_footer {
+    height: 35px;
+    width: 35px;
+    transition-property: height width;
+    transition-duration: 300ms;
+    background-color: var(--color-tertiary);
+    padding: 3px;
+    border-radius: 100px;
+}
+
+.content_contacto h1 {
+    margin: 0 5px -3px 0;
+    font-size: 30px;
+    line-height: 0.9;
+}
+
+.list_contacto {
+    line-height: 2.5;
+    text-decoration: none;
+    list-style-type: none;
+    margin: 7px 0 0 0;
+    width: 300px;
+    padding: 0;
+    font-size: 20px;
+}
+
+.list_contacto a {
+    text-decoration: none;
+    transition-property: letter-spacing;
+    transition-duration: 0.2s;
+}
+
+.list_contacto a:hover {
+    letter-spacing: 0.8px;
+}
+
+.list_contacto p {
+    margin: 0;
+}
+
+.img_icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 8px;
+    /* margin-top: 5px; */
+    padding: 0;
+}
+
+footer hr {
+    direction: vertical;
+    border: 0.1px solid;
+    border-color: var(--color-primary);
+    height: 85%;
+    margin: 0;
+}
+
+.button {
+    transition: background-color 300ms, box-shadow 0.15s ease, border-color 0.15s ease !important;
+}
+
+.button:hover {
+    background-color: rgba(0, 0, 0, 0.108);
+}
+
+@media screen and (max-width: 1010px) {
+    #container_user {
+        display: flex;
+        padding: 0;
+        margin-right: 0px;
+        width: 100%;
+        text-align: end;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        background-color: #7ca9e8b3;
+    }
+
+    .container_flex_user {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 20px !important;
+        margin-bottom: 10px !important;
+    }
+}
+
+@media screen and (min-width:280px) and (max-width: 630px) {
+
+    #scrollButton.show {
+        display: none;
+    }
+
+    .user {
+        height: 25px;
+        width: 25px;
+    }
+
+    .container-body {
+        width: 100%;
+    }
+
+    .navbar-flex {
+        height: 60px;
+        padding: 0 0 0 10px;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    #logo {
+        height: 35px !important;
+    }
+
+    #Cnav1 {
+        display: flex;
+        padding: 0;
+        margin-right: 0px;
+    }
+
+    #Cnav2 {
+        display: flex;
+        padding: 0;
+        margin-right: 0px;
+    }
+
+    #Cnav3 {
+        display: flex;
+        padding: 0;
+        margin-right: 0px;
+    }
+
+    #void1 {
+        display: none;
+    }
+
+    #void2 {
+        display: none;
+    }
+
+    .container_nav {
+        height: 100%;
+        font-size: 10px;
+        margin: 0;
+        padding: 0;
+    }
+
+    .container_flex {
+        display: flex;
+        padding: 0;
+        margin-right: 0px;
+    }
+
+    #nav_e {
+        margin: 0;
+        cursor: default;
+        font-weight: 900;
+    }
+
+    .nav_active {
+        display: none;
+    }
+
+    .container_nav a {
+        text-decoration: none;
+        color: var(--color-tertiary);
+        font-weight: bold;
+        height: auto;
+        transition: color 300ms;
+        font-size: 10px;
+    }
+
+    .container_nav a:hover {
+        color: var(--color-primary);
+    }
+
+    .btn {
+        padding: 3px 5px !important;
+    }
+
+    .ico-btn {
+        width: 1.2em;
+        height: 1.5em;
+    }
+
+    /* ********************************************************************************************************** */
+
+    #sesion-de-contacto-por-whatsapp {
+        height: var(--height-sessions);
+        background-image: url(/img/backgrounds/fondo_azul.png);
+        background-repeat: no-repeat;
+        background-color: #001330;
+        background-size: 100% 76%;
+        background-position: center;
+    }
+
+    #sesion-de-contacto-por-whatsapp #article_wsp {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    #article_wsp .t1 {
+        color: white;
+        font-size: 1.5rem;
+        margin: 18px 0 2% 0;
+        font-weight: 900;
+        background: linear-gradient(to right, #2672ff, #67a2f5, #b9d6ff, #deecff, white);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        letter-spacing: 1px;
+    }
+
+    #article_wsp .t2 {
+        margin-top: 0px;
+        margin-bottom: 2%;
+        color: white;
+        font-size: 10px;
+        font-weight: 900;
+        letter-spacing: 1px;
+    }
+
+    #WSP {
+        width: 85px;
+        height: 25px;
+        margin: 0;
+        padding: 0px 7px;
+        font-size: 9px;
+        gap: 6px;
+    }
+
+    #WSP:hover {
+        background-color: rgb(97, 187, 255);
+    }
+
+    #WSP i {
+        font-size: 15px !important;
+        margin-right: 2%;
+        transition-property: transform;
+        transition-duration: 0.3s;
+    }
+
+    #WSP span {
+        line-height: 0.9;
+    }
+
+    #sesion-de-marcas-y-cotizaciones {
+        height: var(--height-sessions);
+        opacity: 0;
+        transform: scale(0.9);
+        padding: 0 !important;
+        transition: all 800ms;
+    }
+
+    #sesion-de-marcas-y-cotizaciones #article_marcas {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        text-align: center;
+        justify-content: space-evenly;
+        align-items: center
+    }
+
+    #sesion-de-marcas-y-cotizaciones.visible {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    #sesion-de-marcas-y-cotizaciones #text {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    #sesion-de-marcas-y-cotizaciones #article_marcas h1 {
+        font-size: 13px;
+        font-weight: bold;
+        letter-spacing: 0;
+        margin: 0;
+    }
+
+    #sesion-de-marcas-y-cotizaciones #article_marcas h1 img {
+        width: 11px;
+        height: 11px;
+        margin-left: 3px;
+    }
+
+    #sesion-de-marcas-y-cotizaciones #article_marcas p {
+        letter-spacing: 0;
+        font-size: 10px;
+        line-height: 0.9;
+        margin: 4px 0 0 0;
+        color: var(--color-tertiary);
+        font-weight: 500;
+    }
+
+    .font_size_article_marcas {
+        font-size: 13px;
+        line-height: 0.9;
+        font-weight: 700;
+        color: var(--color-letter);
+        margin-top: 5px;
+    }
+
+    .font_size_article_marcas2 {
+        font-size: 13px;
+        line-height: 0.9;
+        font-weight: 700;
+    }
+
+    .content_marcas {
+        display: flex;
+        flex-direction: row;
+        gap: 8px;
+        width: auto;
+        height: auto;
+        padding: 10px 0;
+        margin: 0;
+        justify-content: space-between;
+    }
+
+    #logo_marca_bmw {
+        height: 35px !important;
+        width: 35px !important;
+        background-color: rgb(235, 234, 234);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 100px;
+    }
+
+    #logo_marca_bmw img {
+        height: 30px !important;
+        width: 30px !important;
+    }
+
+    #logo_marca_bmw:hover img {
+        height: 35px !important;
+        width: 35px !important;
+    }
+
+    #logo_marca_f {
+        height: 35px !important;
+        width: 35px !important;
+        background-color: rgb(235, 234, 234);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 100px;
+    }
+
+    #logo_marca_f img {
+        height: 25px !important;
+        width: 22px !important;
+        margin-top: 5px;
+    }
+
+    #logo_marca_f:hover img {
+        height: 28px !important;
+        width: 25px !important;
+    }
+
+    #logo_marca_jaguar {
+        height: 35px !important;
+        width: 35px !important;
+        background-color: rgb(235, 234, 234);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 100px;
+    }
+
+    #logo_marca_jaguar img {
+        height: 35px !important;
+        width: 30px !important;
+    }
+
+    #logo_marca_jaguar:hover img {
+        height: 40px !important;
+        width: 35px !important;
+    }
+
+    #logo_marca_audi {
+        height: 35px !important;
+        width: 35px !important;
+        background-color: rgb(235, 234, 234);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 100px;
+    }
+
+    #logo_marca_audi img {
+        height: 30px !important;
+        width: 30px !important;
+    }
+
+    #logo_marca_audi:hover img {
+        height: 32px !important;
+        width: 32px !important;
+    }
+
+    #logo_marca_lambo {
+        height: 35px !important;
+        width: 35px !important;
+        background-color: rgb(235, 234, 234);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 100px;
+    }
+
+    #logo_marca_lambo img {
+        height: 25px !important;
+        width: 45px !important;
+    }
+
+    #logo_marca_lambo:hover img {
+        height: 30px !important;
+        width: 50px !important;
+    }
+
+    #logo_marca_suba {
+        height: 35px !important;
+        width: 35px !important;
+        background-color: rgb(235, 234, 234);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 100px;
+    }
+
+    #logo_marca_suba img {
+        height: 40px !important;
+        width: 53px !important;
+    }
+
+    #logo_marca_suba:hover img {
+        height: 45px !important;
+        width: 58px !important
+    }
+
+    #logo_marca_susu {
+        height: 35px !important;
+        width: 35px !important;
+        background-color: rgb(235, 234, 234);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 100px;
+    }
+
+    #logo_marca_susu img {
+        height: 25px !important;
+        width: 25px !important;
+    }
+
+    #logo_marca_susu:hover img {
+        height: 30px !important;
+        width: 30px !important;
+    }
+
+    #logo_marca_volvo {
+        height: 35px !important;
+        width: 35px !important;
+        background-color: rgb(235, 234, 234);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 100px;
+    }
+
+    #logo_marca_volvo img {
+        height: 25px !important;
+        width: 25px !important;
+    }
+
+    #logo_marca_volvo:hover img {
+        height: 30px !important;
+        width: 30px !important;
+    }
+
+    #logo_marca_kawa {
+        height: 35px !important;
+        width: 35px !important;
+        background-color: rgb(235, 234, 234);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 100px;
+    }
+
+    #logo_marca_kawa img {
+        height: 25px !important;
+        width: 43px !important;
+    }
+
+    #logo_marca_kawa:hover img {
+        height: 30px !important;
+        width: 48px !important;
+    }
+
+    .logo_marca {
+        height: 35px !important;
+        width: 35px !important;
+        background-color: rgb(235, 234, 234);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 100px;
+    }
+
+    .logo_marca img {
+        background-color: transparent;
+        height: 25px !important;
+        width: 30px !important;
+        border-radius: 100%;
+        transition-property: height, width;
+        transition-duration: 0.3s;
+    }
+
+    .logo_marca img:hover {
+        width: 35px !important;
+        height: 30px !important;
+    }
+
+    /* **************************************************************************** */
+
+    #footer {
+        height: var(--height-sessions);
+        background-color: var(--color-fondo-footer);
+        color: var(--color-tertiary);
+        padding: 0 0.5%;
+    }
+
+    .logo_footer {
+        height: 30px;
+        width: 110px;
+    }
+
+    .content_f {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+    }
+
+    .t_blue {
+        color: var(--color-primary);
+        margin: 0 0px 0 0;
+        font-weight: 900;
+    }
+
+    .t_white {
+        color: white;
+        margin-bottom: 5px;
+    }
+
+    #font_size_acerca_de h1 {
+        font-size: 9px;
+        font-weight: 900;
+        text-align: center;
+    }
+
+    #acerca_de {
+        margin: 0;
+        text-align: center;
+        list-style-type: none;
+        padding: 0;
+        line-height: 0.7;
+    }
+
+    .li_acerca {
+        color: white;
+        line-height: 0.9;
+        text-decoration: none;
+        transition-property: letter-spacing;
+        transition-duration: 0.2s;
+        font-size: 9px;
+    }
+
+    .li_acerca:hover {
+        letter-spacing: 1px;
+    }
+
+    .content_contactos {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        height: 100%;
+        align-items: center;
+    }
+
+    .content_contacto {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        margin: 26px 0 0 0;
+    }
+
+    .contenedor_icons {
+        display: flex;
+        gap: 5px;
+        height: 30px;
+        width: 85%;
+    }
+
+    .contenedor_icon {
+        height: 20px;
+        width: 20px;
+        border-radius: 100px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition-property: height width;
+        transition-duration: 300ms;
+    }
+
+    .contenedor_icon:hover {
+        height: 38px;
+        width: 38px;
+    }
+
+    .icons_footer {
+        height: 15;
+        width: 15;
+        transition-property: height width;
+        transition-duration: 300ms;
+        background-color: var(--color-tertiary);
+        padding: 2px;
+        border-radius: 100px;
+    }
+
+    .content_contacto h1 {
+        margin: 0 5px -3px 0;
+        font-size: 10px;
+        line-height: 0.9;
+    }
+
+    .list_contacto {
+        line-height: 2.5;
+        text-decoration: none;
+        list-style-type: none;
+        margin: 7px 0 0 0;
+        width: 126px;
+        padding: 0;
+        font-size: 9px;
+    }
+
+    .list_contacto li {
+        width: auto;
+    }
+
+    .list_contacto a {
+        text-decoration: none;
+        transition-property: letter-spacing;
+        transition-duration: 0.2s;
+    }
+
+    .list_contacto a:hover {
+        letter-spacing: 1px;
+    }
+
+    .list_contacto p {
+        margin: 0;
+    }
+
+    .img_icon {
+        width: 8px;
+        height: 8px;
+        margin-right: 3px;
+        /* margin-top: 5px; */
+        padding: 0;
+    }
+
+    footer hr {
+        direction: vertical;
+        border: 0.1px solid;
+        border-color: var(--color-primary);
+        height: 80%;
+        margin: 0;
+    }
+
+}
+
+@media screen and (min-width: 630px) and (max-width:980px) {
+
+    #scrollButton.show {
+        display: none;
+    }
+
+    .user {
+        height: 35px;
+        width: 35px;
+    }
+
+    .container-body {
+        width: 100%;
+    }
+
+    .navbar-flex {
+        height: 60px;
+        padding: 0 0 0 10px;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    #logo {
+        height: 65px;
+        transition-property: height width;
+        transition-duration: 300ms;
+    }
+
+
+    #void1 {
+        display: none;
+    }
+
+    #void2 {
+        display: none;
+    }
+
+    #Cnav1 {
+        display: flex;
+        padding: 0;
+        margin-right: 0px;
+    }
+
+    #Cnav2 {
+        display: flex;
+        padding: 0;
+        margin-right: 0px;
+    }
+
+    #Cnav3 {
+        display: flex;
+        padding: 0;
+        margin-right: 0px;
+    }
+
+    .container_nav {
+        height: 100%;
+        font-size: 15px;
+        margin: 0;
+        padding: 0;
+    }
+
+    #nav_e {
+        margin: 0;
+        cursor: default;
+        font-weight: 900;
+    }
+
+    .nav_active {
+        display: none;
+    }
+
+
+    .container_nav a:hover {
+        color: var(--color-primary);
+    }
+
+    .btn {
+        padding: 8px 10px !important;
+    }
+
+    #sesion-de-contacto-por-whatsapp {
+        height: 365px;
+        background-size: 100% 80%;
+    }
+
+    #sesion-de-contacto-por-whatsapp #article_wsp {
+        height: auto;
+    }
+
+    .t1 {
+        font-size: 50px;
+    }
+
+    #article_wsp .t2 {
+        margin-top: -11px;
+        margin-bottom: 0;
+        font-size: 19px;
+        letter-spacing: 10px;
+    }
+
+    #WSP {
+        width: 150px;
+        height: 45px;
+        margin-top: 17px;
+        gap: 7px;
+        padding: 0px 14px;
+        font-size: 17px;
+    }
+
+    #WSP span {
+        line-height: 0.9;
+        font-size: 15px;
+    }
+
+    #WSP i {
+        font-size: 20px !important;
+        margin-right: 2%;
+    }
+
+    #sesion-de-marcas-y-cotizaciones {
+        height: 360px;
+    }
+
+    #sesion-de-marcas-y-cotizaciones #article_marcas {
+        text-align: center;
+        justify-content: space-evenly;
+        align-items: center
+    }
+
+    #sesion-de-marcas-y-cotizaciones #article_marcas h1 {
+        font-size: 30px;
+        font-weight: bold;
+        letter-spacing: 0;
+        margin: 0;
+    }
+
+    #sesion-de-marcas-y-cotizaciones #article_marcas h1 img {
+        width: 25px;
+        height: 25px;
+        margin: 0 0 0 3px;
+    }
+
+    #sesion-de-marcas-y-cotizaciones #article_marcas p {
+        letter-spacing: 1px;
+        font-size: 16px;
+    }
+
+    .font_size_article_marcas {
+        font-size: 30px;
+    }
+
+    .font_size_article_marcas2 {
+        font-size: 30px;
+    }
+
+    .content_marcas {
+        margin: 2px 0;
+    }
+
+    #logo_marca_bmw {
+        height: 80px !important;
+        width: 80px !important;
+        background-color: rgb(235, 234, 234);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 100px;
+    }
+
+    #logo_marca_bmw img {
+        height: 70px !important;
+        width: 70px !important;
+    }
+
+    #logo_marca_bmw:hover img {
+        height: 80px !important;
+        width: 80px !important;
+    }
+
+    #logo_marca_f {
+        height: 80px !important;
+        width: 80px !important;
+        background-color: rgb(235, 234, 234);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 100px;
+    }
+
+    #logo_marca_f img {
+        height: 55px !important;
+        width: 55px !important;
+        margin-top: 5px;
+    }
+
+    #logo_marca_f:hover img {
+        height: 65px !important;
+        width: 65px !important;
+    }
+
+    #logo_marca_jaguar {
+        height: 80px !important;
+        width: 80px !important;
+        background-color: rgb(235, 234, 234);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 100px;
+    }
+
+    #logo_marca_jaguar img {
+        height: 65px !important;
+        width: 60px !important;
+    }
+
+    #logo_marca_jaguar:hover img {
+        height: 75px !important;
+        width: 70px !important;
+    }
+
+    #logo_marca_audi {
+        height: 80px !important;
+        width: 80px !important;
+        background-color: rgb(235, 234, 234);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 100px;
+    }
+
+    #logo_marca_audi img {
+        height: 65px !important;
+        width: 65px !important;
+    }
+
+    #logo_marca_audi:hover img {
+        height: 75px !important;
+        width: 75px !important;
+    }
+
+    #logo_marca_lambo {
+        height: 80px !important;
+        width: 80px !important;
+        background-color: rgb(235, 234, 234);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 100px;
+    }
+
+    #logo_marca_lambo img {
+        height: 60px !important;
+        width: 100px !important;
+    }
+
+    #logo_marca_lambo:hover img {
+        height: 70px !important;
+        width: 110px !important;
+    }
+
+    #logo_marca_suba {
+        height: 80px !important;
+        width: 80px !important;
+        background-color: rgb(235, 234, 234);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 100px;
+    }
+
+    #logo_marca_suba img {
+        height: 100px !important;
+        width: 120px !important;
+    }
+
+    #logo_marca_suba:hover img {
+        height: 110px !important;
+        width: 130px !important;
+    }
+
+    #logo_marca_susu {
+        height: 80px !important;
+        width: 80px !important;
+        background-color: rgb(235, 234, 234);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 100px;
+    }
+
+    #logo_marca_susu img {
+        height: 55px !important;
+        width: 55px !important;
+    }
+
+    #logo_marca_susu:hover img {
+        height: 65px !important;
+        width: 65px !important;
+    }
+
+    #logo_marca_volvo {
+        height: 80px !important;
+        width: 80px !important;
+        background-color: rgb(235, 234, 234);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 100px;
+    }
+
+    #logo_marca_volvo img {
+        height: 60px !important;
+        width: 60px !important;
+    }
+
+    #logo_marca_volvo:hover img {
+        height: 70px !important;
+        width: 70px !important;
+    }
+
+    #logo_marca_kawa {
+        height: 80px !important;
+        width: 80px !important;
+        background-color: rgb(235, 234, 234);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 100px;
+    }
+
+    #logo_marca_kawa img {
+        height: 55px !important;
+        width: 90px !important;
+    }
+
+    #logo_marca_kawa:hover img {
+        height: 65px !important;
+        width: 100px !important;
+    }
+
+    .logo_marca {
+        height: 80px !important;
+        width: 80px !important;
+    }
+
+    .logo_marca img {
+        height: 60px !important;
+        width: 80px !important;
+    }
+
+    .logo_marca:hover img {
+        height: 70px !important;
+        width: 90px !important;
+    }
+
+
+    #footer {
+        height: 400px;
+        background-color: var(--color-fondo-footer);
+        color: var(--color-tertiary);
+    }
+
+    .logo_footer {
+        height: 95px;
+        width: 310px;
+        margin: 0;
+        padding: 0;
+    }
+
+    .content_f {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+    }
+
+    .t_blue {
+        color: var(--color-primary);
+        margin: 0 0px 0 0;
+        font-weight: 900;
+    }
+
+    .t_white {
+        color: white;
+        margin-bottom: 5px;
+    }
+
+    #font_size_acerca_de {
+        text-align: center;
+    }
+
+    #font_size_acerca_de h1 {
+        font-size: 25px;
+        font-weight: 900;
+    }
+
+    #acerca_de {
+        margin: 0;
+        text-align: center;
+        list-style-type: none;
+        padding: 0;
+        line-height: 0.7;
+    }
+
+    .li_acerca {
+        font-size: 18px;
+    }
+
+    .li_acerca:hover {
+        letter-spacing: 1px;
+    }
+
+    .content_contactos {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        height: 100%;
+        align-items: center;
+    }
+
+    .content_contacto {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        margin: 80px 0 0 0;
+    }
+
+    .contenedor_icons {
+        display: flex;
+        width: 100%;
+        height: 50px;
+        gap: 10px;
+        justify-content: space-evenly;
+        align-items: center;
+    }
+
+    .contenedor_icon {
+        height: 30px;
+        width: 30px;
+        border-radius: 100px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition-property: height width;
+        transition-duration: 300ms;
+    }
+
+    .contenedor_icon:hover {
+        height: 50px;
+        width: 70px;
+    }
+
+    .icons_footer {
+        height: 35px;
+        width: 35px;
+        transition-property: height width;
+        transition-duration: 300ms;
+        background-color: var(--color-tertiary);
+        padding: 3px;
+        border-radius: 100px;
+    }
+
+    .content_contacto h1 {
+        margin: 0 5px -3px 0;
+        font-size: 27px;
+        line-height: 0.9;
+    }
+
+    .list_contacto {
+        line-height: 2.5;
+        text-decoration: none;
+        text-align: center !important;
+        list-style-type: none;
+        margin: 7px 0 0 0;
+        width: 265px;
+        padding: 0;
+        font-size: 16px;
+    }
+
+    .list_contacto li a {
+        text-decoration: none;
+        transition-property: letter-spacing;
+        transition-duration: 0.2s;
+    }
+
+    .list_contacto li a:hover {
+        letter-spacing: 0.8px;
+    }
+
+    .list_contacto p {
+        margin: 0;
+    }
+
+    .img_icon {
+        width: 18px;
+        height: 18px;
+        margin-right: 8px;
+        /* margin-top: 5px; */
+        padding: 0;
+    }
+
+    footer hr {
+        direction: vertical;
+        border: 0.1px solid;
+        border-color: var(--color-primary);
+        height: 85%;
+        margin: 0;
+    }
+}
+
+@media screen and (min-width:600px) and (max-width:720px) {
+    .logo_footer {
+        height: 15%;
+        width: 100%;
+    }
+}
+
+@media screen and (min-width: 980px) and (max-width:1100px) {
+
+    #scrollButton.show {
+        display: none;
+    }
+
+    .container-body {
+        width: 100%;
+    }
+
+    #sesion-de-contacto-por-whatsapp {
+        height: 400px;
+        background-size: 100% 80%;
+    }
+
+    .t1 {
+        margin: 0;
+        font-size: 441%;
+    }
+
+    #article_wsp .t2 {
+        margin-top: -11px;
+        margin-bottom: 0;
+        font-size: 19px;
+        letter-spacing: 10px;
+    }
+
+    #WSP {
+        max-width: 155px;
+        margin-top: 50px;
+        gap: 15px;
+        padding: 7px 12px;
+        font-size: 12px;
+    }
+
+    #WSP i {
+        font-size: 21px !important;
+        margin-right: 2%;
+    }
+
+    #sesion-de-marcas-y-cotizaciones {
+        height: 400px;
+    }
+
+    #sesion-de-marcas-y-cotizaciones #article_marcas {
+        text-align: center;
+        justify-content: space-evenly;
+        align-items: center;
+    }
+
+    #sesion-de-marcas-y-cotizaciones #text {
+        width: 100%;
+    }
+
+    #sesion-de-marcas-y-cotizaciones #article_marcas h1 {
+        font-size: 30px;
+        font-weight: bold;
+        letter-spacing: 0;
+        margin: 0;
+    }
+
+    #sesion-de-marcas-y-cotizaciones #article_marcas h1 img {
+        width: 25px;
+        height: 25px;
+        margin: 0 0 0 3px;
+    }
+
+    /* voy por aqui */
+
+    #sesion-de-marcas-y-cotizaciones #article_marcas p {
+        letter-spacing: 1px;
+        font-size: 16px;
+    }
+
+    .font_size_article_marcas {
+        font-size: 30px;
+    }
+
+    .font_size_article_marcas2 {
+        font-size: 30px;
+    }
+
+    .content_marcas {
+        gap: 10px;
+        padding: 14px 0;
+        margin: 0;
+    }
+
+    #logo_marca_bmw {
+        height: 80px !important;
+        width: 80px !important;
+        background-color: rgb(235, 234, 234);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 100px;
+    }
+
+    #logo_marca_bmw img {
+        height: 70px !important;
+        width: 70px !important;
+    }
+
+    #logo_marca_bmw:hover img {
+        height: 80px;
+        width: 80px;
+    }
+
+    #logo_marca_f {
+        height: 80px !important;
+        width: 80px !important;
+        background-color: rgb(235, 234, 234);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 100px;
+    }
+
+    #logo_marca_f img {
+        height: 55px !important;
+        width: 55px !important;
+        margin-top: 5px;
+    }
+
+    #logo_marca_f:hover img {
+        height: 65px;
+        width: 65px;
+    }
+
+    #logo_marca_jaguar {
+        height: 80px !important;
+        width: 80px !important;
+        background-color: rgb(235, 234, 234);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 100px;
+    }
+
+    #logo_marca_jaguar img {
+        height: 65px !important;
+        width: 60px !important;
+    }
+
+    #logo_marca_jaguar:hover img {
+        height: 75px;
+        width: 70px;
+    }
+
+    #logo_marca_audi {
+        height: 80px !important;
+        width: 80px !important;
+        background-color: rgb(235, 234, 234);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 100px;
+    }
+
+    #logo_marca_audi img {
+        height: 65px !important;
+        width: 65px !important;
+    }
+
+    #logo_marca_audi:hover img {
+        height: 75px;
+        width: 75px;
+    }
+
+    #logo_marca_lambo {
+        height: 80px !important;
+        width: 80px !important;
+        background-color: rgb(235, 234, 234);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 100px;
+    }
+
+    #logo_marca_lambo img {
+        height: 60px !important;
+        width: 100px !important;
+    }
+
+    #logo_marca_lambo:hover img {
+        height: 70px;
+        width: 110px;
+    }
+
+    #logo_marca_suba {
+        height: 80px !important;
+        width: 80px !important;
+        background-color: rgb(235, 234, 234);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 100px;
+    }
+
+    #logo_marca_suba img {
+        height: 100px !important;
+        width: 120px !important;
+    }
+
+    #logo_marca_suba:hover img {
+        height: 110px;
+        width: 130px;
+    }
+
+    #logo_marca_susu {
+        height: 80px !important;
+        width: 80px !important;
+        background-color: rgb(235, 234, 234);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 100px;
+    }
+
+    #logo_marca_susu img {
+        height: 55px !important;
+        width: 55px !important;
+    }
+
+    #logo_marca_susu:hover img {
+        height: 65px;
+        width: 65px;
+    }
+
+    #logo_marca_volvo {
+        height: 80px !important;
+        width: 80px !important;
+        background-color: rgb(235, 234, 234);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 100px;
+    }
+
+    #logo_marca_volvo img {
+        height: 60px !important;
+        width: 60px !important;
+    }
+
+    #logo_marca_volvo:hover img {
+        height: 70px;
+        width: 70px;
+    }
+
+    #logo_marca_kawa {
+        height: 80px !important;
+        width: 80px !important;
+        background-color: rgb(235, 234, 234);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 100px;
+    }
+
+    #logo_marca_kawa img {
+        height: 55px !important;
+        width: 90px !important;
+    }
+
+    #logo_marca_kawa:hover img {
+        height: 70px;
+        width: 70px;
+    }
+
+    .logo_marca {
+        height: 80px !important;
+        width: 80px !important;
+    }
+
+    .logo_marca img {
+        height: 60px !important;
+        width: 80px !important;
+    }
+
+    .logo_marca:hover img {
+        height: 70px;
+        width: 90px;
+    }
+
+    #footer {
+        height: 400px;
+        background-color: var(--color-fondo-footer);
+        color: var(--color-tertiary);
+    }
+
+    .logo_footer {
+        height: 95px;
+        width: 310px;
+        margin: 0;
+        padding: 0;
+    }
+
+    .content_f {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+    }
+
+    .t_blue {
+        color: var(--color-primary);
+        margin: 0 0px 0 0;
+        font-weight: 900;
+    }
+
+    .t_white {
+        color: white;
+        margin-bottom: 5px;
+    }
+
+    #font_size_acerca_de {
+        text-align: center;
+    }
+
+    #font_size_acerca_de h1 {
+        font-size: 25px;
+        font-weight: 900;
+    }
+
+    #acerca_de {
+        margin: 0;
+        text-align: center;
+        list-style-type: none;
+        padding: 0;
+        line-height: 0.7;
+    }
+
+    .li_acerca {
+        font-size: 18px;
+    }
+
+    .li_acerca:hover {
+        letter-spacing: 1px;
+    }
+
+    .content_contactos {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        height: 100%;
+        align-items: center;
+    }
+
+    .content_contacto {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        margin: 80px 0 0 0;
+    }
+
+    .contenedor_icons {
+        display: flex;
+        width: 100%;
+        height: 50px;
+        gap: 10px;
+        justify-content: space-evenly;
+        align-items: center;
+    }
+
+    .contenedor_icon {
+        height: 30px;
+        width: 30px;
+        border-radius: 100px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition-property: height width;
+        transition-duration: 300ms;
+    }
+
+    .contenedor_icon:hover {
+        height: 50px;
+        width: 70px;
+    }
+
+    .icons_footer {
+        height: 35px;
+        width: 35px;
+        transition-property: height width;
+        transition-duration: 300ms;
+        background-color: var(--color-tertiary);
+        padding: 3px;
+        border-radius: 100px;
+    }
+
+    .content_contacto h1 {
+        margin: 0 5px -3px 0;
+        font-size: 27px;
+        line-height: 0.9;
+    }
+
+    .list_contacto {
+        line-height: 2.5;
+        text-decoration: none;
+        list-style-type: none;
+        margin: 7px 0 0 0;
+        width: 265px;
+        padding: 0;
+        font-size: 16px;
+    }
+
+    .list_contacto li a {
+        text-decoration: none;
+        transition-property: letter-spacing;
+        transition-duration: 0.2s;
+    }
+
+    .list_contacto li a:hover {
+        letter-spacing: 0.8px;
+    }
+
+    .list_contacto p {
+        margin: 0;
+    }
+
+    .img_icon {
+        width: 18px;
+        height: 18px;
+        margin-right: 8px;
+        /* margin-top: 5px; */
+        padding: 0;
+    }
+
+    footer hr {
+        direction: vertical;
+        border: 0.1px solid;
+        border-color: var(--color-primary);
+        height: 85%;
+        margin: 0;
+    }
+}
+
+@media screen and (min-width: 1100px) and (max-width:1280px) {
+
+    .container-body {
+        width: 100%;
+    }
+
+    #sesion-de-marcas-y-cotizaciones {
+        height: 400px;
+    }
+
+    #sesion-de-marcas-y-cotizaciones #article_marcas {
+        text-align: center;
+        justify-content: space-evenly;
+        align-items: center;
+    }
+
+    #sesion-de-marcas-y-cotizaciones #text {
+        width: 100%;
+    }
+
+    #sesion-de-marcas-y-cotizaciones #article_marcas h1 {
+        font-size: 30px;
+        font-weight: bold;
+        letter-spacing: 0;
+        margin: 0;
+    }
+
+    #sesion-de-marcas-y-cotizaciones #article_marcas h1 img {
+        width: 25px;
+        height: 25px;
+        margin: 0 0 0 3px;
+    }
+
+    /* voy por aqui */
+
+    #sesion-de-marcas-y-cotizaciones #article_marcas p {
+        letter-spacing: 1px;
+        font-size: 16px;
+    }
+
+    .font_size_article_marcas {
+        font-size: 30px;
+    }
+
+    .font_size_article_marcas2 {
+        font-size: 30px;
+    }
+
+    .content_marcas {
+        gap: 10px;
+        padding: 14px 0;
+        margin: 0;
+    }
+
+    #logo_marca_bmw {
+        height: 80px !important;
+        width: 80px !important;
+        background-color: rgb(235, 234, 234);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 100px;
+    }
+
+    #logo_marca_bmw img {
+        height: 70px !important;
+        width: 70px !important;
+    }
+
+    #logo_marca_bmw:hover img {
+        height: 80px;
+        width: 80px;
+    }
+
+    #logo_marca_f {
+        height: 80px !important;
+        width: 80px !important;
+        background-color: rgb(235, 234, 234);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 100px;
+    }
+
+    #logo_marca_f img {
+        height: 55px !important;
+        width: 55px !important;
+        margin-top: 5px;
+    }
+
+    #logo_marca_f:hover img {
+        height: 65px;
+        width: 65px;
+    }
+
+    #logo_marca_jaguar {
+        height: 80px !important;
+        width: 80px !important;
+        background-color: rgb(235, 234, 234);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 100px;
+    }
+
+    #logo_marca_jaguar img {
+        height: 65px !important;
+        width: 60px !important;
+    }
+
+    #logo_marca_jaguar:hover img {
+        height: 75px;
+        width: 70px;
+    }
+
+    #logo_marca_audi {
+        height: 80px !important;
+        width: 80px !important;
+        background-color: rgb(235, 234, 234);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 100px;
+    }
+
+    #logo_marca_audi img {
+        height: 65px !important;
+        width: 65px !important;
+    }
+
+    #logo_marca_audi:hover img {
+        height: 75px;
+        width: 75px;
+    }
+
+    #logo_marca_lambo {
+        height: 80px !important;
+        width: 80px !important;
+        background-color: rgb(235, 234, 234);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 100px;
+    }
+
+    #logo_marca_lambo img {
+        height: 60px !important;
+        width: 100px !important;
+    }
+
+    #logo_marca_lambo:hover img {
+        height: 70px;
+        width: 110px;
+    }
+
+    #logo_marca_suba {
+        height: 80px !important;
+        width: 80px !important;
+        background-color: rgb(235, 234, 234);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 100px;
+    }
+
+    #logo_marca_suba img {
+        height: 100px !important;
+        width: 120px !important;
+    }
+
+    #logo_marca_suba:hover img {
+        height: 110px;
+        width: 130px;
+    }
+
+    #logo_marca_susu {
+        height: 80px !important;
+        width: 80px !important;
+        background-color: rgb(235, 234, 234);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 100px;
+    }
+
+    #logo_marca_susu img {
+        height: 55px !important;
+        width: 55px !important;
+    }
+
+    #logo_marca_susu:hover img {
+        height: 65px;
+        width: 65px;
+    }
+
+    #logo_marca_volvo {
+        height: 80px !important;
+        width: 80px !important;
+        background-color: rgb(235, 234, 234);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 100px;
+    }
+
+    #logo_marca_volvo img {
+        height: 60px !important;
+        width: 60px !important;
+    }
+
+    #logo_marca_volvo:hover img {
+        height: 70px;
+        width: 70px;
+    }
+
+    #logo_marca_kawa {
+        height: 80px !important;
+        width: 80px !important;
+        background-color: rgb(235, 234, 234);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 100px;
+    }
+
+    #logo_marca_kawa img {
+        height: 55px !important;
+        width: 90px !important;
+    }
+
+    #logo_marca_kawa:hover img {
+        height: 70px;
+        width: 70px;
+    }
+
+    .logo_marca {
+        height: 80px !important;
+        width: 80px !important;
+    }
+
+    .logo_marca img {
+        height: 60px !important;
+        width: 80px !important;
+    }
+
+    .logo_marca:hover img {
+        height: 70px;
+        width: 90px;
+    }
+
+    #footer {
+        height: 400px;
+        background-color: var(--color-fondo-footer);
+        color: var(--color-tertiary);
+    }
+
+    .logo_footer {
+        height: 95px;
+        width: 310px;
+        margin: 0;
+        padding: 0;
+    }
+
+    .content_f {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+    }
+
+    .t_blue {
+        color: var(--color-primary);
+        margin: 0 0px 0 0;
+        font-weight: 900;
+    }
+
+    .t_white {
+        color: white;
+        margin-bottom: 5px;
+    }
+
+    #font_size_acerca_de {
+        text-align: center;
+    }
+
+    #font_size_acerca_de h1 {
+        font-size: 25px;
+        font-weight: 900;
+    }
+
+    #acerca_de {
+        margin: 0;
+        text-align: center;
+        list-style-type: none;
+        padding: 0;
+        line-height: 0.7;
+    }
+
+    .li_acerca {
+        font-size: 18px;
+    }
+
+    .li_acerca:hover {
+        letter-spacing: 1px;
+    }
+
+    .content_contactos {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        height: 100%;
+        align-items: center;
+    }
+
+    .content_contacto {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        margin: 80px 0 0 0;
+    }
+
+    .contenedor_icons {
+        display: flex;
+        width: 100%;
+        height: 50px;
+        gap: 10px;
+        justify-content: space-evenly;
+        align-items: center;
+    }
+
+    .contenedor_icon {
+        height: 30px;
+        width: 30px;
+        border-radius: 100px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition-property: height width;
+        transition-duration: 300ms;
+    }
+
+    .contenedor_icon:hover {
+        height: 50px;
+        width: 70px;
+    }
+
+    .icons_footer {
+        height: 35px;
+        width: 35px;
+        transition-property: height width;
+        transition-duration: 300ms;
+        background-color: var(--color-tertiary);
+        padding: 3px;
+        border-radius: 100px;
+    }
+
+    .content_contacto h1 {
+        margin: 0 5px -3px 0;
+        font-size: 27px;
+        line-height: 0.9;
+    }
+
+    .list_contacto {
+        line-height: 2.5;
+        text-decoration: none;
+        list-style-type: none;
+        margin: 7px 0 0 0;
+        width: 265px;
+        padding: 0;
+        font-size: 16px;
+    }
+
+    .list_contacto li a {
+        text-decoration: none;
+        transition-property: letter-spacing;
+        transition-duration: 0.2s;
+    }
+
+    .list_contacto li a:hover {
+        letter-spacing: 0.8px;
+    }
+
+    .list_contacto p {
+        margin: 0;
+    }
+
+    .img_icon {
+        width: 18px;
+        height: 18px;
+        margin-right: 8px;
+        /* margin-top: 5px; */
+        padding: 0;
+    }
+
+    footer hr {
+        direction: vertical;
+        border: 0.1px solid;
+        border-color: var(--color-primary);
+        height: 85%;
+        margin: 0;
+    }
+}
+
+@media screen and (min-width:1280px) and (max-width:1380px) {
+
+    .container-body {
+        width: 100%;
+    }
+}
+
+@media screen and (min-width: 2100px) {
+    .container-body {
+        max-width: 2080px;
+        box-sizing: border-box;
+    }
+
+    #sesion-de-contacto-por-whatsapp {
+        height: 600px;
+        background-image: url(/img/backgrounds/fondo_azul.png);
+        background-repeat: no-repeat;
+        background-color: #001330;
+        background-size: 85% 80%;
+        background-position: center;
+        padding: 0 5%;
+    }
+
+}

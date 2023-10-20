@@ -1,0 +1,140 @@
+body{
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+    background-color: rgb(37, 37, 37);
+}
+
+.container-button-register{
+    display: flex;
+    justify-content: flex-end;
+    padding-right: 10px;
+    padding-top: 10px;
+}
+
+.container-button-register a{
+    font-size: 20px;
+    color: white;
+    text-decoration: none;
+    animation: button-register 1000ms infinite alternate;
+}
+
+@keyframes button-register {
+    0%{
+        color: white;
+    }
+
+    100%{
+        color: #5593E8;
+    }
+}
+
+.contenedor{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.contenedor img{
+    height: 200px;
+    width: 200px;
+    margin-bottom: 20px;
+    animation: logo 250ms ease-in-out alternate 2;
+}
+
+@keyframes logo {
+    0%{
+        transform: scale(1);
+    }
+    100%{
+        transform: scale(1.1);
+    }
+}
+
+.contenedor .contenedor-login{
+    height: 450px;
+    width: 970px;
+    background-color: rgba(81, 81, 81, 0.574);
+    border-radius: 20px;
+
+    display: flex;
+    flex-direction: column;
+    padding: 30px;
+}
+
+.contenedor-login h1{
+    font-size: 40px;
+    font-weight: 900;
+    margin: 0 0 50px 330px;
+    color: #0f0f0f;
+}
+
+.contenedor-login label{
+    font-weight:500;
+    font-size: 20px;
+    margin: 0 0 5px 95px;
+    color: #0f0f0f;
+}
+
+.contenedor-login input{
+    height: 55px;
+    width: 800px;
+    margin: 0 0 50px 80px;
+    border-style: none;
+    border-radius: 15px;
+    padding-left: 10px;
+}
+
+#contenedor-remember{
+    display: flex;
+    flex-direction: row;
+    text-align: center;
+}
+
+#c-recordar{
+    margin: 0 0 0 85px;
+    height: 20px;
+    width: 20px;
+}
+
+#recordar{
+    font-size: 17px;
+    font-weight: 200;
+    margin: 0 0 0px 10px;
+}
+
+#contenedor-submit{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+#iniciar{
+    margin: 0;
+    width: 200px;
+    margin-right: 79px;
+    cursor: pointer;
+    font-size: 20px;
+    color: white;
+    background-color: #406DBE;
+    transition-property: background-color color;
+    transition-duration: 300ms;
+}
+
+#iniciar:hover{
+    background-color: #5593E8;
+}
+
+#contenedor-submit a{
+    color: #1d1d1dd6;
+    font-weight: 200;
+    margin-right: 10px;
+    transition: color 100ms;
+}
+
+#contenedor-submit a:hover{
+    color: #5593E8
+}

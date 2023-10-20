@@ -1,0 +1,40 @@
+.loading-overlay {
+    display: none;
+}
+
+.button {
+    transition: background-color 300ms, box-shadow 0.15s ease, border-color 0.15s ease !important;
+    height: 50px;
+    display: flex !important;
+    align-items: center;
+}
+
+.button:hover {
+    background-color: rgba(0, 0, 0, 0.108);
+}
+
+input {
+    height: 50px;
+}
+
+select {
+    height: 50px;
+}
+
+#check1 {
+    display: none;
+}
+
+#check2 {
+    display: none;
+}
+
+.form-check-input:checked{
+    background-image: linear-gradient(310deg, #393a84 0%, #336abf 100%) !important;
+}
+
+@media (max-width: 992px) {
+    .logo {
+        display: none;
+    }
+}
