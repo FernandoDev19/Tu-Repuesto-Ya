@@ -370,11 +370,11 @@ class HomeController extends Controller
         // Validar los datos de entrada
         $validator = Validator::make($request->all(), [
             'nit' => 'required|numeric|digits_between:8,16',
-            'tipo_repuesto' => 'required',
+            // 'tipo_repuesto' => 'required',
             'precio' => 'required',
 
         ], [
-            'tipo_repuesto.required' => 'El tipo de repuesto es obligatorio',
+            // 'tipo_repuesto.required' => 'El tipo de repuesto es obligatorio',
             'nit.max' => 'El campo NIT no puede contener mas de 16 digitos',
             'nit.min' => 'El campo NIT debe contener minimo 8 digitos',
         ]);
@@ -414,14 +414,12 @@ class HomeController extends Controller
         $answer = new Answer();
         $answer->idSolicitud = $solicitud->id;
         $answer->idProveedor = $proveedor->id;
-        $answer->repuesto = json_encode($request->json_repuestos);
-        $answer->tipo_repuesto = json_encode($request->tipo_repuesto);
-        $answer->precio = json_encode(array_map(function($p) {
-            return "$" . (is_array($p) ? implode(", ", $p) : $p);
-          }, $request->precio));
+        $answer->repuesto = $request->json_repuestos;
+        // $answer->tipo_repuesto = json_encode($request->tipo_repuesto);
+        $answer->precio = "$ $request->precio";
 
-        $datos_garantia = implode(" ", $request->input('garantia')) . " " . $request->garantiaSeleccion;
-        $answer->garantia = json_encode($datos_garantia);
+        // $datos_garantia = implode(" ", $request->input('garantia')) . " " . $request->garantiaSeleccion;
+        // $answer->garantia = json_encode($datos_garantia);
 
         if ($request->comentarioP) {
             $answer->comentarios = 'Además, el proveedor ha compartido algunos comentarios: \n "*_' . $request->comentarioP . '_*"';
@@ -444,9 +442,10 @@ class HomeController extends Controller
 
         // Enviar datos al cliente
         $precio = $answer->precio;
-        $garantia = $answer->garantia;
-        $repuesto = $answer->repuesto;
-        $tipo_repuesto = $answer->tipo_repuesto;
+        // $garantia = $answer->garantia;
+        $repuesto = is_array($answer->repuesto) ? implode(',', $answer->repuesto) : $answer->repuesto;
+        $repuesto = str_replace(array("[", "]", "\"", ","), array("", "", "", ", "), $repuesto);
+        // $tipo_repuesto = $answer->tipo_repuesto;
         $nombre_cliente = $solicitud->nombre;
         $almacen = $proveedor->razon_social;
         $pais = $proveedor->pais;
@@ -480,18 +479,18 @@ class HomeController extends Controller
                                 'type' => 'text',
                                 'text' => $repuesto,
                             ],
-                            [
-                                'type' => 'text',
-                                'text' => $tipo_repuesto,
-                            ],
+                            // [
+                            //     'type' => 'text',
+                            //     'text' => $tipo_repuesto,
+                            // ],
                             [
                                 'type' => 'text',
                                 'text' => $precio,
                             ],
-                            [
-                                'type' => 'text',
-                                'text' => $garantia,
-                            ],
+                            // [
+                            //     'type' => 'text',
+                            //     'text' => $garantia,
+                            // ],
                             [
                                 'type' => 'text',
                                 'text' => $almacen,

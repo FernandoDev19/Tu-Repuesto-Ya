@@ -219,11 +219,8 @@
                                                         <div class="items_container" id="items_container">
                                                             @foreach ($repuesto as $repuestos)
                                                                 <button type="button"
-                                                                    class="{{ $count_class++ }} item_selected acepted"
-                                                                    name="item">
-                                                                    {{ $count_btns++ . ': ' . $repuestos }}
-                                                                    <span class="btn_borrar_item">×</span>
-                                                                </button>
+                                                                    class="item_selected acepted"
+                                                                    name="item">{{$repuestos}}<span class="btn_borrar_item">×</span></button>
                                                             @endforeach
                                                         </div>
                                                     </div>
@@ -233,7 +230,8 @@
                                                     @enderror
                                                 </div>
 
-                                                {{-- <div class="flex flex-col mb-3">
+                                                {{-- Tipo de repuesto --}}
+                                                 {{-- <div class="flex flex-col mb-3">
                                                     <label for="tipo_repuesto" class="mb-2"
                                                         style="color:blue; font-weigth: 900;">
                                                         <h5>*Tipo de repuestos</h5>
@@ -276,12 +274,12 @@
                                                     @error('tipo_repuesto')
                                                         <small class="text-danger text-xs pt-1">{{ $message }}</small>
                                                     @enderror
-                                                </div>
+                                                </div> --}}
 
                                                 <div class="flex flex-col mb-3">
                                                     <label for="precio" class="mb-2"
                                                         style="color:blue; font-weigth: 900;">
-                                                        <h5>*Precio (COP)</h5>
+                                                        <h5>*Precio Estimado (COP)</h5>
                                                     </label>
                                                     <input type="text" name="precio" id="precio"
                                                         class="form-control text-start" placeholder="ejemplo: 12345..."
@@ -292,7 +290,8 @@
                                                     @enderror
                                                 </div>
 
-                                                <div class="flex flex-col mb-3">
+                                                {{-- Garantia --}}
+                                                {{-- <div class="flex flex-col mb-3">
                                                     <label for="garantia" class="mb-2"
                                                         style="color: blue; font-weight: 900;">
                                                         <h5>Garantía</h5>
@@ -313,7 +312,8 @@
                                                     @enderror
                                                 </div> --}}
 
-                                                <div class="flex flex-col mb-3">
+                                                {{-- Para mas de un repuesto --}}
+                                                {{-- <div class="flex flex-col mb-3">
                                                     <div
                                                         style="width: 100%; display: flex; gap: 5%; flex-wrap: wrap; justify-content: space-between;">
                                                         @foreach ($repuesto as $repuestos)
@@ -407,7 +407,7 @@
                                                         @endforeach
                                                     </div>
                                                     <!--Tipo de repuesto, Precio y garantia-->
-                                                </div>
+                                                </div> --}}
 
                                                 <div class="flex flex-col mb-3">
 
@@ -509,7 +509,8 @@
         </div>
     </div>
 
-    <script>
+    {{-- Script para guardar datos de precio, garantia. --}}
+    {{-- <script>
         document.addEventListener('DOMContentLoaded', function () {
             let container_buttons = document.getElementById('items_container');
             let count_buttons = container_buttons.children.length;
@@ -520,11 +521,18 @@
                     event.target.classList.toggle('rojo');
                     for (let i = 1; i <= count_buttons; i++) {
                         let container_repuestos = document.getElementById('container_' + i);
+                        let children = container_repuestos.children;
                         if (event.target.classList.contains(i) && event.target.classList.contains('rojo')) {
                             container_repuestos.classList.add('hide');
+                            for (let i = 0; i < children.length; i++){
+                                children[i].disabled = true;
+                            }
                         }
                         else if(event.target.classList.contains(i) && event.target.classList.contains('acepted')){
                             container_repuestos.classList.remove('hide');
+                            for (let i = 0; i < children.length; i++){
+                                children[i].disabled = false;
+                            }
                         }
                     }
                 }
@@ -551,8 +559,43 @@
                 this.submit();
             });
         });
-    </script>
+    </script> --}}
 
+    {{-- Script para elegir si tiene o no el repuesto --}}
+     <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            let container_buttons = document.getElementById('items_container');
+            let count_buttons = container_buttons.children.length;
+
+            container_buttons.addEventListener('click', function (event) {
+                if (event.target.classList.contains('item_selected')) {
+                    event.target.classList.toggle('acepted');
+                    event.target.classList.toggle('rojo');
+                }
+            });
+
+            document.getElementById('form_provider').addEventListener('submit', function (event) {
+                event.preventDefault();
+
+                // Obtener los textos de los botones seleccionados
+                let textosSeleccionados = Array.from(container_buttons.getElementsByClassName('acepted'))
+                    .map(button => button.textContent);
+
+                // Convertir el arreglo a una cadena JSON
+                let jsonTextosSeleccionados = JSON.stringify(textosSeleccionados);
+
+                // Agregar un campo oculto al formulario y asignarle la cadena JSON
+                let inputJson = document.createElement('input');
+                inputJson.type = 'hidden';
+                inputJson.name = 'json_repuestos';
+                inputJson.value = jsonTextosSeleccionados.replace(/×/g, '').replace(/\n/g, '');
+                this.appendChild(inputJson);
+
+                // Ahora, puedes enviar el formulario
+                this.submit();
+            });
+        });
+    </script>
 
     <script src="{{ asset('assets/js/core/bootstrap.min.js') }}"></script>
 

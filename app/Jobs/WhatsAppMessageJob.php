@@ -73,8 +73,6 @@ class WhatsAppMessageJob implements ShouldQueue
         $repuesto = is_array($this->json_repuestos) ? implode(',', $this->json_repuestos) : $this->json_repuestos;
         $repuesto = str_replace(array("[", "]", "\"", ","), array("", "", "", ", "), $repuesto);
 
-
-
         $marca = $this->marca;
         $referencia = $this->referencia;
         $modelo = $this->modelo;
