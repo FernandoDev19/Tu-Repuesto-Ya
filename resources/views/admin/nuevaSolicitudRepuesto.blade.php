@@ -3,6 +3,7 @@
 @section('title', 'Tu Repuesto Ya - Solicitudes')
 
 @section('sidebar')
+    
     <!-- Nav Item - Dashboard -->
     <li class="nav-item">
         <a class="nav-link" href="{{ route('dashboard') }}">
@@ -24,7 +25,7 @@
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true"
                 aria-controls="collapseTwo">
                 <i class="fas fa-fw fa-cog"></i>
-                <span>Components</span>
+                <span>Componentes</span>
             </a>
             <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
@@ -62,11 +63,8 @@
 @endsection
 
 @section('content')
-    <!-- Begin Page Content -->
-    <div class="container-fluid">
-
-        <!-- Content Row -->
-        <div class="container-fluid h-100">
+        
+    <div class="container-fluid h-100">
             <div class="row h-100 justify-content-center">
                 <div class="col-lg-12 mb-4">
                     <div class="card shadow mb-4">
@@ -78,213 +76,103 @@
                             </div>
 
                         </div>
-                        <div class="card-body">
-                            <div class="card shadow mb-4 contenedor-lista">
-                                <div class="card-body">
-                                    <div class="table-responsive">
-                                        <table class="table table-bordered" id="solicitudesTable">
-                                            <thead>
-                                                <tr>
-                                                    <th class="text-primary" style="padding:5px 0; text-align:center;">Id
-                                                    </th>
-                                                    <th class="text-primary" style="padding:5px 0; text-align:center;">
+                        <div class="card-body" style="padding: 0;">
+                            <div class="table-responsive">
+                                <table class="table table-borderless table-hover" id="solicitudesTable">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-muted" style="padding:10px 5px; text-align:center;">Id
+                                            </th>
+                                            <th class="text-muted" style="padding:10px 5px; text-align:center;">
                                                         Respuestas
-                                                    </th>
-                                                    <th class="text-primary" style="padding:5px 0; text-align:center;">
+                                            </th>
+                                            <th class="text-muted" style="padding:10px 5px; text-align:center;">
                                                         Repuesto</th>
-                                                    <th class="text-primary" style="padding:5px 0; text-align:center;">
+                                            <th class="text-muted" style="padding:10px 5px; text-align:center;">
                                                         Marca</th>
-                                                    <th class="text-primary" style="padding:5px 0; text-align:center;">
+                                            <th class="text-muted" style="padding:10px 5px; text-align:center;">
                                                         Referencia</th>
-                                                    <th class="text-primary" style="padding:5px 0; text-align:center;">
+                                            <th class="text-muted" style="padding:10px 5px; text-align:center;">
                                                         Modelo</th>
-                                                    <th class="text-primary" style="padding:5px 0; text-align:center;">
+                                            <th class="text-muted" style="padding:10px 5px; text-align:center;">
+                                                        Fecha de Creación</th>            
+                                            <th class="text-muted" style="padding:10px 5px; text-align:center;">
                                                         Estado</th>
-                                                </tr>
+                                            <th class="text-muted" style="padding:10px 5px; text-align:center;">
+                                                        Detalles</th>            
+                                        </tr>
                                             </thead>
                                             <tbody>
-
-                                                <tr>
-                                                    <td style="padding:5px 10px; margin:0; text-align:center; line-height: 1;"
-                                                        data-campo="id" data-valor="{{ $solicitud->id }}">
-                                                        <span style="font-size: 14;"
+                                                    @php
+                                                        $proveedor = auth()->user()->id;
+                                                        $proveedorId = auth()->user()->proveedor_id;
+                                                                
+                                                        // Verifica si $solicitudAnswers no es nulo antes de usar el método where()
+                                                        $solicitudAnswers = $answers[$solicitud->id] ?? null;
+                                                                
+                                                        $proveedorHaRespondido = false;
+                                                                
+                                                        if ($solicitudAnswers) {
+                                                            // Ahora puedes usar el método where() de manera segura
+                                                            $proveedorHaRespondido = $solicitudAnswers->where('idProveedor', $proveedorId)->isNotEmpty();
+                                                        }
+                                                    @endphp
+                                                    <tr class="@if ($proveedorHaRespondido) bg-green @endif">
+                                                        <td style="padding:10px 10px; margin:0; text-align:center;"
+                                                            data-campo="id" data-valor="{{ $solicitud->id }}">
+                                                            <span style="font-size: 14;"
                                                             id="id_{{ $solicitud->id }}">{{ $solicitud->id }}</span>
-                                                    </td>
-                                                    <td style="padding:5px 10px; margin:0; text-align:center; line-height: 1;"
+                                                        </td>
+                                                    <td style="padding:10px 10px; margin:0; text-align:center;"
                                                         data-campo="respuestas" data-valor="{{ $solicitud->respuestas }}">
                                                         <span style="font-size: 14;"
                                                             id="respuestas_{{ $solicitud->respuestas }}">{{ $solicitud->respuestas }}</span>
                                                     </td>
-                                                    <td style="padding:5px 10px; margin:0; text-align:center; line-height: 1;"
+                                                    <td style="padding:10px 10px; margin:0; text-align:center;"
                                                         data-campo="marca" data-valor="{{ $solicitud->marca }}">
                                                         <span style="font-size: 14;"
                                                             id="marca_{{ $solicitud->marca }}">{{ $solicitud->marca }}</span>
                                                     </td>
-                                                    <td style="padding:5px 10px; margin:0; text-align:center; line-height: 1;"
+                                                    <td style="padding:10px 10px; margin:0; text-align:center;"
                                                         data-campo="referencia"
                                                         data-valor="{{ $solicitud->referencia }}">
                                                         <span style="font-size: 14;"
                                                             id="referencia_{{ $solicitud->referencia }}">{{ $solicitud->referencia }}</span>
                                                     </td>
-                                                    <td style="padding:5px 10px; margin:0; text-align:center; line-height: 1;"
+                                                    <td style="padding:10px 10px; margin:0; text-align:center;"
                                                         data-campo="modelo" data-valor="{{ $solicitud->modelo }}">
                                                         <span style="font-size: 14;"
                                                             id="modelo_{{ $solicitud->modelo }}">{{ $solicitud->modelo }}</span>
                                                     </td>
-                                                    <td style="padding:5px 10px; margin:0; text-align:center; line-height: 1;"
+                                                    <td style="padding:10px 10px; margin:0; text-align:center;"
                                                         data-campo="repuesto" data-valor="{{ $solicitud->repuesto }}">
                                                         <span style="font-size: 14;"
                                                             id="repuesto_{{ $solicitud->repuesto }}">{{ $solicitud->repuesto }}</span>
                                                     </td>
-                                                    <td style="padding:5px 10px; margin:0; text-align:center; line-height: 1;"
+                                                    <td style="padding:10px 10px; margin:0; text-align:center;"
+                                                        data-campo="fecha" data-valor="{{ $solicitud->created_at }}">
+                                                        <span style="font-size: 14;"
+                                                            id="repuesto_{{ $solicitud->created_at }}">{{ $solicitud->created_at->diffForHumans() }}</span>
+                                                    </td>
+                                                    <td style="padding:10px 10px; margin:0; text-align:center;"
                                                         data-campo="estado" data-valor="{{ $solicitud->estado }}">
                                                         <span style="font-size: 14;"
                                                             id="estado_{{ $solicitud->estado }}">
                                                             @if ($solicitud->estado)
-                                                                Activa
+                                                               <i class="fas fa-circle" style="color:green;"></i>
                                                             @else
-                                                                Inactiva
+                                                                <i class="fas fa-circle" style="color:red;"></i>
                                                             @endif
                                                         </span>
                                                     </td>
-                                                    <td style="padding:0px; width: 6vw;" class="text-center">
-                                                        <a title="Ver detalles" class="btn btn-primary"
-                                                            data-toggle="modal"
-                                                            data-target="#infoModal{{ $solicitud->id }}"
-                                                            style="font-size: 12; padding: 5%;">
-                                                            <i class="fas fa-info-circle"></i>
-                                                            Detalles</a>
+                                                    <td style="padding:10px; width: 6vw;" class="text-center">
+                                                           <a title="Ver detalles"
+                                                                            href="{{ route('solicitud', [$solicitud->codigo, $proveedor]) }}"
+                                                                            class="btn btn-primary">
+                                                                            
+                                                                        </a>
 
                                                     </td>
-
-                                                    <!-- Modal de Información -->
-                                                    <div class="modal fade" id="infoModal{{ $solicitud->id }}"
-                                                        tabindex="-1" role="dialog" aria-labelledby="infoModalLabel"
-                                                        aria-hidden="true">
-                                                        <div class="modal-dialog" role="document">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <h5 class="modal-title" id="infoModalLabel">
-                                                                        Información
-                                                                        de la solicitud</h5>
-                                                                    <button class="close" type="button"
-                                                                        data-dismiss="modal" aria-label="Close">
-                                                                        <span aria-hidden="true">×</span>
-                                                                    </button>
-                                                                </div>
-
-                                                                <div class="modal-body d-flex justify-content-between">
-                                                                    <div class="text-wrap">
-                                                                        <strong>ID:</strong>
-                                                                        {{ $solicitud->id }}<br>
-                                                                        <strong>Respuestas:</strong>
-                                                                        {{ $solicitud->respuestas }}<br>
-                                                                        <strong>Marca:</strong>
-                                                                        {{ $solicitud->marca }}<br>
-                                                                        <strong>Referencia:</strong>
-                                                                        {{ $solicitud->referencia }}
-                                                                        <br>
-                                                                        <strong>Modelo:</strong>
-                                                                        {{ $solicitud->modelo }}
-                                                                        <br>
-                                                                        <strong>Transmisión:</strong>
-                                                                        {{ $solicitud->tipo_de_transmision }}
-                                                                        <br>
-                                                                        <strong>Repuesto:</strong>
-                                                                        {{ $solicitud->repuesto }}
-                                                                        <br>
-                                                                        <strong>Imagen del repuesto:</strong>
-                                                                        @if ($solicitud->img_repuesto == 'No se subió ningun archivo')
-                                                                            No hay imagen
-                                                                        @elseif($solicitud->img_repuesto)
-                                                                            <a title="Ver imagen del repuesto"
-                                                                                data-toggle="modal"
-                                                                                data-target="#imgModal{{ $solicitud->id }}"
-                                                                                href="#">Ver
-                                                                                Imagen</a>
-                                                                        @else
-                                                                            No hay imagen
-                                                                        @endif
-                                                                        <br>
-                                                                        <strong>Comentarios del
-                                                                            cliente:</strong>
-                                                                        @if ($solicitud->comentario)
-                                                                            {{ $solicitud->comentario }}
-                                                                        @else
-                                                                            No hay comentarios
-                                                                        @endif
-                                                                        <br>
-                                                                        <strong>Nombre:</strong>
-                                                                        {{ $solicitud->nombre }} <br>
-                                                                        <strong>Correo electronico:</strong>
-                                                                        {{ $solicitud->correo }} <br>
-                                                                        <strong>Celular:</strong>
-                                                                        {{ $solicitud->numero }} <br>
-                                                                        <strong>Departamento:</strong>
-                                                                        {{ $solicitud->departamento }} <br>
-                                                                        <strong>Municipio:</strong>
-                                                                        {{ $solicitud->municipio }} <br>
-                                                                        <strong>Estado de solicitud:</strong>
-                                                                        @if ($solicitud->estado)
-                                                                            Activa
-                                                                        @else
-                                                                            Inactiva
-                                                                        @endif
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="modal-footer">
-                                                                    @can('solicitudes.delete')
-                                                                        <button class="btn btn-primary"
-                                                                            data-id="{{ $solicitud->id }}"
-                                                                            data-toggle="modal"
-                                                                            data-target="#eraseModal{{ $solicitud->id }}"
-                                                                            onclick="resaltarBotonActivo(this)">
-                                                                            Eliminar
-                                                                        </button>
-                                                                    @endcan
-                                                                    <button class="btn btn-secondary" type="button"
-                                                                        data-dismiss="modal">Cerrar</button>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    <!-- Modal de Imagen -->
-                                                    <div style="min-height: 100vh; min-width: 100vw;" class="modal fade"
-                                                        id="imgModal{{ $solicitud->id }}" tabindex="-1" role="dialog"
-                                                        aria-labelledby="imgModalLabel" aria-hidden="true">
-                                                        <div class="modal-dialog" role="document"
-                                                            style="max-width: 1000px !important;">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <h5 class="modal-title" id="imgModalLabel">
-                                                                        Imagen del repuesto</h5>
-                                                                    <button class="close" type="button"
-                                                                        data-dismiss="modal" aria-label="Close">
-                                                                        <span aria-hidden="true">×</span>
-                                                                    </button>
-                                                                </div>
-
-                                                                <div class="modal-body d-flex justify-content-center">
-                                                                    <div class="text-wrap">
-                                                                        <div
-                                                                            style="display: flex; justify-content: center; box-sizing: border-box">
-                                                                            <img src="{{ asset("storage/$solicitud->img_repuesto") }}"
-                                                                                alt="imagen"
-                                                                                style="height: 100%; width: 100%;">
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="modal-footer">
-                                                                    <button class="btn btn-secondary" type="button"
-                                                                        data-dismiss="modal">Cerrar</button>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
 
                                                     <!-- Modal para eliminar -->
                                                     <div class="modal fade" id="eraseModal{{ $solicitud->id }}"
@@ -326,16 +214,12 @@
                                             </tbody>
                                         </table>
                                     </div>
-                                </div>
-                            </div>
+                                
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
-    </div>
-    <!-- /.container-fluid -->
 
 @endsection
 
@@ -366,20 +250,3 @@
     });
 </script>
 
-<script>
-    setTimeout(function() {
-        var registrationMessage = document.getElementById('registration-message');
-        if (registrationMessage) {
-            registrationMessage.remove();
-        }
-    }, 5000);
-</script>
-
-<script>
-    setTimeout(function() {
-        var Message = document.getElementById('message-error');
-        if (Message) {
-            Message.remove();
-        }
-    }, 8000);
-</script>

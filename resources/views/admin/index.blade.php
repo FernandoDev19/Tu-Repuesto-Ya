@@ -2,6 +2,12 @@
 
 @section('title', 'Tu Repuesto Ya - Dashboard')
 
+<style>
+    .hide{
+        display: none !important;
+    }
+</style>
+
 <!-- Sidebar -->
 @section('sidebar')
 
@@ -11,6 +17,7 @@
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>Panel de control</span></a>
     </li>
+
 
     @can('solicitudes.view')
     <!-- Divider -->
@@ -25,7 +32,7 @@
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true"
                 aria-controls="collapseTwo">
                 <i class="fas fa-fw fa-cog"></i>
-                <span>Components</span>
+                <span>Componentes</span>
             </a>
             <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
@@ -40,11 +47,12 @@
     @endcan
 
 
+
     <!-- Nav Item - Proveedores -->
     @can('providers.loadProviders')
         <li class="nav-item">
             <a class="nav-link" href="{{ route('loadProviders') }}">
-                <i class="fas fa-fw fa-chart-area"></i>
+                <i class="fas fa-users"></i>
                 <span>Proveedores</span></a>
         </li>
     @endcan
@@ -76,82 +84,81 @@
         <!-- Content Row -->
         <div class="row">
 
-            <!-- Earnings (Monthly) Card Example -->
+            <!--Cantidad de proveedores -->
             <div class="col-xl-3 col-md-6 mb-4">
                 <div class="card border-left-primary shadow h-100 py-2">
                     <div class="card-body">
                         <div class="row no-gutters align-items-center">
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                    Earnings (Monthly)</div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">$40,000</div>
+                                    Proveedores (Cantidad)</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{$cantidad_proveedores}}</div>
                             </div>
                             <div class="col-auto">
-                                <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                <i class="fas fa-users fa-2x text-gray-300"></i>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Earnings (Monthly) Card Example -->
-            <div class="col-xl-3 col-md-6 mb-4">
-                <div class="card border-left-success shadow h-100 py-2">
-                    <div class="card-body">
-                        <div class="row no-gutters align-items-center">
-                            <div class="col mr-2">
-                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                    Earnings (Annual)</div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">$215,000</div>
-                            </div>
-                            <div class="col-auto">
-                                <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Earnings (Monthly) Card Example -->
+            <!-- Proveedores activos -->
             <div class="col-xl-3 col-md-6 mb-4">
                 <div class="card border-left-info shadow h-100 py-2">
                     <div class="card-body">
                         <div class="row no-gutters align-items-center">
                             <div class="col mr-2">
-                                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Tasks
+                                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Proveedores Activos (Cantidad)
                                 </div>
                                 <div class="row no-gutters align-items-center">
                                     <div class="col-auto">
-                                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">50%</div>
+                                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{$proveedores_activos}}</div>
                                     </div>
                                     <div class="col">
                                         <div class="progress progress-sm mr-2">
-                                            <div class="progress-bar bg-info" role="progressbar" style="width: 50%"
+                                            <div class="progress-bar bg-info" role="progressbar" style="width: {{($proveedores_activos / $cantidad_proveedores) * 100}}%"
                                                 aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-auto">
-                                <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                                <i class="fas fa-user-check fa-2x text-gray-300"></i>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Pending Requests Card Example -->
+            <!-- Cantidad de solicitudes -->
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-left-success shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                    Solicitudes (Cantidad)</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{$cantidad_solicitudes}}</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-file-alt fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="col-xl-3 col-md-6 mb-4">
                 <div class="card border-left-warning shadow h-100 py-2">
                     <div class="card-body">
                         <div class="row no-gutters align-items-center">
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                    Pending Requests</div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
+                                    Respuestas (Cantidad)</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{$cantidad_respuestas}}</div>
                             </div>
                             <div class="col-auto">
-                                <i class="fas fa-comments fa-2x text-gray-300"></i>
+                                <i class="fas fa-reply fa-2x text-gray-300"></i>
                             </div>
                         </div>
                     </div>
@@ -167,7 +174,8 @@
                 <div class="card shadow mb-4">
                     <!-- Card Header - Dropdown -->
                     <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                        <h6 class="m-0 font-weight-bold text-primary">Earnings Overview</h6>
+                        <h6 class="m-0 font-weight-bold text-primary">Solicitudes
+                        </h6>
                         <div class="dropdown no-arrow">
                             <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -175,18 +183,41 @@
                             </a>
                             <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
                                 aria-labelledby="dropdownMenuLink">
-                                <div class="dropdown-header">Dropdown Header:</div>
-                                <a class="dropdown-item" href="#">Action</a>
-                                <a class="dropdown-item" href="#">Another action</a>
+                                <div class="dropdown-header">Otras Estadisticas:</div>
+                                <a id="marcas_est" class="dropdown-item" >Marcas</a>
+                                <a id="repuestos_est" class="dropdown-item">Repuestos</a>
+                                <a id="departamentos_est" class="dropdown-item" >Departamentos</a>
+                                <a id="ciudades_est" class="dropdown-item" >Ciudades</a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="#">Something else here</a>
                             </div>
                         </div>
                     </div>
                     <!-- Card Body -->
-                    <div class="card-body">
-                        <div class="chart-area">
-                            <canvas id="myAreaChart"></canvas>
+                    <div id="estadisticas_solicitud" class="card-body">
+                        <div id="myChart1" class="hide">
+                            <h1>{{ $chart1->options['chart_title'] }}</h1>
+                        {!! $chart1->renderHtml() !!}
+                        </div>
+                        <div id="myChart2">
+                            <h1>{{ $chart2->options['chart_title'] }}</h1>
+                        {!! $chart2->renderHtml() !!}
+                        </div>
+                        <div id="myChart3">
+                            <h1>{{ $chart3->options['chart_title'] }}</h1>
+                        {!! $chart3->renderHtml() !!}
+                        </div>
+                        <div id="myChart4">
+                            <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                                <h1 style="width: 100%;">{{ $chart4->options['chart_title'] }}</h1>
+                                <select class="form-control" name="select_est_departamento" id="select_est_departamento"
+                                        style="height: 2.8rem; width: 15rem;">
+                                    @foreach ($departamentos as $departamento)
+                                        <option value="{{ $departamento }}">{{ $departamento }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            {!! $chart4->renderHtml() !!}
                         </div>
                     </div>
                 </div>
@@ -197,7 +228,7 @@
                 <div class="card shadow mb-4">
                     <!-- Card Header - Dropdown -->
                     <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                        <h6 class="m-0 font-weight-bold text-primary">Revenue Sources</h6>
+                        <h6 class="m-0 font-weight-bold text-primary">Solicitudes</h6>
                         <div class="dropdown no-arrow">
                             <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -215,20 +246,7 @@
                     </div>
                     <!-- Card Body -->
                     <div class="card-body">
-                        <div class="chart-pie pt-4 pb-2">
-                            <canvas id="myPieChart"></canvas>
-                        </div>
-                        <div class="mt-4 text-center small">
-                            <span class="mr-2">
-                                <i class="fas fa-circle text-primary"></i> Direct
-                            </span>
-                            <span class="mr-2">
-                                <i class="fas fa-circle text-success"></i> Social
-                            </span>
-                            <span class="mr-2">
-                                <i class="fas fa-circle text-info"></i> Referral
-                            </span>
-                        </div>
+
                     </div>
                 </div>
             </div>
@@ -391,8 +409,75 @@
 
     </div>
     <!-- /.container-fluid -->
-@endsection
 
+    {!! $chart1->renderChartJsLibrary() !!}
+    {!! $chart1->renderJs() !!}
+    {!! $chart2->renderJs() !!}
+    {!! $chart3->renderJs() !!}
+    {!! $chart4->renderJs() !!}
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            let selectEstDepartamento = document.getElementById('select_est_departamento');
+
+            // Event listener para cambios en el menú desplegable
+            selectEstDepartamento.addEventListener('change', function () {
+                // Obtener el valor seleccionado
+                let selectedDepartamento = selectEstDepartamento.value;
+
+                // Actualizar el gráfico según el departamento seleccionado
+                // Esto puede requerir una llamada AJAX para obtener datos filtrados por departamento
+                // y luego actualizar el gráfico dinámicamente.
+            });
+        });
+    </script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function(){
+        let marcas_est = document.getElementById('marcas_est');
+        let repuestos_est = document.getElementById('repuestos_est');
+        let departamentos_est = document.getElementById('departamentos_est');
+        let ciudades_est = document.getElementById('ciudades_est');
+
+        let myChart1 = document.getElementById('myChart1');
+        let myChart2 = document.getElementById('myChart2');
+        let myChart3 = document.getElementById('myChart3');
+        let myChart4 = document.getElementById('myChart4');
+
+        myChart1.classList.remove('hide');
+        myChart2.classList.add('hide');
+        myChart3.classList.add('hide');
+        myChart4.classList.add('hide');
+
+       marcas_est.addEventListener('click', function(){
+            myChart1.classList.remove('hide');
+            myChart2.classList.add('hide');
+            myChart3.classList.add('hide');
+            myChart4.classList.add('hide');
+       });
+
+       repuestos_est.addEventListener('click', function(){
+            myChart2.classList.remove('hide');
+            myChart1.classList.add('hide');
+            myChart3.classList.add('hide');
+            myChart4.classList.add('hide');
+       });
+
+       departamentos_est.addEventListener('click', function(){
+            myChart1.classList.add('hide');
+            myChart2.classList.add('hide');
+            myChart3.classList.remove('hide');
+            myChart4.classList.add('hide');
+       });
+
+       ciudades_est.addEventListener('click', function(){
+            myChart1.classList.add('hide');
+            myChart2.classList.add('hide');
+            myChart3.classList.add('hide');
+            myChart4.classList.remove('hide');
+       });
+    });
+</script>
 
 <!-- Bootstrap core JavaScript-->
 <script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
@@ -411,3 +496,4 @@
 <script src="{{ asset('js/demo/chart-area-demo.js') }}"></script>
 <script src="{{ asset('js/demo/chart-pie-demo.js') }}"></script>
 <script src="{{ asset('https://code.jquery.com/jquery-3.6.0.min.js') }}"></script>
+@endsection

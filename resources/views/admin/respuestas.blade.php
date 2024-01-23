@@ -25,13 +25,13 @@
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true"
             aria-controls="collapseTwo">
             <i class="fas fa-fw fa-cog"></i>
-            <span>Components</span>
+            <span>Componentes</span>
         </a>
         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Custom Components:</h6>
                 <a class="collapse-item" href="{{ route('viewSolicitudes') }}">Solicitudes</a>
-                <a class="collapse-item active" href="{{ 'viewRespuestas' }}">Respuestas</a>
+                <a class="collapse-item active" href="{{route('viewRespuestas')}}">Respuestas</a>
             </div>
         </div>
     </li>
@@ -60,11 +60,8 @@
 @endsection
 
 @section('content')
-    <!-- Begin Page Content -->
-    <div class="container-fluid">
 
-        <!-- Content Row -->
-        <div class="container-fluid h-100">
+    <div class="container-fluid h-100">
             <div class="row h-100 justify-content-center">
                 <div class="col-lg-12 mb-4">
                     <div class="card shadow mb-4">
@@ -72,21 +69,12 @@
                             <div style="display: flex; justify-content: space-between;">
                                 <div>
                                     <h1 class="font-weight-bold text-primary">Lista de Respuestas</h1>
-                                    <form class="form-inline">
+                                    <form method="GET" class="form-inline">
                                         <div class="form-group mb-2">
-                                            <label for="ordenarPor" class="mr-2">Ordenar por:</label>
-                                            <select name="ordenarPor" id="ordenarPor" class="form-control"
-                                                onchange="ordenarTabla(this.value)">
-                                                <option value="">Seleccionar</option>
-                                                <option value="id">Id</option>
-                                                <option value="idSolicitud">Solicitud</option>
-                                                <option value="razon_social">Proveedor</option>
-                                                <option value="repuesto">Repuesto</option>
-                                                <option value="tipo_repuesto">Tipo de repuesto</option>
-                                                <option value="precio">Precio</option>
-                                                <option value="garantia">Garantía</option>
-                                                <option value="created_at">Fecha de creación</option>
-                                            </select>
+                                            <div class="input-group mb-3">
+                                              <input type="text" class="form-control" id="search" name="search" placeholder="Buscar..." >
+                                              <button class="btn btn-outline-primary" type="submit" id="btn_search">Buscar</button>
+                                            </div>
                                         </div>
                                     </form>
                                 </div>
@@ -101,77 +89,81 @@
                             </div>
 
                         </div>
-                        <div class="card-body">
-                            <div class="card shadow mb-4 contenedor-lista">
-                                <div class="card-body">
-                                    <div class="table-responsive">
-                                        <table class="table table-bordered" id="respuestasTable">
+                        <div class="card-body" style="padding: 0;">
+                            <div class="table-responsive">
+                                        <table class="table table-borderless table-hover" id="respuestasTable">
                                             <thead>
                                                 <tr>
-                                                    <th class="text-primary" style="padding:5px 0; text-align:center;">Id
+                                                    <th class="text-muted" style="padding:10px 5px; text-align:center;">Id
                                                     </th>
-                                                    <th class="text-primary" style="padding:5px 0; text-align:center;">
+                                                    <th class="text-muted" style="padding:10px 5px; text-align:center;">
                                                         Nº solicitud
                                                     </th>
-                                                    <th class="text-primary" style="padding:5px 0; text-align:center;">
+                                                    <th class="text-muted" style="padding:10px 5px; text-align:center;">
                                                         Proveedor</th>
-                                                    <th class="text-primary" style="padding:5px 0; text-align:center;">
+                                                    <th class="text-muted" style="padding:10px 5px; text-align:center;">
                                                         Repuesto</th>
-                                                    <th class="text-primary" style="padding:5px 0; text-align:center;">
+                                                    <th class="text-muted" style="padding:10px 5px; text-align:center;">
                                                         Tipo de repuesto</th>
-                                                    <th class="text-primary" style="padding:5px 0; text-align:center;">
+                                                    <th class="text-muted" style="padding:10px 5px; text-align:center;">
                                                         Precio</th>
-                                                    <th class="text-primary" style="padding:5px 0; text-align:center;">
+                                                    <th class="text-muted" style="padding:10px 5px; text-align:center;">
                                                         Garantía</th>
-                                                    <th class="text-primary" style="padding:5px 0; text-align:center;">
+                                                    <th class="text-muted" style="padding:10px 5px; text-align:center;">
                                                         Fecha de creación</th>
+                                                    <th class="text-muted" style="padding:10px 5px; text-align:center;">
+                                                        Detalles</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 @if ($respuestas->isEmpty())
                                                     <tr>
                                                         <td
-                                                            style="padding:5px 10px; margin:0; text-align:center; line-height: 1;">
+                                                            style="padding:10px 10px; margin:0; text-align:center; line-height: 1;">
                                                             No hay registros
                                                         </td>
                                                         <td
-                                                            style="padding:5px 10px; margin:0; text-align:center; line-height: 1;">
+                                                            style="padding:10px 10px; margin:0; text-align:center; line-height: 1;">
                                                             No hay registros
                                                         </td>
                                                         <td
-                                                            style="padding:5px 10px; margin:0; text-align:center; line-height: 1;">
+                                                            style="padding:10px 10px; margin:0; text-align:center; line-height: 1;">
                                                             No hay registros
                                                         </td>
                                                         <td
-                                                            style="padding:5px 10px; margin:0; text-align:center; line-height: 1;">
+                                                            style="padding:10px 10px; margin:0; text-align:center; line-height: 1;">
                                                             No hay registros
                                                         </td>
                                                         <td
-                                                            style="padding:5px 10px; margin:0; text-align:center; line-height: 1;">
+                                                            style="padding:10px 10px; margin:0; text-align:center; line-height: 1;">
                                                             No hay registros
                                                         </td>
                                                         <td
-                                                            style="padding:5px 10px; margin:0; text-align:center; line-height: 1;">
+                                                            style="padding:10px 10px; margin:0; text-align:center; line-height: 1;">
                                                             No hay registros
                                                         </td>
                                                         <td
-                                                            style="padding:5px 10px; margin:0; text-align:center; line-height: 1;">
+                                                            style="padding:10px 10px; margin:0; text-align:center; line-height: 1;">
                                                             No hay registros
                                                         </td>
                                                         <td
-                                                            style="padding:5px 10px; margin:0; text-align:center; line-height: 1;">
+                                                            style="padding:10px 10px; margin:0; text-align:center; line-height: 1;">
                                                             No hay registros
                                                         </td>
                                                     </tr>
                                                 @else
                                                     @foreach ($respuestas as $respuesta)
+                                                    @php
+                                                        $json_nombres = $respuesta->solicitud->img_repuesto;
+                                                        $nombres = json_decode($json_nombres);
+                                                    @endphp
                                                         <tr>
-                                                            <td style="padding:5px 10px; margin:0; text-align:center; line-height: 1;"
+                                                            <td style="padding:10px 10px; margin:0; text-align:center;"
                                                                 data-campo="id" data-valor="{{ $respuesta->id }}">
                                                                 <span style="font-size: 14;"
                                                                     id="id_{{ $respuesta->id }}">{{ $respuesta->id }}</span>
                                                             </td>
-                                                            <td style="padding:5px 10px; margin:0; text-align:center; line-height: 1;"
+                                                            <td style="padding:10px 10px; margin:0; text-align:center;"
                                                                 data-campo="idSolicitud"
                                                                 data-valor="{{ $respuesta->idSolicitud }}">
                                                                 <a title="Ver detalles de solicitud" data-toggle="modal"
@@ -180,7 +172,7 @@
                                                                     id="idSolicitud_{{ $respuesta->idSolicitud }}">{{ $respuesta->idSolicitud }}</a>
                                                             </td>
 
-                                                            <td style="padding:5px 10px; margin:0; text-align:center; line-height: 1;"
+                                                            <td style="padding:10px 10px; margin:0; text-align:center;"
                                                                 data-campo="razon_social"
                                                                 data-valor="{{ $respuesta->proveedor->razon_social }}">
                                                                 <a title="Ver detalles del proveedor" data-toggle="modal"
@@ -189,51 +181,51 @@
                                                                     id="razon_social_{{ $respuesta->proveedor->razon_social }}">{{ $respuesta->proveedor->razon_social }}</a>
                                                             </td>
 
-                                                            <td style="padding:5px 10px; margin:0; text-align:center; line-height: 1;"
+                                                            <td style="padding:10px 10px; margin:0; text-align:center;"
                                                                 data-campo="repuesto"
                                                                 data-valor="{{ $respuesta->repuesto }}">
                                                                 <span style="font-size: 14;"
                                                                     id="repuesto_{{ $respuesta->repuesto }}">{{ $respuesta->repuesto }}</span>
                                                             </td>
 
-                                                            <td style="padding:5px 10px; margin:0; text-align:center; line-height: 1;"
+                                                            <td style="padding:10px 10px; margin:0; text-align:center;"
                                                                 data-campo="tipo_repuesto"
                                                                 data-valor="{{ $respuesta->tipo_repuesto }}">
                                                                 <span style="font-size: 14;"
                                                                     id="tipo_repuesto_{{ $respuesta->tipo_repuesto }}">{{ $respuesta->tipo_repuesto }}</span>
                                                             </td>
 
-                                                            <td style="padding:5px 10px; margin:0; text-align:center; line-height: 1;"
+                                                            <td style="padding:10px 10px; margin:0; text-align:center;"
                                                                 data-campo="precio"
                                                                 data-valor="{{ $respuesta->precio }}">
                                                                 <span style="font-size: 14;"
                                                                     id="precio_{{ $respuesta->precio }}">{{ $respuesta->precio }}</span>
                                                             </td>
 
-                                                            <td style="padding:5px 10px; margin:0; text-align:center; line-height: 1;"
+                                                            <td style="padding:10px 10px; margin:0; text-align:center;"
                                                                 data-campo="garantia"
                                                                 data-valor="{{ $respuesta->garantia }}">
                                                                 <span style="font-size: 14;"
                                                                     id="garantia_{{ $respuesta->garantia }}">{{ $respuesta->garantia }}</span>
                                                             </td>
 
-                                                            <td style="padding:5px 10px; margin:0; text-align:center; line-height: 1;"
+                                                            <td style="padding:10px 10px; margin:0; text-align:center;"
                                                                 data-campo="created_at"
                                                                 data-valor="{{ $respuesta->created_at }}">
                                                                 <span style="font-size: 14;"
                                                                     id="created_at_{{ $respuesta->created_at }}">{{ $respuesta->created_at->diffForHumans() }}</span>
                                                             </td>
 
-                                                            <td style="padding:0px; width: 6vw;" class="text-center">
+                                                            <td style="padding:10px; width: 6vw;" class="text-center">
                                                                 <a title="Ver detalles" class="btn btn-primary"
                                                                     data-toggle="modal"
                                                                     data-target="#infoModal{{ $respuesta->id }}"
-                                                                    style="font-size: 12; padding: 5%;">
+                                                                    style="font-size: 14; padding: 5%;">
                                                                     <i class="fas fa-info-circle"></i>
-                                                                    detalles</a>
+                                                                    </a>
                                                             </td>
 
-                                                            <!-- Modal de Información -->
+                                                            <!-- Modal de Información de la solicitud -->
                                                             <div class="modal fade" id="infoModal{{ $respuesta->id }}"
                                                                 tabindex="-1" role="dialog"
                                                                 aria-labelledby="infoModalLabel" aria-hidden="true">
@@ -251,43 +243,64 @@
 
                                                                         <div
                                                                             class="modal-body d-flex justify-content-between">
-                                                                            <div class="text-wrap">
-                                                                                <strong>ID:</strong>
-                                                                                {{ $respuesta->id }}<br>
-
-                                                                                <strong>Nº de solicitud:</strong>
-                                                                                <a class="text-primary"
-                                                                                    title="Ver detalles de solicitud"
-                                                                                    data-toggle="modal"
-                                                                                    data-target="#solicitudModal{{ $respuesta->id }}"
-                                                                                    style="font-size: 14; cursor: pointer;">{{ $respuesta->idSolicitud }}</a><br>
-
-                                                                                <strong>Proveedor:</strong>
+                                                                                <div class="text-wrap w-100">
+                                                                                <ul style="padding-left: 2rem;">
+                                                                                    <fieldset>
+                                                                                        <legend style="text-align: center;"><strong>Información General:</strong></legend>
+                                                                                        <li><strong>ID:</strong>
+                                                                                        {{ $respuesta->id }}</li>
+                                                                                        
+                                                                                        <li><strong>Nº de solicitud:</strong>
+                                                                                        <a class="text-primary"
+                                                                                            title="Ver detalles de solicitud"
+                                                                                            data-toggle="modal"
+                                                                                            data-target="#solicitudModal{{ $respuesta->id }}"
+                                                                                            style="font-size: 14; cursor: pointer;">{{ $respuesta->idSolicitud }}</a></li>
+                                                                                            
+                                                                                        <li><strong>Proveedor:</strong>
                                                                                 <a class="text-primary"
                                                                                     title="Ver detalles del proveedor"
                                                                                     data-toggle="modal"
                                                                                     data-target="#providerModal{{ $respuesta->id }}"
-                                                                                    style="font-size: 14; cursor: pointer;">{{ $respuesta->proveedor->razon_social }}</a><br>
+                                                                                    style="font-size: 14; cursor: pointer;">{{ $respuesta->proveedor->razon_social }}</a></li>
+                                                                                    </fieldset>
+                                                                                    
+                                                                                    <hr>
+                                                                                    
+                                                                                    <fieldset>
+                                                                                        <legend style="text-align: center;"><strong>Detalles de la Cotización:</strong></legend>
+                                                                                        <li><strong>Repuesto:</strong>
+                                                                                {{ $respuesta->repuesto }}</li>
+                                                                                
+                                                                                        <li><strong>Tipo de repuesto:</strong>
+                                                                                {{ $respuesta->tipo_repuesto }}</li>
+                                                                                
+                                                                                        <li><strong>Precio:</strong>
+                                                                                {{ $respuesta->precio }}</li>
+                                                                                
+                                                                                        <li><strong>Garantía:</strong>
+                                                                                {{ $respuesta->garantia }}</li>
+                                                                                    </fieldset>
+                                                                                    
+                                                                                    <hr>
+                                                                                    
+                                                                                    <fieldset>
+                                                                                        <legend style="text-align: center;"><strong>Comentarios:</strong></legend>
+                                                                                        <li><strong>Comentarios del proveedor:</strong>
+                                                                                {{ $respuesta->comentarios }}</li>
+                                                                                    </fieldset>
+                                                                                    
+                                                                                    <hr>
+                                                                                    
+                                                                                    <fieldset>
+                                                                                        <legend style="text-align: center;"><strong>Comentarios:</strong></legend>
+                                                                                        <li><strong>Fecha de creación:</strong>
+                                                                                {{ $respuesta->created_at }}</li>
+                                                                                    </fieldset>
+                                                                                </ul>
 
-                                                                                <strong>Repuesto:</strong>
-                                                                                {{ $respuesta->repuesto }}<br>
-
-                                                                                <strong>Tipo de repuesto:</strong>
-                                                                                {{ $respuesta->tipo_repuesto }}<br>
-
-                                                                                <strong>Precio:</strong>
-                                                                                {{ $respuesta->precio }}<br>
-
-                                                                                <strong>Garantía:</strong>
-                                                                                {{ $respuesta->garantia }}<br>
-
-                                                                                <strong>Comentarios del proveedor:</strong>
-                                                                                {{ $respuesta->comentarios }}<br>
-
-                                                                                <strong>Fecha de creación:</strong>
-                                                                                {{ $respuesta->created_at }}
                                                                             </div>
-                                                                        </div>
+                                                                            </div>
 
                                                                         <div class="modal-footer">
                                                                             <button class="btn btn-secondary"
@@ -318,36 +331,61 @@
 
                                                                         <div
                                                                             class="modal-body d-flex justify-content-between">
-                                                                            <div class="text-wrap">
-                                                                                <strong>NIT:</strong>
-                                                                                {{ $respuesta->proveedor->nit_empresa }}<br>
-                                                                                <strong>Razón Social:</strong>
-                                                                                {{ $respuesta->proveedor->razon_social }}<br>
-                                                                                <strong>Departamento:</strong>
-                                                                                {{ $respuesta->proveedor->departamento }}<br>
-                                                                                <strong>Municipio:</strong>
-                                                                                {{ $respuesta->proveedor->municipio }}
-                                                                                <br>
-                                                                                <strong>Direccion:</strong>
-                                                                                {{ $respuesta->proveedor->direccion }}
-                                                                                <br>
-                                                                                <strong>Celular:</strong>
-                                                                                {{ substr($respuesta->proveedor->celular, 2) }}
-                                                                                <br>
-                                                                                <strong>Telefono:</strong>
-                                                                                {{ $respuesta->proveedor->telefono }}
-                                                                                <br>
-                                                                                <strong>Email:</strong>
-                                                                                {{ $respuesta->proveedor->email }} <br>
-                                                                                <strong>RUT:</strong>
-                                                                                <a target="_blank" title="Ver RUT" rel="noopener noreferrer"
-                                                                                    href="{{ route('mostrarArchivo', $respuesta->proveedor->rut) }}">Ver</a><br>
-                                                                                <strong>Camara de
-                                                                                    comercio:</strong>
-                                                                                <a target="_blank" rel="noopener noreferrer"
-                                                                                    title="Ver Camara de comercio"
-                                                                                    href="{{ route('mostrarArchivo', $respuesta->proveedor->camara_comercio) }}">Ver</a>
-                                                                            </div>
+                                                                            <div id="{{$respuesta->id}}" class="text-wrap">
+                                                                        <strong>NIT:</strong>
+                                                                        {{ $respuesta->proveedor->nit_empresa }}<br>
+                                                                        <strong>Razón Social:</strong>
+                                                                        {{ $respuesta->proveedor->razon_social }}<br>
+                                                                        <strong>Pais:</strong>
+                                                                        {{ $respuesta->proveedor->pais }}<br>
+                                                                        <strong>Departamento:</strong>
+                                                                        {{ $respuesta->proveedor->departamento }}<br>
+                                                                        <strong>Municipio:</strong>
+                                                                        {{ $respuesta->proveedor->municipio }}
+                                                                        <br>
+                                                                        <strong>Direccion:</strong>
+                                                                        {{ $respuesta->proveedor->direccion }}
+                                                                        <br>
+                                                                        <strong>Celular:</strong>
+                                                                        {{$respuesta->proveedor->celular}}
+                                                                        <br>
+                                                                        <strong>Telefono:</strong>
+                                                                        {{ $respuesta->proveedor->telefono }}
+                                                                        <br>
+                                                                        <strong>Representante Legal:</strong>
+                                                                        {{ $respuesta->proveedor->representante_legal }}
+                                                                        <br>
+                                                                        <strong>Contacto Principal:</strong>
+                                                                        {{ $respuesta->proveedor->contacto_principal }}
+                                                                        <br>
+                                                                        <strong>Preferencia de Marcas:</strong>
+                                                                        @if(isset($preferencias_de_marcas[$respuesta->proveedor->id]))
+                                                                            {{ implode(', ', $preferencias_de_marcas[$respuesta->proveedor->id]) }}
+                                                                        @else
+                                                                            No hay preferencias de marcas para este proveedor.
+                                                                        @endif
+                                                                        <br>
+                                                                        <strong>Email:</strong>
+                                                                        {{ $respuesta->proveedor->email }} <br>
+                                                                        <strong>Email Secundario:</strong>
+                                                                        {{ $respuesta->proveedor->email_secundario }} <br>
+                                                                        @php
+                                                                            $especialidades[$respuesta->proveedor->id] = json_decode($respuesta->proveedor->especialidad, true);
+                                                                        @endphp
+                                                                        <strong>Especialidad:</strong>
+                                                                        @if(isset($especialidades[$respuesta->proveedor->id]))
+                                                                            {{ implode(', ', $especialidades[$respuesta->proveedor->id]) }}
+                                                                        @else
+                                                                            No hay preferencias de marcas para este proveedor.
+                                                                        @endif
+                                                                        <br>
+
+                                                                        <strong>RUT:</strong>
+                                                                        {{ $respuesta->proveedor->rut }} <br>
+                                                                        <strong>Camara de
+                                                                            comercio:</strong>
+                                                                        {{ $respuesta->proveedor->camara_comercio }}
+                                                                    </div>
                                                                         </div>
 
                                                                         <div class="modal-footer">
@@ -361,132 +399,156 @@
                                                             </div>
 
                                                             <!-- Modal de Información de la solicitud -->
-                                                            <div class="modal fade"
-                                                                id="solicitudModal{{ $respuesta->id }}" tabindex="-1"
-                                                                role="dialog" aria-labelledby="solicitudModalLabel"
-                                                                aria-hidden="true">
-                                                                <div class="modal-dialog" role="document">
-                                                                    <div class="modal-content">
-                                                                        <div class="modal-header">
-                                                                            <h5 class="modal-title"
-                                                                                id="solicitudModalLabel">
-                                                                                Información
-                                                                                de la solicitud</h5>
-                                                                            <button class="close" type="button"
-                                                                                data-dismiss="modal" aria-label="Close">
-                                                                                <span aria-hidden="true">×</span>
-                                                                            </button>
-                                                                        </div>
-
-                                                                        <div
-                                                                            class="modal-body d-flex justify-content-between">
-                                                                            <div class="text-wrap">
-                                                                                <strong>ID:</strong>
-                                                                                {{ $respuesta->solicitud->id }}<br>
-                                                                                <strong>Respuestas:</strong>
-                                                                                {{ $respuesta->solicitud->respuestas }}<br>
-                                                                                <strong>Marca:</strong>
-                                                                                {{ $respuesta->solicitud->marca }}<br>
-                                                                                <strong>Referencia:</strong>
-                                                                                {{ $respuesta->solicitud->referencia }}
-                                                                                <br>
-                                                                                <strong>Modelo:</strong>
-                                                                                {{ $respuesta->solicitud->modelo }}
-                                                                                <br>
-                                                                                <strong>Transmisión:</strong>
-                                                                                {{ $respuesta->solicitud->tipo_de_transmision }}
-                                                                                <br>
-                                                                                <strong>Repuesto:</strong>
-                                                                                {{ $respuesta->solicitud->repuesto }}
-                                                                                <br>
-                                                                                <strong>Imagen del repuesto:</strong>
-                                                                                @if ($respuesta->solicitud->img_repuesto == 'No se subió ningun archivo')
-                                                                                    No hay imagen
-                                                                                @elseif ($respuesta->solicitud->img_repuesto)
-                                                                                    <a title="Ver imagen del repuesto"
-                                                                                        data-toggle="modal"
-                                                                                        data-target="#imgModal{{ $respuesta->id }}"
-                                                                                        href="#"><i
-                                                                                            class="fas fa-image"
-                                                                                            style="font-size: 18px;"></i></a>
-                                                                                @else
-                                                                                    No
-                                                                                @endif
-                                                                                <br>
-                                                                                <strong>Comentario:</strong>
-                                                                                @if ($respuesta->solicitud->comentario)
-                                                                                    {{ $respuesta->solicitud->comentario }}
-                                                                                @else
-                                                                                    No hay comentarios
-                                                                                @endif
-                                                                                <br>
-                                                                                <strong>Nombre:</strong>
-                                                                                {{ $respuesta->solicitud->nombre }} <br>
-                                                                                <strong>Correo electronico:</strong>
-                                                                                {{ $respuesta->solicitud->correo }} <br>
-                                                                                <strong>Celular:</strong>
-                                                                                {{ $respuesta->solicitud->numero }} <br>
-                                                                                <strong>Departamento:</strong>
-                                                                                {{ $respuesta->solicitud->departamento }}
-                                                                                <br>
-                                                                                <strong>Municipio:</strong>
-                                                                                {{ $respuesta->solicitud->municipio }} <br>
-                                                                                <strong>Estado de solicitud:</strong>
-                                                                                @if ($respuesta->solicitud->estado)
-                                                                                    Activa
-                                                                                @else
-                                                                                    Inactiva
-                                                                                @endif
+                                                                <div class="modal fade"
+                                                                    id="solicitudModal{{ $respuesta->id }}" tabindex="-1"
+                                                                    role="dialog" aria-labelledby="infoModalLabel"
+                                                                    aria-hidden="true">
+                                                                    <div class="modal-dialog" role="document">
+                                                                        <div class="modal-content">
+                                                                            <div class="modal-header">
+                                                                                <h5 class="modal-title"
+                                                                                    id="infoModalLabel">
+                                                                                    Información
+                                                                                    de la solicitud</h5>
+                                                                                <button class="close" type="button"
+                                                                                    data-dismiss="modal"
+                                                                                    aria-label="Close">
+                                                                                    <span aria-hidden="true">×</span>
+                                                                                </button>
                                                                             </div>
-                                                                        </div>
 
-                                                                        <div class="modal-footer">
-
-                                                                            <button class="btn btn-secondary"
-                                                                                type="button"
-                                                                                data-dismiss="modal">Cerrar</button>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-
-                                                            <!-- Modal de Información de imagen -->
-                                                            <div style="min-height: 100vh; min-width: 100vw;"
-                                                                class="modal fade" id="imgModal{{$respuesta->id}}" tabindex="-1"
-                                                                role="dialog" aria-labelledby="imgModalLabel"
-                                                                aria-hidden="true">
-                                                                <div class="modal-dialog" role="document"
-                                                                    style="max-width: 1000px !important;">
-                                                                    <div class="modal-content">
-                                                                        <div class="modal-header">
-                                                                            <h5 class="modal-title" id="imgModalLabel">
-                                                                                Imagen del repuesto</h5>
-                                                                            <button class="close" type="button"
-                                                                                data-dismiss="modal" aria-label="Close">
-                                                                                <span aria-hidden="true">×</span>
-                                                                            </button>
-                                                                        </div>
-
-                                                                        <div
-                                                                            class="modal-body d-flex justify-content-center">
-                                                                            <div class="text-wrap">
-                                                                                <div
-                                                                                    style="display: flex; justify-content: center; box-sizing: border-box">
-                                                                                    <img src="{{ asset("storage/".$respuesta->solicitud->img_repuesto) }}"
-                                                                                        alt="imagen"
-                                                                                        style="height: 100%; width: 100%;">
+                                                                            <div
+                                                                                class="modal-body d-flex justify-content-between">
+                                                                                <div class="text-wrap w-100">
+                                                                                    <ul style="padding-left: 2rem;">
+                                                                                        <fieldset>
+                                                                                            <legend style="text-align: center;"><strong>Información General:</strong></legend>
+                                                                                            <li><strong>ID: </strong>{{ $respuesta->solicitud->id }}</li>
+                                                                                            
+                                                                                            <li><strong>Estado de solicitud:</strong>
+                                                                                            @if ($respuesta->solicitud->estado)
+                                                                                                Activa
+                                                                                            @else
+                                                                                                Inactiva
+                                                                                            @endif</li>
+                                                                                            
+                                                                                            <li><strong>Respuestas:</strong>
+                                                                                    {{ $respuesta->solicitud->respuestas }}</li>
+                                                                                        </fieldset>
+                                                                                        
+                                                                                        <hr>
+                                                                                        
+                                                                                        <fieldset>
+                                                                                            <legend style="text-align: center;"><strong>Detalles de la Solicitud:</strong></legend>
+                                                                                             <li><strong>Marca: </strong>{{ $respuesta->solicitud->marca }}</li>
+                                                                                    
+                                                                                            <li><strong>Referencia: </strong>{{ $respuesta->solicitud->referencia }}</li>
+                                                                                        
+                                                                                            <li><strong>Modelo: </strong>{{ $respuesta->solicitud->modelo }}</li>
+                                                                                        
+                                                                                            <li><strong>Transmisión: </strong>{{ $respuesta->solicitud->tipo_de_transmision }}</li>
+                                                                                        
+                                                                                            <li><strong>Repuesto: </strong>{{ $respuesta->solicitud->repuesto }}</li>
+                                                                                        
+                                                                                            <li><strong>Imagen del repuesto: </strong>
+                                                                                            @if (is_array($nombres) && in_array('No se subió ningun archivo', $nombres))
+                                                                                                No hay imagen
+                                                                                            @else
+                                                                                                <a title="Ver imagen del repuesto"
+                                                                                                    data-toggle="modal"
+                                                                                                    data-target="#imgModal{{ $respuesta->solicitud->id }}"
+                                                                                                    href="#">Ver
+                                                                                                    Imagen</a>
+                                                                                            @endif</li>
+                                                                                        
+                                                                                            <li><strong>Comentarios del cliente: </strong>
+                                                                                            @if ($respuesta->solicitud->comentario)
+                                                                                                {{ $respuesta->solicitud->comentario }}
+                                                                                            @else
+                                                                                                No hay comentarios
+                                                                                            @endif</li>
+                                                                                        </fieldset>
+                                                                                        
+                                                                                        <hr>
+                                                                                        
+                                                                                        <fieldset>
+                                                                                            <legend style="text-align: center;"><strong>Información de Contacto:</strong></legend>
+                                                                                            <li><strong>Nombre:</strong>
+                                                                                            {{ $respuesta->solicitud->nombre }} </li>
+                                                                                            
+                                                                                                <li><strong>Correo electronico:</strong>
+                                                                                            {{ $respuesta->solicitud->correo }} </li>
+                                                                                            
+                                                                                                <li><strong>Celular:</strong>
+                                                                                            {{ $respuesta->solicitud->numero }} </li>
+                                                                                        </fieldset>
+                                                                                        
+                                                                                        <hr>
+                                                                                        
+                                                                                        <fieldset>
+                                                                                            <legend style="text-align: center;"><strong>Ubicación:</strong></legend>
+                                                                                            <li><strong>Departamento:</strong>
+                                                                                            {{ $respuesta->solicitud->departamento }} </li>
+                                                                                            
+                                                                                                <li><strong>Municipio:</strong>
+                                                                                            {{ $respuesta->solicitud->municipio }} </li>
+                                                                                        </fieldset>
+                                                                                        
+                                                                                    </ul>
+                                                                                    
                                                                                 </div>
                                                                             </div>
-                                                                        </div>
 
-                                                                        <div class="modal-footer">
-                                                                            <button class="btn btn-secondary"
-                                                                                type="button"
-                                                                                data-dismiss="modal">Cerrar</button>
+                                                                            <div class="modal-footer">
+                                                                                <button class="btn btn-secondary"
+                                                                                    type="button"
+                                                                                    data-dismiss="modal">Cerrar</button>
+                                                                            </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                            </div>
+
+                                                            <!-- Modal de Imagen -->
+                                                                <div class="modal" id="imgModal{{$respuesta->id}}" tabindex="-1" role="dialog">
+                                                                    <div class="modal-dialog" role="document">
+                                                                        <div class="modal-content">
+                                                                            <div class="modal-header">
+                                                                                <h5 class="modal-title">Imágenes del repuesto</h5>
+                                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                                    <span aria-hidden="true">×</span>
+                                                                                </button>
+                                                                            </div>
+                                                                            <div class="modal-body">
+                                                                                @if (!empty($nombres))
+                                                                                    <div id="carouselModal" class="carousel slide" data-ride="carousel">
+                                                                                        <ol class="carousel-indicators">
+                                                                                            @foreach ($nombres as $i => $imagen)
+                                                                                                <li data-target="#carouselModal" data-slide-to="{{ $i }}" class="{{ $i == 0 ? 'active' : '' }}"></li>
+                                                                                            @endforeach
+                                                                                        </ol>
+                                                                                        <div class="carousel-inner">
+                                                                                            @foreach ($nombres as $i => $imagen)
+                                                                                                <div class="carousel-item {{ $i == 0 ? 'active' : '' }}">
+                                                                                                    <img src='{{ asset("storage/$imagen") }}' alt="{{ $imagen }}" class="img-fluid">
+                                                                                                </div>
+                                                                                            @endforeach
+                                                                                        </div>
+                                                                                        <a class="carousel-control-prev" href="#carouselModal" role="button" data-slide="prev">
+                                                                                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                                                                            <span class="sr-only">Anterior</span>
+                                                                                        </a>
+                                                                                        <a class="carousel-control-next" href="#carouselModal" role="button" data-slide="next">
+                                                                                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                                                                            <span class="sr-only">Siguiente</span>
+                                                                                        </a>
+                                                                                    </div>
+                                                                                @else
+                                                                                    <p>No hay imágenes disponibles.</p>
+                                                                                @endif
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
 
                                                         </tr>
                                                     @endforeach
@@ -495,7 +557,7 @@
                                             </tbody>
                                         </table>
                                         <!-- Botones de paginación -->
-                                        <div class="text-center" style="display: flex; justify-content: flex-end;">
+                                        <div class="text-center" style="display: flex;">
                                             <ul class="pagination">
                                                 <!-- Botón "Anterior" -->
                                                 @if ($respuestas->onFirstPage())
@@ -532,20 +594,13 @@
                                             </ul>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
-    </div>
-    <!-- /.container-fluid -->
-
-@endsection
-
-
+        
+        
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <!-- Core plugin JavaScript-->
@@ -573,57 +628,4 @@
     });
 </script>
 
-<script>
-    function ordenarTabla(campo) {
-        var table = document.getElementById("respuestasTable");
-        var rows = Array.from(table.getElementsByTagName("tr"));
-
-        // Remover la primera fila (encabezado) de la lista de filas
-        rows.shift();
-
-        // Ordenar las filas según el campo seleccionado
-        rows.sort(function(a, b) {
-            var valueA = obtenerValorCampo(a, campo);
-            var valueB = obtenerValorCampo(b, campo);
-
-            if (valueA < valueB) {
-                return -1;
-            } else if (valueA > valueB) {
-                return 1;
-            } else {
-                return 0;
-            }
-        });
-
-        // Agregar las filas ordenadas de nuevo a la tabla
-        for (var i = 0; i < rows.length; i++) {
-            table.appendChild(rows[i]);
-        }
-    }
-
-    function obtenerValorCampo(row, campo) {
-        var cell = row.querySelector("[data-campo='" + campo + "']");
-        if (cell) {
-            return cell.getAttribute("data-valor");
-        }
-        return "";
-    }
-</script>
-
-<script>
-    setTimeout(function() {
-        var registrationMessage = document.getElementById('registration-message');
-        if (registrationMessage) {
-            registrationMessage.remove();
-        }
-    }, 5000);
-</script>
-
-<script>
-    setTimeout(function() {
-        var Message = document.getElementById('message-error');
-        if (Message) {
-            Message.remove();
-        }
-    }, 8000);
-</script>
+@endsection

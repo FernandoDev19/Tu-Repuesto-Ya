@@ -1,140 +1,131 @@
-body{
-    margin: 0;
-    padding: 0;
-    font-family: sans-serif;
-    background-color: rgb(37, 37, 37);
+:root {
+    --color-primary: #5593E8;
+    --color-secondary: #406DBE;
+    --color-tertiary: #313131;
+    --color-letter: #F2B705;
+    --color-fondo-footer: #96d3f2;
+    --height-sessions: 170px;
 }
 
-.container-button-register{
+.container-footer{
+    height: 4%;
+    margin-top: 1%;
+}
+
+.container-flex{
     display: flex;
-    justify-content: flex-end;
-    padding-right: 10px;
-    padding-top: 10px;
 }
 
-.container-button-register a{
-    font-size: 20px;
-    color: white;
-    text-decoration: none;
-    animation: button-register 1000ms infinite alternate;
-}
-
-@keyframes button-register {
-    0%{
-        color: white;
-    }
-
-    100%{
-        color: #5593E8;
-    }
-}
-
-.contenedor{
-    height: 100%;
+.container-items{
     width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-}
-
-.contenedor img{
-    height: 200px;
-    width: 200px;
-    margin-bottom: 20px;
-    animation: logo 250ms ease-in-out alternate 2;
-}
-
-@keyframes logo {
-    0%{
-        transform: scale(1);
-    }
-    100%{
-        transform: scale(1.1);
-    }
-}
-
-.contenedor .contenedor-login{
-    height: 450px;
-    width: 970px;
-    background-color: rgba(81, 81, 81, 0.574);
-    border-radius: 20px;
-
-    display: flex;
-    flex-direction: column;
-    padding: 30px;
-}
-
-.contenedor-login h1{
-    font-size: 40px;
-    font-weight: 900;
-    margin: 0 0 50px 330px;
-    color: #0f0f0f;
-}
-
-.contenedor-login label{
-    font-weight:500;
-    font-size: 20px;
-    margin: 0 0 5px 95px;
-    color: #0f0f0f;
-}
-
-.contenedor-login input{
-    height: 55px;
-    width: 800px;
-    margin: 0 0 50px 80px;
-    border-style: none;
-    border-radius: 15px;
-    padding-left: 10px;
-}
-
-#contenedor-remember{
-    display: flex;
-    flex-direction: row;
     text-align: center;
 }
 
-#c-recordar{
-    margin: 0 0 0 85px;
-    height: 20px;
-    width: 20px;
-}
-
-#recordar{
-    font-size: 17px;
-    font-weight: 200;
-    margin: 0 0 0px 10px;
-}
-
-#contenedor-submit{
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-}
-
-#iniciar{
+.item{
+    font-size: 100%;
+    font-weight: 700;
+    text-decoration: none;
+    color: unset;
+    padding: 0.5%;
+    text-align: center;
     margin: 0;
-    width: 200px;
-    margin-right: 79px;
-    cursor: pointer;
-    font-size: 20px;
-    color: white;
-    background-color: #406DBE;
-    transition-property: background-color color;
-    transition-duration: 300ms;
+    transition: color 300ms;
 }
 
-#iniciar:hover{
-    background-color: #5593E8;
+.item:hover{
+    color: var(--color-primary);
 }
 
-#contenedor-submit a{
-    color: #1d1d1dd6;
-    font-weight: 200;
-    margin-right: 10px;
-    transition: color 100ms;
+.page-header{
+    min-height: 90vh; 
 }
 
-#contenedor-submit a:hover{
-    color: #5593E8
+.video-container{
+    background: black !important;
+    position: relative;
+    height: 100%;
+    width: 100%;
+    z-index: 1;
+    overflow: hidden;
+}
+
+.video-container video{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    min-width: 100%;
+    min-height: 100%;
+    width: 100%;
+    height: 100%;
+    transform: translate(-50%, -50%);
+}
+
+/* *************************************************************************************************************************** */
+
+@media screen and (max-width: 470px){
+
+    body {
+        color: var(--color-tertiary) !important;
+        background: white !important;
+    }
+
+    card-plain {
+        text-align: center;
+    }
+
+    .btn-login{
+        padding: 5% !important;
+    }
+
+    .contenedor-login{
+        padding: 2% !important;
+    }
+
+    #login-footer{
+        margin-top: 2% !important;
+        color: slategray;
+    }
+
+    .bg-transparent-cel{
+        background: transparent !important;
+        box-shadow: none !important;
+    }
+
+    .text-cel-center h4, p{
+        text-align: center !important;
+    }
+
+    .text-cel-center h4{
+        font-size: 200%;
+    }
+
+    .logo{
+        height: 138px !important;
+        margin: 10% 0 0 0;
+    }
+
+    .logo-login-cel-position {
+        position: relative !important;
+    }
+
+    .flex-col-cel{
+        display: flex;
+        flex-direction: column !important;
+    }
+    
+    .item{
+    font-size: 70%;
+    }
+}
+
+@media screen and (min-width: 471px) and (max-width: 991px){
+    .contenedor-login{
+        padding: 7% !important;
+    }
+}
+
+@media screen and (max-width: 991px){
+    .page-header{
+        min-height: auto; 
+}
 }

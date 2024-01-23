@@ -6,17 +6,7 @@
 </head>
 
 <body id="page-top">
-    @if (session('message'))
-        <div class="alert alert-info" id="registration-message" style="margin:0;"">
-            {{ session('message') }}
-        </div>
-    @endif
-
-    @if (session('error'))
-        <div class="alert alert-danger" id="message-error" style="margin:0;">
-            {{ session('error') }}
-        </div>
-    @endif
+   @include('components.alert')
 
     <!-- Page Wrapper -->
     <div id="wrapper">
@@ -27,8 +17,8 @@
                 <!-- Sidebar - Brand -->
                 <a class="sidebar-brand d-flex align-items-center justify-content-center"
                     href="{{ route('servicios') }}">
-                    <div class="sidebar-brand-icon rotate-n-15">
-                        <i class="fas fa-laugh-wink"></i>
+                    <div class="sidebar-brand-icon">
+                        <img src="{{asset('img/logo tu repuesto ya/icono_pagina_white.png')}}" whith="40" height="40">
                     </div>
                     <div class="sidebar-brand-text mx-3">TuRepuestoYa</div>
                 </a>
@@ -50,14 +40,6 @@
 
                             <!-- Topbar Navbar -->
                             <ul class="navbar-nav ml-auto">
-
-                                <!-- Nav Item - Search Dropdown (Visible Only XS) -->
-                                <li class="nav-item dropdown no-arrow d-sm-none">
-                                    <a class="nav-link dropdown-toggle" href="#" id="searchDropdown"
-                                        role="button" data-toggle="dropdown" aria-haspopup="true"
-                                        aria-expanded="false">
-                                        <i class="fas fa-search fa-fw"></i>
-                                    </a>
                                     <!-- Dropdown - Messages -->
                                     <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
                                         aria-labelledby="searchDropdown">
@@ -91,8 +73,8 @@
                                     </a>
                                     <!-- Dropdown - Alerts -->
                                     <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                                        aria-labelledby="alertsDropdown">
-                                        <h6 class="dropdown-header">
+                                        aria-labelledby="alertsDropdown" style="max-height: 300px !important; overflow-y: auto;">
+                                        <h6 class="dropdown-header" style="position: sticky; top: 0;">
                                             Notificaciones
                                         </h6>
                                         @if(auth()->user()->hasRole('Admin'))
@@ -133,7 +115,7 @@
                                             @endforeach
                                         @endcan
                                         @endif
-                                        <a class="dropdown-item text-center small text-primary"
+                                        <a class="dropdown-item text-center small text-primary" style="position: sticky; bottom: 0; background: white;"
                                             href="{{ route('marcarLeidas') }}">Marcar todas como leidas</a>
                                     </div>
                                 </li>
@@ -145,15 +127,15 @@
                                         aria-expanded="false">
                                         <i class="fas fa-envelope fa-fw"></i>
                                         <!-- Counter - Messages -->
-                                        <span class="badge badge-danger badge-counter">7</span>
+                                        <span class="badge badge-danger badge-counter"><!--7--></span>
                                     </a>
                                     <!-- Dropdown - Messages -->
                                     <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                         aria-labelledby="messagesDropdown">
                                         <h6 class="dropdown-header">
-                                            Message Center
+                                            Centro de mensajes
                                         </h6>
-                                        <a class="dropdown-item d-flex align-items-center" href="#">
+                                        <!-- <a class="dropdown-item d-flex align-items-center" href="#">
                                             <div class="dropdown-list-image mr-3">
                                                 <img class="rounded-circle" src="img/undraw_profile_1.svg"
                                                     alt="...">
@@ -210,7 +192,7 @@
                                         </a>
                                         <a class="dropdown-item text-center small text-gray-500" href="#">Read
                                             More
-                                            Messages</a>
+                                            Messages</a>-->
                                     </div>
                                 </li>
 
@@ -223,7 +205,7 @@
                                         aria-expanded="false">
                                         <span
                                             class="mr-2 d-none d-lg-inline text-gray-600 small">{{ $name }}</span>
-                                        <img class="img-profile rounded-circle" src='{{ asset("$ft") }}'>
+                                        <img class="img-profile rounded-circle" src='{{ asset("$ft") }}' height="30" width="30">
                                     </a>
                                     <!-- Dropdown - User Information -->
                                     <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -232,11 +214,11 @@
                                             <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                             Perfil
                                         </a>
-                                        <a class="dropdown-item" href="#">
+                                        <a class="dropdown-item" href="{{ route('profile') }}">
                                             <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                                             Configuraciones
                                         </a>
-                                        <a class="dropdown-item" href="#">
+                                        <a class="dropdown-item" href="{{ route('profile') }}">
                                             <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
                                             Activity Log
                                         </a>
@@ -260,7 +242,7 @@
                     <footer class="sticky-footer bg-white">
                         <div class="container my-auto">
                             <div class="copyright text-center my-auto">
-                                <span>Copyright © Milano Rent a Car 2023</span>
+                                <span>Copyright © Milano Rent a Car {{date("Y")}}</span>
                             </div>
                         </div>
                     </footer>
@@ -308,8 +290,6 @@
                     this.submit(); // Submit the form
                 });
             </script>
-
-            <script src="{{ asset('js/sidebarToggle.js')}}"></script>
 
 </body>
 

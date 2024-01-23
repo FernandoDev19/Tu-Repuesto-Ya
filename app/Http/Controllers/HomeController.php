@@ -3,22 +3,36 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Schedule;
+
+//Modelos
 use App\Models\Solicitude;
 use App\Models\Provider;
 use App\Models\User;
-use Illuminate\Support\Facades\Storage;
 use App\Models\Answer;
 use App\Models\Geolocation;
-use Illuminate\Support\Facades\Validator;
+use App\Models\Country_code;
+
+use App\Mail\SolicitudClienteMail;
+
 use App\Jobs\WhatsAppMessageJob;
+
 use App\Notifications\NuevaSolicitudRepuesto;
-use Illuminate\Support\Facades\Notification;
 
 class HomeController extends Controller
 {
 
     public function index()
     {
+        // Lista de codigos
+        $codigos = Country_code::all();
+
         // Lista de departamentos
         $departamentos = Geolocation::distinct()->pluck('departamento');
 
@@ -36,7 +50,7 @@ class HomeController extends Controller
         if (auth()->check()) {
             $name = auth()->user()->name;
         }
-        return view("home.index", compact('name', 'departamentos', 'group'));
+        return view("home.index", compact('name', 'departamentos', 'group', 'codigos'));
     }
 
     public function validation(Request $request)
@@ -44,21 +58,23 @@ class HomeController extends Controller
         $validator = Validator::make(
             $request->all(),
             [
-                'marca' => 'required',
-                'referencia' => 'required',
-                'modelo' => 'required|numeric',
+                'marca' => 'required|max: 100',
+                'referencia' => 'required|max: 50',
+                'modelo' => 'required|numeric|digits: 4',
                 'tipo' => 'required',
-                'repuesto' => 'required',
-                'img_repuesto' => 'file|mimes:png,jpg,jpeg|max:5024',
+                'json_repuestos' => 'required',
+                'json_categorias' => 'required',
+                'img_repuesto.*' => 'file|mimes:png,jpg,jpeg|max:5024',
                 'comentario' => 'max:500',
-                'nombre' => 'required',
-                'cel' => 'required|numeric|digits: 10',
-                'email' => 'required|email',
-                'departamento' => 'required',
-                'municipio' => 'required',
+                'nombre' => 'required|max: 120',
+                'cel' => 'required|numeric|digits_between:8,10',
+                'email' => 'nullable|email|max: 200',
             ],
             [
-                'tipo.required' => 'El campo tipo de transmisión es obligatorio'
+                'cel.required' => 'El campo celular es obligatorio',
+                'tipo.required' => 'El campo tipo de transmisión es obligatorio',
+                'json_repuestos.required' => 'El campo repuesto(s) es obligatorio',
+                'json_categorias.required' => 'El campo categoria es obligatorio',
             ]
         );
 
@@ -66,44 +82,99 @@ class HomeController extends Controller
             return redirect()->back()
                 ->withErrors($validator)
                 ->withInput()
-                ->with('error', '¡No se pudo enviar! Revise nuevamente sus datos');
+                ->with('error', '¡Error! ¡No se pudo enviar la solicitud!, Revise sus datos y envie nuevamente');
         }
 
         $solicitud = new Solicitude();
 
-        $solicitud->marca = $request->marca;
+        $request->marca_otro = 'otro';
+
+        if ($request->marca === 'otro') {
+            $solicitud->marca = 'otro';
+        } else {
+            $solicitud->marca = $request->marca;
+        }
         $solicitud->referencia = $request->referencia;
         $solicitud->modelo = $request->modelo;
         $solicitud->tipo_de_transmision = $request->tipo;
-        $solicitud->repuesto = $request->repuesto;
+        $solicitud->repuesto = $request->json_repuestos;
 
-        // Obtener imagen del repuesto
-        $imagen = $request->file('img_repuesto');
+        $maximoImagenes = 3;
 
-        if ($imagen !== null) {
-            $nombreArchivoOriginal = $imagen->getClientOriginalName();
+        if ($request->hasFile('img_repuesto')) {
+            if (count($request->file('img_repuesto')) < 4) {
+                // Obtener imágenes del repuesto
+                $imagenes = $request->file('img_repuesto');
 
-            // Definir una carpeta de destino (puedes personalizarla)
-            $carpetaDestino = 'public';
+                $nombresArchivos = [];
 
-            // Generar un nombre único para el archivo
-            $nombreArchivo = uniqid() . '_' . $nombreArchivoOriginal;
+                foreach ($imagenes as $imagen) {
+                    // Verificar si el archivo es una imagen
+                    $nombreArchivoOriginal = $imagen->getClientOriginalName();
 
-            // Mover y guardar la imagen en la carpeta de destino
-            $imagen->storeAs($carpetaDestino, $nombreArchivo);
+                    // Definir una carpeta de destino (puedes personalizarla)
+                    $carpetaDestino = 'public';
 
-            // Guardar el nombre del archivo en la base de datos
-            $solicitud->img_repuesto = $nombreArchivo;
+                    // Generar un nombre único para el archivo
+                    $nombreArchivo = uniqid() . '_' . $nombreArchivoOriginal;
+
+                    // Mover y guardar la imagen en la carpeta de destino
+                    $imagen->storeAs($carpetaDestino, $nombreArchivo);
+
+                    // Agregar el nombre del archivo al array
+                    $nombresArchivos[] = $nombreArchivo;
+                }
+
+                if (!empty($nombresArchivos)) {
+                    // Guardar los nombres de archivos en formato JSON en la base de datos
+                    $solicitud->img_repuesto = json_encode($nombresArchivos);
+                } else {
+                    $solicitud->img_repuesto = json_encode(['No se subieron archivos válidos']);
+                }
+            } else {
+                return back()->withErrors(['img_repuesto' => 'No puedes subir más de 3 imágenes'])->withInput()->with('error', '¡Error! ¡No se pudo enviar la solicitud!, Revise sus datos y envie nuevamente');;
+            }
         } else {
-            $solicitud->img_repuesto = 'No se subió ningun archivo';
+            $solicitud->img_repuesto = json_encode(['No se subió ningun archivo']);
         }
 
-        $solicitud->comentario = $request->comentario;
+        $solicitud->categoria = $request->json_categorias;
+        $request->comentario = $request->comentario ?? 'No hay comentarios';
+        $solicitud->comentario = $request->comentario ?? 'No hay comentarios';
         $solicitud->nombre = $request->nombre;
         $solicitud->correo = $request->email;
-        $solicitud->numero = "57" . $request->cel;
-        $solicitud->departamento = $request->departamento;
-        $solicitud->municipio = $request->municipio;
+        $solicitud->numero = $request->codigo_cel . $request->cel;
+
+        $paises = [
+            '+57' => 'Colombia',
+            '+54' => 'Argentina',
+            '+591' => 'Bolivia',
+            '+55' => 'Brasil',
+            '+56' => 'Chile',
+            '+593' => 'Ecuador',
+            '+594' => 'Guyana Francesa',
+            '+592' => 'Guyana',
+            '+595' => 'Paraguay',
+            '+51' => 'Perú',
+            '+597' => 'Surinam',
+            '+598' => 'Uruguay',
+            '+58' => 'Venezuela',
+            '+1' => 'Estados Unidos',
+            '+506' => 'Costa Rica',
+            '+503' => 'El Salvador',
+            '+502' => 'Guatemala',
+            '+504' => 'Honduras',
+            '+52' => 'México',
+            '+505' => 'Nicaragua',
+            '+507' => 'Panamá',
+        ];
+
+        $solicitud->pais = $paises[$request->codigo_cel];
+
+        $request->departamento = $request->departamento ?? 'Indefinido';
+        $request->municipio = $request->municipio ?? 'Indefinido';
+        $solicitud->departamento = $request->departamento ?? 'Indefinido';
+        $solicitud->municipio = $request->municipio ?? 'Indefinido';
 
         $longitudCodigo = 11;
         $caracteres = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -119,86 +190,147 @@ class HomeController extends Controller
         try {
             $solicitud->save();
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Error al guardar los datos: ' . $e->getMessage());
-        }
-
-
-        $proveedores = Provider::all()->where('estado', 1);
-
-        $token = env('WHATSAPP_API_TOKEN');
-        $url = env('WHATSAPP_API_URL');
-
-        foreach ($proveedores as $proveedor) {
-            // Despachar un trabajo para enviar el mensaje de WhatsApp a los proveedores
-            WhatsAppMessageJob::dispatchAfterResponse(
-                $proveedor,
-                $request->repuesto,
-                $request->marca,
-                $request->referencia,
-                $request->modelo,
-                $solicitud,
-                $token,
-                $url
-            )->onQueue('redis');
+            return redirect()->back()->withErrors($validator)
+                ->withInput()->with('error', 'Error al guardar los datos: ' . $e->getMessage());
         }
 
         //Enviar comfirmacion al cliente de que su pedido ha sido recibido
+        try {
+            $token = 'EAAyaksOlpN4BO64MEL1cjlEGMvDQb6liWd3oCOIhvnUZBMeF5tbhAvjZABvBnnaYh9V9waBGZCBJW0LnCFaDcUQMZArNbLSKCUEL1MLmgdoRpQHyvEGdAC0CYOxt3l5N2u2Wi0yAlVFE7mCRtHVkZCSOyZAXyVtbrxxeOjkJqOkFDjloKrVuZBLXJUF4S1KG3u7';
+            $url = 'https://graph.facebook.com/v17.0/196744616845968/messages';
 
-        $numeroC = "57$request->cel";
-        $nombre_cliente = $request->nombre;
+            $proveedores = Provider::all()->where('estado', 1);
 
-        $telefono = $numeroC;
+            foreach ($proveedores as $proveedor) {
+                $jsonMarcasGuardadas = $proveedor->marcas_preferencias;
+                $jsonCategoriasGuardadas = $proveedor->especialidad;
 
-        $mensajeData = [
-            'messaging_product' => 'whatsapp',
-            'recipient_type' => 'individual',
-            'to' => $telefono,
-            'type' => 'template',
-            'template' => [
-                'name' => 'confirmacion_solicitud',
-                'language' => [
-                    'code' => 'es',
-                ],
-                'components' => [
-                    [
-                        'type' => 'body',
-                        'parameters' => [
-                            [
-                                'type' => 'text',
-                                'text' => $nombre_cliente,
+                // Decodificar el JSON a un array asociativo
+                $marcasGuardadasArray = json_decode($jsonMarcasGuardadas, true);
+                $categoriasGuardadasArray = json_decode($jsonCategoriasGuardadas, true);
+
+                // Obtener la marca del carro del cliente (ajusta según tu lógica, por ejemplo, mediante un formulario)
+                $marcaCliente = $request->marca;
+                $categoriaRepuesto = json_decode($request->json_categorias, true);
+
+                if ((is_array($marcasGuardadasArray) && in_array('Todas las marcas', $marcasGuardadasArray) || in_array($marcaCliente, $marcasGuardadasArray) || in_array($request->marca_otro, $marcasGuardadasArray)) && (is_array($categoriasGuardadasArray) && in_array('Todas las especialidades', $categoriasGuardadasArray) || array_intersect($categoriaRepuesto, $categoriasGuardadasArray)) || $request->categoria_repuesto == 'No se') {
+                    $celular = $proveedor->celular;
+                    $telefono = $proveedor->telefono;
+
+                    // Despachar un trabajo para enviar el mensaje de WhatsApp a los proveedores
+                    if ($celular) {
+                        WhatsAppMessageJob::dispatchAfterResponse(
+                            $proveedor,
+                            $celular,
+                            $request->json_repuestos,
+                            $request->marca,
+                            $request->referencia,
+                            $request->modelo,
+                            $request->comentario,
+                            $request->nombre,
+                            $request->departamento,
+                            $request->municipio,
+                            $solicitud,
+                            $token,
+                            $url
+                        );
+                    }
+
+                    if ($telefono) {
+                        WhatsAppMessageJob::dispatchAfterResponse(
+                            $proveedor,
+                            $telefono,
+                            $request->json_repuestos,
+                            $request->marca,
+                            $request->referencia,
+                            $request->modelo,
+                            $request->comentario,
+                            $request->nombre,
+                            $request->departamento,
+                            $request->municipio,
+                            $solicitud,
+                            $token,
+                            $url
+                        );
+                    }
+                }
+            }
+
+            $numeroC = $request->codigo_cel . $request->cel;
+            $nombre_cliente = $request->nombre;
+
+            $telefono = $numeroC;
+
+            $mensajeData = [
+                'messaging_product' => 'whatsapp',
+                'recipient_type' => 'individual',
+                'to' => $telefono,
+                'type' => 'template',
+                'template' => [
+                    'name' => 'confirmacion_solicitud',
+                    'language' => [
+                        'code' => 'es',
+                    ],
+                    'components' => [
+                        [
+                            'type' => 'body',
+                            'parameters' => [
+                                [
+                                    'type' => 'text',
+                                    'text' => $nombre_cliente,
+                                ],
+                            ],
+                        ],
+                        [
+                            'type' => 'header',
+                            'parameters' => [
+                                [
+                                    'type' => 'image',
+                                    'image' => [
+                                        'link' => 'https://turepuestoya.co/public/img/logo_whatsapp.png',
+                                    ]
+                                ],
                             ],
                         ],
                     ],
                 ],
-            ],
-        ];
+            ];
 
-        $mensaje = json_encode($mensajeData);
+            $mensaje = json_encode($mensajeData);
 
-        $header = [
-            "Authorization: Bearer " . $token,
-            "Content-Type: application/json",
-        ];
-        $curl = curl_init();
-        curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt($curl, CURLOPT_POSTFIELDS, $mensaje);
-        curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+            $header = [
+                "Authorization: Bearer " . $token,
+                "Content-Type: application/json",
+            ];
+            $curl = curl_init();
+            curl_setopt($curl, CURLOPT_URL, $url);
+            curl_setopt($curl, CURLOPT_POSTFIELDS, $mensaje);
+            curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 
-        $response = json_decode(curl_exec($curl), true);
+            $response = json_decode(curl_exec($curl), true);
 
-        $status_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+            $status_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 
-        curl_close($curl);
+            curl_close($curl);
 
-         // Notificar al administrador
-         $admin = User::where('role', 'Proveedor')->get();
+            Log::info('Mensaje enviado:', $mensajeData);
+        } catch (Exception $e) {
+            // Manejo de errores aquí
+            Log::error('Error al enviar mensaje de WhatsApp: ' . $e->getMessage());
+        }
+        // Notificar al administrador
+        $admin = User::where('role', 'Proveedor')->get();
 
-         if ($admin) {
-             Notification::send($admin, new NuevaSolicitudRepuesto($solicitud));
-         }
+        if ($admin) {
+            Notification::send($admin, new NuevaSolicitudRepuesto($solicitud));
+        }
 
-        return redirect()->back()->with('message', "¡Envío exitoso!");
+        if ($solicitud->correo) {
+            Mail::to($solicitud->correo)->send(new SolicitudClienteMail($solicitud->nombre));
+        }
+
+        return redirect()->back()->with('message', "¡Envío exitoso! \n Revise su Whatsapp o su Correo electrónico");
     }
 
     public function solicitudRepuesto($codigo, $id = null)
@@ -209,22 +341,25 @@ class HomeController extends Controller
             $referencia = $solicitud->referencia;
             $modelo = $solicitud->modelo;
             $tipo = $solicitud->tipo_de_transmision;
-            $repuesto = $solicitud->repuesto;
-            $img_repuesto = $solicitud->img_repuesto;
+            $repuesto = json_decode($solicitud->repuesto, true);
+
+            $json_nombres = $solicitud->img_repuesto;
+            $nombres = json_decode($json_nombres);
+
             $comentario = $solicitud->comentario;
 
             $user = User::find($id);
             $nit = null;
 
-            if($user){
+            if ($user) {
                 $idP = $user->proveedor_id;
                 $proveedor = Provider::where('id', $idP)->first();
-                if($proveedor){
+                if ($proveedor) {
                     $nit = $proveedor->nit_empresa;
                 }
             }
 
-            return view('solicitud.index', compact('nit', 'codigo', 'marca', 'referencia', 'modelo', 'tipo', 'repuesto', 'img_repuesto', 'comentario'));
+            return view('home.solicitud', compact('nit', 'codigo', 'marca', 'referencia', 'modelo', 'tipo', 'repuesto', 'nombres', 'comentario'));
         } else {
             return redirect()->route('servicios')->with('error', '!Código de solicitud inválido!');
         }
@@ -234,24 +369,14 @@ class HomeController extends Controller
     {
         // Validar los datos de entrada
         $validator = Validator::make($request->all(), [
-            'nit' => [
-                'required',
-                'alpha_dash',
-                'min:8',
-                'max:16',
-                'regex:/^[a-zA-Z0-9]+$/',
-                'not_regex:/[.\-_+!@#$%^&*()=]/',
-            ],
-            'repuesto' => 'required',
+            'nit' => 'required|numeric|digits_between:8,16',
             'tipo_repuesto' => 'required',
             'precio' => 'required',
-            'garantia' => [
-                'required',
-                'numeric',
-                'regex:/^[0-9]+$/',
-            ],
+
         ], [
             'tipo_repuesto.required' => 'El tipo de repuesto es obligatorio',
+            'nit.max' => 'El campo NIT no puede contener mas de 16 digitos',
+            'nit.min' => 'El campo NIT debe contener minimo 8 digitos',
         ]);
 
         if ($validator->fails()) {
@@ -285,37 +410,37 @@ class HomeController extends Controller
             return redirect()->back()->with('error', 'Ya has respondido a esta solicitud previamente');
         }
 
-        // Verificar el estado de la solicitud
-        if (!$solicitud->estado || $solicitud->respuestas >= 5) {
-            $rutaArchivo = $solicitud->img_repuesto;
-            // Eliminar los archivos asociados al proveedor desde el storage
-            if ($rutaArchivo) {
-                Storage::delete('public/' . $rutaArchivo);
-            }
-            $solicitud->img_repuesto = 'No se subió ningun archivo';
-            $solicitud->codigo = null;
-            $solicitud->estado = false;
-            $solicitud->save();
-            return redirect()->route('servicios')->with('error', 'Esta solicitud ya no acepta más respuestas.');
-        } else {
-            $solicitud->respuestas = $solicitud->respuestas + 1;
-            $solicitud->save();
-        }
-
         // Crear una nueva respuesta
         $answer = new Answer();
         $answer->idSolicitud = $solicitud->id;
         $answer->idProveedor = $proveedor->id;
-        $answer->repuesto = $request->repuesto;
-        $answer->tipo_repuesto = $request->tipo_repuesto;
-        $answer->precio = "$$request->precio";
-        $answer->garantia = "$request->garantia $request->garantiaSeleccion";
+        $answer->repuesto = json_encode($request->json_repuestos);
+        $answer->tipo_repuesto = json_encode($request->tipo_repuesto);
+        $answer->precio = json_encode(array_map(function($p) {
+            return "$" . (is_array($p) ? implode(", ", $p) : $p);
+          }, $request->precio));
+
+        $datos_garantia = implode(" ", $request->input('garantia')) . " " . $request->garantiaSeleccion;
+        $answer->garantia = json_encode($datos_garantia);
+
         if ($request->comentarioP) {
-            $answer->comentarios = $request->comentarioP;
+            $answer->comentarios = 'Además, el proveedor ha compartido algunos comentarios: \n "*_' . $request->comentarioP . '_*"';
         } else {
-            $answer->comentarios = 'No hay comentarios';
+            $answer->comentarios = '"No hay comentarios"';
         }
         $answer->save();
+
+        // Verificar el estado de la solicitud
+        if (!$solicitud->estado || $solicitud->respuestas >= 5) {
+
+            $solicitud->codigo = null;
+            $solicitud->estado = false;
+            $solicitud->save();
+            return redirect()->route('servicios')->with('error', 'Esta solicitud ya no acepta más respuestas.');
+        } else if($answer->save()){
+            $solicitud->respuestas = $solicitud->respuestas + 1;
+            $solicitud->save();
+        }
 
         // Enviar datos al cliente
         $precio = $answer->precio;
@@ -324,13 +449,14 @@ class HomeController extends Controller
         $tipo_repuesto = $answer->tipo_repuesto;
         $nombre_cliente = $solicitud->nombre;
         $almacen = $proveedor->razon_social;
+        $pais = $proveedor->pais;
         $ciudad = $proveedor->municipio;
         $comentarios = $answer->comentarios;
         $numero_celular = $proveedor->celular;
 
-        $token = env('WHATSAPP_API_TOKEN');
+        $token = 'EAAyaksOlpN4BO64MEL1cjlEGMvDQb6liWd3oCOIhvnUZBMeF5tbhAvjZABvBnnaYh9V9waBGZCBJW0LnCFaDcUQMZArNbLSKCUEL1MLmgdoRpQHyvEGdAC0CYOxt3l5N2u2Wi0yAlVFE7mCRtHVkZCSOyZAXyVtbrxxeOjkJqOkFDjloKrVuZBLXJUF4S1KG3u7';
+        $url = 'https://graph.facebook.com/v17.0/196744616845968/messages';
         $telefono = $solicitud->numero;
-        $url = env('WHATSAPP_API_URL');
 
         $mensajeData = [
             'messaging_product' => 'whatsapp',
@@ -352,14 +478,6 @@ class HomeController extends Controller
                             ],
                             [
                                 'type' => 'text',
-                                'text' => $almacen,
-                            ],
-                            [
-                                'type' => 'text',
-                                'text' => $ciudad,
-                            ],
-                            [
-                                'type' => 'text',
                                 'text' => $repuesto,
                             ],
                             [
@@ -373,6 +491,18 @@ class HomeController extends Controller
                             [
                                 'type' => 'text',
                                 'text' => $garantia,
+                            ],
+                            [
+                                'type' => 'text',
+                                'text' => $almacen,
+                            ],
+                            [
+                                'type' => 'text',
+                                'text' => $pais,
+                            ],
+                            [
+                                'type' => 'text',
+                                'text' => $ciudad,
                             ],
                             [
                                 'type' => 'text',
@@ -406,52 +536,38 @@ class HomeController extends Controller
 
         curl_close($curl);
 
-        if(auth()->check()){
+        if (auth()->check()) {
             return redirect()->route('viewSolicitudes')->with('message', 'La respuesta se ha enviado exitosamente');
         }
         return redirect()->route('servicios')->with('message', 'La respuesta se ha enviado exitosamente');
     }
 
-    public function index2()
+    public function eliminarImagenes(int $solicitudId)
     {
-        // Lista de departamentos
-        $departamentos = Geolocation::distinct()->pluck('departamento');
+        // Obtener las imágenes de la solicitud
+        $solicitudes = Solicitude::find($solicitudId);
 
-        // Lista de municipios
-        $group = [];
+        $imagenes = json_decode($solicitudes->img_repuesto);
 
-        foreach ($departamentos as $departamento) {
-            $municipios = Geolocation::where('departamento', $departamento)->pluck('municipio');
-            $group[$departamento] = $municipios;
+        // Eliminar las imágenes del servidor
+        foreach ($imagenes as $imagen) {
+            $imagen->delete();
         }
-
-        $name = null;
-
-        if (auth()->check()) {
-            $name = auth()->user()->name;
-        }
-        return view("home.miempresa", compact('name', 'departamentos', 'group'));
     }
 
-    public function index3()
+    public function programarTareaEliminacionImagenes()
     {
+        Schedule::call(function () {
+            // Obtener todas las solicitudes
+            $solicitudes = Solicitude::all();
 
-        // Lista de departamentos
-        $departamentos = Geolocation::distinct()->pluck('departamento');
-
-        // Lista de municipios
-        $group = [];
-
-        foreach ($departamentos as $departamento) {
-            $municipios = Geolocation::where('departamento', $departamento)->pluck('municipio');
-            $group[$departamento] = $municipios;
-        }
-
-        $name = null;
-
-        if (auth()->check()) {
-            $name = auth()->user()->name;
-        }
-        return view("home.proveedor", compact('name', 'departamentos', 'group'));
+            // Eliminar las imágenes de las solicitudes que tengan más de 25 días
+            foreach ($solicitudes as $solicitud) {
+                if ($solicitud->created_at < Carbon::now()->subDays(25)) {
+                    // Llamar a la función eliminarImagenes()
+                    $this->eliminarImagenes($solicitud->id);
+                }
+            }
+        })->daily();
     }
 }

@@ -15,7 +15,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        Provider::factory(50)->create();
+        
 
         $this->call(RoleSeeder::class);
  

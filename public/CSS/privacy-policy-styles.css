@@ -1,0 +1,836 @@
+:root {
+    --color-primary: #5593E8;
+    --color-secondary: #406DBE;
+    --color-tertiary: #313131;
+}
+
+body {
+    font-family: "Montserrat", sans-serif;
+    margin: 0;
+    padding: 0;
+    line-height: 1.0;
+    /* color: white; */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* justify-content: center;*/
+}
+
+/*
+header y navegador */
+
+#nav {
+    width: 100%;
+    height: 100px;
+    padding: 0 0;
+    box-sizing: border-box;
+    position: sticky;
+    background-color: black !important;
+    top: 0px;
+    z-index: 1;
+}
+
+#Cnav1 {
+    margin-right: 50px;
+}
+
+#Cnav2 {
+    display: flex;
+    padding: 0;
+    margin-right: 50px;
+}
+
+#Cnav3 {
+    display: flex;
+    padding: 0;
+    margin-right: 50px;
+}
+
+a.navbar-brand {
+    padding: 0;
+}
+
+.container-fluid {
+    padding: 0 3%;
+    height: 100%;
+}
+
+.user {
+    height: 45px;
+    width: 45px;
+}
+
+.navbar-flex {
+    height: 85px;
+    padding: 0 0 0 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.container_nav {
+    height: 100%;
+    /* margin: 0 45px 0 0; */
+    padding-top: 24px;
+}
+
+#nav_e {
+    margin: 0;
+    cursor: default;
+    font-weight: 900;
+    color: white;
+}
+
+.container-op {
+    justify-content: flex-end;
+    align-items: flex-end;
+    height: 100% !important;
+}
+
+.nav_active {
+    height: 11px;
+    /* width: 90px; */
+    margin-top: 15px;
+    /* margin: 15px 0px 0 8px; */
+    background-color: black;
+}
+
+.nav_e1 {
+    text-decoration: none;
+    color: #b3b3b3 !important;
+    font-weight: bold !important;
+    height: auto;
+    text-wrap: nowrap;
+    transition: color 300ms !important;
+}
+
+.nav_e1:hover {
+    color: var(--color-primary) !important;
+}
+
+#logo {
+    height: 90px;
+    width: auto;
+    transition-property: transform;
+    transition-duration: 300ms;
+}
+
+#logo:hover {
+    transform: scale(1.05);
+}
+
+.container-body {
+    width: 100%;
+    box-sizing: border-box;
+    /* display: flex; */
+    /* flex-wrap: wrap; */
+    align-content: center;
+}
+
+.container_flex {
+    width: 100%;
+    display: flex;
+    padding: 0;
+    margin-right: 20px;
+}
+
+.container-sections {
+    height: auto;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.container-flex {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+}
+
+.container-flex-col {
+    display: flex;
+    /* justify-content: space-around; */
+    align-items: center;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+}
+
+#userDropdown {
+    width: 100%;
+    text-align: center;
+}
+
+#nav_e2 {
+    margin: 0;
+    font-weight: 900;
+}
+
+h1{
+    color: var(--color-tertiary);
+    font-weight: 900;
+    font-size: 300%;
+    margin-top: 1%;
+    margin-bottom: 5%;
+}
+
+h2{
+    color: var(--color-tertiary);
+    font-weight: 900;
+    font-size: 200%;
+    margin: 0 0 0.5% 0;
+}
+
+.container{
+    background-color: #ecececed;
+    margin: 1% 0;
+    height: auto;
+    font-size: 150%;
+    line-height: 1.5;
+    letter-spacing: 1px;
+    padding: 5% 1%;
+    width: 90%;
+    box-sizing: border-box;
+    border-radius: 10px;
+}
+
+.padding{
+    padding: 2%;
+}
+
+.container-footer{
+    height: 4%;
+    width: 100%;
+    margin-top: 1%;
+}
+
+.container-flex{
+    display: flex;
+}
+
+.container-items{
+    width: 100%;
+    text-align: center;
+    padding: 3rem;
+}
+
+.item{
+    font-size: 100%;
+    font-weight: 700;
+    text-decoration: none;
+    color: unset;
+    padding: 0.5%;
+    text-align: center;
+    margin: 0;
+    transition: color 300ms;
+}
+
+.item:hover{
+    color: var(--color-primary);
+}
+
+@media screen and (max-width: 993px) {
+    #nav_active {
+        display: none;
+    }
+
+}
+
+@media screen and (max-width: 1002px) {
+    .nav_active {
+        display: none;
+    }
+    
+    #nav {
+    height: auto;
+    padding: 2% 0;
+    }
+
+    .btn:hover{
+        background-color: #71a3e8 !important;
+    }
+
+    .btn:active{
+        background-color: #71a3e8 !important
+    }
+
+    .container_nav{
+        margin: 0 !important;
+    }
+
+    img#logo {
+        height: 50px;
+    }
+    
+    .navbar-toggler {
+        background-color: var(--color-primary);
+    }
+    
+    .flex-end-cel{
+        align-items: flex-end !important; 
+    gap: 5px !important;
+    }
+    
+    .container_flex{
+        justify-content: flex-end;
+        line-height: 2;
+    }
+
+}
+
+@media screen and (max-width: 560px) {
+
+    .flex-j-center-cel {
+        display: flex;
+        justify-content: center;
+    }
+
+    .container-btn-solicitud-cel a {
+        width: 80% !important;
+        font-size: 85% !important;
+        padding: 0% 0 !important;
+        margin-top: 0 !important;
+    }
+
+    #sesion-de-contacto-por-whatsapp {
+        height: auto;
+        padding: 10% 5%;
+    }
+
+    #container-img {
+        display: none;
+    }
+
+    #container-text {
+        width: 100%;
+    }
+
+    #container-text .text-center h1 {
+        font-size: 100% !important;
+    }
+
+    #container-text .text-center p {
+        font-size: 120%;
+        margin: 1%;
+        letter-spacing: 1;
+    }
+
+    #parrafo-3-sesion-de-contacto-por-whatsapp {
+        font-size: 90% !important;
+        letter-spacing: 0.5px;
+    }
+
+    #wsp {
+        height: 10%;
+        font-size: 100%;
+        padding: 3% 0;
+        width: 50%;
+    }
+
+    #wsp i {
+        font-size: 110% !important;
+    }
+
+    /* ********************************************************************************************************************************** */
+
+    #sesion-de-marcas-y-cotizaciones #article_marcas p span {
+        font-size: 100% !important;
+    }
+
+    #logo_marca_bmw {
+        height: 55px !important;
+        width: 55px !important;
+        background-color: rgb(235, 234, 234);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 100px;
+    }
+
+    #logo_marca_bmw img {
+        height: 50px !important;
+        width: 50px !important;
+    }
+
+    #logo_marca_bmw:hover img {
+        height: 55px !important;
+        width: 55px !important;
+    }
+
+    #logo_marca_f {
+        height: 55px !important;
+        width: 55px !important;
+        background-color: rgb(235, 234, 234);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 100px;
+    }
+
+    #logo_marca_f img {
+        height: 40px !important;
+        width: 38px !important;
+        margin-top: 5px;
+    }
+
+    #logo_marca_f:hover img {
+        height: 45px !important;
+        width: 40px !important;
+    }
+
+    #logo_marca_jaguar {
+        height: 55px !important;
+        width: 55px !important;
+        background-color: rgb(235, 234, 234);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 100px;
+    }
+
+    #logo_marca_jaguar img {
+        height: 55px !important;
+        width: 50px !important;
+    }
+
+    #logo_marca_jaguar:hover img {
+        height: 60px !important;
+        width: 55px !important;
+    }
+
+    #logo_marca_audi {
+        height: 55px !important;
+        width: 55px !important;
+        background-color: rgb(235, 234, 234);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 100px;
+    }
+
+    #logo_marca_audi img {
+        height: 50px !important;
+        width: 50px !important;
+    }
+
+    #logo_marca_audi:hover img {
+        height: 52px !important;
+        width: 52px !important;
+    }
+
+    #logo_marca_lambo {
+        height: 55px !important;
+        width: 55px !important;
+        background-color: rgb(235, 234, 234);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 100px;
+    }
+
+    #logo_marca_lambo img {
+        height: 45px !important;
+        width: 85px !important;
+    }
+
+    #logo_marca_lambo:hover img {
+        height: 50px !important;
+        width: 70px !important;
+    }
+
+    #logo_marca_suba {
+        height: 55px !important;
+        width: 55px !important;
+        background-color: rgb(235, 234, 234);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 100px;
+    }
+
+    #logo_marca_suba img {
+        height: 60px !important;
+        width: 73px !important;
+    }
+
+    #logo_marca_suba:hover img {
+        height: 65px !important;
+        width: 78px !important
+    }
+
+    #logo_marca_susu {
+        height: 55px !important;
+        width: 55px !important;
+        background-color: rgb(235, 234, 234);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 100px;
+    }
+
+    #logo_marca_susu img {
+        height: 45px !important;
+        width: 45px !important;
+    }
+
+    #logo_marca_susu:hover img {
+        height: 50px !important;
+        width: 50px !important;
+    }
+
+    #logo_marca_volvo {
+        height: 55px !important;
+        width: 55px !important;
+        background-color: rgb(235, 234, 234);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 100px;
+    }
+
+    #logo_marca_volvo img {
+        height: 45px !important;
+        width: 45px !important;
+    }
+
+    #logo_marca_volvo:hover img {
+        height: 50px !important;
+        width: 50px !important;
+    }
+
+    #logo_marca_kawa {
+        height: 55px !important;
+        width: 55px !important;
+        background-color: rgb(235, 234, 234);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 100px;
+    }
+
+    #logo_marca_kawa img {
+        height: 45px !important;
+        width: 65px !important;
+    }
+
+    #logo_marca_kawa:hover img {
+        height: 50px !important;
+        width: 68px !important;
+    }
+
+    .logo_marca {
+        height: 55px !important;
+        width: 55px !important;
+        background-color: rgb(235, 234, 234);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 100px;
+    }
+
+    .logo_marca img {
+        background-color: transparent;
+        height: 40px !important;
+        width: 50px !important;
+        border-radius: 100%;
+        transition-property: height, width;
+        transition-duration: 0.3s;
+    }
+
+    .logo_marca img:hover {
+        width: 55px !important;
+        height: 50px !important;
+    }
+
+    /* ********************************************************************************************************************************** */
+
+    #sesion-de-inf-de-solicitud-de-repuestos{
+        height: 17%;
+    }
+
+    #container-text-cuentanos {
+        padding-left: 0%;
+    }
+
+    #container-text-cuentanos h1 {
+        font-size: 120%;
+    }
+
+    #list-cuentanos {
+        font-size: 80%;
+        line-height: 0.9;
+        margin: 0;
+        padding: 0%;
+    }
+
+    #container-img-cuentanos {
+        height: 80%;
+    }
+
+    /* ********************************************************************************************************************************** */
+
+    #sesion-de-envio-de-requerimientos{
+        height: 18%;
+    }
+
+    #container-text-envia-tu-requerimiento h1 {
+        font-size: 120%;
+    }
+
+    #container-text-envia-tu-requerimiento p {
+        font-size: 80%;
+        line-height: 1.3;
+    }
+
+    #container-img-envia-tu-requerimiento {
+        height: 80%;
+    }
+
+    /* ********************************************************************************************************************************** */
+
+    #sesion-de-eleccion-de-opciones{
+        height: 15%;
+    }
+
+    #container-text-elige-tu-mejor-opcion h1 {
+        font-size: 120%;
+    }
+
+    #container-text-elige-tu-mejor-opcion p {
+        font-size: 80%;
+        line-height: 1.3;
+        letter-spacing: 0;
+    }
+
+    /* ********************************************************************************************************************************** */
+
+    footer{
+        height: 31%;
+    }
+
+    #container-text-header-busqueda-de-productos-diferentes h1 {
+        font-size: 160%;
+        text-align: center;
+    }
+
+    #container-text-body-busqueda-de-productos-diferentes p {
+        font-size: 100%;
+        letter-spacing: 1;
+    }
+
+    .icon_chat {}
+
+    .footer-sesion-de-contacto-por-whatsapp a {
+        width: 70% !important;
+        padding: 3% 0 !important;
+        height: auto !important;
+        margin-top: 2% !important;
+        font-size: 150% !important;
+    }
+
+    #scrollButton {
+        padding: 2% 4%;
+    }
+    
+    .container-items{
+        padding: 0.3rem;
+    }
+
+    .item{
+        font-size: 70%;
+    }
+}
+
+/*@media screen and (min-width: 321px) and (max-width: 450px) {
+
+    #sesion-de-contacto-por-whatsapp {
+        height: 17.3%;
+        padding: 4% 0;
+    }
+
+    #container-img{
+        display: block;
+    }
+
+    #container-text{
+        width: 55%;
+    }
+
+    #container-text .text-center h1 {
+        font-size: 90% !important;
+        margin-bottom: 0;
+    }
+
+    #container-text .text-center p {
+        font-size: 80%;
+    margin: 1% 0 2% 0;
+        letter-spacing: 0;
+    }
+    
+    .text-color-primary{
+            font-size: 108% !important;
+    margin: 1% 0 2% 0;
+    letter-spacing: 0;
+    }
+
+    #parrafo-3-sesion-de-contacto-por-whatsapp {
+        font-size: 90% !important;
+        letter-spacing: 0.5px;
+    }
+
+    #wsp {
+height: 10%;
+    font-size: 90%;
+    padding: 3% 0;
+    width: 65%;
+    }
+
+    #wsp i {
+        font-size: 110% !important;
+    }
+}*/
+
+@media screen and (min-width: 451px) and (max-width: 560px) {
+
+    #sesion-de-contacto-por-whatsapp {
+        height: 17.3%;
+        padding: 4% 0;
+    }
+
+    #container-img{
+        display: block;
+    }
+
+    #container-text{
+        width: 55%;
+    }
+
+    #container-text .text-center h1 {
+        font-size: 110% !important;
+        margin-bottom: 0;
+    }
+
+    #container-text .text-center p {
+        font-size: 100%;
+    margin: 1% 0 2% 0;
+        letter-spacing: 0;
+    }
+    
+    .text-color-primary{
+            font-size: 115% !important;
+    margin: 1% 0 2% 0;
+    letter-spacing: 0;
+    }
+
+    #parrafo-3-sesion-de-contacto-por-whatsapp {
+        font-size: 90% !important;
+        letter-spacing: 0.5px;
+    }
+
+    #wsp {
+height: 10%;
+    font-size: 90%;
+    padding: 3% 0;
+    width: 65%;
+    }
+
+    #wsp i {
+        font-size: 110% !important;
+    }
+}
+
+@media screen and (min-width: 561px) and (max-width: 700px) {
+
+    #sesion-de-contacto-por-whatsapp {
+        height: 17.3%;
+        padding: 4% 0;
+    }
+
+    #container-img{
+        display: block;
+    }
+
+    #container-text{
+        width: 55%;
+    }
+
+    #container-text .text-center h1 {
+        font-size: 110% !important;
+        margin-bottom: 0;
+    }
+
+    #container-text .text-center p {
+        font-size: 100%;
+    margin: 1% 0 2% 0;
+        letter-spacing: 0;
+    }
+    
+    .text-color-primary{
+            font-size: 115% !important;
+    margin: 1% 0 2% 0;
+    letter-spacing: 0;
+    }
+
+    #parrafo-3-sesion-de-contacto-por-whatsapp {
+        font-size: 90% !important;
+        letter-spacing: 0.5px;
+    }
+
+    #wsp {
+height: 10%;
+    font-size: 90%;
+    padding: 3% 0;
+    width: 65%;
+    }
+
+    #wsp i {
+        font-size: 110% !important;
+    }
+}
+
+@media screen and (min-width: 620px) and (max-width: 1080px){
+    #container-text{
+        width: 55%;
+    }
+    
+    .text-color-primary{
+        font-size: 180%;
+    }
+    
+    .text-center h1{
+        font-size: 120%;
+    }
+    
+    #container-img{
+        width: 55%;
+    }
+}
+
+
+@media screen and (min-width: 2080px) {
+    .container-body {
+        max-width: 2080px;
+    }
+
+    .separator {
+        padding: 0 !important;
+    }
+
+    #scrollButton {
+        right: 30px;
+        padding: 10px 25px;
+        font-size: 162%;
+    }
+} 
+
+ @media screen and (min-width: 1800px) {
+    #nav {
+        height: 130px;
+    }
+}
+
+@media screen and (min-width: 2180px) {
+    .container-body {
+        max-width: 2180px;
+    }
+} 

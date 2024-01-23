@@ -12,7 +12,7 @@ class ProveedorExport implements FromCollection, WithHeadings, WithMapping
 {
     public function collection()
     {
-        return Provider::select('id', 'nit_empresa', 'razon_social', 'departamento', 'municipio', 'direccion', 'celular', 'telefono', 'email', 'rut', 'camara_comercio', 'estado')->get();
+        return Provider::select('id', 'nit_empresa', 'razon_social', 'pais','departamento', 'municipio', 'direccion', 'celular', 'telefono', 'representante_legal', 'contacto_principal', 'marcas_preferencias', 'email', 'email_secundario', 'especialidad', 'rut', 'camara_comercio', 'estado')->get();
     }
 
     public function headings(): array
@@ -21,12 +21,18 @@ class ProveedorExport implements FromCollection, WithHeadings, WithMapping
             'ID',
             'NIT',
             'Razon social',
+            'pais',
             'Departamento',
             'Municipio',
             'Direccion',
             'Celular',
             'Telefono',
+            'Representante legal',
+            'Contacto principal',
+            'Preferencias de Marcas',
             'Email',
+            'Email Secundario',
+            'Especialidad/es',
             'RUT',
             'Camara de comercio',
             'Estado'
@@ -39,12 +45,18 @@ class ProveedorExport implements FromCollection, WithHeadings, WithMapping
             $provider->id,
             $provider->nit_empresa,
             $provider->razon_social,
+            $provider->pais,
             $provider->departamento,
             $provider->municipio,
             $provider->direccion,
             $provider->celular,
             $provider->telefono,
+            $provider->representante_legal,
+            $provider->contacto_principal,
+            json_decode($provider->marcas_preferencias),
             $provider->email,
+            $provider->email_secundario,
+            json_decode($provider->especialidad),
             $provider->rut ? 'Sí' : 'No',
             $provider->camara_comercio ? 'Sí' : 'No',
             $provider->estado ? 'activo' : 'inactivo'

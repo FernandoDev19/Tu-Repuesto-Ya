@@ -13,7 +13,7 @@ class SolicitudesExport implements FromCollection, WithHeadings, WithMapping
 
     public function collection()
     {
-        return Solicitude::select('id', 'respuestas', 'marca', 'referencia', 'modelo', 'tipo_de_transmision', 'repuesto', 'img_repuesto', 'comentario', 'nombre', 'correo', 'numero', 'departamento', 'municipio', 'estado')->get();
+        return Solicitude::select('id', 'respuestas', 'marca', 'referencia', 'modelo', 'tipo_de_transmision', 'repuesto', 'img_repuesto', 'categoria', 'comentario', 'nombre', 'correo', 'numero', 'pais', 'departamento', 'municipio', 'estado')->get();
     }
 
     public function headings(): array
@@ -27,10 +27,12 @@ class SolicitudesExport implements FromCollection, WithHeadings, WithMapping
             'Transmisión',
             'Repuesto',
             'Imagen del repuesto',
+            'Categoria',
             'Comentario',
             'Nombre',
             'Correo',
             'Celular',
+            'Pais',
             'Departamento',
             'Municipio',
             'Estado'
@@ -47,11 +49,13 @@ class SolicitudesExport implements FromCollection, WithHeadings, WithMapping
             $solicitud->modelo,
             $solicitud->tipo_de_transmision,
             $solicitud->repuesto,
-            $solicitud->img_repuesto,
+            json_decode($solicitud->img_repuesto),
+            json_decode($solicitud->categoria),
             $solicitud->comentario,
             $solicitud->nombre,
             $solicitud->correo,
             $solicitud->numero,
+            $solicitud->pais,
             $solicitud->departamento,
             $solicitud->municipio,
             $solicitud->estado ? 'Activa' : 'Inactiva'

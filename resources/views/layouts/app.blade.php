@@ -24,6 +24,8 @@
 </head>
 
 <body class="{{ $class ?? '' }}" style="@yield('style-body')">
+    
+       @include('components.alert')
 
     @guest
         @yield('content')

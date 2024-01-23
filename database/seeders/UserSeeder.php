@@ -15,9 +15,9 @@ class UserSeeder extends Seeder
     {
         User::create([
             'name' => 'Administrator',
-            'cel' => '300XXXXXXX',
-            'tel' => '601XXXXXXX',
-            'email' => 'admin@admin.com',
+            'cel' => '+573052754926',
+            'tel' => '605XXXXXXX',
+            'email' => 'reservas@milanocar.com',
             'password' => bcrypt(env('PASSWORD_ADMIN_USER')),
             'role' => 'Admin',
         ])->assignRole('Admin');

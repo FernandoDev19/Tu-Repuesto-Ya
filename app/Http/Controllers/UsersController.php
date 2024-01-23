@@ -4,17 +4,23 @@ namespace App\Http\Controllers;
 
 use App\Models\Provider;
 use App\Models\User;
+use App\Models\Country_code;
 use App\Models\Geolocation;
+
 use Illuminate\Support\Str;
-use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Validator;
-use App\Mail\RegistroProveedorMail;
-use App\Mail\RestablecerContraseña;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
-use App\Notifications\NuevoProveedorRegistrado;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
+
+use App\Mail\RegistroProveedorMail;
+use App\Mail\RestablecerContrasenia;
+
+use App\Notifications\NuevoProveedorRegistrado;
+
 
 class UsersController extends Controller
 {
@@ -37,22 +43,32 @@ class UsersController extends Controller
 
         $credentials = $request->only('email', 'password');
 
-        if (auth()->attempt($credentials, $request->filled('remember'))) {
+        if (auth()->attempt($credentials)) {
             $user = auth()->user();
 
-            if ($user->role === 'Admin') {
+            if ($user) {
+
                 $request->session()->regenerate();
-                return redirect()->intended(route('dashboard'));
-            } else if ($user->role === 'Proveedor') {
-                if (!$user->proveedor->estado) {
-                    // El usuario es un proveedor con cuenta inactiva
-                    auth()->logout();
-                    return redirect()->route('login_outAnimate')->withErrors([
-                        'email' => 'Tu cuenta está inactiva. Contacta al administrador para obtener acceso.',
-                    ]);
+
+                if ($user->role === 'Admin') {
+                    return redirect()->intended(route('dashboard'));
+                } elseif ($user->role === 'Proveedor') {
+                    if (!$user->proveedor->estado) {
+                        // El usuario es un proveedor con cuenta inactiva
+                        auth()->logout();
+                        return redirect()->route('login_outAnimate')->withErrors([
+                            'email' => 'Tu cuenta está inactiva. Contacta al administrador para obtener acceso.',
+                        ]);
+                    }
+
+                    return redirect()->intended(route('dashboard'));
                 }
-                $request->session()->regenerate();
-                return redirect()->intended(route('dashboard'));
+            } else {
+                // No se pudo obtener el usuario autenticado
+                auth()->logout();
+                return redirect()->route('login_outAnimate')->withErrors([
+                    'email' => 'Error al autenticar al usuario.',
+                ]);
             }
         }
 
@@ -88,7 +104,7 @@ class UsersController extends Controller
                 'token' => $token, // Pasamos el token al correo
             ];
 
-            Mail::to($user->email)->send(new RestablecerContraseña($email));
+            Mail::to($user->email)->send(new RestablecerContrasenia($email));
 
             return redirect()->route('login_outAnimate')->with('message', 'Se ha enviado un correo con instrucciones para cambiar la contraseña.');
         }
@@ -120,14 +136,13 @@ class UsersController extends Controller
         $request->validate([
             'email' => 'required|email',
             'password' => [
-                'required',
-                'regex:/^(?=.*\d.*\d.*\d.*\d.*\d)(?=.*[A-Z])(?=.*[a-z])/', // Requisitos de seguridad de contraseña
-                'min:8', // Mínimo 8 caracteres
+                'required',// Requisitos de seguridad de contraseña
+                'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d.@!¡?¿]{8,}$/',
             ],
             'confirm-password' => 'required|same:password', // Debe coincidir con la contraseña
         ], [
             'password.required' => 'El campo contraseña es obligatorio.',
-            'password.regex' => 'La contraseña no es segura. Debe incluir al menos 5 números, una mayúscula y una minúscula.',
+            'password.regex' => 'La contraseña no es segura. Debe incluir al menos 8 caracteres, 1 número, una mayúscula y una minúscula.',
             'confirm-password.required' => 'El campo confirmar contraseña es obligatorio.',
             'confirm-password.same' => 'Las contraseñas no coinciden.',
         ]);
@@ -165,9 +180,11 @@ class UsersController extends Controller
         ]);
     }
 
-
     public function register(Request $request)
     {
+        // Lista de codigos
+        $codigos = Country_code::all();
+            
         // Lista de departamentos
         $departamentos = Geolocation::distinct()->pluck('departamento');
     
@@ -179,7 +196,7 @@ class UsersController extends Controller
             $group[$departamento] = $municipios;
         }
 
-        return view('auth.register', compact('departamentos', 'group'));
+        return view('auth.register', compact('departamentos', 'group', 'codigos'));
     }
 
     public function store(Request $request)
@@ -188,34 +205,28 @@ class UsersController extends Controller
         $validator = Validator::make(
             $request->all(),
             [
-                'nit' => [
-                    'required',
-                    'alpha_dash',
-                    'min:8',
-                    'max:16',
-                    'regex:/^[a-zA-Z0-9]+$/',
-                    'not_regex:/[.\-_+!@#$%^&*()=]/',
-                ],
+                'nit' => 'required|numeric|digits_between:8,16',
                 'razon' => 'required',
-                'departamento' => 'required',
-                'municipio' => 'required',
                 'direccion' => 'required',
+                'codigo_cel' => 'required',
                 'cel' => 'required|numeric|digits:10',
-                'tel' => 'numeric|digits:10',
+                'tel' => 'nullable|numeric|digits:10',
                 'email' => 'required|email',
                 'password' => [
                     'required',
-                    'regex:/^(?=.*\d.*\d.*\d.*\d.*\d)(?=.*[A-Z])(?=.*[a-z])/',
-                    'min:8',
+                    'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d.@!¡?¿]{8,}$/',
                 ],
                 'confirm_password' => 'required|same:password',
+                'json_marcas' => 'required',
+                'json_categorias' => 'required',
+                'categoria_repuesto' => 'required',
                 'rut' => 'required|file|mimes:pdf|max:5024',
                 'cam' => 'required|file|mimes:pdf|max:5024',
                 'terms' => 'required',
             ],
             [
                 'password.required' => 'El campo contraseña es obligatorio.',
-                'password.regex' => 'La contraseña no es segura. Debe incluir al menos 5 números, una mayúscula y una minúscula.',
+                'password.regex' => 'La contraseña no es segura. Debe incluir al menos 8 caracteres, 1 número, una mayúscula y una minúscula.',
                 'confirm_password.required' => 'El campo confirmar contraseña es obligatorio.',
                 'confirm_password.same' => 'Las contraseñas no coinciden.',
                 'terms.required' => 'Los términos y condiciones son obligatorios'
@@ -259,13 +270,15 @@ class UsersController extends Controller
 
         // Validar si el número de celular ya está registrado
         $validator->after(function ($validator) use ($request) {
-            $cel = "57" . $request->input('cel');
+            $cel = $request->input('cel');
             $existingProvider = Provider::where('celular', $cel)->first();
 
             if ($existingProvider) {
                 $validator->errors()->add('cel', 'Este número de celular ya está registrado.');
             }
         });
+        
+         // Validar si el número de telefono ya está registrado
 
         // Validar el tamaño del archivo RUT
         $validator->after(function ($validator) use ($request) {
@@ -301,10 +314,47 @@ class UsersController extends Controller
         $proveedor->departamento = $request->departamento;
         $proveedor->municipio = $request->municipio;
         $proveedor->direccion = $request->direccion;
-        $proveedor->celular = "57$request->cel";
+        $paises = [
+           '+57' => 'Colombia',
+           '+54' => 'Argentina',
+           '+591' => 'Bolivia',
+           '+55' => 'Brasil',
+           '+56' => 'Chile',
+           '+593' => 'Ecuador',
+           '+594' => 'Guyana Francesa',
+           '+592' => 'Guyana',
+           '+595' => 'Paraguay',
+           '+51' => 'Perú',
+           '+597' => 'Surinam',
+           '+598' => 'Uruguay',
+           '+58' => 'Venezuela',
+           '+1' => 'Estados Unidos',
+           '+506' => 'Costa Rica',
+           '+503' => 'El Salvador',
+           '+502' => 'Guatemala',
+           '+504' => 'Honduras',
+           '+52' => 'México',
+           '+505' => 'Nicaragua',
+           '+507' => 'Panamá',
+            ];
+            
+        $proveedor->pais = $paises[$request->codigo_cel];
+        $proveedor->celular = $request->codigo_cel . $request->cel;
         $proveedor->telefono = $request->tel;
         $proveedor->email = $request->email;
         $proveedor->password = bcrypt($request->password); // Encriptar la contraseña
+        $proveedor->especialidad = $request->categoria_repuesto;
+        
+        if($request->input('json_marcas')){
+            $jsonMarcas = $request->input('json_marcas');
+            $proveedor->marcas_preferencias = $jsonMarcas; 
+        }
+        
+        if($request->input('json_categorias')){
+            $jsonCategorias = $request->input('json_categorias');
+            $proveedor->especialidad = $jsonCategorias; 
+        }
+        
         $proveedor->estado = false;
 
         // Obtener los archivos RUT y Cámara de Comercio
@@ -352,6 +402,57 @@ class UsersController extends Controller
 
               if ($admin) {
                   Notification::send($admin, new NuevoProveedorRegistrado($proveedor));
+                  
+                  foreach(auth()->user()->unreadNotifications as $notification){
+                      $enlace = "$request->nit/$notification->id";
+                  }
+                    $token = 'EAAyaksOlpN4BO64MEL1cjlEGMvDQb6liWd3oCOIhvnUZBMeF5tbhAvjZABvBnnaYh9V9waBGZCBJW0LnCFaDcUQMZArNbLSKCUEL1MLmgdoRpQHyvEGdAC0CYOxt3l5N2u2Wi0yAlVFE7mCRtHVkZCSOyZAXyVtbrxxeOjkJqOkFDjloKrVuZBLXJUF4S1KG3u7';
+                    $url = 'https://graph.facebook.com/v17.0/196744616845968/messages';
+            
+                  $mensajeData = [
+                'messaging_product' => 'whatsapp',
+                'recipient_type' => 'individual',
+                'to' => $admin->cel,
+                'type' => 'template',
+                'template' => [
+                    'name' => 'nuevo_proveedor',
+                    'language' => [
+                        'code' => 'es',
+                    ],
+                    'components' => [
+                        [
+                            'type' => 'button',
+                            'sub_type' => 'url',
+                            'index' => '0',
+                            'parameters' => [
+                                [
+                                    'type' => 'text',
+                                    'text' => $enlace,
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ];
+            
+            $mensaje = json_encode($mensajeData);
+
+            $header = [
+                "Authorization: Bearer " . $token,
+                "Content-Type: application/json",
+            ];
+            $curl = curl_init();
+            curl_setopt($curl, CURLOPT_URL, $url);
+            curl_setopt($curl, CURLOPT_POSTFIELDS, $mensaje);
+            curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+    
+            $response = json_decode(curl_exec($curl), true);
+    
+            $status_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+    
+            curl_close($curl);
+        
               }           
 
             // Redirigir a la página de inicio con un mensaje de éxito

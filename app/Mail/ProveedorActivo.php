@@ -28,7 +28,7 @@ class ProveedorActivo extends Mailable
     public function build()
     {
         return $this->view('mail.proveedor_activo')
-                    ->subject('¡Su cuenta está activada!')
+                    ->subject('¡Su cuenta ha sido activada!')
                     ->with($this->email, $this->password);
     }
 }
