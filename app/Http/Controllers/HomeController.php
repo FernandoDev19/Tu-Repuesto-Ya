@@ -554,7 +554,7 @@ class HomeController extends Controller
         return redirect()->route('servicios')->with('message', 'La respuesta se ha enviado exitosamente');
     }
 
-    public function eliminarImagenes(int $solicitudId)
+    private function eliminarImagenes(int $solicitudId)
     {
         // Obtener las imágenes de la solicitud
         $solicitudes = Solicitude::find($solicitudId);

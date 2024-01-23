@@ -191,11 +191,17 @@
                                                                     <span style="font-size: 14;"
                                                                         id="modelo_{{ $solicitud->modelo }}">{{ $solicitud->modelo }}</span>
                                                                 </td>
+                                                                <?php
+                                                                    $array_de_repuestos = json_decode($solicitud->repuesto, true);
+
+                                                                    $repuesto_for_soli = is_array($array_de_repuestos) ? implode(', ', $array_de_repuestos) : $array_de_repuestos;
+
+                                                                ?>
                                                                 <td style="padding:10px 10px; margin:0; text-align:center;"
                                                                     data-campo="repuesto"
-                                                                    data-valor="{{ $solicitud->repuesto }}">
+                                                                    data-valor="{{ $repuesto_for_soli }}">
                                                                     <span style="font-size: 14;"
-                                                                        id="repuesto_{{ $solicitud->repuesto }}">{{ $solicitud->repuesto }}</span>
+                                                                        id="repuesto_{{ $repuesto_for_soli }}">{{ $repuesto_for_soli }}</span>
                                                                 </td>
                                                                 <td style="padding:10px 10px; margin:0; text-align:center;"
                                                                     data-campo="fecha"
@@ -251,32 +257,32 @@
                                                                                         <fieldset>
                                                                                             <legend style="text-align: center;"><strong>Información General:</strong></legend>
                                                                                             <li><strong>ID: </strong>{{ $solicitud->id }}</li>
-                                                                                            
+
                                                                                             <li><strong>Estado de solicitud:</strong>
                                                                                             @if ($solicitud->estado)
                                                                                                 Activa
                                                                                             @else
                                                                                                 Inactiva
                                                                                             @endif</li>
-                                                                                            
+
                                                                                             <li><strong>Respuestas:</strong>
                                                                                     {{ $solicitud->respuestas }}</li>
                                                                                         </fieldset>
-                                                                                        
+
                                                                                         <hr>
-                                                                                        
+
                                                                                         <fieldset>
                                                                                             <legend style="text-align: center;"><strong>Detalles de la Solicitud:</strong></legend>
                                                                                              <li><strong>Marca: </strong>{{ $solicitud->marca }}</li>
-                                                                                    
+
                                                                                             <li><strong>Referencia: </strong>{{ $solicitud->referencia }}</li>
-                                                                                        
+
                                                                                             <li><strong>Modelo: </strong>{{ $solicitud->modelo }}</li>
-                                                                                        
+
                                                                                             <li><strong>Transmisión: </strong>{{ $solicitud->tipo_de_transmision }}</li>
-                                                                                        
-                                                                                            <li><strong>Repuesto: </strong>{{ $solicitud->repuesto }}</li>
-                                                                                        
+
+                                                                                            <li><strong>Repuesto: </strong>{{ $repuesto_for_soli }}</li>
+
                                                                                             <li><strong>Imagen del repuesto: </strong>
                                                                                             @if (is_array($nombres) && in_array('No se subió ningun archivo', $nombres))
                                                                                                 No hay imagen
@@ -287,7 +293,7 @@
                                                                                                     href="#">Ver
                                                                                                     Imagen</a>
                                                                                             @endif</li>
-                                                                                        
+
                                                                                             <li><strong>Comentarios del cliente: </strong>
                                                                                             @if ($solicitud->comentario)
                                                                                                 {{ $solicitud->comentario }}
@@ -295,34 +301,34 @@
                                                                                                 No hay comentarios
                                                                                             @endif</li>
                                                                                         </fieldset>
-                                                                                        
+
                                                                                         <hr>
-                                                                                        
+
                                                                                         <fieldset>
                                                                                             <legend style="text-align: center;"><strong>Información de Contacto:</strong></legend>
                                                                                             <li><strong>Nombre:</strong>
                                                                                             {{ $solicitud->nombre }} </li>
-                                                                                            
+
                                                                                                 <li><strong>Correo electronico:</strong>
                                                                                             {{ $solicitud->correo }} </li>
-                                                                                            
+
                                                                                                 <li><strong>Celular:</strong>
                                                                                             {{ $solicitud->numero }} </li>
                                                                                         </fieldset>
-                                                                                        
+
                                                                                         <hr>
-                                                                                        
+
                                                                                         <fieldset>
                                                                                             <legend style="text-align: center;"><strong>Ubicación:</strong></legend>
                                                                                             <li><strong>Departamento:</strong>
                                                                                             {{ $solicitud->departamento }} </li>
-                                                                                            
+
                                                                                                 <li><strong>Municipio:</strong>
                                                                                             {{ $solicitud->municipio }} </li>
                                                                                         </fieldset>
-                                                                                        
+
                                                                                     </ul>
-                                                                                    
+
                                                                                 </div>
                                                                             </div>
 
@@ -432,15 +438,15 @@
                                                             @php
                                                                 $proveedor = auth()->user()->id;
                                                                 $proveedorId = auth()->user()->proveedor_id;
-                                                                
+
                                                                 $solicitudAnswers = $answers[$solicitud->id] ?? null;
-                                                                
+
                                                                 $proveedorHaRespondido = false;
-                                                                
+
                                                                 if ($solicitudAnswers) {
                                                                     $proveedorHaRespondido = $solicitudAnswers->where('idProveedor', $proveedorId)->isNotEmpty();
                                                                 }
-                                                                
+
                                                                 $json_nombres = $solicitud->img_repuesto;
                                                                 $nombres = json_decode($json_nombres);
                                                             @endphp
@@ -541,32 +547,32 @@
                                                                                         <fieldset>
                                                                                             <legend style="text-align: center;"><strong>Información General:</strong></legend>
                                                                                             <li><strong>ID: </strong>{{ $solicitud->id }}</li>
-                                                                                            
+
                                                                                             <li><strong>Estado de solicitud:</strong>
                                                                                             @if ($solicitud->estado)
                                                                                                 Activa
                                                                                             @else
                                                                                                 Inactiva
                                                                                             @endif</li>
-                                                                                            
+
                                                                                             <li><strong>Respuestas:</strong>
                                                                                     {{ $solicitud->respuestas }}</li>
                                                                                         </fieldset>
-                                                                                        
+
                                                                                         <hr>
-                                                                                        
+
                                                                                         <fieldset>
                                                                                             <legend style="text-align: center;"><strong>Detalles de la Solicitud:</strong></legend>
                                                                                              <li><strong>Marca:</strong>{{ $solicitud->marca }}</li>
-                                                                                    
+
                                                                                             <li><strong>Referencia:</strong>{{ $solicitud->referencia }}</li>
-                                                                                        
+
                                                                                             <li><strong>Modelo:</strong>{{ $solicitud->modelo }}</li>
-                                                                                        
+
                                                                                             <li><strong>Transmisión:</strong>{{ $solicitud->tipo_de_transmision }}</li>
-                                                                                        
+
                                                                                             <li><strong>Repuesto:</strong>{{ $solicitud->repuesto }}</li>
-                                                                                        
+
                                                                                             <li><strong>Imagen del repuesto:</strong>
                                                                                             @if (is_array($nombres) && in_array('No se subió ningun archivo', $nombres))
                                                                                                 No hay imagen
@@ -577,7 +583,7 @@
                                                                                                     href="#">Ver
                                                                                                     Imagen</a>
                                                                                             @endif</li>
-                                                                                        
+
                                                                                             <li><strong>Comentarios del cliente:</strong>
                                                                                             @if ($solicitud->comentario)
                                                                                                 {{ $solicitud->comentario }}
@@ -585,14 +591,14 @@
                                                                                                 No hay comentarios
                                                                                             @endif</li>
                                                                                         </fieldset>
-                                                                                        
+
                                                                                         <hr>
-                                                                                        
+
                                                                                         <fieldset>
                                                                                             <legend style="text-align: center;"><strong>Información de Contacto:</strong></legend>
                                                                                             <li><strong>Nombre:</strong>
                                                                                             {{ $solicitud->nombre }} </li>
-                                                                                            
+
                                                                                                 <li><strong>Celular:</strong>
                                                                                             {{ $solicitud->numero }} </li>
                                                                                         </fieldset>
@@ -744,13 +750,13 @@
                                             </ul>
                                         </div>
                                     </div>
-                                
+
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        
+
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <!-- Core plugin JavaScript-->

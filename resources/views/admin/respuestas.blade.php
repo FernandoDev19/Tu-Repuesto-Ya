@@ -156,6 +156,12 @@
                                                     @php
                                                         $json_nombres = $respuesta->solicitud->img_repuesto;
                                                         $nombres = json_decode($json_nombres);
+
+                                                        $array_de_repuestos_answ = json_decode($respuesta->repuesto, true);
+                                                        $repuesto_for_answ = is_array($array_de_repuestos_answ) ? implode(', ', $array_de_repuestos_answ) : $array_de_repuestos_answ;
+
+                                                        $array_de_repuestos_soli = json_decode($respuesta->solicitud->repuesto, true);
+                                                        $repuesto_for_soli = is_array($array_de_repuestos_soli) ? implode(', ', $array_de_repuestos_soli) : $array_de_repuestos_soli;
                                                     @endphp
                                                         <tr>
                                                             <td style="padding:10px 10px; margin:0; text-align:center;"
@@ -183,9 +189,9 @@
 
                                                             <td style="padding:10px 10px; margin:0; text-align:center;"
                                                                 data-campo="repuesto"
-                                                                data-valor="{{ $respuesta->repuesto }}">
+                                                                data-valor="{{ $repuesto_for_answ }}">
                                                                 <span style="font-size: 14;"
-                                                                    id="repuesto_{{ $respuesta->repuesto }}">{{ $respuesta->repuesto }}</span>
+                                                                    id="repuesto_{{ $repuesto_for_answ }}">{{ $repuesto_for_answ }}</span>
                                                             </td>
 
                                                             <td style="padding:10px 10px; margin:0; text-align:center;"
@@ -225,7 +231,7 @@
                                                                     </a>
                                                             </td>
 
-                                                            <!-- Modal de Información de la solicitud -->
+                                                            <!-- Modal de Información de la Respuesta -->
                                                             <div class="modal fade" id="infoModal{{ $respuesta->id }}"
                                                                 tabindex="-1" role="dialog"
                                                                 aria-labelledby="infoModalLabel" aria-hidden="true">
@@ -249,14 +255,14 @@
                                                                                         <legend style="text-align: center;"><strong>Información General:</strong></legend>
                                                                                         <li><strong>ID:</strong>
                                                                                         {{ $respuesta->id }}</li>
-                                                                                        
+
                                                                                         <li><strong>Nº de solicitud:</strong>
                                                                                         <a class="text-primary"
                                                                                             title="Ver detalles de solicitud"
                                                                                             data-toggle="modal"
                                                                                             data-target="#solicitudModal{{ $respuesta->id }}"
                                                                                             style="font-size: 14; cursor: pointer;">{{ $respuesta->idSolicitud }}</a></li>
-                                                                                            
+
                                                                                         <li><strong>Proveedor:</strong>
                                                                                 <a class="text-primary"
                                                                                     title="Ver detalles del proveedor"
@@ -264,34 +270,34 @@
                                                                                     data-target="#providerModal{{ $respuesta->id }}"
                                                                                     style="font-size: 14; cursor: pointer;">{{ $respuesta->proveedor->razon_social }}</a></li>
                                                                                     </fieldset>
-                                                                                    
+
                                                                                     <hr>
-                                                                                    
+
                                                                                     <fieldset>
                                                                                         <legend style="text-align: center;"><strong>Detalles de la Cotización:</strong></legend>
                                                                                         <li><strong>Repuesto:</strong>
-                                                                                {{ $respuesta->repuesto }}</li>
-                                                                                
+                                                                                {{ $repuesto_for_answ }}</li>
+
                                                                                         <li><strong>Tipo de repuesto:</strong>
                                                                                 {{ $respuesta->tipo_repuesto }}</li>
-                                                                                
+
                                                                                         <li><strong>Precio:</strong>
                                                                                 {{ $respuesta->precio }}</li>
-                                                                                
+
                                                                                         <li><strong>Garantía:</strong>
                                                                                 {{ $respuesta->garantia }}</li>
                                                                                     </fieldset>
-                                                                                    
+
                                                                                     <hr>
-                                                                                    
+
                                                                                     <fieldset>
                                                                                         <legend style="text-align: center;"><strong>Comentarios:</strong></legend>
                                                                                         <li><strong>Comentarios del proveedor:</strong>
                                                                                 {{ $respuesta->comentarios }}</li>
                                                                                     </fieldset>
-                                                                                    
+
                                                                                     <hr>
-                                                                                    
+
                                                                                     <fieldset>
                                                                                         <legend style="text-align: center;"><strong>Comentarios:</strong></legend>
                                                                                         <li><strong>Fecha de creación:</strong>
@@ -424,32 +430,32 @@
                                                                                         <fieldset>
                                                                                             <legend style="text-align: center;"><strong>Información General:</strong></legend>
                                                                                             <li><strong>ID: </strong>{{ $respuesta->solicitud->id }}</li>
-                                                                                            
+
                                                                                             <li><strong>Estado de solicitud:</strong>
                                                                                             @if ($respuesta->solicitud->estado)
                                                                                                 Activa
                                                                                             @else
                                                                                                 Inactiva
                                                                                             @endif</li>
-                                                                                            
+
                                                                                             <li><strong>Respuestas:</strong>
                                                                                     {{ $respuesta->solicitud->respuestas }}</li>
                                                                                         </fieldset>
-                                                                                        
+
                                                                                         <hr>
-                                                                                        
+
                                                                                         <fieldset>
                                                                                             <legend style="text-align: center;"><strong>Detalles de la Solicitud:</strong></legend>
                                                                                              <li><strong>Marca: </strong>{{ $respuesta->solicitud->marca }}</li>
-                                                                                    
+
                                                                                             <li><strong>Referencia: </strong>{{ $respuesta->solicitud->referencia }}</li>
-                                                                                        
+
                                                                                             <li><strong>Modelo: </strong>{{ $respuesta->solicitud->modelo }}</li>
-                                                                                        
+
                                                                                             <li><strong>Transmisión: </strong>{{ $respuesta->solicitud->tipo_de_transmision }}</li>
-                                                                                        
-                                                                                            <li><strong>Repuesto: </strong>{{ $respuesta->solicitud->repuesto }}</li>
-                                                                                        
+
+                                                                                            <li><strong>Repuesto: </strong>{{ $repuesto_for_soli }}</li>
+
                                                                                             <li><strong>Imagen del repuesto: </strong>
                                                                                             @if (is_array($nombres) && in_array('No se subió ningun archivo', $nombres))
                                                                                                 No hay imagen
@@ -460,7 +466,7 @@
                                                                                                     href="#">Ver
                                                                                                     Imagen</a>
                                                                                             @endif</li>
-                                                                                        
+
                                                                                             <li><strong>Comentarios del cliente: </strong>
                                                                                             @if ($respuesta->solicitud->comentario)
                                                                                                 {{ $respuesta->solicitud->comentario }}
@@ -468,34 +474,34 @@
                                                                                                 No hay comentarios
                                                                                             @endif</li>
                                                                                         </fieldset>
-                                                                                        
+
                                                                                         <hr>
-                                                                                        
+
                                                                                         <fieldset>
                                                                                             <legend style="text-align: center;"><strong>Información de Contacto:</strong></legend>
                                                                                             <li><strong>Nombre:</strong>
                                                                                             {{ $respuesta->solicitud->nombre }} </li>
-                                                                                            
+
                                                                                                 <li><strong>Correo electronico:</strong>
                                                                                             {{ $respuesta->solicitud->correo }} </li>
-                                                                                            
+
                                                                                                 <li><strong>Celular:</strong>
                                                                                             {{ $respuesta->solicitud->numero }} </li>
                                                                                         </fieldset>
-                                                                                        
+
                                                                                         <hr>
-                                                                                        
+
                                                                                         <fieldset>
                                                                                             <legend style="text-align: center;"><strong>Ubicación:</strong></legend>
                                                                                             <li><strong>Departamento:</strong>
                                                                                             {{ $respuesta->solicitud->departamento }} </li>
-                                                                                            
+
                                                                                                 <li><strong>Municipio:</strong>
                                                                                             {{ $respuesta->solicitud->municipio }} </li>
                                                                                         </fieldset>
-                                                                                        
+
                                                                                     </ul>
-                                                                                    
+
                                                                                 </div>
                                                                             </div>
 
@@ -599,8 +605,8 @@
                 </div>
             </div>
         </div>
-        
-        
+
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <!-- Core plugin JavaScript-->
