@@ -9,7 +9,8 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Schedule;
+use Illuminate\Console\Scheduling\Schedule;
+use Carbon\Carbon;
 
 //Modelos
 use App\Models\Solicitude;
@@ -84,6 +85,14 @@ class HomeController extends Controller
                 ->withInput()
                 ->with('error', '¡Error! ¡No se pudo enviar la solicitud!, Revise sus datos y envie nuevamente');
         }
+
+        $solicitudes_old = Solicitude::whereDate('created_at', '<', now()->subDays(25))->get();
+
+            // Eliminar las imágenes de las solicitudes que tengan más de 25 días
+            foreach ($solicitudes_old as $solicitud) {
+                    // Llamar a la función eliminarImagenes()
+                    $this->eliminarImagenes($solicitud->id);
+            }
 
         $solicitud = new Solicitude();
 
@@ -315,7 +324,7 @@ class HomeController extends Controller
             curl_close($curl);
 
             Log::info('Mensaje enviado:', $mensajeData);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             // Manejo de errores aquí
             Log::error('Error al enviar mensaje de WhatsApp: ' . $e->getMessage());
         }
@@ -391,7 +400,11 @@ class HomeController extends Controller
         $proveedor = Provider::where('nit_empresa', $nit)->first();
 
         if (!$proveedor) {
-            return redirect()->back()->with('error', 'El nit ingresado no existe');
+            return redirect()->back()->withInput()->with('error', 'El nit ingresado no existe');
+        }else{
+            if(!$proveedor->estado){
+                return redirect()->back()->withInput()->with('error', 'Actualmente su cuenta se encuentra inactiva');
+            }
         }
 
         // Obtener la solicitud y verificar si existe
@@ -407,7 +420,7 @@ class HomeController extends Controller
             ->exists();
 
         if ($respuestaExistente) {
-            return redirect()->back()->with('error', 'Ya has respondido a esta solicitud previamente');
+            return redirect()->back()->withInput()->with('error', 'Ya has respondido a esta solicitud previamente');
         }
 
         // Crear una nueva respuesta
@@ -551,22 +564,8 @@ class HomeController extends Controller
         // Eliminar las imágenes del servidor
         foreach ($imagenes as $imagen) {
             $imagen->delete();
+            Storage::delete($imagen);
         }
     }
 
-    public function programarTareaEliminacionImagenes()
-    {
-        Schedule::call(function () {
-            // Obtener todas las solicitudes
-            $solicitudes = Solicitude::all();
-
-            // Eliminar las imágenes de las solicitudes que tengan más de 25 días
-            foreach ($solicitudes as $solicitud) {
-                if ($solicitud->created_at < Carbon::now()->subDays(25)) {
-                    // Llamar a la función eliminarImagenes()
-                    $this->eliminarImagenes($solicitud->id);
-                }
-            }
-        })->daily();
-    }
 }
