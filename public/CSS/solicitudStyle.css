@@ -161,6 +161,15 @@
     color: white;
     }
 
+    .item_selected:hover .btn_borrar_item {
+        color: lightgray;
+    }
+
+    .btn_borrar_item{
+        color: gray;
+        transform: translate(6px, 1px);
+    }
+
     #comentariosC{
         color: var('--color-tertiary') !important;
     }

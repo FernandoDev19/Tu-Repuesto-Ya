@@ -15,6 +15,10 @@
     display: none;
 }
 
+.paso_activo{
+    font-weight: 600; color: var(--color-primary) !important;
+}
+
 .items_container {
     min-height: 50px;
     height: auto !important;
@@ -40,7 +44,7 @@
 
 .btn_borrar_item {
     color: lightgray;
-    transform: translate(10px, 0);
+    transform: translate(20px, 0);
     transition: all 300ms ease;
     display: inline-block;
 }
@@ -355,9 +359,9 @@ header y navegador */
     text-decoration: none;
     transform: scale(1);
     gap: 0 10px;
-    color: #ffffff;
+    color: black;
     border-radius: 20px;
-    transition-property: background-color, transform;
+    transition-property:background-color, transform;
     transition-duration: 0.3s;
     font-weight: 700;
     align-items: center;
@@ -365,15 +369,12 @@ header y navegador */
 }
 
 #WSP:hover {
-    background-color: #15a64b;
+    background-color: #2bb15d;
     transform: scale(1.05);
 }
 
 #WSP i {
     transition-property: transform;
-   background-image: linear-gradient(to right, #ffffff, white);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
     transition-duration: 0.3s;
     z-index: 2;
 }
@@ -700,10 +701,6 @@ header y navegador */
     height: 18.5%;
 }
 
-#container-img-cuentanos {
-    /* height:100%; */
-}
-
 #container-text-cuentanos {
     padding: 0 0 0 6%;
 }
@@ -905,6 +902,16 @@ footer {
 
 @media screen and (max-width: 280px) {
     /* ********************************************************************************************************************************** */
+
+    .btn_borrar_item {
+        color: gray;
+        transform: translate(8px, 0);
+        transition: all 300ms ease;
+        display: inline-block;
+    }
+    .item_selected:hover .btn_borrar_item {
+        color: gray;
+    }
 
     #btn_whatsapp_kommo{
         padding: 0.7rem 0.9rem;
@@ -1121,8 +1128,6 @@ footer {
         letter-spacing: 1;
     }
 
-    .icon_chat {}
-
     .footer-sesion-de-contacto-por-whatsapp a {
     width: 50% !important;
     padding: 1.8% 0 !important;
@@ -1146,6 +1151,16 @@ footer {
 }
 
 @media screen and (max-width: 450px) {
+
+    .btn_borrar_item {
+        color: gray;
+        transform: translate(8px, 0);
+        transition: all 300ms ease;
+        display: inline-block;
+    }
+    .item_selected:hover .btn_borrar_item {
+        color: gray;
+    }
 
     .container-flex-col-cel{
         display: flex;
@@ -1529,6 +1544,16 @@ height: 10%;
 
 @media screen and (min-width: 451px) and (max-width: 560px) {
 
+    .btn_borrar_item {
+        color: gray;
+        transform: translate(8px, 0);
+        transition: all 300ms ease;
+        display: inline-block;
+    }
+    .item_selected:hover .btn_borrar_item {
+        color: gray;
+    }
+
     #sesion-de-contacto-por-whatsapp {
         height: 17.3%;
         padding: 4% 0;
@@ -1609,6 +1634,14 @@ height: 10%;
 }
 
 @media screen and (min-width: 561px) and (max-width: 750px) {
+
+    .btn_borrar_item {
+        color: gray;
+        transform: translate(8px, 0);
+    }
+    .item_selected:hover .btn_borrar_item {
+        color: gray;
+    }
 
     #sesion-de-contacto-por-whatsapp {
         height: 16.2%;
