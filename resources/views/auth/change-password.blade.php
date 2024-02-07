@@ -60,7 +60,7 @@ background-size: 200% 100%; min-height: 100%; min-width: 100%;
                                                     <small class="text-xs text-secondary">Incluir al menos 8 caracteres, 1 número, una mayúscula y una minúscula.</small>
                                                 @enderror
                                             </div>
-                                            
+
                                             <div class="flex flex-col mb-3">
                                                 <div class="input-group">
                                                  <input type="password" id="confirm_password" name="confirm-password"
@@ -90,10 +90,10 @@ background-size: 200% 100%; min-height: 100%; min-width: 100%;
                             <div
                                 class="animate__animated animate__bounceInLeft animate__fast col-6 d-lg-flex d-none h-100 my-auto pe-0 position-absolute top-0 end-0 text-center justify-content-center flex-column">
                                 <div class="position-relative bg-gradient-primary h-100 px-7 d-flex flex-column justify-content-center overflow-hidden"
-                                style="background-image: url('/img/backgrounds/fondo-login-v1.jpg');
-                                background-size: cover;">
+                                style="background-image: url('/img/backgrounds/change_password.jpg');
+                                    background-size: cover; background-repeat: no-repeat; background-position: center;">
                                 <span class="mask opacity-6" style="background-image: linear-gradient(310deg, #06090D 0%, #132340 100%);"></span>
-                                   
+
                                 </div>
                             </div>
                         </div>
@@ -115,14 +115,14 @@ background-size: 200% 100%; min-height: 100%; min-width: 100%;
             </div>
         </section>
     </main>
-    
+
     <script>
     const togglePassword = document.querySelector('#togglePassword');
     const toggleConfirmPassword = document.querySelector('#toggleConfirmPassword');
-    
+
     const password = document.querySelector('#password');
     const confirmPassword = document.querySelector('#confirm_password');
-    
+
     togglePassword.addEventListener('click', function (e) {
         // toggle the type attribute
         const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
@@ -130,7 +130,7 @@ background-size: 200% 100%; min-height: 100%; min-width: 100%;
         // toggle the eye slash icon
         this.classList.toggle('fa-eye-slash');
     });
-    
+
     toggleConfirmPassword.addEventListener('click', function(e){
        const type = confirmPassword.getAttribute('type') === 'password' ? 'text' : 'password';
        confirmPassword.setAttribute('type', type);

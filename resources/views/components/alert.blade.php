@@ -12,6 +12,7 @@
         display: flex;
         flex-direction: column;
         align-items: center;
+        background-color: white;
     }
 
     #btn-close-success,
@@ -44,12 +45,13 @@
         height: 100%;
         width: 100%;
         background-color: rgba(0, 0, 0, 0.407);
-        position: absolute;
+        position: fixed;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
         z-index: 10000;
     }
+
 </style>
 
 @if (session('message'))

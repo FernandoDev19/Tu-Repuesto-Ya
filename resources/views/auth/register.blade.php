@@ -87,7 +87,7 @@
                                                     @error('cel')
                                                         <p class='text-danger text-xs pt-1'>{{ $message }}</p>
                                                     @else
-                                                        <small class="text-xs text-color-secondary">!Debe tener Whatsapp¡ <i
+                                                        <small class="text-xs text-color-secondary">¡Debe tener Whatsapp! <i
                                                                 class="fa fa-whatsapp" aria-hidden="true"
                                                                 style="color: #25D366; font-size: 15px; transform: translate(0px, 2.4px);">
                                                             </i></small>
@@ -343,23 +343,17 @@
                                                     id="categoria_repuesto" style="color: var(--bs-secondary-color);"
                                                     required>
                                                     <option value="" disabled selected>*Especialidad</option>
+                                                    <option value="LLantas">LLantas</option>
                                                     <option value="Frenos">Frenos</option>
-                                                    <option value="Eléctricos">Eléctricos</option>
-                                                    <option value="Batería">Batería</option>
-                                                    <option value="Luces">Luces</option>
-                                                    <option value="Filtros">Filtros</option>
-                                                    <option value="Correas">Correas</option>
                                                     <option value="Suspensión">Suspensión</option>
-                                                    <option value="Transmisión">Transmisión</option>
+                                                    <option value="Dirección">Sistema de Dirección</option>
                                                     <option value="Motor">Motor</option>
-                                                    <option value="Accesorios">Accesorios</option>
-                                                    <option value="Llantas">Llantas</option>
-                                                    <option value="Vidrios">Vidrios</option>
-                                                    <option value="Mangueras">Mangueras</option>
+                                                    <option value="Transmisión">Transmisión</option>
+                                                    <option value="Tren motriz">Tren motriz</option>
+                                                    <option value="Latas">Latas</option>
                                                     <option value="Refrigeración">Refrigeración</option>
-                                                    <option value="Liquidos">Liquidos</option>
-                                                    <option value="Frenos">Frenos</option>
-                                                    <option value="Mofles">Mofles</option>
+                                                    <option value="Eléctricos">Eléctricos
+                                                    </option>
                                                     <option value="otros">Otros</option>
                                                 </select>
                                                 <div id="categorias_preferencias" class="flex flex-col mb-3">
@@ -435,8 +429,8 @@
                             <div
                                 class="animate__animated animate__bounceInRight animate__fast col-6 d-lg-flex d-none h-100 my-auto position-absolute top-0 start-0 text-center justify-content-center flex-column">
                                 <div class="position-relative bg-gradient-primary h-100 px-7 d-flex flex-column justify-content-center overflow-hidden"
-                                    style="background-image: url('/img/backgrounds/fondo-login-v1.jpg');
-                                    background-size: cover;">
+                                    style="background-image: url('/img/backgrounds/img_register.jpg');
+                                    background-size: cover; background-repeat: no-repeat; background-position: center;">
                                     <span class="mask opacity-6"
                                         style="background-image: linear-gradient(60deg, #06090D 0%, #132340 100%);"></span>
 

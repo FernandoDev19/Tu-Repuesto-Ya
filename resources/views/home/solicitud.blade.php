@@ -16,7 +16,6 @@
 
         .contenedor div {
             min-width: 100% !important;
-            border: none !important;
         }
     }
 </style>
@@ -31,18 +30,6 @@
     background-size: 200% 100%; min-height: 100%; min-width: 100%;")
 
 @section('content')
-
-    @if (session('message'))
-        <div class="alert alert-info" id="registration-message">
-            {{ session('message') }}
-        </div>
-    @endif
-
-    @if (session('error'))
-        <div class="alert alert-danger" id="error">
-            {{ session('error') }}
-        </div>
-    @endif
 
     <div id="overlay" class="overlay" style="display:flex; flex-direction:column;">
         <div class="loader"></div>
@@ -78,7 +65,7 @@
                                                     <div class="text-start">
                                                         <label for="marca" class="mb-2"
                                                             style="color:blue; font-weigth: 900;">
-                                                            <h5>Marca</h5>
+                                                            <h5 style="letter-spacing: 1px; font-weight: 700;">Marca</h5>
                                                         </label>
                                                         <span style="background-color: rgb(143 143 143 / 21%);"
                                                             type="text" name="marca"
@@ -91,7 +78,7 @@
                                                     <div class="text-start">
                                                         <label for="referencia" class="mb-2"
                                                             style="color:blue; font-weigth: 900;">
-                                                            <h5>Referencia</h5>
+                                                            <h5 style="letter-spacing: 1px; font-weight: 700;">Referencia</h5>
                                                         </label>
                                                         <span style="background-color: rgb(143 143 143 / 21%);"
                                                             type="text" name="referencia"
@@ -106,7 +93,7 @@
                                                     <div class="text-start">
                                                         <label for="modelo" class="mb-2"
                                                             style="color:blue; font-weigth: 900;">
-                                                            <h5>Modelo</h5>
+                                                            <h5 style="letter-spacing: 1px; font-weight: 700;">Modelo</h5>
                                                         </label>
                                                         <span style="background-color: rgb(143 143 143 / 21%);"
                                                             type="text" name="modelo"
@@ -120,7 +107,7 @@
                                                     <div class="text-start">
                                                         <label for="tipo" class="mb-2"
                                                             style="color:blue; font-weigth: 900;">
-                                                            <h5>Tipo de transmisión</h5>
+                                                            <h5 style="letter-spacing: 1px; font-weight: 700;">Tipo de transmisión</h5>
                                                         </label>
                                                         <span style="background-color: rgb(143 143 143 / 21%);"
                                                             type="text" name="tipo"
@@ -134,7 +121,7 @@
                                                     <div class="text-start">
                                                         <label for="repuesto" class="mb-2"
                                                             style="color:blue; font-weigth: 900;">
-                                                            <h5>Repuesto</h5>
+                                                            <h5 style="letter-spacing: 1px; font-weight: 700;">Repuestos</h5>
                                                         </label>
                                                         <div class="form-control text-start"
                                                             style="background-color: rgb(143 143 143 / 21%); height: auto; display: flex; justify-content: space-between; align-items: center;">
@@ -168,7 +155,7 @@
                                                     <div class="text-start">
                                                         <label for="comentario" class="mb-2"
                                                             style="color:blue; font-weigth: 900;">
-                                                            <h5>Comentarios</h5>
+                                                            <h5 style="letter-spacing: 1px; font-weight: 700;">Comentarios</h5>
                                                         </label>
                                                         <textarea id="comentariosC" style="background-color: rgb(143 143 143 / 21%);" name="comentario"
                                                             class="form-control text-start datos_pedido" placeholder="Vacio..." aria-label="Comentario" rows="6"
@@ -183,55 +170,57 @@
                                     $count_btns = 1;
                                     $count_id = 1;
                                     $count_class = 1;
+                                    $count_check = 1;
                                     ?>
                                     <div class="contenedor-form animate__animated animate__fadeIn col-6 d-lg-flex position-relative top-0 end-0 col-md-6 d-flex flex-column"
                                         style="border-left: 0.5px solid aliceblue;">
                                         <div class="card card-plain">
                                             <div class="card-header pb-0 text-center text-cel-center"
                                                 style="background-color: transparent;">
-                                                <h4 class="font-weight-bolder">Datos del proveedor</h4>
+                                                <h4 class="font-weight-bolder">Datos para cotizar</h4>
                                             </div>
                                             <div class="card-body text-start">
                                                 <div class="flex flex-col mb-3">
                                                     <label for="nit" class="mb-2"
                                                         style="color:blue; font-weigth: 900;">
-                                                        <h5>*NIT</h5>
+                                                        <h5 style="letter-spacing: 1px; font-weight: 700;"><span class="text-danger">*</span>NIT del almacén</h5>
                                                     </label>
                                                     <input type="text" name="nit" id="nit"
                                                         class="form-control text-start" placeholder="NIT"
                                                         aria-label="Nit"
-                                                        value="@if (auth()->check() and
-                                                                auth()->user()->hasRole('Proveedor')) {{ auth()->user()->proveedor->nit_empresa }}
-@else
-{{ old('nit') }} @endif"
+                                                        value="@if(auth()->check()and auth()->user()->hasRole('Proveedor')){{ auth()->user()->proveedor->nit_empresa }}@else{{ old('nit') }}@endif"
                                                         required>
                                                     @error('nit')
                                                         <small class="text-danger text-xs pt-1">{{ $message }}</small>
                                                     @enderror
                                                 </div>
 
-                                                <div class="flex flex-col mb-3">
-                                                    <label for="repuesto" class="mb-2"
+                                                <div class="flex flex-col mb-3" style="overflow-x: hidden;">
+                                                    <label for="repuesto" class="mb-3"
                                                         style="color:blue; font-weigth: 900;">
-                                                        <h5>*Repuestos</h5>
+                                                        <h5 class="mb-2" style="letter-spacing: 1px; font-weight: 700;"><span class="text-danger">*</span>Repuestos solicitados</h5>
+                                                        <span style="color: #344767de; font-size: 1.2rem !important;">¿Tienes alguno de estos?</span> <br><br>
+                                                        <span class="text-primary pt-1" style="font-size: 1rem !important;">¡SELECCIONA!</span>
                                                     </label>
-                                                    <div class="form-control" style="height: auto;">
+
+                                                    <div class="form-control" style="height: auto; border: none; border: none; padding: 0;">
                                                         <div class="items_container" id="items_container">
                                                             @foreach ($repuesto as $repuestos)
-                                                                <button type="button"
-                                                                    class="item_selected acepted"
-                                                                    name="item">{{$repuestos}}<span class="btn_borrar_item">×</span></button>
+                                                            <div style="width:100%; display: flex; gap: 1rem;">
+                                                                <button type="button" class="item_selected rojo {{ $count_class++ }}"
+                                                                    name="item"><input type="checkbox" class="btn_borrar_item" id="check_{{$count_btns++}}">{{ $repuestos }}</button>
+                                                            </div>
                                                             @endforeach
                                                         </div>
                                                     </div>
-
-                                                    @error('repuesto')
+                                                    <span class="text-primary pt-1" style="font-size: 1rem !important; font-weight: 600;">COTIZA</span>
+                                                    @error('json_repuestos')
                                                         <small class="text-danger text-xs pt-1">{{ $message }}</small>
                                                     @enderror
                                                 </div>
 
                                                 {{-- Tipo de repuesto --}}
-                                                 {{-- <div class="flex flex-col mb-3">
+                                                {{-- <div class="flex flex-col mb-3">
                                                     <label for="tipo_repuesto" class="mb-2"
                                                         style="color:blue; font-weigth: 900;">
                                                         <h5>*Tipo de repuestos</h5>
@@ -276,10 +265,10 @@
                                                     @enderror
                                                 </div> --}}
 
-                                                <div class="flex flex-col mb-3">
+                                                {{-- <div class="flex flex-col mb-3">
                                                     <label for="precio" class="mb-2"
                                                         style="color:blue; font-weigth: 900;">
-                                                        <h5>*Precio Estimado (COP)</h5>
+                                                        <h5>*Precio (COP)</h5>
                                                     </label>
                                                     <input type="text" name="precio" id="precio"
                                                         class="form-control text-start" placeholder="ejemplo: 12345..."
@@ -288,7 +277,7 @@
                                                     @error('precio')
                                                         <small class="text-danger text-xs pt-1">{{ $message }}</small>
                                                     @enderror
-                                                </div>
+                                                </div> --}}
 
                                                 {{-- Garantia --}}
                                                 {{-- <div class="flex flex-col mb-3">
@@ -313,110 +302,88 @@
                                                 </div> --}}
 
                                                 {{-- Para mas de un repuesto --}}
-                                                {{-- <div class="flex flex-col mb-3">
+                                                <div class="flex flex-col mb-3">
                                                     <div
                                                         style="width: 100%; display: flex; gap: 5%; flex-wrap: wrap; justify-content: space-between;">
                                                         @foreach ($repuesto as $repuestos)
-                                                            <div id="container_{{ $count_id++ }}"
-                                                                style="display: flex; flex-direction: column; margin: 2% 2% 0 0; gap: 5px;">
-                                                                <h5><strong>{{ $count++ . ' ' . $repuestos }}</strong></h5>
+                                                            <div id="container_{{ $count_id++ }}" class="hide"
+                                                                style="display: flex; flex-direction: column; margin: 2% 2% 0 0; gap: 5px; border: 1px solid darkgray;
+                                                                border-radius: .375rem; border-top: none; border-left: none; border-right: none; padding: 1rem 0;">
+                                                                <h5><strong>{{ $count++ . '. ' . $repuestos }}</strong>
+                                                                </h5>
 
-                                                                <div>
-                                                                    <small class="text-xs">Tipo de Repuesto</small>
-                                                                    <select name="tipo_repuesto[]" id="tipo_repuesto"
-                                                                        class="form-control text-start"
-                                                                        aria-label="Tipo de repuesto"
-                                                                        style="padding: 0 0 0 0.75rem;">
-                                                                        <option
-                                                                            title="Son los repuestos que vienen instalados de fábrica en tu vehículo. Garantizan la misma calidad y ajuste que cuando el carro era nuevo."
-                                                                            value="Originales"
-                                                                            style="display: flex; justify-content: space-between;">
-                                                                            Repuestos Originales</option>
-                                                                        <option
-                                                                            value="Tipo Original (Elaborado en diferentes fabricas)"
-                                                                            title="Fabricados por la misma empresa que suministra al fabricante del carro, pero vendidos bajo la marca del fabricante de repuestos.">
-                                                                            Repuestos de tipo Original</option>
-                                                                        <option value="Generico"
-                                                                            title="Repuestos genéricos producidos por diversas empresas, con variaciones en calidad y precio.">
-                                                                            Repuestos Génericos</option>
-                                                                        <option value="Nacionales"
-                                                                            title="Repuestos nacionales fabricados dentro del país, con diferencias en calidad y precio respecto a los originales.">
-                                                                            Repuestos Nacionales</option>
-                                                                        <option value="Coreano"
-                                                                            title="Repuestos coreanos conocidos por su calidad y compatibilidad con modelos específicos de vehículos.">
-                                                                            Repuestos Coreanos</option>
-                                                                        <option value="Japones"
-                                                                            title="Repuestos japoneses que ofrecen alta calidad y rendimiento, ideales para vehículos de marcas japonesas.">
-                                                                            Repuestos Japoneses</option>
-                                                                        <option value="Chino"
-                                                                            title="Repuestos chinos que pueden ser más económicos, pero con una calidad que puede variar significativamente.">
-                                                                            Repuestos Chinos</option>
-                                                                        <option value="Remanufacturado"
-                                                                            title="Repuestos usados que han sido desmontados, inspeccionados y restaurados a condiciones de trabajo como nuevas.">
-                                                                            Repuestos Remanufacturados</option>
-                                                                        <option value="Reacondicionado"
-                                                                            title="Similar a los remanufacturados, pero con un proceso de restauración que puede no ser tan completo.">
-                                                                            Repuestos Reacondicionados</option>
-                                                                        <option value="Usado"
-                                                                            title="Extraídos de vehículos que ya no están en funcionamiento, son una opción más económica pero con una vida útil variable.">
-                                                                            Repuestos Usados o Reciclados</option>
-                                                                    </select>
-                                                                </div>
-                                                                @error('tipo_repuesto')
-                                                                    <small
-                                                                        class="text-danger text-xs pt-1">{{ $message }}</small>
-                                                                @enderror
+                                                                <span style="color: #344767;"><span class="text-danger">*</span>Precio</span>
+                                                                <input type="text" name="precio[]" id="precio"
+                                                                    class="form-control text-start"
+                                                                    placeholder="ejemplo: 12345..." aria-label="Precio"
+                                                                    value="{{ old('precio[' . $count . ']') }}"
+                                                                    onkeyup="formatoPrecio(this)" disabled required>
 
-                                                                <div>
-                                                                    <small class="text-xs">Precio</small>
-                                                                    <input type="text" name="precio[]" id="precio"
-                                                                        class="form-control text-start"
-                                                                        placeholder="ejemplo: 12345..."
-                                                                        aria-label="Precio" value="{{ old('precio['. $count .']') }}"
-                                                                        onkeyup="formatoPrecio(this)" required>
 
-                                                                </div>
                                                                 @error('precio')
                                                                     <small
                                                                         class="text-danger text-xs pt-1">{{ $message }}</small>
                                                                 @enderror
 
-                                                                <div>
-                                                                    <small class="text-xs">Garantia</small>
-                                                                    <div class="container_form"
-                                                                        style="display: flex; gap: 1%; ">
-                                                                        <input type="text" id="garantia"
-                                                                            name="garantia[]"
-                                                                            class="form-control text-start"
-                                                                            placeholder="Ejemplo: 6" aria-label="Garantia"
-                                                                            value="{{ old('garantia['. $count .']') }}"
-                                                                            onkeyup="garantiaSelect(this)">
-                                                                        <select name="garantiaSeleccion"
-                                                                            id="garantiaSeleccion" class="form-control"
-                                                                            style="width: auto; padding: 0 0.75rem;">
-                                                                            <option value="mes">mes</option>
-                                                                            <option value="año">año</option>
-                                                                        </select>
-                                                                    </div>
-                                                                </div>
-                                                                @error('garantia')
+                                                                <span style="color: #344767;">Tipo de Repuesto</span>
+                                                                <select name="tipo_repuesto[]" id="tipo_repuesto"
+                                                                    class="form-control text-start"
+                                                                    aria-label="Tipo de repuesto"
+                                                                    style="padding: 0 0 0 0.75rem;" disabled>
+                                                                    <option
+                                                                        title="Son los repuestos que vienen instalados de fábrica en tu vehículo. Garantizan la misma calidad y ajuste que cuando el carro era nuevo."
+                                                                        value="Originales"
+                                                                        style="display: flex; justify-content: space-between;">
+                                                                        Repuestos Originales</option>
+                                                                    <option
+                                                                        value="Tipo Original (Elaborado en diferentes fabricas)"
+                                                                        title="Fabricados por la misma empresa que suministra al fabricante del carro, pero vendidos bajo la marca del fabricante de repuestos.">
+                                                                        Repuestos de tipo Original</option>
+                                                                    <option value="Generico"
+                                                                        title="Repuestos genéricos producidos por diversas empresas, con variaciones en calidad y precio.">
+                                                                        Repuestos Génericos</option>
+                                                                    <option value="Nacionales"
+                                                                        title="Repuestos nacionales fabricados dentro del país, con diferencias en calidad y precio respecto a los originales.">
+                                                                        Repuestos Nacionales</option>
+                                                                    <option value="Coreano"
+                                                                        title="Repuestos coreanos conocidos por su calidad y compatibilidad con modelos específicos de vehículos.">
+                                                                        Repuestos Coreanos</option>
+                                                                    <option value="Japones"
+                                                                        title="Repuestos japoneses que ofrecen alta calidad y rendimiento, ideales para vehículos de marcas japonesas.">
+                                                                        Repuestos Japoneses</option>
+                                                                    <option value="Chino"
+                                                                        title="Repuestos chinos que pueden ser más económicos, pero con una calidad que puede variar significativamente.">
+                                                                        Repuestos Chinos</option>
+                                                                    <option value="Remanufacturado"
+                                                                        title="Repuestos usados que han sido desmontados, inspeccionados y restaurados a condiciones de trabajo como nuevas.">
+                                                                        Repuestos Remanufacturados</option>
+                                                                    <option value="Reacondicionado"
+                                                                        title="Similar a los remanufacturados, pero con un proceso de restauración que puede no ser tan completo.">
+                                                                        Repuestos Reacondicionados</option>
+                                                                    <option value="Usado"
+                                                                        title="Extraídos de vehículos que ya no están en funcionamiento, son una opción más económica pero con una vida útil variable.">
+                                                                        Repuestos Usados o Reciclados</option>
+                                                                </select>
+
+                                                                @error('tipo_repuesto')
                                                                     <small
                                                                         class="text-danger text-xs pt-1">{{ $message }}</small>
                                                                 @enderror
+
                                                             </div>
                                                         @endforeach
                                                     </div>
                                                     <!--Tipo de repuesto, Precio y garantia-->
-                                                </div> --}}
+                                                </div>
 
                                                 <div class="flex flex-col mb-3">
 
                                                     <div class="text-start">
                                                         <label for="comentarioP" class="mb-2"
                                                             style="color:blue; font-weigth: 900;">
-                                                            <h5>Comentarios</h5>
+                                                            <h5 style="letter-spacing: 1px; font-weight: 700;">Comentarios</h5>
                                                         </label>
-                                                        <textarea name="comentarioP" class="form-control text-center" placeholder="¿Tienes algúnos Comentarios?"
+                                                        <textarea id="comentario_proveedor" name="comentarioP" class="form-control text-center" placeholder="¿Tienes algúnos Comentarios?"
                                                             aria-label="ComentarioP" rows="6"></textarea>
                                                     </div>
                                                 </div>
@@ -510,27 +477,34 @@
     </div>
 
     {{-- Script para guardar datos de precio, garantia. --}}
-    {{-- <script>
-        document.addEventListener('DOMContentLoaded', function () {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
             let container_buttons = document.getElementById('items_container');
             let count_buttons = container_buttons.children.length;
 
-            container_buttons.addEventListener('click', function (event) {
-                if (event.target.classList.contains('item_selected')) {
-                    event.target.classList.toggle('acepted');
-                    event.target.classList.toggle('rojo');
-                    for (let i = 1; i <= count_buttons; i++) {
-                        let container_repuestos = document.getElementById('container_' + i);
+            container_buttons.addEventListener('click', function(event) {
+
+
+                if (event.target.classList.contains('btn_borrar_item')) {
+                    // Obtener el botón padre (el botón que contiene la ×)
+                    let button = event.target.closest('.item_selected');
+
+                    // Toggle de la clase "rojo" en el botón padre
+                    if (button) {
+                        button.classList.toggle('rojo');
+                        button.classList.toggle('acepted');
+                        let buttonNumber = button.classList[1];
+                        let container_repuestos = document.getElementById('container_' + buttonNumber);
                         let children = container_repuestos.children;
-                        if (event.target.classList.contains(i) && event.target.classList.contains('rojo')) {
+
+                        if (button.classList.contains('rojo')) {
                             container_repuestos.classList.add('hide');
-                            for (let i = 0; i < children.length; i++){
+                            for (let i = 0; i < children.length; i++) {
                                 children[i].disabled = true;
                             }
-                        }
-                        else if(event.target.classList.contains(i) && event.target.classList.contains('acepted')){
+                        } else {
                             container_repuestos.classList.remove('hide');
-                            for (let i = 0; i < children.length; i++){
+                            for (let i = 0; i < children.length; i++) {
                                 children[i].disabled = false;
                             }
                         }
@@ -538,7 +512,7 @@
                 }
             });
 
-            document.getElementById('form_provider').addEventListener('submit', function (event) {
+            document.getElementById('form_provider').addEventListener('submit', function(event) {
                 event.preventDefault();
 
                 // Obtener los textos de los botones seleccionados
@@ -552,44 +526,11 @@
                 let inputJson = document.createElement('input');
                 inputJson.type = 'hidden';
                 inputJson.name = 'json_repuestos';
-                inputJson.value = jsonTextosSeleccionados.replace(/[×\n\s]/g, '');
+                inputJson.value = jsonTextosSeleccionados.replace(/[×\n]/g, '');
                 this.appendChild(inputJson);
 
-                // Ahora, puedes enviar el formulario
-                this.submit();
-            });
-        });
-    </script> --}}
-
-    {{-- Script para elegir si tiene o no el repuesto --}}
-     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            let container_buttons = document.getElementById('items_container');
-            let count_buttons = container_buttons.children.length;
-
-            container_buttons.addEventListener('click', function (event) {
-                if (event.target.classList.contains('item_selected')) {
-                    event.target.classList.toggle('acepted');
-                    event.target.classList.toggle('rojo');
-                }
-            });
-
-            document.getElementById('form_provider').addEventListener('submit', function (event) {
-                event.preventDefault();
-
-                // Obtener los textos de los botones seleccionados
-                let textosSeleccionados = Array.from(container_buttons.getElementsByClassName('acepted'))
-                    .map(button => button.textContent);
-
-                // Convertir el arreglo a una cadena JSON
-                let jsonTextosSeleccionados = JSON.stringify(textosSeleccionados);
-
-                // Agregar un campo oculto al formulario y asignarle la cadena JSON
-                let inputJson = document.createElement('input');
-                inputJson.type = 'hidden';
-                inputJson.name = 'json_repuestos';
-                inputJson.value = jsonTextosSeleccionados.replace(/×/g, '').replace(/\n/g, '');
-                this.appendChild(inputJson);
+                // Salida de consola para verificar el valor de 'json_repuestos'
+                console.log('json_repuestos:', jsonTextosSeleccionados);
 
                 // Ahora, puedes enviar el formulario
                 this.submit();
@@ -643,4 +584,32 @@
             }
         }
     </script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        let comentario = document.getElementById('comentario_proveedor');
+        function restringirCaracteres(){
+            let texto = comentario.value;
+            let numEspacios = (texto.match(/ /g) || []).length;
+            let numSaltosLinea = (texto.match(/\n/g) || []).length;
+
+            if (numEspacios > 2) {
+                comentario.value = texto.replace(/ +/g, ' '.repeat(1));
+            }
+            if (numSaltosLinea > 2) {
+                comentario.value = texto.replace(/\n+/g, '\n'.repeat(1));
+            }
+            if (texto.length > 400) {
+                comentario.value = texto.slice(0, 400);
+            }
+        }
+
+        comentario.addEventListener('input', function(){
+            restringirCaracteres();
+        });
+    });
+</script>
+
+
+
 @endsection

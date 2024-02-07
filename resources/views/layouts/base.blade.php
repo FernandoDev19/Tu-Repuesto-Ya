@@ -46,14 +46,14 @@
                         @guest
                             <li class="nav-item">
                                 <a class="nav_link nav_e1" href="{{ route('login') }}">
-                                    <i class="fas fa-solid fa-user"></i>
-                                    Iniciar sesión
+                                    ¿Eres proveedor?
                                 </a>
                             </li>
                         @else
                             <li id="container_user" class="nav-item dropdown no-arrow">
                                 <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-user" style="color: #b3b3b3 !important;"></i>
                                     <span class="nav_e1"
                                         class="mr-2 d-none d-lg-inline text-gray-600 small">{{ $name }}</span>
                                 </a>
@@ -116,393 +116,505 @@
             </div>
         </div>
 
-        {{-- Modal cliente --}}
-        <div style="max-height: 100vh; max-width: 100vw;" class="modal fade" id="clienteModal" tabindex="-1"
-            role="dialog" aria-labelledby="clienteModalLabel" aria-hidden="true">
+        <div class="modal fade" id="clienteModal" tabindex="-1" role="dialog"
+            style="max-height: 100vh; max-width: 100vw;">
             <div class="modal-dialog" role="document" style="max-width: 800px !important;">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Crear solicitud </h5>
-                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">×</span>
+                        <h5 class="modal-title" style="font-weight: 700;">Crea tu solicitud</h5>
+                        <button type="button" class="btn btn-close close" data-dismiss="modal" aria-label="Close">
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form id="form_client" method="post" action="{{ route('validation') }}"
-                            enctype="multipart/form-data">
-                            @csrf
+                        <!-- Pestañas del formulario -->
+                        <ul class="nav nav-tabs" id="formTabs">
+                            <li class="nav-item">
+                                <a class="nav-link text-secondary active paso_activo" href="#" onclick="changeTab2()" id="tab1">Paso 1</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-secondary" href="#" onclick="validateForm1()" id="tab2">Paso 2</a>
+                            </li>
+                        </ul>
 
-                            <fieldset class="mb-3">
-                                <legend class="text-center">
-                                    <h5>Datos del vehiculo</h5>
-                                </legend>
-                                <div class="flex flex-col mb-3 text-center">
-                                    <input title="Marca" id="marca-otro" class="form-control text-center hide"
-                                        value="{{ old('marca') }}" placeholder="*Otra Marca" autofocus>
-                                    <select name="marca" id="marca" class="form-control text-center"
-                                        style="color: var(--bs-secondary-color);" required>
-                                        <option value="" disabled selected>*Marca</option>
-                                        <!--<option value="AKT">AKT</option>-->
-                                        <option value="Alfa Romeo">Alfa Romeo</option>
-                                        <option value="Alpine">Alpine</option>
-                                        <option value="Aston Martin">Aston Martin</option>
-                                        <!--<option value="Apollo Motors">Apollo Motors</option>-->
-                                        <!--<option value="Aprilia">Aprilia</option>-->
-                                        <option value="Acura">Acura</option>
-                                        <option value="Audi">Audi</option>
-                                        <!--<option value="Auteco">Auteco</option>-->
-                                        <!--<option value="Ayco">Ayco</option>-->
-                                        <option value="BAIC">BAIC</option>
-                                        <!--<option value="Bajaj">Bajaj</option>-->
-                                        <!--<option value="Benelli">Benelli</option>-->
-                                        <option value="Bugatti">Bugatti</option>
-                                        <option value="Brabus">Brabus</option>
-                                        <option value="BMW">BMW</option>
-                                        <option value="BYD">BYD</option>
-                                        <!--<option value="CF Moto">CF Moto</option>-->
-                                        <option value="Changan">Changan</option>
-                                        <option value="Chery">Chery</option>
-                                        <option value="Cupra">Cupra</option>
-                                        <option value="Chevrolet">Chevrolet</option>
-                                        <option value="Cadillac">Cadillac</option>
-                                        <option value="Citroën">Citroën</option>
-                                        <option value="Dodge">Dodge</option>
-                                        <option value="DFSK">DFSK</option>
-                                        <option value="DS">DS</option>
-                                        <!--<option value="Ducati">Ducati</option>-->
-                                        <!--<option value="FAW">FAW</option>-->
-                                        <option value="Fiat">Fiat</option>
-                                        <option value="Ferrari">Ferrari</option>
-                                        <option value="Ford">Ford</option>
-                                        <option value="Foton">Foton</option>
-                                        <option value="Great Wall">Great Wall</option>
-                                        <option value="GMC">GMC</option>
-                                        <option value="Haval">Haval</option>
-                                        <!--<option value="Harley Davidson">Harley Davidson</option>-->
-                                        <!--<option value="Hero Motos">Hero Motos</option>-->
-                                        <option value="Honda">Honda</option>
-                                        <option value="Hummer">Hummer</option>
-                                        <option value="Hennessey">Hennessey</option>
-                                        <option value="Hyundai">Hyundai</option>
-                                        <option value="Infiniti">Infiniti</option>
-                                        <!--<option value="Husqvarna">Husqvarna</option>-->
-                                        <option value="JAC">JAC</option>
-                                        <!--<option value="Jialing Motos">Jialing Motos</option>-->
-                                        <option value="JMC">JMC</option>
-                                        <option value="Jeep">Jeep</option>
-                                        <!--<option value="Kawasaki">Kawasaki</option>-->
-                                        <!--<option value="Keeway">Keeway</option>-->
-                                        <option value="Kia">Kia</option>
-                                        <!--<option value="KTM">KTM</option>-->
-                                        <option value="Kenworth">Kenworth</option>
-                                        <option value="Koenigsegg">Koenigsegg</option>
-                                        <!--<option value="Kymco">Kymco</option>-->
-                                        <option value="Land Rover">Land Rover</option>
-                                        <option value="Lamborghini">Lamborghini</option>
-                                        <option value="Lexus">Lexus</option>
-                                        <option value="Lotus">Lotus</option>
-                                        <option value="Lincoln">Lincoln</option>
-                                        <!--<option value="Lifan">Lifan</option>-->
-                                        <option value="Mahindra">Mahindra</option>
-                                        <option value="Mazda">Mazda</option>
-                                        <option value="McLaren">McLaren</option>
-                                        <option value="Maserati">Maserati</option>
-                                        <option value="Mercedes-Benz">Mercedes-Benz</option>
-                                        <option value="MG">MG</option>
-                                        <option value="Mini">Mini</option>
-                                        <option value="Mitsubishi">Mitsubishi</option>
-                                        <!--<option value="Moto Guzzi Colombia">Moto Guzzi Colombia</option>-->
-                                        <option value="Nissan">Nissan</option>
-                                        <option value="Opel">Opel</option>
-                                        <option value="Peugeot">Peugeot</option>
-                                        <option value="Pontiac">Pontiac</option>
-                                        <!--<option value="Piaggio">Piaggio</option>-->
-                                        <option value="Porsche">Porsche</option>
-                                        <option value="Pagani">Pagani</option>
-                                        <!--<option value="Pulsar">Pulsar</option>-->
-                                        <option value="Renault">Renault</option>
-                                        <option value="Rivian">Rivian</option>
-                                        <option value="Rolls Royce">Rolls Royce</option>
-                                        <!--<option value="Royal Enfield">Royal Enfield</option>-->
-                                        <option value="SEAT">SEAT</option>
-                                        <!--<option value="Sherco">Sherco</option>-->
-                                        <option value="Skoda">Skoda</option>
-                                        <option value="SsangYong">SsangYong</option>
-                                        <!--<option value="Starker">Starker</option>-->
-                                        <option value="Subaru">Subaru</option>
-                                        <option value="Scania">Scania</option>
-                                        <option value="Suzuki">Suzuki</option>
-                                        <!--<option value="SYM">SYM</option>-->
-                                        <option value="Tesla">Tesla</option>
-                                        <option value="Toyota">Toyota</option>
-                                        <!--<option value="Triumph">Triumph</option>-->
-                                        <!--<option value="TVS">TVS</option>-->
-                                        <!--<option value="Vespa">Vespa</option>-->
-                                        <option value="Volkswagen">Volkswagen</option>
-                                        <option value="Volvo">Volvo</option>
-                                        <!--<option value="Yamaha">Yamaha</option>-->
-                                        <!--<option value="Zotye">Zotye</option>-->
-                                        <option value="otro">Otro</option>
-                                    </select>
-                                    @error('marca')
-                                        <div class="text-danger text-xs pt-1">{{ $message }}</div>
-                                    @enderror
-                                </div>
+                        <!-- Contenido de las pestañas -->
+                        <div class="tab-content">
+                            <form id="form_client" method="POST" action="{{ route('validation') }}"
+                                enctype="multipart/form-data">
+                                @csrf
+                                <!-- Parte 1 del formulario -->
+                                <div class="tab-pane fade show active" id="tab-content1"
+                                    style="transition: all 300ms ease;">
 
-                                <div class="flex flex-col mb-3 text-center">
-                                    <input type="text" name="referencia" class="form-control text-center"
-                                        placeholder="*Referencia (Ej. Captiva, Joy, Duster)" aria-label="Referencia"
-                                        value="{{ old('referencia') }}" required>
-                                    @error('referencia')
-                                        <div class="text-danger text-xs pt-1">{{ $message }}</div>
-                                    @enderror
-                                </div>
+                                    <fieldset class="form-group">
+                                        <legend class="text-center" style="display: flex; justify-content: center;">
+                                            <h5
+                                                style="background: var(--color-primary);
+                                            color: white;
+                                            width: max-content;
+                                            padding: .3rem 1.5rem;
+                                            border-radius: 0 0 1rem 1rem;
+                                            font-weight: 600;">
+                                                Datos del vehiculo</h5>
+                                        </legend>
+                                        <div class="flex flex-col mb-4 text-center">
+                                            <div style="display: flex; align-items: center;">
+                                                <span class="form-control numeros_campos">1</span>
+                                                <input title="Marca" id="marca-otro" style="border-color: var(--bs-dark-border-subtle); border-radius: 0 .375rem .375rem 0;"
+                                                    class="form-control text-center hide" value="{{ old('marca') }}"
+                                                    placeholder="*Otra Marca" autofocus>
+                                                <select name="marca" id="marca"
+                                                    class="form-control text-center"
+                                                    style="color: var(--bs-secondary-color); border-color: var(--bs-dark-border-subtle); border-radius: 0 .375rem .375rem 0;"
+                                                    required>
+                                                    <option value="" disabled selected>*Marca del vehiculo</option>
+                                                    <!--<option value="AKT">AKT</option>-->
+                                                    <option value="Alfa Romeo">Alfa Romeo</option>
+                                                    <option value="Alpine">Alpine</option>
+                                                    <option value="Aston Martin">Aston Martin</option>
+                                                    <!--<option value="Apollo Motors">Apollo Motors</option>-->
+                                                    <!--<option value="Aprilia">Aprilia</option>-->
+                                                    <option value="Acura">Acura</option>
+                                                    <option value="Audi">Audi</option>
+                                                    <!--<option value="Auteco">Auteco</option>-->
+                                                    <!--<option value="Ayco">Ayco</option>-->
+                                                    <option value="BAIC">BAIC</option>
+                                                    <!--<option value="Bajaj">Bajaj</option>-->
+                                                    <!--<option value="Benelli">Benelli</option>-->
+                                                    <option value="Bugatti">Bugatti</option>
+                                                    <option value="Brabus">Brabus</option>
+                                                    <option value="BMW">BMW</option>
+                                                    <option value="BYD">BYD</option>
+                                                    <!--<option value="CF Moto">CF Moto</option>-->
+                                                    <option value="Changan">Changan</option>
+                                                    <option value="Chery">Chery</option>
+                                                    <option value="Cupra">Cupra</option>
+                                                    <option value="Chevrolet">Chevrolet</option>
+                                                    <option value="Cadillac">Cadillac</option>
+                                                    <option value="Citroën">Citroën</option>
+                                                    <option value="Dodge">Dodge</option>
+                                                    <option value="DFSK">DFSK</option>
+                                                    <option value="DS">DS</option>
+                                                    <!--<option value="Ducati">Ducati</option>-->
+                                                    <!--<option value="FAW">FAW</option>-->
+                                                    <option value="Fiat">Fiat</option>
+                                                    <option value="Ferrari">Ferrari</option>
+                                                    <option value="Ford">Ford</option>
+                                                    <option value="Foton">Foton</option>
+                                                    <option value="Great Wall">Great Wall</option>
+                                                    <option value="GMC">GMC</option>
+                                                    <option value="Haval">Haval</option>
+                                                    <!--<option value="Harley Davidson">Harley Davidson</option>-->
+                                                    <!--<option value="Hero Motos">Hero Motos</option>-->
+                                                    <option value="Honda">Honda</option>
+                                                    <option value="Hummer">Hummer</option>
+                                                    <option value="Hennessey">Hennessey</option>
+                                                    <option value="Hyundai">Hyundai</option>
+                                                    <option value="Infiniti">Infiniti</option>
+                                                    <!--<option value="Husqvarna">Husqvarna</option>-->
+                                                    <option value="JAC">JAC</option>
+                                                    <!--<option value="Jialing Motos">Jialing Motos</option>-->
+                                                    <option value="JMC">JMC</option>
+                                                    <option value="Jeep">Jeep</option>
+                                                    <!--<option value="Kawasaki">Kawasaki</option>-->
+                                                    <!--<option value="Keeway">Keeway</option>-->
+                                                    <option value="Kia">Kia</option>
+                                                    <!--<option value="KTM">KTM</option>-->
+                                                    <option value="Kenworth">Kenworth</option>
+                                                    <option value="Koenigsegg">Koenigsegg</option>
+                                                    <!--<option value="Kymco">Kymco</option>-->
+                                                    <option value="Land Rover">Land Rover</option>
+                                                    <option value="Lamborghini">Lamborghini</option>
+                                                    <option value="Lexus">Lexus</option>
+                                                    <option value="Lotus">Lotus</option>
+                                                    <option value="Lincoln">Lincoln</option>
+                                                    <!--<option value="Lifan">Lifan</option>-->
+                                                    <option value="Mahindra">Mahindra</option>
+                                                    <option value="Mazda">Mazda</option>
+                                                    <option value="McLaren">McLaren</option>
+                                                    <option value="Maserati">Maserati</option>
+                                                    <option value="Mercedes-Benz">Mercedes-Benz</option>
+                                                    <option value="MG">MG</option>
+                                                    <option value="Mini">Mini</option>
+                                                    <option value="Mitsubishi">Mitsubishi</option>
+                                                    <!--<option value="Moto Guzzi Colombia">Moto Guzzi Colombia</option>-->
+                                                    <option value="Nissan">Nissan</option>
+                                                    <option value="Opel">Opel</option>
+                                                    <option value="Peugeot">Peugeot</option>
+                                                    <option value="Pontiac">Pontiac</option>
+                                                    <!--<option value="Piaggio">Piaggio</option>-->
+                                                    <option value="Porsche">Porsche</option>
+                                                    <option value="Pagani">Pagani</option>
+                                                    <!--<option value="Pulsar">Pulsar</option>-->
+                                                    <option value="Renault">Renault</option>
+                                                    <option value="Rivian">Rivian</option>
+                                                    <option value="Rolls Royce">Rolls Royce</option>
+                                                    <!--<option value="Royal Enfield">Royal Enfield</option>-->
+                                                    <option value="SEAT">SEAT</option>
+                                                    <!--<option value="Sherco">Sherco</option>-->
+                                                    <option value="Skoda">Skoda</option>
+                                                    <option value="SsangYong">SsangYong</option>
+                                                    <!--<option value="Starker">Starker</option>-->
+                                                    <option value="Subaru">Subaru</option>
+                                                    <option value="Scania">Scania</option>
+                                                    <option value="Suzuki">Suzuki</option>
+                                                    <!--<option value="SYM">SYM</option>-->
+                                                    <option value="Tesla">Tesla</option>
+                                                    <option value="Toyota">Toyota</option>
+                                                    <!--<option value="Triumph">Triumph</option>-->
+                                                    <!--<option value="TVS">TVS</option>-->
+                                                    <!--<option value="Vespa">Vespa</option>-->
+                                                    <option value="Volkswagen">Volkswagen</option>
+                                                    <option value="Volvo">Volvo</option>
+                                                    <!--<option value="Yamaha">Yamaha</option>-->
+                                                    <!--<option value="Zotye">Zotye</option>-->
+                                                    <option value="otro">Otro</option>
+                                                </select>
+                                            </div>
 
-                                <div class="flex flex-col mb-3 text-center">
+                                            @error('marca')
+                                                <div class="text-danger text-xs pt-1">{{ $message }}</div>
+                                            @enderror
+                                        </div>
 
-                                    <select id="modelo" name="modelo" class="form-control text-center"
-                                        style="color: var(--bs-secondary-color);" required>
-                                        <option value='' disabled selected>*Modelo (Año)</option>
+                                        <div class="flex flex-col mb-4 text-center">
+                                            <div style="display: flex; align-items: center;">
+                                                <span
+                                                class="form-control numeros_campos">2</span>
+                                                <input type="text" name="referencia" id="referencia"
+                                                    class="form-control text-center" style="border-color: var(--bs-dark-border-subtle); border-radius: 0 .375rem .375rem 0;"
+                                                    placeholder="*Referencia del vehiculo (Ej. Joy)"
+                                                    aria-label="Referencia" value="{{ old('referencia') }}" required>
+                                            </div>
+                                            @error('referencia')
+                                                <div class="text-danger text-xs pt-1">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+
+                                        <div class="flex flex-col mb-4 text-center">
+
+                                            <div style="display: flex; align-items: center;">
+                                                <span
+                                                class="form-control numeros_campos">3</span>
+                                                <select id="modelo" name="modelo"
+                                                    class="form-control text-center"
+                                                    style="color: var(--bs-secondary-color); border-color: var(--bs-dark-border-subtle); border-radius: 0 .375rem .375rem 0;"
+                                                    required>
+                                                    <option value='' disabled selected>*Modelo del vehiculo (Año)</option>
+                                                    <?php
+                                                    $anioActual = date('Y');
+                                                    for ($modelo = $anioActual + 1; $modelo >= 1950; $modelo--) {
+                                                        echo "<option value=\"$modelo\">$modelo</option>";
+                                                    }
+                                                    ?>
+
+                                                </select>
+                                            </div>
+
+                                            @error('modelo')
+                                                <div class="text-danger text-xs pt-1">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+
+                                        <div class="flex flex-col mb-4 text-center">
+                                            <div style="display: flex; align-items: center;">
+                                                <span
+                                                class="form-control numeros_campos">4</span>
+                                                <select class="form-control" name="tipo" id="tipo"
+                                                    name="tipo"
+                                                    style="color: var(--bs-secondary-color); text-align: center; border-color: var(--bs-dark-border-subtle); border-radius: 0 .375rem .375rem 0;"
+                                                    required>
+                                                    <option value="" disabled selected>*Tipo de transmisión
+                                                        (Caja)
+                                                    </option>
+                                                    <option value="mecánica">Mecánica (Manual)</option>
+                                                    <option value="automatica">Automática</option>
+                                                </select>
+                                            </div>
+
+                                            @error('tipo')
+                                                <div class="text-danger text-xs pt-1">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+
                                         <?php
-                                        $anioActual = date('Y');
-                                        for ($modelo = $anioActual + 1; $modelo >= 1950; $modelo--) {
-                                            echo "<option value=\"$modelo\">$modelo</option>";
-                                        }
+                                        // $repuestos = [
+                                        //     'Llantas' => ['Llantas', 'Llantas delanteras', 'Llantas traseras', 'Llantas de repuesto', 'Llantas de invierno', 'Llantas de verano', 'Llantas deportivas', 'Llantas de alta resistencia', 'Llantas de bajo perfil'],
+                                        //     'Neumáticos' => ['Neumáticos', 'Neumáticos delanteros', 'Neumáticos traseros', 'Neumáticos de repuesto', 'Neumáticos de invierno', 'Neumáticos de verano', 'Neumáticos deportivos', 'Neumáticos de alta resistencia', 'Neumáticos de bajo perfil'],
+                                        //     'Frenos' => ['Pastillas de freno delanteras', 'Pastillas de freno traseras', 'Discos de freno delanteros', 'Discos de freno traseros', 'Tambores de freno traseros', 'Bomba de freno', 'Servofreno'],
+                                        //     'Suspensiones' => ['Amortiguadores delanteros', 'Amortiguadores traseros', 'Resortes delanteros', 'Resortes traseros', 'Barra estabilizadora delantera', 'Barra estabilizadora trasera', 'Bieletas'],
+                                        //     'Direccion' => ['Cremallera de dirección', 'Mangueras de dirección', 'Bomba de dirección', 'Terminales de dirección', 'Juntas homocinéticas'],
+                                        //     'Motor' => ['Filtros de aceite', 'Filtros de aire', 'Filtros de combustible', 'Bujías', 'Bobinas de encendido', 'Correas de distribución', 'Bomba de agua', 'Bomba de aceite', 'Turbocompresor', 'Alternador', 'Arrancador'],
+                                        //     'Transmisión' => ['Aceite de transmisión', 'Filtro de transmisión', 'Embrague', 'Caja de cambios manual', 'Caja de cambios automática'],
+                                        //     'Tren motriz' => ['Juntas homocinéticas', 'Diferencial', 'Semiejes'],
+                                        //     'Chasis' => ['Puertas', 'Ventanas', 'Espejos retrovisores', 'Parachoques', 'Capó', 'Maletero', 'Faros', 'Luces traseras', 'Señales de giro', 'Defensa', 'Placa de matrícula'],
+                                        //     'Electricidad' => ['Baterías', 'Faros', 'Luces traseras', 'Señales de giro', 'Limpiaparabrisas', 'Limpiaparabrisas traseros', 'A/C', 'Calefacción', 'Radio', 'Altavoces', 'Sistema de navegación'],
+                                        //     'Otros' => ['Líquido de frenos', 'Líquido refrigerante', 'Líquido de dirección asistida', 'Líquido de transmisión', 'Limpiador de parabrisas', 'Anticongelante', 'Aceite de motor', 'Aditivos'],
+                                        // ];
+
+                                        // // Convierte a opciones
+                                        // $options = [];
+                                        // foreach ($repuestos as $categoria => $items) {
+                                        //     foreach ($items as $item) {
+                                        //         $options[] = "<option value=\"$item\"></option>";
+                                        //     }
+                                        // }
                                         ?>
 
-                                    </select>
+                                        <div class="flex flex-col text-center">
+                                            <div style="display: flex; align-items: center;">
+                                                <span
+                                                class="form-control numeros_campos" style="height: 5rem; display: flex; align-items: center;">5</span>
+                                                <input name="repuesto" id="repuesto"
+                                                    style="height: 5rem; border-radius: 0.375rem 0.375rem 0 0.375rem; border-color: var(--bs-dark-border-subtle); border-radius: 0 .375rem .375rem 0;"
+                                                    class="form-control text-center"
+                                                    placeholder="*Agrega tus repuestos" aria-label="Repuesto"
+                                                    value="{{ old('repuesto') }}">
+                                                {{-- <datalist id="lista_repuestos">
 
-                                    @error('modelo')
-                                        <div class="text-danger text-xs pt-1">{{ $message }}</div>
-                                    @enderror
-                                </div>
+                                                    <?php
+                                                    //echo implode("\n", $options);
+                                                    ?>
 
-                                <div class="flex flex-col mb-3 text-center">
-                                    <select class="form-control" name="tipo" id="tipo" name="tipo"
-                                        style="color: var(--bs-secondary-color); text-align: center;" required>
-                                        <option value="" disabled selected>*Tipo de transmisión (Caja)</option>
-                                        <option value="mecánica">Mecánica (Manual)</option>
-                                        <option value="automatica">Automática</option>
-                                    </select>
-                                    @error('tipo')
-                                        <div class="text-danger text-xs pt-1">{{ $message }}</div>
-                                    @enderror
-                                </div>
-
-                                <div class="flex flex-col text-center">
-                                    <div
-                                        style="display: flex; justify-content: flex-end; align-items: center; padding: 0;">
-                                        <input name="repuesto" list="lista_repuestos" id="repuesto"
-                                            style="height: 5rem" class="form-control text-center"
-                                            placeholder="*Repuesto(s)" aria-label="Repuesto"
-                                            value="{{ old('repuesto') }}">
-                                        <datalist id="lista_repuestos">
-                                            <?php
-                                            $repuestos = [
-                                                'Llantas' => ['Llantas', 'Llantas delanteras', 'Llantas traseras', 'Llantas de repuesto', 'Llantas de invierno', 'Llantas de verano', 'Llantas deportivas', 'Llantas de alta resistencia', 'Llantas de bajo perfil'],
-                                                'Neumáticos' => ['Neumáticos', 'Neumáticos delanteros', 'Neumáticos traseros', 'Neumáticos de repuesto', 'Neumáticos de invierno', 'Neumáticos de verano', 'Neumáticos deportivos', 'Neumáticos de alta resistencia', 'Neumáticos de bajo perfil'],
-                                                'Frenos' => ['Pastillas de freno delanteras', 'Pastillas de freno traseras', 'Discos de freno delanteros', 'Discos de freno traseros', 'Tambores de freno traseros', 'Bomba de freno', 'Servofreno'],
-                                                'Suspensiones' => ['Amortiguadores delanteros', 'Amortiguadores traseros', 'Resortes delanteros', 'Resortes traseros', 'Barra estabilizadora delantera', 'Barra estabilizadora trasera', 'Bieletas'],
-                                                'Direccion' => ['Cremallera de dirección', 'Mangueras de dirección', 'Bomba de dirección', 'Terminales de dirección', 'Juntas homocinéticas'],
-                                                'Motor' => ['Filtros de aceite', 'Filtros de aire', 'Filtros de combustible', 'Bujías', 'Bobinas de encendido', 'Correas de distribución', 'Bomba de agua', 'Bomba de aceite', 'Turbocompresor', 'Alternador', 'Arrancador'],
-                                                'Transmisión' => ['Aceite de transmisión', 'Filtro de transmisión', 'Embrague', 'Caja de cambios manual', 'Caja de cambios automática'],
-                                                'Tren motriz' => ['Juntas homocinéticas', 'Diferencial', 'Semiejes'],
-                                                'Chasis' => ['Puertas', 'Ventanas', 'Espejos retrovisores', 'Parachoques', 'Capó', 'Maletero', 'Faros', 'Luces traseras', 'Señales de giro', 'Defensa', 'Placa de matrícula'],
-                                                'Electricidad' => ['Baterías', 'Faros', 'Luces traseras', 'Señales de giro', 'Limpiaparabrisas', 'Limpiaparabrisas traseros', 'A/C', 'Calefacción', 'Radio', 'Altavoces', 'Sistema de navegación'],
-                                                'Otros' => ['Líquido de frenos', 'Líquido refrigerante', 'Líquido de dirección asistida', 'Líquido de transmisión', 'Limpiador de parabrisas', 'Anticongelante', 'Aceite de motor', 'Aditivos'],
-                                            ];
-
-                                            // Convierte a opciones
-                                            $options = [];
-                                            foreach ($repuestos as $categoria => $items) {
-                                                foreach ($items as $item) {
-                                                    $options[] = "<option value=\"$item\"></option>";
-                                                }
-                                            }
-
-                                            echo implode("\n", $options);
-                                            ?>
-                                        </datalist>
-                                    </div>
-                                </div>
-                                @error('json_repuestos')
-                                    <div class="text-danger text-xs pt-1">{{ $message }}</div>
-                                @else
-                                    <div style="display: flex; width: 100%; justify-content: center;">
-                                        <small class="pt-1 text-xs text-secondary">Maximo 5 repuestos</small>
-                                    </div>
-                                @enderror
-
-                                <div style="display: flex; justify-content: flex-end; width: 100%;">
-                                    <button type="button" name="agregar_repuesto" id="agregar_repuesto"
-                                        class="btn btn-primary"
-                                        style="transform: translate(-1.5%, 0); transition: all 300ms ease;">
-                                        Agregar
-                                    </button>
-                                </div>
-
-
-
-                                <div class="flex flex-col mb-3">
-                                    <div id="campo_repuestos">
-                                        <div id="items_container" class="items_container form-control">
+                                                </datalist> --}}
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
 
-                                <div class="flex flex-col mb-3 text-center">
-                                    <select class="form-control" name="categoria_repuesto" id="categoria_repuesto"
-                                        style="color: var(--bs-secondary-color); text-align: center;" required>
-                                        <option value="" disabled selected>*Categoría del Repuesto</option>
-                                        <option value="Frenos">Frenos</option>
-                                        <option value="Eléctricos">Eléctricos</option>
-                                        <option value="Batería">Batería</option>
-                                        <option value="Luces">Luces</option>
-                                        <option value="Filtros">Filtros</option>
-                                        <option value="Correas">Correas</option>
-                                        <option value="Suspensión">Suspensión</option>
-                                        <option value="Transmisión">Transmisión</option>
-                                        <option value="Motor">Motor</option>
-                                        <option value="Accesorios">Accesorios</option>
-                                        <option value="Llantas">Llantas</option>
-                                        <option value="Vidrios">Vidrios</option>
-                                        <option value="Mangueras">Mangueras</option>
-                                        <option value="Refrigeración">Refrigeración</option>
-                                        <option value="Liquidos">Liquidos</option>
-                                        <option value="Frenos">Frenos</option>
-                                        <option value="Mofles">Mofles</option>
-                                        <option value="No Se">No Sé</option>
-                                    </select>
-                                    <div id="categorias_preferencias" class="flex flex-col mb-3">
-                                        <div id="items_container_categorias" class="form-control"></div>
-                                    </div>
-                                    @error('json_categorias')
-                                        <div class="text-danger text-xs pt-1">{{ $message }}</div>
-                                    @enderror
-                                </div>
-
-                                <div class="flex flex-col mb-3 text-center">
-                                    <label id="btn" class="button form-control" for="img_repuesto"
-                                        style="margin: 0; cursor: pointer; color: var(--bs-secondary-color);">
-                                        Subir imágenes del repuesto (Opcional)
-                                    </label>
-                                    <input type="file" accept="image/*" name="img_repuesto[]" id="img_repuesto"
-                                        class="form-control text-center" aria-label="img_repuesto"
-                                        style="display: none;" multiple>
-                                    @error('img_repuesto')
-                                        <div class="text-danger text-xs pt-1">{{ $message }}</div>
-                                    @else
-                                        <div class="text-primary tex-xs pt-1">Solo se admiten tres imágenes en formato
-                                            png/jpg/jpeg.</div>
-                                    @enderror
-                                </div>
-                            </fieldset>
-                            <style>
-                                body {
-                                    display: block
-                                }
-                            </style>
-
-                            <fieldset>
-                                <legend class="text-center">
-                                    <h5>Datos del cliente</h5>
-                                </legend>
-                                <div class="flex flex-col mb-3 text-center">
-                                    <input type="text" class="form-control text-center" id="nombre"
-                                        name="nombre" placeholder="*Nombre" aria-label="Nombre"
-                                        value="{{ old('nombre') }}" required>
-                                    @error('nombre')
-                                        <p class='text-danger text-xs pt-1'>{{ $message }}</p>
-                                    @enderror
-                                </div>
-
-                                <div class="group">
-                                    <div class="flex flex-col mb-3 text-center">
-                                        <div
-                                            style="display: flex; justify-content: space-between; align-items: center; padding: 0; margin-bottom: .5rem;">
-                                            <select name="codigo_cel" id="codigo-cel"
-                                                style="border: none; transform: translate(1.5%, 0px); position: absolute;">
-                                                @foreach ($codigos as $codigo)
-                                                    <option value="{{ $codigo->codigo }}"
-                                                        title="{{ $codigo->pais }}">
-                                                        {{ $codigo->iso . ' ' . $codigo->codigo }}</option>
-                                                @endforeach
-                                            </select>
-                                            <input type="text" class="text-center form-control" id="cel"
-                                                name="cel" placeholder="*Número de celular" aria-label='Cel'
-                                                value="{{ old('cel') }}" style="width: 100%;" required>
+                                        <div class="mb-3"
+                                            style="display: flex; justify-content: flex-end; width: 100%;">
+                                            <button type="button" name="agregar_repuesto" id="agregar_repuesto"
+                                                class="btn btn-primary"
+                                                style="transform: translate(-1.5%, 0); transition: all 300ms ease; border-radius: 0 0 .50rem .50rem !important;">
+                                                Agregar
+                                            </button>
                                         </div>
-                                        @error('cel')
-                                            <p class='text-danger text-xs pt-1'>{{ $message }}</p>
+
+                                        <div class="flex flex-col">
+                                            <div id="campo_repuestos">
+                                                <div id="items_container" class="items_container form-control" style="border-color: var(--bs-dark-border-subtle);">
+                                                    <div style="width: 100%; height: 1.5rem;"><small
+                                                            class="text-xs text-secondary"
+                                                            style="position: absolute;">Repuestos agregados:</small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        @error('json_repuestos')
+                                            <div class="text-danger text-xs pb-2">{{ $message }}</div>
                                         @else
-                                            <small class="text-xs text-color-secondary">!Debe tener Whatsapp¡ <i
-                                                    class="fa fa-whatsapp" aria-hidden="true"
-                                                    style="color: #25D366; font-size: 15px; transform: translate(0px, 2.4px);">
-                                                </i></small>
+                                            <div style="display: flex; width: 100%; justify-content: center;">
+                                                <small class="text-xs mb-4 text-secondary">Máximo 5 repuestos</small>
+                                            </div>
                                         @enderror
-                                    </div>
 
-                                    <div id="pais" class="flex flex-col mb-3 text-center hide">
-                                        <div class="form-control">
-                                            <span id="text-pais"></span>
+                                        {{-- <div class="flex flex-col mb-3 text-center">
+                                            <select class="form-control" name="categoria_repuesto"
+                                                id="categoria_repuesto"
+                                                style="color: var(--bs-secondary-color); text-align: center;" required>
+                                                <option value="" disabled selected>*Categoría de los Repuestos
+                                                </option>
+                                                <option value="Frenos">Frenos</option>
+                                                <option value="Eléctricos">Eléctricos</option>
+                                                <option value="Batería">Batería</option>
+                                                <option value="Luces">Luces</option>
+                                                <option value="Filtros">Filtros</option>
+                                                <option value="Correas">Correas</option>
+                                                <option value="Suspensión">Suspensión</option>
+                                                <option value="Transmisión">Transmisión</option>
+                                                <option value="Motor">Motor</option>
+                                                <option value="Accesorios">Accesorios</option>
+                                                <option value="Llantas">Llantas</option>
+                                                <option value="Vidrios">Vidrios</option>
+                                                <option value="Mangueras">Mangueras</option>
+                                                <option value="Refrigeración">Refrigeración</option>
+                                                <option value="Liquidos">Liquidos</option>
+                                                <option value="Frenos">Frenos</option>
+                                                <option value="Mofles">Mofles</option>
+                                                <option value="No Se">No Sé</option>
+                                            </select>
+                                            <div id="categorias_preferencias" class="flex flex-col mb-3">
+                                                <div id="items_container_categorias" class="form-control"></div>
+                                            </div>
+                                            @error('json_categorias')
+                                                <div class="text-danger text-xs pt-1">{{ $message }}</div>
+                                            @enderror
+                                        </div> --}}
+
+                                        <div class="flex flex-col mb-3 text-center">
+                                            <label id="btn" class="button form-control" for="img_repuesto"
+                                                style="margin: 0; cursor: pointer; color: var(--bs-secondary-color); border-color: var(--bs-dark-border-subtle);">
+                                                Sube imágen(es) de repuesto(s) (Opcional)
+                                            </label>
+                                            <input type="file" accept="image/*" name="img_repuesto[]"
+                                                id="img_repuesto" class="form-control text-center"
+                                                aria-label="img_repuesto" style="display: none;" multiple>
+                                            @error('img_repuesto')
+                                                <div class="text-danger text-xs pt-1">{{ $message }}</div>
+                                            @else
+                                                <small class="text-primary tex-xs pt-1">Máximo ( 3 ) imágenes en
+                                                    formato
+                                                    png/jpg/jpeg.</small>
+                                            @enderror
                                         </div>
+                                    </fieldset>
+
+                                    <div
+                                        style="width:100%; height: max-content; display: flex; justify-content: flex-end;">
+                                        <button id="btn_siguiente" type="button" class="btn btn-primary"
+                                            onclick="validateForm1()">Siguiente</button>
                                     </div>
+
                                 </div>
 
-                                <div class="flex flex-col mb-3 text-center">
-                                    <input type="email" class="form-control text-center" id="email"
-                                        name="email" placeholder="E-mail" aria-label="Email"
-                                        value="{{ old('email') }}">
-                                    @error('email')
-                                        <div class="text-danger text-xs pt-1">{{ $message }}</div>
-                                    @enderror
-                                </div>
+                                <!-- Parte 2 del formulario -->
+                                <div class="tab-pane fade" id="tab-content2" style="transition: all 300ms ease;">
 
-                                <div class="flex flex-col mb-3 text-center">
-                                    <select id="departamento" name="departamento" class="form-control text-center"
-                                        style="color: var(--bs-secondary-color);">
-                                        <option value="" disabled selected>*Departamento</option>
-                                        @foreach ($departamentos as $departamento)
-                                            <option value="{{ $departamento }}">{{ $departamento }}</option>
-                                        @endforeach
-                                    </select>
-                                    @error('departamento')
-                                        <div class="text-danger text-xs pt-1">{{ $message }}</div>
-                                    @enderror
-                                </div>
+                                    <fieldset class="form-group">
+                                        <legend class="text-center" style="display: flex; justify-content: center;">
+                                            <h5
+                                                style="background: var(--color-primary);
+                                                    color: white;
+                                                    width: max-content;
+                                                    padding: .3rem 1.5rem;
+                                                    border-radius: 0 0 1rem 1rem;
+                                                    font-weight: 600;">
+                                                Datos personales</h5>
+                                        </legend>
+                                        <div class="flex flex-col mb-4 text-center">
+                                            <div style="display: flex; align-items: center;">
+                                                <span
+                                                class="form-control numeros_campos">1</span>
+                                                <input type="text" class="form-control text-center" id="nombre"
+                                                    name="nombre" placeholder="*Nombre" style="border-color: var(--bs-dark-border-subtle); border-radius: 0 .375rem .375rem 0;"
+                                                    aria-label="Nombre" value="{{ old('nombre') }}" required>
+                                            </div>
 
-                                <div class="flex flex-col mb-3 text-center">
-                                    <select name="municipio" id="municipio" class="form-control text-center"
-                                        style="color: var(--bs-secondary-color);">
-                                        <option value="" disabled selected>*Municipio</option>
-                                    </select>
-                                    @error('municipio')
-                                        <div class="text-danger text-xs pt-1">{{ $message }}</div>
-                                    @enderror
-                                </div>
+                                            @error('nombre')
+                                                <p class='text-danger text-xs pt-1'>{{ $message }}</p>
+                                            @enderror
+                                        </div>
 
-                                <div class="flex flex-col mb-3 text-center">
-                                    <textarea name="comentario" class="form-control text-center" placeholder="¿Tienes algun comentario?"
-                                        aria-label="Comentario" rows="5">{{ old('comentario') }}</textarea>
-                                    @error('comentario')
-                                        <div class='text-danger text-xs pt-1'> {{ $message }} </div>
-                                    @enderror
-                                </div>
+                                        <div class="group">
+                                            <div class="flex flex-col mb-4 text-center">
+                                                <div
+                                                    style="display: flex; justify-content: space-between; align-items: center; padding: 0; margin-bottom: .3rem;">
+                                                    <div
+                                                        style="display: flex; align-items: center; width: 100%;">
+                                                        <span class="form-control numeros_campos">2</span>
+                                                        <select name="codigo_cel" id="codigo-cel"
+                                                            style="border: none; transform: translate(2.3rem, 0px); position: absolute;">
+                                                            @foreach ($codigos as $codigo)
+                                                                <option value="{{ $codigo->codigo }}"
+                                                                    title="{{ $codigo->pais }}">
+                                                                    {{ $codigo->iso . ' ' . $codigo->codigo }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                        <input type="text" class="text-center form-control"
+                                                            id="cel" name="cel"
+                                                            placeholder="*Número de celular" aria-label='Cel'
+                                                            value="{{ old('cel') }}" style="width: 100%; border-color: var(--bs-dark-border-subtle); border-radius: 0 .375rem .375rem 0;"
+                                                            required>
+                                                    </div>
 
-                            </fieldset>
-                            <div class="text-center">
-                                <button id="btn_modal_client" type="submit"
-                                    class="btn btn-primary w-100 my-4 mb-2">Enviar</button>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cerrar</button>
+                                                </div>
+                                                @error('cel')
+                                                    <p class='text-danger text-xs pt-1'>{{ $message }}</p>
+                                                @else
+                                                    <small class="text-xs text-color-secondary">¡Debe tener Whatsapp! <i
+                                                            class="fa fa-whatsapp" aria-hidden="true"
+                                                            style="color: #25D366; font-size: 15px; transform: translate(0px, 2.4px);">
+                                                        </i></small>
+                                                @enderror
+                                            </div>
+
+                                            <div id="pais" class="flex flex-col mb-4 text-center hide">
+                                                <div class="form-control" style="border-color: var(--bs-dark-border-subtle);">
+                                                    <span id="text-pais"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="flex flex-col mb-4 text-center">
+                                            <div style="display: flex; align-items: center;">
+                                                <span
+                                                class="form-control numeros_campos">3</span>
+                                                <input type="email" class="form-control text-center" id="email"
+                                                    name="email" placeholder="E-mail" style="border-color: var(--bs-dark-border-subtle); border-radius: 0 .375rem .375rem 0;"
+                                                    aria-label="Email" value="{{ old('email') }}">
+                                            </div>
+
+                                            @error('email')
+                                                <div class="text-danger text-xs pt-1">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+
+                                        <div class="flex flex-col mb-4 text-center" id="contenedor_departamento">
+                                            <div style="display: flex; align-items: center;">
+                                                <span
+                                                class="form-control numeros_campos" id="numero_campo_departamento">4</span>
+                                                <select id="departamento" name="departamento"
+                                                    class="form-control text-center"
+                                                    style="color: var(--bs-secondary-color); border-color: var(--bs-dark-border-subtle); border-radius: 0 .375rem .375rem 0;">
+                                                    <option value="" disabled selected>*Departamento</option>
+                                                    @foreach ($departamentos as $departamento)
+                                                        <option value="{{ $departamento }}">{{ $departamento }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+
+                                            @error('departamento')
+                                                <div class="text-danger text-xs pt-1">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+
+                                        <div class="flex flex-col mb-4 text-center" id="contenedor_municipio">
+                                            <div style="display: flex; align-items: center;">
+                                                <span
+                                                class="form-control numeros_campos" id="numero_campo_municipio">5</span>
+                                                <select name="municipio" id="municipio"
+                                                    class="form-control text-center"
+                                                    style="color: var(--bs-secondary-color); border-color: var(--bs-dark-border-subtle); border-radius: 0 .375rem .375rem 0;">
+                                                    <option value="" disabled selected>*Municipio</option>
+                                                </select>
+                                            </div>
+
+                                            @error('municipio')
+                                                <div class="text-danger text-xs pt-1">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+
+                                        <div class="flex flex-col mb-4 text-center">
+                                            <div style="display: flex; align-items: center;">
+                                                <textarea name="comentario" id="comentario" class="form-control text-center" style="border-color: var(--bs-dark-border-subtle);" placeholder="¿Tienes algun comentario?"
+                                                    aria-label="Comentario" rows="5">{{ old('comentario') }}</textarea>
+                                            </div>
+
+                                            @error('comentario')
+                                                <div class='text-danger text-xs pt-1'> {{ $message }} </div>
+                                            @enderror
+                                        </div>
+
+                                    </fieldset>
+                                    {{-- <div class="text-center">
+                                        <button id="btn_modal_client" type="submit" class="btn btn-primary w-100 my-4 mb-2">Enviar</button>
+                                    </div> --}}
+
+                                    <div
+                                        style="width:100%; height: max-content; display: flex; justify-content: flex-end; gap: 5px;">
+                                        <button type="button" class="btn btn-secondary"
+                                            onclick="changeTab2()">Anterior</button>
+                                        <button id="btn_submit" type="submit" class="btn btn-primary"
+                                            onclick="validateForm2()">Enviar</button>
+                                    </div>
+
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-
 
         @include('includes.scripts')
 
@@ -557,10 +669,12 @@
                         // Guardar las repuestos seleccionadas en el localStorage
                         localStorage.setItem('seleccionados', JSON.stringify(seleccionados));
 
-                        if (container.children.length === 0) {
+                        if (container.children.length === 1) {
                             campo_repuestos.classList.add('hide');
                             btn_agregar.classList.add('hide');
+                            campo_repuesto.setCustomValidity('No has agregado ningún repuesto');
                         }
+
                     });
 
                     container.appendChild(button);
@@ -588,10 +702,11 @@
                 // Escuchar el evento clic en el botón de agregar
                 btn_agregar.addEventListener('click', function() {
                     let item = campo_repuesto.value;
+                    let btnSig = document.getElementById('btn_siguiente');
                     campo_repuesto.value = "";
 
                     if (item !== "") {
-                        if (container.children.length < 5) {
+                        if (container.children.length < 6) {
                             if (!seleccionados[item]) {
                                 agregarBoton(item);
                                 campo_repuestos.classList.remove('hide');
@@ -602,7 +717,7 @@
                         }
                     }
 
-                    if (container.children.length > 0) {
+                    if (container.children.length > 1) {
                         campo_repuesto.setCustomValidity('');
                     } else {
                         campo_repuesto.setCustomValidity('No has agregado ningún repuesto');
@@ -610,7 +725,7 @@
                 });
 
                 // Ocultar elementos si no hay repuestos seleccionadas
-                if (container.children.length === 0) {
+                if (container.children.length === 1) {
                     campo_repuestos.classList.add('hide');
                     btn_agregar.classList.add('hide');
                     campo_repuesto.setCustomValidity('No has agregado ningún repuesto');
@@ -645,13 +760,13 @@
 
             });
         </script>
-
-
+        {{--
         <script>
             document.addEventListener('DOMContentLoaded', function() {
                 let categoria = document.getElementById('categoria_repuesto');
                 let container = document.getElementById('items_container_categorias');
                 let categorias_preferencias = document.getElementById('categorias_preferencias');
+                let btnSig = document.getElementById('btn_siguiente');
                 categorias_preferencias.classList.add('hide');
 
                 // Intentar recuperar las categorias seleccionadas del localStorage
@@ -674,6 +789,12 @@
 
                         // Guardar las categorias seleccionadas en el localStorage
                         localStorage.setItem('categoriaSeleccionados', JSON.stringify(categoriaSeleccionados));
+
+                        if (container.children.length > 0 && container.children.length > 0) {
+                            btnSig.removeAttribute('disabled');
+                        } else {
+                            btnSig.setAttribute('disabled', true);
+                        }
 
                         if (Object.keys(categoriaSeleccionados).length === 0) {
                             categoria.setAttribute('required', true);
@@ -712,6 +833,11 @@
                             categoria.removeAttribute('required');
                         }
                     }
+                    if (container.children.length > 0 && container.children.length > 0) {
+                        btnSig.removeAttribute('disabled');
+                    } else {
+                        btnSig.setAttribute('disabled', true);
+                    }
                 });
 
                 if (Object.keys(categoriaSeleccionados).length === 0) {
@@ -743,6 +869,89 @@
                     this.submit();
                 });
             });
+        </script> --}}
+
+        <script>
+            //Tabs
+            let tabId1 = document.getElementById('tab-content1');
+            let tabId2 = document.getElementById('tab-content2');
+            let tab1 = document.getElementById('tab1');
+            let tab2 = document.getElementById('tab2');
+
+            //Campos parte 2
+            let campo_nombre = document.getElementById('nombre');
+            let campo_cel = document.getElementById('cel');
+            let campo_departamento = document.getElementById('departamento');
+            let campo_municipio = document.getElementById('municipio');
+
+            function changeTab1() {
+                tabId1.classList.add('hide');
+                tab1.classList.remove('active');
+                tab1.classList.remove('paso_activo');
+                tabId1.classList.remove('show');
+                tabId1.classList.remove('active');
+                tabId2.classList.remove('hide');
+                tabId2.classList.add('active');
+                tab2.classList.add('active');
+                tab2.classList.add('paso_activo');
+                tabId2.classList.add('show');
+            }
+
+            function changeTab2() {
+                tabId1.classList.remove('hide');
+                tab1.classList.add('active');
+                tab1.classList.add('paso_activo');
+                tabId1.classList.add('show');
+                tabId1.classList.add('active');
+                tabId2.classList.add('hide');
+                tabId2.classList.remove('active');
+                tab2.classList.remove('active');
+                tab2.classList.remove('paso_activo');
+                tabId2.classList.remove('show');
+            }
+
+            function validateForm1() {
+                campo_nombre.removeAttribute('required');
+                campo_cel.setCustomValidity("");
+                campo_cel.removeAttribute("required");
+                campo_departamento.removeAttribute('required');
+                campo_municipio.removeAttribute('required');
+
+                let form = document.getElementById('form_client');
+                if (!form.reportValidity()) {
+                    return;
+                }
+
+                // Cambiar a la siguiente pestaña solo si todos los campos son válidos
+                changeTab1();
+            }
+
+            function validateForm2() {
+                campo_nombre.setAttribute('required', true);
+                campo_cel.setAttribute("required", true);
+
+                let form = document.getElementById('form_client');
+                if (!form.reportValidity()) {
+                    return;
+                }
+            }
+
+            // campo_marca.addEventListener('change', validar_datos_1);
+            // campo_referencia.addEventListener('change', validar_datos_1);
+            // campo_modelo.addEventListener('change', validar_datos_1);
+            // campo_caja.addEventListener('change', validar_datos_1);
+            // campo_repuestos.addEventListener('change', validar_datos_1);
+            // // campo_categorias.addEventListener('change', validar_datos_1);
+
+            // campo_nombre.addEventListener('change', validar_datos_2);
+            // campo_cel.addEventListener('change', validar_datos_2);
+            // campo_departamento.addEventListener('change', validar_datos_2);
+            // campo_municipio.addEventListener('change', validar_datos_2);
+
+            // validar_datos_1();
+            // validar_datos_2();
+
+            changeTab2();
         </script>
 
         <script>
@@ -803,12 +1012,67 @@
 
                 let pais = document.getElementById('pais');
                 let textPais = document.getElementById('text-pais');
+                let container_dep = document.getElementById('contenedor_departamento');
                 let departamento = document.getElementById('departamento');
+                let numero_dep = document.getElementById('numero_campo_departamento');
+                let container_muni = document.getElementById('contenedor_municipio');
                 let municipio = document.getElementById('municipio');
+                let numero_muni = document.getElementById('numero_campo_municipio');
 
                 // Establece los campos como obligatorios
                 departamento.setAttribute('required', true);
                 municipio.setAttribute('required', true);
+
+                // Función para limpiar el número de celular
+                function limpiarCelular() {
+                    cel.value = cel.value.replace(/[^\d]/g, '');
+                    if (codigo.value == '+54') {
+                        cel.value = cel.value.slice(0, 10);
+                    } else if (codigo.value == '+591') {
+                        cel.value = cel.value.slice(0, 8);
+                    } else if (codigo.value == '+55') {
+                        cel.value = cel.value.slice(0, 11);
+                    } else if (codigo.value == '+56') {
+                        cel.value = cel.value.slice(0, 9);
+                    } else if (codigo.value == '+593') {
+                        cel.value = cel.value.slice(0, 10);
+                    } else if (codigo.value == '+594') {
+                        cel.value = cel.value.slice(0, 9);
+                    } else if (codigo.value == '+592') {
+                        cel.value = cel.value.slice(0, 7);
+                    } else if (codigo.value == '+595') {
+                        cel.value = cel.value.slice(0, 9);
+                    } else if (codigo.value == '+51') {
+                        cel.value = cel.value.slice(0, 9);
+                    } else if (codigo.value == '+597') {
+                        cel.value = cel.value.slice(0, 7);
+                    } else if (codigo.value == '+598') {
+                        cel.value = cel.value.slice(0, 8);
+                    } else if (codigo.value == '+58') {
+                        cel.value = cel.value.slice(0, 10);
+                    } else if (codigo.value == '+57') {
+                        cel.value = cel.value.slice(0, 10);
+                    } else if (codigo.value == '+1') {
+                        cel.value = cel.value.slice(0, 10);
+                    } else if (codigo.value == '+506') {
+                        cel.value = cel.value.slice(0, 8);
+                    } else if (codigo.value == '+503') {
+                        cel.value = cel.value.slice(0, 8);
+                    } else if (codigo.value == '+502') {
+                        cel.value = cel.value.slice(0, 8);
+                    } else if (codigo.value == '+504') {
+                        cel.value = cel.value.slice(0, 8);
+                    } else if (codigo.value == '+52') {
+                        cel.value = cel.value.slice(0, 10);
+                    } else if (codigo.value == '+505') {
+                        cel.value = cel.value.slice(0, 8);
+                    } else if (codigo.value == '+507') {
+                        cel.value = cel.value.slice(0, 8);
+                    }
+                }
+
+                // Asigna la función al evento input del campo de celular
+                cel.addEventListener('input', limpiarCelular);
 
                 function updateVisibility() {
                     sessionStorage.setItem('codigo', codigo.value);
@@ -828,6 +1092,10 @@
 
                         departamento.removeAttribute('required');
                         municipio.removeAttribute('required');
+                        numero_dep.classList.add('hide');
+                        numero_muni.classList.add('hide');
+                        container_dep.classList.add('hide');
+                        container_muni.classList.add('hide');
                     } else if (codigo.value == '+591') {
                         departamento.classList.add('hide');
                         municipio.classList.add('hide');
@@ -844,6 +1112,10 @@
 
                         departamento.removeAttribute('required');
                         municipio.removeAttribute('required');
+                        numero_dep.classList.add('hide');
+                        numero_muni.classList.add('hide');
+                        container_dep.classList.add('hide');
+                        container_muni.classList.add('hide');
                     } else if (codigo.value == '+55') {
                         departamento.classList.add('hide');
                         municipio.classList.add('hide');
@@ -859,6 +1131,10 @@
 
                         departamento.removeAttribute('required');
                         municipio.removeAttribute('required');
+                        numero_dep.classList.add('hide');
+                        numero_muni.classList.add('hide');
+                        container_dep.classList.add('hide');
+                        container_muni.classList.add('hide');
                     } else if (codigo.value == '+56') {
                         departamento.classList.add('hide');
                         municipio.classList.add('hide');
@@ -873,6 +1149,10 @@
 
                         departamento.removeAttribute('required');
                         municipio.removeAttribute('required');
+                        numero_dep.classList.add('hide');
+                        numero_muni.classList.add('hide');
+                        container_dep.classList.add('hide');
+                        container_muni.classList.add('hide');
                     } else if (codigo.value == '+593') {
                         departamento.classList.add('hide');
                         municipio.classList.add('hide');
@@ -887,6 +1167,10 @@
 
                         departamento.removeAttribute('required');
                         municipio.removeAttribute('required');
+                        numero_dep.classList.add('hide');
+                        numero_muni.classList.add('hide');
+                        container_dep.classList.add('hide');
+                        container_muni.classList.add('hide');
                     } else if (codigo.value == '+594') {
                         departamento.classList.add('hide');
                         municipio.classList.add('hide');
@@ -901,6 +1185,10 @@
 
                         departamento.removeAttribute('required');
                         municipio.removeAttribute('required');
+                        numero_dep.classList.add('hide');
+                        numero_muni.classList.add('hide');
+                        container_dep.classList.add('hide');
+                        container_muni.classList.add('hide');
                     } else if (codigo.value == '+592') {
                         departamento.classList.add('hide');
                         municipio.classList.add('hide');
@@ -915,6 +1203,10 @@
 
                         departamento.removeAttribute('required');
                         municipio.removeAttribute('required');
+                        numero_dep.classList.add('hide');
+                        numero_muni.classList.add('hide');
+                        container_dep.classList.add('hide');
+                        container_muni.classList.add('hide');
                     } else if (codigo.value == '+595') {
                         departamento.classList.add('hide');
                         municipio.classList.add('hide');
@@ -930,6 +1222,10 @@
 
                         departamento.removeAttribute('required');
                         municipio.removeAttribute('required');
+                        numero_dep.classList.add('hide');
+                        numero_muni.classList.add('hide');
+                        container_dep.classList.add('hide');
+                        container_muni.classList.add('hide');
                     } else if (codigo.value == '+51') {
                         departamento.classList.add('hide');
                         municipio.classList.add('hide');
@@ -945,6 +1241,10 @@
 
                         departamento.removeAttribute('required');
                         municipio.removeAttribute('required');
+                        numero_dep.classList.add('hide');
+                        numero_muni.classList.add('hide');
+                        container_dep.classList.add('hide');
+                        container_muni.classList.add('hide');
                     } else if (codigo.value == '+597') {
                         departamento.classList.add('hide');
                         municipio.classList.add('hide');
@@ -959,6 +1259,10 @@
 
                         departamento.removeAttribute('required');
                         municipio.removeAttribute('required');
+                        numero_dep.classList.add('hide');
+                        numero_muni.classList.add('hide');
+                        container_dep.classList.add('hide');
+                        container_muni.classList.add('hide');
                     } else if (codigo.value == '+598') {
                         departamento.classList.add('hide');
                         municipio.classList.add('hide');
@@ -973,6 +1277,10 @@
 
                         departamento.removeAttribute('required');
                         municipio.removeAttribute('required');
+                        numero_dep.classList.add('hide');
+                        numero_muni.classList.add('hide');
+                        container_dep.classList.add('hide');
+                        container_muni.classList.add('hide');
                     } else if (codigo.value == '+58') {
                         departamento.classList.add('hide');
                         municipio.classList.add('hide');
@@ -987,6 +1295,10 @@
                         // Elimina el atributo 'required'
                         departamento.removeAttribute('required');
                         municipio.removeAttribute('required');
+                        numero_dep.classList.add('hide');
+                        numero_muni.classList.add('hide');
+                        container_dep.classList.add('hide');
+                        container_muni.classList.add('hide');
                     } else if (codigo.value == '+57') {
                         departamento.classList.remove('hide');
                         municipio.classList.remove('hide');
@@ -1001,6 +1313,10 @@
                         // Establece los campos como obligatorios
                         departamento.setAttribute('required', true);
                         municipio.setAttribute('required', true);
+                        numero_dep.classList.remove('hide');
+                        numero_muni.classList.remove('hide');
+                        container_dep.classList.remove('hide');
+                        container_muni.classList.remove('hide');
                     } else if (codigo.value == '+1') {
                         departamento.classList.add('hide');
                         municipio.classList.add('hide');
@@ -1014,6 +1330,10 @@
 
                         departamento.removeAttribute('required');
                         municipio.removeAttribute('required');
+                        numero_dep.classList.add('hide');
+                        numero_muni.classList.add('hide');
+                        container_dep.classList.add('hide');
+                        container_muni.classList.add('hide');
                     } else if (codigo.value == '+506') {
                         departamento.classList.add('hide');
                         municipio.classList.add('hide');
@@ -1027,6 +1347,10 @@
 
                         departamento.removeAttribute('required');
                         municipio.removeAttribute('required');
+                        numero_dep.classList.add('hide');
+                        numero_muni.classList.add('hide');
+                        container_dep.classList.add('hide');
+                        container_muni.classList.add('hide');
                     } else if (codigo.value == '+503') {
                         departamento.classList.add('hide');
                         municipio.classList.add('hide');
@@ -1040,6 +1364,10 @@
 
                         departamento.removeAttribute('required');
                         municipio.removeAttribute('required');
+                        numero_dep.classList.add('hide');
+                        numero_muni.classList.add('hide');
+                        container_dep.classList.add('hide');
+                        container_muni.classList.add('hide');
                     } else if (codigo.value == '+502') {
                         departamento.classList.add('hide');
                         municipio.classList.add('hide');
@@ -1053,6 +1381,10 @@
 
                         departamento.removeAttribute('required');
                         municipio.removeAttribute('required');
+                        numero_dep.classList.add('hide');
+                        numero_muni.classList.add('hide');
+                        container_dep.classList.add('hide');
+                        container_muni.classList.add('hide');
                     } else if (codigo.value == '+504') {
                         departamento.classList.add('hide');
                         municipio.classList.add('hide');
@@ -1067,6 +1399,10 @@
 
                         departamento.removeAttribute('required');
                         municipio.removeAttribute('required');
+                        numero_dep.classList.add('hide');
+                        numero_muni.classList.add('hide');
+                        container_dep.classList.add('hide');
+                        container_muni.classList.add('hide');
                     } else if (codigo.value == '+52') {
                         departamento.classList.add('hide');
                         municipio.classList.add('hide');
@@ -1080,6 +1416,10 @@
 
                         departamento.removeAttribute('required');
                         municipio.removeAttribute('required');
+                        numero_dep.classList.add('hide');
+                        numero_muni.classList.add('hide');
+                        container_dep.classList.add('hide');
+                        container_muni.classList.add('hide');
                     } else if (codigo.value == '+505') {
                         departamento.classList.add('hide');
                         municipio.classList.add('hide');
@@ -1093,6 +1433,10 @@
 
                         departamento.removeAttribute('required');
                         municipio.removeAttribute('required');
+                        numero_dep.classList.add('hide');
+                        numero_muni.classList.add('hide');
+                        container_dep.classList.add('hide');
+                        container_muni.classList.add('hide');
                     } else if (codigo.value == '+507') {
                         departamento.classList.add('hide');
                         municipio.classList.add('hide');
@@ -1106,6 +1450,10 @@
 
                         departamento.removeAttribute('required');
                         municipio.removeAttribute('required');
+                        numero_dep.classList.add('hide');
+                        numero_muni.classList.add('hide');
+                        container_dep.classList.add('hide');
+                        container_muni.classList.add('hide');
                     }
                 }
 
@@ -1113,6 +1461,100 @@
                 cel.addEventListener('change', updateVisibility);
 
                 updateVisibility();
+            });
+        </script>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                // Paso 1
+                let referencia = document.getElementById('referencia');
+                let repuestos = document.getElementById('repuesto');
+
+                // Paso 2
+                let nombre = document.getElementById('nombre');
+                let comentario = document.getElementById('comentario');
+
+                // Funciones paso 1
+                function restringirCaracteresReferencia(){
+                    let texto = referencia.value;
+                    let numEspacios = (texto.match(/ /g) || []).length;
+                    let numSaltosLinea = (texto.match(/\n/g) || []).length;
+
+                    if (numEspacios > 1) {
+                        referencia.value = texto.replace(/ +/g, ' '.repeat(1));
+                    }
+                    if (numSaltosLinea > 0) {
+                        referencia.value = texto.replace(/\n+/g, '\n'.repeat(0));
+                    }
+                    if(texto.length > 30){
+                        referencia.value = texto.slice(0, 30);
+                    }
+                }
+
+                referencia.addEventListener('input', function(){
+                    restringirCaracteresReferencia();
+                });
+
+                function restringirCaracteresRepuesto(){
+                    let texto = repuestos.value;
+                    let numEspacios = (texto.match(/ /g) || []).length;
+                    let numSaltosLinea = (texto.match(/\n/g) || []).length;
+
+                    if (numEspacios > 1) {
+                        repuestos.value = texto.replace(/ +/g, ' '.repeat(1));
+                    }
+                    if (numSaltosLinea > 0) {
+                        repuestos.value = texto.replace(/\n+/g, '\n'.repeat(0));
+                    }
+                    if(texto.length > 100){
+                        repuestos.value = texto.slice(0, 100);
+                    }
+                }
+
+                repuestos.addEventListener('input', function(){
+                    restringirCaracteresRepuesto();
+                });
+
+                function restringirCaracteresComentario(){
+                    let texto = comentario.value;
+                    let numEspacios = (texto.match(/ /g) || []).length;
+                    let numSaltosLinea = (texto.match(/\n/g) || []).length;
+
+                    if (numEspacios > 1) {
+                        comentario.value = texto.replace(/ +/g, ' '.repeat(1));
+                    }
+                    if (numSaltosLinea > 2) {
+                        comentario.value = texto.replace(/\n+/g, '\n'.repeat(1));
+                    }
+                    if (texto.length > 400) {
+                        comentario.value = texto.slice(0, 400);
+                    }
+                }
+
+                comentario.addEventListener('input', function(){
+                    restringirCaracteresComentario();
+                });
+
+                // Funciones paso 2
+                function restringirCaracteresNombre(){
+                    let texto = nombre.value;
+                    let numEspacios = (texto.match(/ /g) || []).length;
+                    let numSaltosLinea = (texto.match(/\n/g) || []).length;
+
+                    if (numEspacios > 1) {
+                        nombre.value = texto.replace(/ +/g, ' '.repeat(1));
+                    }
+                    if (numSaltosLinea > 0) {
+                        nombre.value = texto.replace(/\n+/g, '\n'.repeat(0));
+                    }
+                    if (texto.length > 35){
+                        nombre.value = texto.slice(0, 35);
+                    }
+                }
+
+                nombre.addEventListener('input', function(){
+                    restringirCaracteresNombre();
+                });
             });
         </script>
 

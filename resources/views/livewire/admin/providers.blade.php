@@ -528,8 +528,7 @@
                                                                         @else
                                                                             <div class="w-100 text-center">
                                                                                 <small
-                                                                                    class="text-center text-xs text-color-secondary">!Debe
-                                                                                    tener Whatsapp¡ <i class="fa fa-whatsapp"
+                                                                                    class="text-center text-xs text-color-secondary">¡Debe tener Whatsapp! <i class="fa fa-whatsapp"
                                                                                         aria-hidden="true"
                                                                                         style="color: #25D366; font-size: 15px; transform: translate(0px, 2.4px);">
                                                                                     </i></small>
@@ -585,7 +584,7 @@
 
                                                                     <div id="ciudad{{ $proveedores->id }}"
                                                                         class="flex flex-col mb-3 hide">
-                                                                        <labe for="ciudad_edit">Ciudad:</labe>
+                                                                        <label for="ciudad_edit">Ciudad:</label>
                                                                         <input id="ciudad_input_{{ $proveedores->id }}"
                                                                             type="text" class="form-control"
                                                                             name="ciudad_edit"
@@ -828,26 +827,18 @@
                                                                                 *Seleccionar Especialidad</option>
                                                                             <option value="Todas las especialidades">Todas
                                                                                 las especialidades</option>
+                                                                            <option value="LLantas">LLantas</option>
                                                                             <option value="Frenos">Frenos</option>
-                                                                            <option value="Eléctricos">Eléctricos</option>
-                                                                            <option value="Batería">Batería</option>
-                                                                            <option value="Luces">Luces</option>
-                                                                            <option value="Filtros">Filtros</option>
-                                                                            <option value="Correas">Correas</option>
                                                                             <option value="Suspensión">Suspensión</option>
+                                                                            <option value="Dirección">Sistema de Dirección</option>
+                                                                            <option value="Motor">Motor</option>
                                                                             <option value="Transmisión">Transmisión
                                                                             </option>
-                                                                            <option value="Motor">Motor</option>
-                                                                            <option value="Accesorios">Accesorios</option>
-                                                                            <option value="Llantas">Llantas</option>
-                                                                            <option value="Vidrios">Vidrios</option>
-                                                                            <option value="Mangueras">Mangueras</option>
-                                                                            <option value="Refrigeración">Refrigeración
+                                                                            <option value="Tren motriz">Tren motriz</option>
+                                                                            <option value="Latas">Latas</option>
+                                                                            <option value="Refrigeración">Refrigeración</option>
+                                                                            <option value="Eléctricos">Eléctricos
                                                                             </option>
-                                                                            <option value="Liquidos">Liquidos</option>
-                                                                            <option value="Frenos">Frenos</option>
-                                                                            <option value="Mofles">Mofles</option>
-                                                                            <option value="No Se">No Sé</option>
                                                                             <option value="otros">Otros</option>
                                                                         </select>
                                                                         <div id="categorias_preferencias{{ $proveedores->id }}"
@@ -1046,7 +1037,7 @@
 
 
                                                     let cel = document.getElementById('cel_edit_{{ $proveedores->id }}')
-                                                    let tel = document.getElementById('tel_edit_{{ $proveedores->id }}')
+                                                    let tel = document.getElementById('tel{{ $proveedores->id }}')
 
                                                     let pais = document.getElementById('pais{{ $proveedores->id }}');
                                                     let ciudad = document.getElementById('ciudad{{ $proveedores->id }}');
@@ -1684,7 +1675,7 @@
                                                         let inputJson = document.createElement('input');
                                                         inputJson.type = 'hidden';
                                                         inputJson.name = 'json_marcas';
-                                                        inputJson.value = jsonTextosSeleccionados.replace(/×/g, '').replace(/\n/g, '');
+                                                        inputJson.value = jsonTextosSeleccionados.replace(/×/g, '').replace(/\n/g, '').replace(/\r/g, '');
                                                         this.appendChild(inputJson);
 
                                                         // Ahora, puedes enviar el formulario
@@ -1775,7 +1766,7 @@
                                                         let inputJson = document.createElement('input');
                                                         inputJson.type = 'hidden';
                                                         inputJson.name = 'json_categorias';
-                                                        inputJson.value = jsonTextosSeleccionados.replace(/×/g, '').replace(/\n/g, '');
+                                                        inputJson.value = jsonTextosSeleccionados.replace(/×/g, '').replace(/\n/g, '').replace(/\r/g, '');
                                                         this.appendChild(inputJson);
 
                                                         // Ahora, puedes enviar el formulario
@@ -1965,8 +1956,7 @@
                                                     @else
                                                         <div class="w-100 text-center">
                                                             <small
-                                                                class="text-center text-xs text-color-secondary">!Debe
-                                                                tener Whatsapp¡ <i class="fa fa-whatsapp"
+                                                                class="text-center text-xs text-color-secondary">¡Debe tener Whatsapp! <i class="fa fa-whatsapp"
                                                                     aria-hidden="true"
                                                                     style="color: #25D366; font-size: 15px; transform: translate(0px, 2.4px);">
                                                                 </i></small>
@@ -2212,24 +2202,18 @@
                                                         </option>
                                                         <option value="Todas las especialidades">Todas las especialidades
                                                         </option>
+                                                        <option value="LLantas">LLantas</option>
                                                         <option value="Frenos">Frenos</option>
-                                                        <option value="Eléctricos">Eléctricos</option>
-                                                        <option value="Batería">Batería</option>
-                                                        <option value="Luces">Luces</option>
-                                                        <option value="Filtros">Filtros</option>
-                                                        <option value="Correas">Correas</option>
                                                         <option value="Suspensión">Suspensión</option>
-                                                        <option value="Transmisión">Transmisión</option>
+                                                        <option value="Dirección">Sistema de Dirección</option>
                                                         <option value="Motor">Motor</option>
-                                                        <option value="Accesorios">Accesorios</option>
-                                                        <option value="Llantas">Llantas</option>
-                                                        <option value="Vidrios">Vidrios</option>
-                                                        <option value="Mangueras">Mangueras</option>
+                                                        <option value="Transmisión">Transmisión
+                                                        </option>
+                                                        <option value="Tren motriz">Tren motriz</option>
+                                                        <option value="Latas">Latas</option>
                                                         <option value="Refrigeración">Refrigeración</option>
-                                                        <option value="Liquidos">Liquidos</option>
-                                                        <option value="Frenos">Frenos</option>
-                                                        <option value="Mofles">Mofles</option>
-                                                        <option value="No Se">No Sé</option>
+                                                        <option value="Eléctricos">Eléctricos
+                                                        </option>
                                                         <option value="otros">Otros</option>
                                                     </select>
                                                     <div id="categorias_preferencias_create"
@@ -2447,7 +2431,7 @@
                                         let inputJsonCategory = document.createElement('input');
                                         inputJsonCategory.type = 'hidden';
                                         inputJsonCategory.name = 'json_categorias_create';
-                                        inputJsonCategory.value = jsonTextosSeleccionados.replace(/×/g, '');
+                                        inputJsonCategory.value = jsonTextosSeleccionados.replace(/×/g, '').replace(/\n/g, '');
                                         this.appendChild(inputJsonCategory);
 
                                         // Limpiar los datos en localStorage después de enviar el formulario
@@ -2543,7 +2527,7 @@
                                         let inputJson = document.createElement('input');
                                         inputJson.type = 'hidden';
                                         inputJson.name = 'json_marcas_create';
-                                        inputJson.value = jsonTextosSeleccionados.replace(/×/g, '');
+                                        inputJson.value = jsonTextosSeleccionados.replace(/×/g, '').replace(/\n/g, '');
                                         this.appendChild(inputJson);
 
                                         // Limpiar los datos en localStorage después de enviar el formulario
@@ -3143,6 +3127,5 @@
 
     <script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
     <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-
 
 @endsection
