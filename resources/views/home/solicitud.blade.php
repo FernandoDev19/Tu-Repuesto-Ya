@@ -65,7 +65,7 @@
                                                     <div class="text-start">
                                                         <label for="marca" class="mb-2"
                                                             style="color:blue; font-weigth: 900;">
-                                                            <h5 style="letter-spacing: 1px; font-weight: 700;">Marca</h5>
+                                                            <h5 style="font-weight: 700;">Marca</h5>
                                                         </label>
                                                         <span style="background-color: rgb(143 143 143 / 21%);"
                                                             type="text" name="marca"
@@ -78,7 +78,7 @@
                                                     <div class="text-start">
                                                         <label for="referencia" class="mb-2"
                                                             style="color:blue; font-weigth: 900;">
-                                                            <h5 style="letter-spacing: 1px; font-weight: 700;">Referencia
+                                                            <h5 style="font-weight: 700;">Referencia
                                                             </h5>
                                                         </label>
                                                         <span style="background-color: rgb(143 143 143 / 21%);"
@@ -94,7 +94,7 @@
                                                     <div class="text-start">
                                                         <label for="modelo" class="mb-2"
                                                             style="color:blue; font-weigth: 900;">
-                                                            <h5 style="letter-spacing: 1px; font-weight: 700;">Modelo</h5>
+                                                            <h5 style="font-weight: 700;">Modelo</h5>
                                                         </label>
                                                         <span style="background-color: rgb(143 143 143 / 21%);"
                                                             type="text" name="modelo"
@@ -108,7 +108,7 @@
                                                     <div class="text-start">
                                                         <label for="tipo" class="mb-2"
                                                             style="color:blue; font-weigth: 900;">
-                                                            <h5 style="letter-spacing: 1px; font-weight: 700;">Tipo de
+                                                            <h5 style="font-weight: 700;">Tipo de
                                                                 transmisión</h5>
                                                         </label>
                                                         <span style="background-color: rgb(143 143 143 / 21%);"
@@ -123,7 +123,7 @@
                                                     <div class="text-start">
                                                         <label for="repuesto" class="mb-2"
                                                             style="color:blue; font-weigth: 900;">
-                                                            <h5 style="letter-spacing: 1px; font-weight: 700;">Repuestos
+                                                            <h5 style="font-weight: 700;">Repuestos
                                                             </h5>
                                                         </label>
                                                         <div class="form-control text-start"
@@ -158,7 +158,7 @@
                                                     <div class="text-start">
                                                         <label for="comentario" class="mb-2"
                                                             style="color:blue; font-weigth: 900;">
-                                                            <h5 style="letter-spacing: 1px; font-weight: 700;">Comentarios
+                                                            <h5 style="font-weight: 700;">Comentarios
                                                             </h5>
                                                         </label>
                                                         <textarea id="comentariosC" style="background-color: rgb(143 143 143 / 21%);" name="comentario"
@@ -184,17 +184,16 @@
                                                 <h4 class="font-weight-bolder">Datos para cotizar</h4>
                                             </div>
                                             <div class="card-body text-start">
-                                                <div class="flex flex-col mb-3">
+                                                <div class="flex flex-col mb-5">
                                                     <label for="nit" class="mb-2"
                                                         style="color:blue; font-weigth: 900;">
-                                                        <h5 style="letter-spacing: 1px; font-weight: 700;"><span
+                                                        <h5 style="font-weight: 700;"><span
                                                                 class="text-danger">*</span>NIT del almacén</h5>
                                                     </label>
                                                     <input type="text" name="nit" id="nit"
                                                         class="form-control text-start" placeholder="NIT"
                                                         aria-label="Nit"
-                                                        value="@if (auth()->check() and
-                                                                auth()->user()->hasRole('Proveedor')) {{ auth()->user()->proveedor->nit_empresa }}@else{{ old('nit') }} @endif"
+                                                        value="@if(auth()->check()and auth()->user()->hasRole('Proveedor')){{ auth()->user()->proveedor->nit_empresa }}@else{{ old('nit') }}@endif"
                                                         required>
                                                     @error('nit')
                                                         <small class="text-danger text-xs pt-1">{{ $message }}</small>
@@ -204,8 +203,8 @@
                                                 <div class="flex flex-col mb-3" style="overflow-x: hidden;">
                                                     <label for="repuesto" class="mb-3"
                                                         style="color:blue; font-weigth: 900;">
-                                                        <h5 class="mb-2" style="letter-spacing: 1px; font-weight: 700;">
-                                                            <span class="text-danger">*</span>Repuestos solicitados</h5>
+                                                        <h5 class="mb-2" style="font-weight: 700;">
+                                                            <span class="text-danger">*</span>REPUESTOS SOLICITADOS</h5>
                                                         <span
                                                             style="color: #344767de; font-size: 1.2rem !important;">¿Tienes
                                                             alguno de estos?</span> <br><br>
@@ -227,8 +226,9 @@
                                                             @endforeach
                                                         </div>
                                                     </div>
+                                                    <br>
                                                     <span class="text-primary pt-1"
-                                                        style="font-size: 1rem !important; font-weight: 600;">COTIZA</span>
+                                                        style="font-size: 1.2rem !important; font-weight: 700;">COTIZA</span>
                                                     @error('json_repuestos')
                                                         <small class="text-danger text-xs pt-1">{{ $message }}</small>
                                                     @enderror
@@ -341,7 +341,7 @@
                                                                         class="text-danger text-xs pt-1">{{ $message }}</small>
                                                                 @enderror
 
-                                                                <span style="color: #344767;">Tipo de Repuesto</span>
+                                                                {{-- <span style="color: #344767;">Tipo de Repuesto</span>
                                                                 <select name="tipo_repuesto[]" id="tipo_repuesto"
                                                                     class="form-control text-start"
                                                                     aria-label="Tipo de repuesto"
@@ -384,7 +384,7 @@
                                                                 @error('tipo_repuesto')
                                                                     <small
                                                                         class="text-danger text-xs pt-1">{{ $message }}</small>
-                                                                @enderror
+                                                                @enderror --}}
 
                                                             </div>
                                                         @endforeach
@@ -397,7 +397,7 @@
                                                     <div class="text-start">
                                                         <label for="comentarioP" class="mb-2"
                                                             style="color:blue; font-weigth: 900;">
-                                                            <h5 style="letter-spacing: 1px; font-weight: 700;">Comentarios
+                                                            <h5 style="font-weight: 700;">Comentarios
                                                             </h5>
                                                         </label>
                                                         <textarea id="comentario_proveedor" name="comentarioP" class="form-control text-center"
@@ -598,14 +598,14 @@
                 let numEspacios = (texto.match(/ /g) || []).length;
                 let numSaltosLinea = (texto.match(/\n/g) || []).length;
 
-                if (numEspacios > 2) {
+                if (numEspacios > 1) {
                     comentario.value = texto.replace(/ +/g, ' '.repeat(1));
                 }
-                if (numSaltosLinea > 2) {
+                if (numSaltosLinea > 1) {
                     comentario.value = texto.replace(/\n+/g, '\n'.repeat(1));
                 }
-                if (texto.length > 400) {
-                    comentario.value = texto.slice(0, 400);
+                if (texto.length > 160) {
+                    comentario.value = texto.slice(0, 160);
                 }
             }
 

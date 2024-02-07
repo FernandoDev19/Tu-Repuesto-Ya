@@ -485,7 +485,6 @@ class HomeController extends Controller
         $answer->idSolicitud = $solicitud->id;
         $answer->idProveedor = $proveedor->id;
         $answer->repuesto = $request->json_repuestos;
-        $answer->tipo_repuesto = json_encode($request->tipo_repuesto);
         $preciosArray = $request->precio;
 
         // Agrega el símbolo a cada elemento del array
@@ -526,8 +525,8 @@ class HomeController extends Controller
 
         $repuesto = json_decode($answer->repuesto, true);
         $precio = json_decode($answer->precio, true);
-        $garantia = json_decode($answer->garantia, true);
-        $tipo_repuesto = json_decode($answer->tipo_repuesto, true);
+        // $garantia = json_decode($answer->garantia, true);
+        // $tipo_repuesto = json_decode($answer->tipo_repuesto, true);
 
         $token = 'EAAyaksOlpN4BO64MEL1cjlEGMvDQb6liWd3oCOIhvnUZBMeF5tbhAvjZABvBnnaYh9V9waBGZCBJW0LnCFaDcUQMZArNbLSKCUEL1MLmgdoRpQHyvEGdAC0CYOxt3l5N2u2Wi0yAlVFE7mCRtHVkZCSOyZAXyVtbrxxeOjkJqOkFDjloKrVuZBLXJUF4S1KG3u7';
         $url = 'https://graph.facebook.com/v17.0/196744616845968/messages';
@@ -617,10 +616,6 @@ class HomeController extends Controller
                                 ],
                                 [
                                     'type' => 'text',
-                                    'text' => $tipo_repuesto[0],
-                                ],
-                                [
-                                    'type' => 'text',
                                     'text' => $precio[0],
                                 ],
                                 [
@@ -673,19 +668,11 @@ class HomeController extends Controller
                                 ],
                                 [
                                     'type' => 'text',
-                                    'text' => $tipo_repuesto[0],
-                                ],
-                                [
-                                    'type' => 'text',
                                     'text' => $precio[0],
                                 ],
                                 [
                                     'type' => 'text',
                                     'text' => $repuesto[1],
-                                ],
-                                [
-                                    'type' => 'text',
-                                    'text' => $tipo_repuesto[1],
                                 ],
                                 [
                                     'type' => 'text',
@@ -741,10 +728,6 @@ class HomeController extends Controller
                                 ],
                                 [
                                     'type' => 'text',
-                                    'text' => $tipo_repuesto[0],
-                                ],
-                                [
-                                    'type' => 'text',
                                     'text' => $precio[0],
                                 ],
                                 [
@@ -753,19 +736,11 @@ class HomeController extends Controller
                                 ],
                                 [
                                     'type' => 'text',
-                                    'text' => $tipo_repuesto[1],
-                                ],
-                                [
-                                    'type' => 'text',
                                     'text' => $precio[1],
                                 ],
                                 [
                                     'type' => 'text',
                                     'text' => $repuesto[2],
-                                ],
-                                [
-                                    'type' => 'text',
-                                    'text' => $tipo_repuesto[2],
                                 ],
                                 [
                                     'type' => 'text',
@@ -821,19 +796,11 @@ class HomeController extends Controller
                                 ],
                                 [
                                     'type' => 'text',
-                                    'text' => $tipo_repuesto[0],
-                                ],
-                                [
-                                    'type' => 'text',
                                     'text' => $precio[0],
                                 ],
                                 [
                                     'type' => 'text',
                                     'text' => $repuesto[1],
-                                ],
-                                [
-                                    'type' => 'text',
-                                    'text' => $tipo_repuesto[1],
                                 ],
                                 [
                                     'type' => 'text',
@@ -845,19 +812,11 @@ class HomeController extends Controller
                                 ],
                                 [
                                     'type' => 'text',
-                                    'text' => $tipo_repuesto[2],
-                                ],
-                                [
-                                    'type' => 'text',
                                     'text' => $precio[2],
                                 ],
                                 [
                                     'type' => 'text',
                                     'text' => $repuesto[3],
-                                ],
-                                [
-                                    'type' => 'text',
-                                    'text' => $tipo_repuesto[3],
                                 ],
                                 [
                                     'type' => 'text',
@@ -913,19 +872,11 @@ class HomeController extends Controller
                                 ],
                                 [
                                     'type' => 'text',
-                                    'text' => $tipo_repuesto[0],
-                                ],
-                                [
-                                    'type' => 'text',
                                     'text' => $precio[0],
                                 ],
                                 [
                                     'type' => 'text',
                                     'text' => $repuesto[1],
-                                ],
-                                [
-                                    'type' => 'text',
-                                    'text' => $tipo_repuesto[1],
                                 ],
                                 [
                                     'type' => 'text',
@@ -937,10 +888,6 @@ class HomeController extends Controller
                                 ],
                                 [
                                     'type' => 'text',
-                                    'text' => $tipo_repuesto[2],
-                                ],
-                                [
-                                    'type' => 'text',
                                     'text' => $precio[2],
                                 ],
                                 [
@@ -949,19 +896,11 @@ class HomeController extends Controller
                                 ],
                                 [
                                     'type' => 'text',
-                                    'text' => $tipo_repuesto[3],
-                                ],
-                                [
-                                    'type' => 'text',
                                     'text' => $precio[3],
                                 ],
                                 [
                                     'type' => 'text',
                                     'text' => $repuesto[4],
-                                ],
-                                [
-                                    'type' => 'text',
-                                    'text' => $tipo_repuesto[4],
                                 ],
                                 [
                                     'type' => 'text',
