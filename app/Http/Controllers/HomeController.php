@@ -64,7 +64,7 @@ class HomeController extends Controller
                 'modelo' => 'required|numeric|digits: 4',
                 'tipo' => 'required',
                 'json_repuestos' => 'required',
-                'json_categorias' => 'required',
+                // 'json_categorias' => 'required',
                 'img_repuesto.*' => 'file|mimes:png,jpg,jpeg|max:5024',
                 'comentario' => 'max:500',
                 'nombre' => 'required|max: 120',
@@ -75,7 +75,7 @@ class HomeController extends Controller
                 'cel.required' => 'El campo celular es obligatorio',
                 'tipo.required' => 'El campo tipo de transmisión es obligatorio',
                 'json_repuestos.required' => 'El campo repuesto(s) es obligatorio',
-                'json_categorias.required' => 'El campo categoria es obligatorio',
+                // 'json_categorias.required' => 'El campo categoria es obligatorio',
             ]
         );
 
@@ -88,13 +88,71 @@ class HomeController extends Controller
 
         $solicitudes_old = Solicitude::whereDate('created_at', '<', now()->subDays(25))->get();
 
-            // Eliminar las imágenes de las solicitudes que tengan más de 25 días
-            foreach ($solicitudes_old as $solicitud) {
-                    // Llamar a la función eliminarImagenes()
-                    $this->eliminarImagenes($solicitud->id);
-            }
+        // Eliminar las imágenes de las solicitudes que tengan más de 25 días
+        foreach ($solicitudes_old as $solicitud) {
+            // Llamar a la función eliminarImagenes()
+            $this->eliminarImagenes($solicitud->id);
+        }
 
         $solicitud = new Solicitude();
+
+        $palabrasClave = [
+            'Llantas' => ['Llantas', 'Neumáticos', 'Neumaticos'],
+            'Frenos' => ['Pastillas', 'Freno', 'Discos', 'Tambores', 'Bomba', 'Servofreno', 'Bandas', 'Banda'],
+            'Suspensión' => ['Rodamiento', 'Suspensiones', 'Suspension', 'Suspensión', 'Rodamientos', 'Amortiguadores', 'Amortiguador', 'Resortes', 'Resorte', 'Barra', 'Barras', 'estabilizadora', 'estabilizadoras', 'estabilizador', 'estabilizadores', 'Bieletas'],
+            'Dirección' => ['Cremallera', 'dirección', 'direccion', 'Manguera', 'Mangueras', 'Bomba de dirección', 'Terminales de dirección', 'Terminales', 'Juntas homocinéticas', 'Juntas', 'homocinéticas'],
+            'Motor' => ['Pistón', 'piston', 'pistones', 'Motores', 'motor', 'Filtros', 'Filtro', 'aceite', 'Filtros de aceite', 'aire', 'Filtros de aire', 'combustible', 'Filtros de combustible', 'Bujías', 'Bobinas', 'Bobinas de encendido', 'encendido', 'Correas', 'Correas de distribución', 'distribución', 'Bomba', 'Bomba de agua', 'Bomba de aceite', 'Turbocompresor', 'Alternador', 'Arrancador'],
+            'Transmisión' => ['Aceite', 'Aceite de transmisión', 'transmisión', 'Filtro de transmisión', 'Filtro de transmisión', 'Embrague', 'Caja', 'cambios', 'manual', 'Caja de cambios manual', 'Caja de cambios automática', 'automatica', 'automática'],
+            'Tren motriz' => ['Juntas homocinéticas', 'Diferencial', 'Semiejes'],
+            'Refrigeración' => ['Radiador', 'Termostato', 'Ventilador', 'Bomba de Agua', 'Bomba', 'Agua', 'Refrigeración', 'Refrigerante', 'Manguera de refrigerante', 'Tapa del radiador', 'Sensores', 'Sensor', 'Oxigenos', 'Sensor de oxigeno', 'Sensor de temperatura', 'Temperatura', 'Radiador de aceite'],
+            'Latas' => ['Puertas', 'Puerta', 'Ventana', 'Ventanas', 'Espejo', 'Espejos', 'retrovisor', 'retrovisores', 'Espejos retrovisores', 'Parachoques', 'Paral', 'Cajeta', 'Baul', 'Baúl', 'Techo', 'Bomper', 'Bonper', 'Persiana', 'Persianas', 'Frontal', 'Capó', 'Capot', 'Capo', 'Maletero', 'Guardabarros', 'Guardabarro', 'Guarda barros', 'Guarda Barro', 'Defensa', 'Placa', 'matrícula', 'Placa de matrícula'],
+            'Eléctricos' => ['Baterías', 'Baterias', 'Batería', 'Bateria', 'Faro', 'Faros', 'Farolas', 'Luz', 'Luces', 'Luces traseras', 'Señales', 'giro', 'Señales de giro', 'Limpiaparabrisas', 'parabrisas', 'limpia parabrisas', 'limpia para brisas', 'Limpiaparabrisas traseros', 'A/C', 'Calefacción', 'Radio', 'Altavoces', 'navegación', 'Sistema de navegación'],
+            'otros' => ['Mofles', 'Líquidos', 'Líquido', 'refrigerante', 'dirección', 'asistida', 'transmisión', 'Líquido de transmisión', 'Limpiador', 'parabrisas', 'Limpiador de parabrisas', 'Anticongelante', 'Anti congelante', 'Aceite', 'Aceites', 'motor', 'Aceite de motor', 'Aditivos'],
+        ];
+
+        $repuestos_array = json_decode($request->json_repuestos);
+
+        // Función para quitar tildes y caracteres especiales
+        $quitarTildes = function ($string) {
+            $string = strtr($string, 'áéíóúüÁÉÍÓÚÜ', 'aeiouuAEIOUU');
+            $string = preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Eliminar caracteres especiales
+            $string = iconv('UTF-8', 'ASCII//TRANSLIT', $string);
+            return $string;
+        };
+        // Inicializar un array para almacenar categorías
+        $categoriasEncontradas = [];
+
+        foreach ($repuestos_array as $repuestoSeleccionado) {
+            // Convertir elementos del subarray y el repuesto a minúsculas y quitar tildes
+            $repuestoSeleccionado = $quitarTildes(strtolower($repuestoSeleccionado));
+
+            // Variable booleana para indicar si se encontró coincidencia en alguna categoría
+            $encontrado = false;
+
+            foreach ($palabrasClave as $categoria => $palabras) {
+                // Convertir elementos del subarray a minúsculas y quitar tildes
+                $palabras = array_map($quitarTildes, array_map('strtolower', $palabras));
+
+                foreach ($palabras as $palabra) {
+                    if (stripos($repuestoSeleccionado, $palabra) !== false) {
+                        // Agregar la categoría al array si no existe
+                        if (!in_array($categoria, $categoriasEncontradas)) {
+                            $categoriasEncontradas[] = $categoria;
+                        }
+                        $encontrado = true;
+                    }
+                }
+            }
+
+            // Si no se encuentra en ninguna categoría, agregar 'No sé'
+            if (!$encontrado) {
+                $categoriasEncontradas[] = 'No sé';
+            }
+        }
+
+        // Asignar el array de categorías encontradas a la solicitud
+        $solicitud->categoria = json_encode($categoriasEncontradas);
+
 
         $request->marca_otro = 'otro';
 
@@ -147,7 +205,6 @@ class HomeController extends Controller
             $solicitud->img_repuesto = json_encode(['No se subió ningun archivo']);
         }
 
-        $solicitud->categoria = $request->json_categorias;
         $request->comentario = $request->comentario ?? 'No hay comentarios';
         $solicitud->comentario = $request->comentario ?? 'No hay comentarios';
         $solicitud->nombre = $request->nombre;
@@ -222,7 +279,7 @@ class HomeController extends Controller
                 $marcaCliente = $request->marca;
                 $categoriaRepuesto = json_decode($request->json_categorias, true);
 
-                if ((is_array($marcasGuardadasArray) && in_array('Todas las marcas', $marcasGuardadasArray) || in_array($marcaCliente, $marcasGuardadasArray) || in_array($request->marca_otro, $marcasGuardadasArray)) && (is_array($categoriasGuardadasArray) && in_array('Todas las especialidades', $categoriasGuardadasArray) || array_intersect($categoriaRepuesto, $categoriasGuardadasArray)) || $request->categoria_repuesto == 'No se') {
+                if ((is_array($marcasGuardadasArray) && in_array('Todas las marcas', $marcasGuardadasArray) || in_array($marcaCliente, $marcasGuardadasArray) || in_array($request->marca_otro, $marcasGuardadasArray)) && (is_array($categoriasGuardadasArray) && in_array('Todas las especialidades', $categoriasGuardadasArray) || array_intersect($categoriaRepuesto, $categoriasGuardadasArray)) || $request->categoria_repuesto == 'No sé') {
                     $celular = $proveedor->celular;
                     $telefono = $proveedor->telefono;
 
@@ -379,9 +436,9 @@ class HomeController extends Controller
         // Validar los datos de entrada
         $validator = Validator::make($request->all(), [
             'nit' => 'required|numeric|digits_between:8,16',
+            'json_repuestos' => 'required',
             // 'tipo_repuesto' => 'required',
             'precio' => 'required',
-
         ], [
             // 'tipo_repuesto.required' => 'El tipo de repuesto es obligatorio',
             'nit.max' => 'El campo NIT no puede contener mas de 16 digitos',
@@ -392,7 +449,7 @@ class HomeController extends Controller
             return redirect()->back()
                 ->withErrors($validator)
                 ->withInput()
-                ->with('error', '¡No se pudo enviar!');
+                ->with('error', '¡No se pudo enviar! Seleccione un repuesto o llene todos los campos');
         }
 
         // Obtener el proveedor y verificar si existe
@@ -401,8 +458,8 @@ class HomeController extends Controller
 
         if (!$proveedor) {
             return redirect()->back()->withInput()->with('error', 'El nit ingresado no existe');
-        }else{
-            if(!$proveedor->estado){
+        } else {
+            if (!$proveedor->estado) {
                 return redirect()->back()->withInput()->with('error', 'Actualmente su cuenta se encuentra inactiva');
             }
         }
@@ -428,11 +485,16 @@ class HomeController extends Controller
         $answer->idSolicitud = $solicitud->id;
         $answer->idProveedor = $proveedor->id;
         $answer->repuesto = $request->json_repuestos;
-        // $answer->tipo_repuesto = json_encode($request->tipo_repuesto);
-        $answer->precio = "$ $request->precio";
+        $answer->tipo_repuesto = json_encode($request->tipo_repuesto);
+        $preciosArray = $request->precio;
 
-        // $datos_garantia = implode(" ", $request->input('garantia')) . " " . $request->garantiaSeleccion;
-        // $answer->garantia = json_encode($datos_garantia);
+        // Agrega el símbolo a cada elemento del array
+        $preciosConSimbolo = array_map(function ($precio) {
+            return "$" . $precio;
+        }, $preciosArray);
+
+        // Guarda el array con símbolos en formato JSON
+        $answer->precio = json_encode($preciosConSimbolo);
 
         if ($request->comentarioP) {
             $answer->comentarios = 'Además, el proveedor ha compartido algunos comentarios: \n "*_' . $request->comentarioP . '_*"';
@@ -448,17 +510,13 @@ class HomeController extends Controller
             $solicitud->estado = false;
             $solicitud->save();
             return redirect()->route('servicios')->with('error', 'Esta solicitud ya no acepta más respuestas.');
-        } else if($answer->save()){
+        } else if ($answer->save()) {
             $solicitud->respuestas = $solicitud->respuestas + 1;
             $solicitud->save();
         }
 
         // Enviar datos al cliente
-        $precio = $answer->precio;
-        // $garantia = $answer->garantia;
-        $repuesto = is_array($answer->repuesto) ? implode(',', $answer->repuesto) : $answer->repuesto;
-        $repuesto = str_replace(array("[", "]", "\"", ","), array("", "", "", ", "), $repuesto);
-        // $tipo_repuesto = $answer->tipo_repuesto;
+
         $nombre_cliente = $solicitud->nombre;
         $almacen = $proveedor->razon_social;
         $pais = $proveedor->pais;
@@ -466,69 +524,475 @@ class HomeController extends Controller
         $comentarios = $answer->comentarios;
         $numero_celular = $proveedor->celular;
 
+        $repuesto = json_decode($answer->repuesto, true);
+        $precio = json_decode($answer->precio, true);
+        $garantia = json_decode($answer->garantia, true);
+        $tipo_repuesto = json_decode($answer->tipo_repuesto, true);
+
         $token = 'EAAyaksOlpN4BO64MEL1cjlEGMvDQb6liWd3oCOIhvnUZBMeF5tbhAvjZABvBnnaYh9V9waBGZCBJW0LnCFaDcUQMZArNbLSKCUEL1MLmgdoRpQHyvEGdAC0CYOxt3l5N2u2Wi0yAlVFE7mCRtHVkZCSOyZAXyVtbrxxeOjkJqOkFDjloKrVuZBLXJUF4S1KG3u7';
         $url = 'https://graph.facebook.com/v17.0/196744616845968/messages';
         $telefono = $solicitud->numero;
 
-        $mensajeData = [
-            'messaging_product' => 'whatsapp',
-            'recipient_type' => 'individual',
-            'to' => $telefono,
-            'type' => 'template',
-            'template' => [
-                'name' => 'respuesta_proveedor',
-                'language' => [
-                    'code' => 'es',
-                ],
-                'components' => [
-                    [
-                        'type' => 'body',
-                        'parameters' => [
-                            [
-                                'type' => 'text',
-                                'text' => $nombre_cliente,
-                            ],
-                            [
-                                'type' => 'text',
-                                'text' => $repuesto,
-                            ],
-                            // [
-                            //     'type' => 'text',
-                            //     'text' => $tipo_repuesto,
-                            // ],
-                            [
-                                'type' => 'text',
-                                'text' => $precio,
-                            ],
-                            // [
-                            //     'type' => 'text',
-                            //     'text' => $garantia,
-                            // ],
-                            [
-                                'type' => 'text',
-                                'text' => $almacen,
-                            ],
-                            [
-                                'type' => 'text',
-                                'text' => $pais,
-                            ],
-                            [
-                                'type' => 'text',
-                                'text' => $ciudad,
-                            ],
-                            [
-                                'type' => 'text',
-                                'text' => $numero_celular,
-                            ],
-                            [
-                                'type' => 'text',
-                                'text' => $comentarios,
+        // $mensajeData = [
+        //     'messaging_product' => 'whatsapp',
+        //     'recipient_type' => 'individual',
+        //     'to' => $telefono,
+        //     'type' => 'template',
+        //     'template' => [
+        //         'name' => 'respuesta_proveedor',
+        //         'language' => [
+        //             'code' => 'es',
+        //         ],
+        //         'components' => [
+        //             [
+        //                 'type' => 'body',
+        //                 'parameters' => [
+        //                     [
+        //                         'type' => 'text',
+        //                         'text' => $nombre_cliente,
+        //                     ],
+        //                     [
+        //                         'type' => 'text',
+        //                         'text' => $repuesto,
+        //                     ],
+        //                     [
+        //                         'type' => 'text',
+        //                         'text' => $tipo_repuesto,
+        //                     ],
+        //                     [
+        //                         'type' => 'text',
+        //                         'text' => $precio,
+        //                     ],
+        //                     [
+        //                         'type' => 'text',
+        //                         'text' => $garantia,
+        //                     ],
+        //                     [
+        //                         'type' => 'text',
+        //                         'text' => $almacen,
+        //                     ],
+        //                     [
+        //                         'type' => 'text',
+        //                         'text' => $pais,
+        //                     ],
+        //                     [
+        //                         'type' => 'text',
+        //                         'text' => $ciudad,
+        //                     ],
+        //                     [
+        //                         'type' => 'text',
+        //                         'text' => $numero_celular,
+        //                     ],
+        //                     [
+        //                         'type' => 'text',
+        //                         'text' => $comentarios,
+        //                     ],
+        //                 ],
+        //             ],
+        //         ],
+        //     ],
+        // ];
+        if(count(json_decode($answer->repuesto)) == 1){
+            $mensajeData = [
+                'messaging_product' => 'whatsapp',
+                'recipient_type' => 'individual',
+                'to' => $telefono,
+                'type' => 'template',
+                'template' => [
+                    'name' => 'respuesta_proveedor1',
+                    'language' => [
+                        'code' => 'es',
+                    ],
+                    'components' => [
+                        [
+                            'type' => 'body',
+                            'parameters' => [
+                                [
+                                    'type' => 'text',
+                                    'text' => $nombre_cliente,
+                                ],
+                                [
+                                    'type' => 'text',
+                                    'text' => $repuesto[0],
+                                ],
+                                [
+                                    'type' => 'text',
+                                    'text' => $tipo_repuesto[0],
+                                ],
+                                [
+                                    'type' => 'text',
+                                    'text' => $precio[0],
+                                ],
+                                [
+                                    'type' => 'text',
+                                    'text' => $almacen,
+                                ],
+                                [
+                                    'type' => 'text',
+                                    'text' => $pais,
+                                ],
+                                [
+                                    'type' => 'text',
+                                    'text' => $ciudad,
+                                ],
+                                [
+                                    'type' => 'text',
+                                    'text' => $numero_celular,
+                                ],
+                                [
+                                    'type' => 'text',
+                                    'text' => $comentarios,
+                                ],
                             ],
                         ],
                     ],
                 ],
-            ],
-        ];
+            ];
+        }else if(count(json_decode($answer->repuesto)) == 2){
+            $mensajeData = [
+                'messaging_product' => 'whatsapp',
+                'recipient_type' => 'individual',
+                'to' => $telefono,
+                'type' => 'template',
+                'template' => [
+                    'name' => 'respuesta_proveedor2',
+                    'language' => [
+                        'code' => 'es',
+                    ],
+                    'components' => [
+                        [
+                            'type' => 'body',
+                            'parameters' => [
+                                [
+                                    'type' => 'text',
+                                    'text' => $nombre_cliente,
+                                ],
+                                [
+                                    'type' => 'text',
+                                    'text' => $repuesto[0],
+                                ],
+                                [
+                                    'type' => 'text',
+                                    'text' => $tipo_repuesto[0],
+                                ],
+                                [
+                                    'type' => 'text',
+                                    'text' => $precio[0],
+                                ],
+                                [
+                                    'type' => 'text',
+                                    'text' => $repuesto[1],
+                                ],
+                                [
+                                    'type' => 'text',
+                                    'text' => $tipo_repuesto[1],
+                                ],
+                                [
+                                    'type' => 'text',
+                                    'text' => $precio[1],
+                                ],
+                                [
+                                    'type' => 'text',
+                                    'text' => $almacen,
+                                ],
+                                [
+                                    'type' => 'text',
+                                    'text' => $pais,
+                                ],
+                                [
+                                    'type' => 'text',
+                                    'text' => $ciudad,
+                                ],
+                                [
+                                    'type' => 'text',
+                                    'text' => $numero_celular,
+                                ],
+                                [
+                                    'type' => 'text',
+                                    'text' => $comentarios,
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ];
+        }else if(count(json_decode($answer->repuesto)) == 3){
+            $mensajeData = [
+                'messaging_product' => 'whatsapp',
+                'recipient_type' => 'individual',
+                'to' => $telefono,
+                'type' => 'template',
+                'template' => [
+                    'name' => 'respuesta_proveedor3',
+                    'language' => [
+                        'code' => 'es',
+                    ],
+                    'components' => [
+                        [
+                            'type' => 'body',
+                            'parameters' => [
+                                [
+                                    'type' => 'text',
+                                    'text' => $nombre_cliente,
+                                ],
+                                [
+                                    'type' => 'text',
+                                    'text' => $repuesto[0],
+                                ],
+                                [
+                                    'type' => 'text',
+                                    'text' => $tipo_repuesto[0],
+                                ],
+                                [
+                                    'type' => 'text',
+                                    'text' => $precio[0],
+                                ],
+                                [
+                                    'type' => 'text',
+                                    'text' => $repuesto[1],
+                                ],
+                                [
+                                    'type' => 'text',
+                                    'text' => $tipo_repuesto[1],
+                                ],
+                                [
+                                    'type' => 'text',
+                                    'text' => $precio[1],
+                                ],
+                                [
+                                    'type' => 'text',
+                                    'text' => $repuesto[2],
+                                ],
+                                [
+                                    'type' => 'text',
+                                    'text' => $tipo_repuesto[2],
+                                ],
+                                [
+                                    'type' => 'text',
+                                    'text' => $precio[2],
+                                ],
+                                [
+                                    'type' => 'text',
+                                    'text' => $almacen,
+                                ],
+                                [
+                                    'type' => 'text',
+                                    'text' => $pais,
+                                ],
+                                [
+                                    'type' => 'text',
+                                    'text' => $ciudad,
+                                ],
+                                [
+                                    'type' => 'text',
+                                    'text' => $numero_celular,
+                                ],
+                                [
+                                    'type' => 'text',
+                                    'text' => $comentarios,
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ];
+        }else if(count(json_decode($answer->repuesto)) == 4){
+            $mensajeData = [
+                'messaging_product' => 'whatsapp',
+                'recipient_type' => 'individual',
+                'to' => $telefono,
+                'type' => 'template',
+                'template' => [
+                    'name' => 'respuesta_proveedor4',
+                    'language' => [
+                        'code' => 'es',
+                    ],
+                    'components' => [
+                        [
+                            'type' => 'body',
+                            'parameters' => [
+                                [
+                                    'type' => 'text',
+                                    'text' => $nombre_cliente,
+                                ],
+                                [
+                                    'type' => 'text',
+                                    'text' => $repuesto[0],
+                                ],
+                                [
+                                    'type' => 'text',
+                                    'text' => $tipo_repuesto[0],
+                                ],
+                                [
+                                    'type' => 'text',
+                                    'text' => $precio[0],
+                                ],
+                                [
+                                    'type' => 'text',
+                                    'text' => $repuesto[1],
+                                ],
+                                [
+                                    'type' => 'text',
+                                    'text' => $tipo_repuesto[1],
+                                ],
+                                [
+                                    'type' => 'text',
+                                    'text' => $precio[1],
+                                ],
+                                [
+                                    'type' => 'text',
+                                    'text' => $repuesto[2],
+                                ],
+                                [
+                                    'type' => 'text',
+                                    'text' => $tipo_repuesto[2],
+                                ],
+                                [
+                                    'type' => 'text',
+                                    'text' => $precio[2],
+                                ],
+                                [
+                                    'type' => 'text',
+                                    'text' => $repuesto[3],
+                                ],
+                                [
+                                    'type' => 'text',
+                                    'text' => $tipo_repuesto[3],
+                                ],
+                                [
+                                    'type' => 'text',
+                                    'text' => $precio[3],
+                                ],
+                                [
+                                    'type' => 'text',
+                                    'text' => $almacen,
+                                ],
+                                [
+                                    'type' => 'text',
+                                    'text' => $pais,
+                                ],
+                                [
+                                    'type' => 'text',
+                                    'text' => $ciudad,
+                                ],
+                                [
+                                    'type' => 'text',
+                                    'text' => $numero_celular,
+                                ],
+                                [
+                                    'type' => 'text',
+                                    'text' => $comentarios,
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ];
+        }else if(count(json_decode($answer->repuesto)) == 5){
+            $mensajeData = [
+                'messaging_product' => 'whatsapp',
+                'recipient_type' => 'individual',
+                'to' => $telefono,
+                'type' => 'template',
+                'template' => [
+                    'name' => 'respuesta_proveedor5',
+                    'language' => [
+                        'code' => 'es',
+                    ],
+                    'components' => [
+                        [
+                            'type' => 'body',
+                            'parameters' => [
+                                [
+                                    'type' => 'text',
+                                    'text' => $nombre_cliente,
+                                ],
+                                [
+                                    'type' => 'text',
+                                    'text' => $repuesto[0],
+                                ],
+                                [
+                                    'type' => 'text',
+                                    'text' => $tipo_repuesto[0],
+                                ],
+                                [
+                                    'type' => 'text',
+                                    'text' => $precio[0],
+                                ],
+                                [
+                                    'type' => 'text',
+                                    'text' => $repuesto[1],
+                                ],
+                                [
+                                    'type' => 'text',
+                                    'text' => $tipo_repuesto[1],
+                                ],
+                                [
+                                    'type' => 'text',
+                                    'text' => $precio[1],
+                                ],
+                                [
+                                    'type' => 'text',
+                                    'text' => $repuesto[2],
+                                ],
+                                [
+                                    'type' => 'text',
+                                    'text' => $tipo_repuesto[2],
+                                ],
+                                [
+                                    'type' => 'text',
+                                    'text' => $precio[2],
+                                ],
+                                [
+                                    'type' => 'text',
+                                    'text' => $repuesto[3],
+                                ],
+                                [
+                                    'type' => 'text',
+                                    'text' => $tipo_repuesto[3],
+                                ],
+                                [
+                                    'type' => 'text',
+                                    'text' => $precio[3],
+                                ],
+                                [
+                                    'type' => 'text',
+                                    'text' => $repuesto[4],
+                                ],
+                                [
+                                    'type' => 'text',
+                                    'text' => $tipo_repuesto[4],
+                                ],
+                                [
+                                    'type' => 'text',
+                                    'text' => $precio[4],
+                                ],
+                                [
+                                    'type' => 'text',
+                                    'text' => $almacen,
+                                ],
+                                [
+                                    'type' => 'text',
+                                    'text' => $pais,
+                                ],
+                                [
+                                    'type' => 'text',
+                                    'text' => $ciudad,
+                                ],
+                                [
+                                    'type' => 'text',
+                                    'text' => $numero_celular,
+                                ],
+                                [
+                                    'type' => 'text',
+                                    'text' => $comentarios,
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ];
+        }
 
         $mensaje = json_encode($mensajeData);
 
@@ -547,6 +1011,9 @@ class HomeController extends Controller
         $status_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 
         curl_close($curl);
+
+        Log::info('Mensaje enviado:', $mensajeData);
+        Log::info('Mensaje enviado:', $response);
 
         if (auth()->check()) {
             return redirect()->route('viewSolicitudes')->with('message', 'La respuesta se ha enviado exitosamente');
@@ -567,5 +1034,4 @@ class HomeController extends Controller
             Storage::delete($imagen);
         }
     }
-
 }

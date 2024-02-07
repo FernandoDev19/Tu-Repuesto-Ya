@@ -3,14 +3,16 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 
 use App\Models\User;
 use App\Models\Solicitude;
 
 class ProveedorController extends Controller
 {
-    
-    function dashboard()
+
+    function dashboard():view
     {
         // Nombre del usuario
         $name = auth()->user()->name;
@@ -23,7 +25,7 @@ class ProveedorController extends Controller
         return view('admin.index', compact('name', 'ft'));
     }
 
-    public function verSolicitudNoti($idSoli, $idNoti)
+    public function verSolicitudNoti(int $idSoli, int $idNoti):view
     {
         // Nombre del usuario
         $name = auth()->user()->name;
@@ -33,13 +35,13 @@ class ProveedorController extends Controller
         $ft = $usuario->ft_perfil;
 
         $solicitud = Solicitude::where('id', $idSoli)->first();
-        
+
         $notification = auth()->user()->unreadNotifications->find($idNoti);
-        
+
         if ($notification) {
             $notification->markAsRead();
         }
 
         return view('admin.nuevaSolicitudRepuesto', compact('name', 'ft', 'solicitud'));
     }
-} 
+}

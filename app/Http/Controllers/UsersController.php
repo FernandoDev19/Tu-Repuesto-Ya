@@ -15,6 +15,8 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 
 use App\Mail\RegistroProveedorMail;
 use App\Mail\RestablecerContrasenia;
@@ -24,17 +26,17 @@ use App\Notifications\NuevoProveedorRegistrado;
 
 class UsersController extends Controller
 {
-    public function login(Request $request)
+    public function login(Request $request):view
     {
         return view('auth.login-v1');
     }
 
-    public function login2(Request $request)
+    public function login2(Request $request):view
     {
         return view('auth.login-v2');
     }
 
-    public function verification(Request $request)
+    public function verification(Request $request):RedirectResponse
     {
         $request->validate([
             'email' => 'required|email',
@@ -77,7 +79,7 @@ class UsersController extends Controller
         ]);
     }
 
-    public function resetPassword()
+    public function resetPassword():view
     {
         return view("auth.reset-password");
     }
@@ -180,17 +182,17 @@ class UsersController extends Controller
         ]);
     }
 
-    public function register(Request $request)
+    public function register(Request $request):view
     {
         // Lista de codigos
         $codigos = Country_code::all();
-            
+
         // Lista de departamentos
         $departamentos = Geolocation::distinct()->pluck('departamento');
-    
+
         // Lista de municipios
         $group = [];
-    
+
         foreach ($departamentos as $departamento) {
             $municipios = Geolocation::where('departamento', $departamento)->pluck('municipio');
             $group[$departamento] = $municipios;
@@ -199,7 +201,7 @@ class UsersController extends Controller
         return view('auth.register', compact('departamentos', 'group', 'codigos'));
     }
 
-    public function store(Request $request)
+    public function store(Request $request):RedirectResponse
     {
         // Validar los datos del formulario utilizando
         $validator = Validator::make(
@@ -216,7 +218,7 @@ class UsersController extends Controller
                     'required',
                     'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d.@!¡?¿]{8,}$/',
                 ],
-                'confirm_password' => 'required|same:password',
+                'confirm_password' => 'required| ',
                 'json_marcas' => 'required',
                 'json_categorias' => 'required',
                 'categoria_repuesto' => 'required',
@@ -277,7 +279,7 @@ class UsersController extends Controller
                 $validator->errors()->add('cel', 'Este número de celular ya está registrado.');
             }
         });
-        
+
          // Validar si el número de telefono ya está registrado
 
         // Validar el tamaño del archivo RUT
@@ -337,24 +339,23 @@ class UsersController extends Controller
            '+505' => 'Nicaragua',
            '+507' => 'Panamá',
             ];
-            
+
         $proveedor->pais = $paises[$request->codigo_cel];
         $proveedor->celular = $request->codigo_cel . $request->cel;
         $proveedor->telefono = $request->tel;
         $proveedor->email = $request->email;
         $proveedor->password = bcrypt($request->password); // Encriptar la contraseña
-        $proveedor->especialidad = $request->categoria_repuesto;
-        
+
         if($request->input('json_marcas')){
             $jsonMarcas = $request->input('json_marcas');
-            $proveedor->marcas_preferencias = $jsonMarcas; 
+            $proveedor->marcas_preferencias = $jsonMarcas;
         }
-        
+
         if($request->input('json_categorias')){
             $jsonCategorias = $request->input('json_categorias');
-            $proveedor->especialidad = $jsonCategorias; 
+            $proveedor->especialidad = $jsonCategorias;
         }
-        
+
         $proveedor->estado = false;
 
         // Obtener los archivos RUT y Cámara de Comercio
@@ -402,13 +403,13 @@ class UsersController extends Controller
 
               if ($admin) {
                   Notification::send($admin, new NuevoProveedorRegistrado($proveedor));
-                  
+
                   foreach(auth()->user()->unreadNotifications as $notification){
                       $enlace = "$request->nit/$notification->id";
                   }
                     $token = 'EAAyaksOlpN4BO64MEL1cjlEGMvDQb6liWd3oCOIhvnUZBMeF5tbhAvjZABvBnnaYh9V9waBGZCBJW0LnCFaDcUQMZArNbLSKCUEL1MLmgdoRpQHyvEGdAC0CYOxt3l5N2u2Wi0yAlVFE7mCRtHVkZCSOyZAXyVtbrxxeOjkJqOkFDjloKrVuZBLXJUF4S1KG3u7';
                     $url = 'https://graph.facebook.com/v17.0/196744616845968/messages';
-            
+
                   $mensajeData = [
                 'messaging_product' => 'whatsapp',
                 'recipient_type' => 'individual',
@@ -434,7 +435,7 @@ class UsersController extends Controller
                     ],
                 ],
             ];
-            
+
             $mensaje = json_encode($mensajeData);
 
             $header = [
@@ -446,14 +447,14 @@ class UsersController extends Controller
             curl_setopt($curl, CURLOPT_POSTFIELDS, $mensaje);
             curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
             curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-    
+
             $response = json_decode(curl_exec($curl), true);
-    
+
             $status_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-    
+
             curl_close($curl);
-        
-              }           
+
+              }
 
             // Redirigir a la página de inicio con un mensaje de éxito
             return redirect()->route("servicios")->with('message', '¡Registro exitoso! Por favor, revise su correo electrónico en unos minutos.');

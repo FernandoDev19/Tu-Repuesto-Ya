@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 
 //Modelos
 use App\Models\Provider;
@@ -29,9 +31,10 @@ use Carbon\Carbon;
 
 use Maatwebsite\Excel\Facades\Excel;
 
-class AdminController extends Controller{
+class AdminController extends Controller
+{
 
-    function index()
+    function index(): view
     {
         // Nombre del usuario
         $name = auth()->user()->name;
@@ -102,7 +105,7 @@ class AdminController extends Controller{
             'aggregate_field' => 'id',
             'filter_field' => 'repuesto',
             'filter_days' => 30,
-            'chart_type' => 'bar',
+            'chart_type' => 'line',
             'chart_data' => $datasetRepuestos,
             'chart_color' => "28,200,136",
         ];
@@ -169,7 +172,7 @@ class AdminController extends Controller{
 
         $chartOptionsCiudades = [
             'chart_title' => 'Ciudades más populares por departamento',
-            'chart_type' => 'bar', // Puedes ajustar el tipo de gráfico según tus necesidades
+            'chart_type' => 'pie', // Puedes ajustar el tipo de gráfico según tus necesidades
             'report_type' => 'group_by_string',
             'model' => Solicitude::class,
             'group_by_field' => 'municipio',
@@ -187,12 +190,15 @@ class AdminController extends Controller{
         return view('admin.index', compact('name', 'ft', 'cantidad_proveedores', 'proveedores_activos', 'cantidad_solicitudes', 'cantidad_respuestas', 'departamentos', 'chart1', 'chart2', 'chart3', 'chart4'));
     }
 
-    function profile()
+    function profile(): view
     {
         // Nombre del usuario
         $name = auth()->user()->name;
 
-        $usuario = User::where('name', $name)->first();
+        // Lista de codigos celulares
+        $codigos = Country_code::all();
+
+        $usuario = User::with('proveedor')->where('name', $name)->first();
 
         $ft = $usuario->ft_perfil;
 
@@ -208,7 +214,7 @@ class AdminController extends Controller{
         }
 
         if ($usuario) {
-            return view('admin.profile', compact('name', 'usuario', 'ft', 'departamentos', 'group'));
+            return view('admin.profile', compact('name', 'usuario', 'ft', 'departamentos', 'group', 'codigos'));
         }
     }
 
@@ -217,12 +223,140 @@ class AdminController extends Controller{
         $validator = Validator::make(
             $request->all(),
             [
-                ''
+                'name' => 'nullable',
+                'cel' => 'nullable|numeric|digits_between:7,11',
+                'tel' => 'nullable|numeric|digits_between:8,10',
+                'email' => 'nullable|email',
+                'password' => [
+                    'nullable',
+                    'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d.@!¡?¿]{8,}$/',
+                ],
+                'confirm_password' => 'nullable|same:password',
+
+            ],
+            [
+                'cel.numeric' => 'Este campo solo permite números',
+                'cel.digits_between' => 'Este campo contiene muchos o pocos digitos',
+                'tel.numeric' => 'Este campo solo permite números',
+                'tel.digits_between' => 'Este campo contiene muchos o pocos digitos',
+                'password.regex' => 'La contraseña no es segura. Debe incluir al menos 8 caracteres, 1 número, una mayúscula y una minúscula.',
+                'confirm_password.same' => 'Las contraseñas no coinciden',
+
             ]
         );
+
+        if (auth()->check() && auth()->user()->hasRole('Admin')) {
+            // Validar si el name ya está registrado
+            $validator->after(function ($validator) use ($request) {
+                $name = $request->input('name');
+
+                // Verificar si el nombre existe en la tabla de usuarios
+                $userWithName = User::where('name', $name)->first();
+
+                if ($userWithName) {
+                    $validator->errors()->add('name', 'Este nombre de usuario ya está registrado.');
+                }
+            });
+
+            // Validar si el celular ya está registrado
+            $validator->after(function ($validator) use ($request) {
+                $cel = $request->input('cel');
+
+                // Verificar si el celular existe en la tabla de usuarios
+                $userWithCel = User::where('cel', $cel)->first();
+
+                // Verificar si el celular existe en la tabla de proveedores
+                $providerWithCel = Provider::where('celular', $cel)->first();
+
+                if ($userWithCel || $providerWithCel) {
+                    $validator->errors()->add('cel', 'Este número de celular ya está registrado.');
+                }
+            });
+
+            if($request->has('tel') && $request->filled('tel')){
+                // Validar si el telefono ya está registrado
+                $validator->after(function ($validator) use ($request) {
+                    $tel = $request->input('tel');
+
+                    // Verificar si el telefono existe en la tabla de usuarios
+                    $userWithTel = User::where('tel', $tel)->first();
+
+                    // Verificar si el telefono existe en la tabla de proveedores
+                    $providerWithTel = Provider::where('telefono', $tel)->first();
+
+                    if ($userWithTel || $providerWithTel) {
+                        $validator->errors()->add('tel', 'Este número de telefono ya está registrado.');
+                    }
+                });
+            }
+
+            // Validar si el correo electronico ya está registrado
+            $validator->after(function ($validator) use ($request) {
+                $email = $request->input('email');
+
+                // Verificar si el correo electrónico existe en la tabla de usuarios
+                $userWithEmail = User::where('email', $email)->first();
+
+                // Verificar si el correo electrónico existe en la tabla de proveedores
+                $providerWithEmail = Provider::where('email', $email)->first();
+
+                if ($userWithEmail || $providerWithEmail) {
+                    $validator->errors()->add('email', 'Este correo electrónico ya está registrado.');
+                }
+            });
+
+            $validator->after(function($validator) use ($request){
+                $pass = bcrypt($request->password);
+                $idUser = auth()->user()->id;
+
+                $userWithPass = User::find($idUser);
+
+                if($pass == $userWithPass->password){
+                    $validator->errors()->add('password', 'Ya tienes en uso esta contraseña');
+                }
+            });
+        }
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput()->with('error', 'No se pudieron guardar los cambios');
+        }
+
+        if (auth()->check() && auth()->user()->hasRole('Admin')) {
+
+            $id = auth()->user()->id;
+
+            $userUpdate = User::findOrFail($id);
+            if($request->has('name') && $request->filled('name')){
+                $userUpdate->name = $request->input('name');
+            }
+
+            if($request->has('cel') && $request->filled('cel')){
+                $userUpdate->cel = $request->input('cel');
+            }
+
+            if($request->has('tel') && $request->filled('tel')){
+                $userUpdate->tel = $request->input('tel');
+            }
+
+            if($request->has('email') && $request->filled('email')){
+                $userUpdate->email = $request->input('tel');
+            }
+
+            if($request->has('password') && $request->filled('password')){
+                $userUpdate->password = bcrypt($request->password);
+            }
+            try{
+                $userUpdate->save();
+            }catch(\exception $e){
+                return redirect()->back()->whithErrors($validator)->with('error', 'Error al guardar. '.$e->getMessage());
+            }
+        }
+
+        return redirect()->back()->with('message', 'Los datos se han guardado correctamente');
+
     }
 
-    function viewSolicitudes()
+    function viewSolicitudes(): view
     {
         //Para hacer busquedas y filtrar la tabla, se usa when('name del campo buscar', function($variable){ return $variable->where()->orWhere() })
         $solicitudes = Solicitude::query()->when(request('search'), function ($query) {
@@ -271,7 +405,7 @@ class AdminController extends Controller{
         return view('admin.solicitudes', compact('name', 'solicitudes', 'ft', 'answers'));
     }
 
-    function viewAnswers()
+    function viewAnswers(): view
     {
         $respuestas = Answer::with('proveedor', 'solicitud')->paginate(15);
 
@@ -294,7 +428,7 @@ class AdminController extends Controller{
         return view('admin.respuestas', compact('name', 'respuestas', 'preferencias_de_marcas', 'ft'));
     }
 
-    public function loadProviders()
+    public function loadProviders(): view
     {
         // Lista de codigos celulares
         $codigos = Country_code::all();
@@ -411,7 +545,7 @@ class AdminController extends Controller{
         }
     }
 
-    public function createProvider(Request $request)
+    public function createProvider(Request $request): RedirectResponse
     {
         $validator = Validator::make(
             $request->all(),
@@ -460,7 +594,7 @@ class AdminController extends Controller{
             }
         });
 
-         $validator->after(function ($validator) use ($request) {
+        $validator->after(function ($validator) use ($request) {
             $cel = $request->input('cel_create');
 
             $user = User::where('cel', $cel)->first();
@@ -472,7 +606,7 @@ class AdminController extends Controller{
             }
         });
 
-         $validator->after(function ($validator) use ($request) {
+        $validator->after(function ($validator) use ($request) {
             $email = $request->input('email_create');
 
             $user = User::where('email', $email)->first();
@@ -552,7 +686,7 @@ class AdminController extends Controller{
 
         if ($request->has('estado_create')) {
             $proveedor->estado = $request->estado_create;
-        }else{
+        } else {
             $proveedor->estado = 0;
         }
 
@@ -571,7 +705,7 @@ class AdminController extends Controller{
             $nombreRutPersonalizado = 'RUT_' . $nit . '.pdf';
             $archivoRut->storeAs('uploads', $nombreRutPersonalizado);
             $proveedor->rut = $nombreRutPersonalizado;
-        }else{
+        } else {
             $proveedor->rut = 'Pendiente';
         }
 
@@ -583,32 +717,32 @@ class AdminController extends Controller{
             $nombreCamPersonalizado = 'Camara_de_comercio_' . $nit . '.pdf';
             $archivoCam->storeAs('uploads', $nombreCamPersonalizado);
             $proveedor->camara_comercio = $nombreCamPersonalizado;
-        }else{
+        } else {
             $proveedor->camara_comercio = 'Pendiente';
         }
 
         $proveedor->password = 'demo12345';
 
         // Guardar el proveedor en la base de datos
-            $proveedor->save();
+        $proveedor->save();
 
-            $newUser = new User();
-            $newUser->name = $proveedor->razon_social;
-            $newUser->cel = $proveedor->celular;
-            $newUser->tel = $proveedor->telefono;
-            $newUser->email = $proveedor->email;
-            $newUser->email_verified_at = Carbon::now();
-            $newUser->password = 'demo12345';
-            $newUser->role = 'Proveedor';
-            $newUser->proveedor()->associate($proveedor);
-            $newUser->assignRole('Proveedor');
-            $newUser->save();
+        $newUser = new User();
+        $newUser->name = $proveedor->razon_social;
+        $newUser->cel = $proveedor->celular;
+        $newUser->tel = $proveedor->telefono;
+        $newUser->email = $proveedor->email;
+        $newUser->email_verified_at = Carbon::now();
+        $newUser->password = 'demo12345';
+        $newUser->role = 'Proveedor';
+        $newUser->proveedor()->associate($proveedor);
+        $newUser->assignRole('Proveedor');
+        $newUser->save();
 
-            // Redirigir a la página de inicio con un mensaje de éxito
-            return redirect()->back()->with('message', '¡Registro exitoso!');
+        // Redirigir a la página de inicio con un mensaje de éxito
+        return redirect()->back()->with('message', '¡Registro exitoso!');
     }
 
-    public function edit(Request $request)
+    public function edit(Request $request): RedirectResponse
     {
         // Obtiene el id
         $id = $request->input('id');
@@ -701,7 +835,7 @@ class AdminController extends Controller{
             $proveedor->nit_empresa = $request->input('nit_edit');
         }
 
-        if($request->has('nombre_comercial_edit') && $request->filled('nombre_comercial_edit')){
+        if ($request->has('nombre_comercial_edit') && $request->filled('nombre_comercial_edit')) {
             $proveedor->nombre_comercial = $request->nombre_comercial_edit;
         }
 
@@ -872,7 +1006,7 @@ class AdminController extends Controller{
         return redirect()->back()->with('message', 'Proveedor editado exitosamente');
     }
 
-    public function delete($id)
+    public function delete(int $id): RedirectResponse
     {
         $proveedor = Provider::findOrFail($id);
 
@@ -904,7 +1038,7 @@ class AdminController extends Controller{
         return redirect()->back()->with('error', 'No se pudo encontrar el proveedor');
     }
 
-    public function eliminarSolicitud($id)
+    public function eliminarSolicitud(int $id): RedirectResponse
     {
         $solicitud = Solicitude::findOrFail($id);
 
@@ -922,10 +1056,9 @@ class AdminController extends Controller{
 
             // Eliminar los archivos desde el storage
             if ($rutaArchivo) {
-                foreach($rutaArchivo as $archivo){
+                foreach ($rutaArchivo as $archivo) {
                     Storage::delete('public/' . $archivo);
                 }
-
             }
 
             return redirect()->back()->with('message', 'Solicitud eliminada exitosamente');
@@ -972,7 +1105,7 @@ class AdminController extends Controller{
         return Excel::download(new RespuestasExport, 'Respuestas.xlsx');
     }
 
-    public function logout(Request $request)
+    public function logout(Request $request): RedirectResponse
     {
         //Cierra sesión del usuario
 
