@@ -28,26 +28,26 @@
                     </button>
                     <div class="collapse navbar-collapse container-op" id="navbarNavDropdown">
                         <ul class="navbar-nav ml-auto flex-end-cel" style="align-items: center;box-sizing: border-box; font-size: 120%;">
-        
+
                             <div class="container_nav" id="Cnav1">
                                 <li class="nav-item">
                                     <a class="nav-link nav_e1" href="{{route('servicios')}}">Inicio</a>
                                 </li>
                                 <div class="animate__animated animate__fadeInUp animate__delay-0s animate__faster nav_active"></div>
                             </div>
-        
+
                             <div class="container_nav" id="Cnav2">
                                 <li class="nav-item">
                                     <a class="nav-link nav_e1" href="{{route('servicios')}}#sesion-de-inf-de-solicitud-de-repuestos">¿Cómo funciona?</a>
                                 </li>
                             </div>
-        
+
                             <div class="container_nav" id="Cnav3">
                                 <li class="nav-item">
                                     <a class="nav-link nav_e1" href="{{route('servicios')}}#container-icons-footer">Contacto</a>
                                 </li>
                             </div>
-        
+
                             <div class="container_nav container_flex container_flex_user">
                                 @guest
                                     <li class="nav-item">
@@ -60,6 +60,7 @@
                                     <li id="container_user" class="nav-item dropdown no-arrow">
                                         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="fas fa-user" style="color: #b3b3b3 !important;"></i>
                                             <span class="nav_e1 mr-2 d-none d-lg-inline text-gray-600 small">{{ $name }}</span>
                                         </a>
                                         <!-- Dropdown - User Information -->
@@ -90,7 +91,7 @@
                                     </li>
                                 @endguest
                             </div>
-        
+
                         </ul>
                     </div>
                 </div>
@@ -102,11 +103,11 @@
                     <div class="padding">
                         <div class="container-flex-col">
                             <h1>Política de Privacidad</h1>
-                            
+
                             <div class="container">
                                 <div class="padding">
                                     Apreciados Clientes, proveedores y suscriptores de Milano Rent a Car S.A.S. <br> <br>
-                                    
+
 En virtud de la entrada en vigencia de la Ley Estatutaria 1581 del 2012 mediante la cual se dictan las disposiciones generales para la protección de datos personales, y su Decreto Reglamentario 1377 de 2013, Milano Rent a Car S.A.S, identificada con el Nit. 900.561.689, considerada como responsable y/o encargada del tratamiento de datos personales, requerimos su autorización para continuar con el tratamiento de sus datos personales almacenados en nuestras bases de datos, las cuales incluyen información que ustedes nos han reportado en desarrollo de las diferentes actividades realizadas por nuestra compañía, en particular los siguientes: nombres, número de documento de identificación, dirección, teléfono fijo y móvil, direcciones, correo electrónico, profesión. <br> <br>
 
                                     Finalidad:
@@ -120,7 +121,7 @@ En virtud de la entrada en vigencia de la Ley Estatutaria 1581 del 2012 mediante
                                     </ul>
                                 </div>
                             </div>
-                            
+
                             <div class="w-100">
                                 <h2>CAPITULO I</h2>
                             </div>
@@ -128,34 +129,34 @@ En virtud de la entrada en vigencia de la Ley Estatutaria 1581 del 2012 mediante
                                 <div class="padding">
                                     <h3><strong>DISPOSICIONES GENERALES</strong></h3> <br>
                                     <strong>Artículo 1.</strong> <br> <br>
-                                    
+
                                     Identificación. <br> <br>
-                                    
+
 El presente manual fue elaborado por Milano Rent a Car. (en adelante “Milano”), domiciliada en Barranquilla, Carrera 46 No. 85 - 61 Piso 2 Local 4 | Oficina principal.
                                     <br> <br>
-                                    
+
                                     <strong>Artículo 2.</strong> <br> <br>
-                                    
+
                                     Ley Aplicable. <br> <br>
-                                    
+
 El presente manual se elaboró de conformidad con los artículos 15 y 20 de la Constitución Política de la Republica de Colombia y lo establecido en la Ley 1581 de 2012 y el Decreto Reglamentario 1377 de 2013. <br> <br>
 
                                     <strong>Artículo 3.</strong> <br> <br>
-                                    
+
                                     Ámbito de Aplicación. <br> <br>
-                                    
+
 El presente Manual se aplica al tratamiento de los datos de carácter personal que recoja y maneje la Empresa Milano. <br> <br>
-    
+
                                     <strong>Artículo 4.</strong> <br> <br>
-                                    
+
                                     Objeto. <br> <br>
-                                    
+
 Por medio del presente manual se da cumplimiento a lo establecido en el literal k) del artículo 17 de la Ley 1581 de 2012, que regula los deberes a los que están sometidos los responsables del tratamiento de los datos personales, dentro de las cuales se ordena adoptar un manual interno de políticas y procedimientos para garantizar el adecuado cumplimiento de mencionada Ley y en especial para la atención de consultas y reclamos. Así mismo tiene la finalidad de regular los procedimientos de recolección, manejo y tratamiento de los datos de carácter personal que realiza Milano, a fin de garantizar y proteger el derecho fundamental de habeas data en el marco de lo establecido en la misma ley. <br> <br>
 
                                     <strong>Artículo 5.</strong> <br> <br>
-                                    
+
                                     Definiciones. <br> <br>
-                                    
+
 Para efectos de facilitar la comprensión del presente manual, se hace la transcripción de las definiciones incluidas en el artículo 3 de la Ley 1581 de 2013 y del Decreto 1377 de 2013: <br> <br>
 
 i.	Autorización: Consentimiento previo, expreso e informado del Titular para llevar a cabo el Tratamiento de datos personales; <br><br>
@@ -184,9 +185,9 @@ xii.	Transmisión: Tratamiento de datos personales que implica la comunicación 
 <br><br>
 
                                     <strong>Artículo 6.</strong> <br> <br>
-                                    
+
                                     Principios. <br> <br>
-                                    
+
 Los principios que se relacionan a continuación son los lineamientos que deben ser respetados por Milano en los procesos de recolección, almacenamiento, uso y tratamiento de datos personales. <br> <br>
 
 i.	Principio de legalidad en materia de Tratamiento de datos: El Tratamiento a que se refiere la presente ley es una actividad reglada que debe sujetarse a lo establecido en ella y en las demás disposiciones que la desarrollen;<br><br>
@@ -206,24 +207,24 @@ vii.	Principio de seguridad: La información sujeta a Tratamiento por el Respons
 viii.	Principio de confidencialidad: Todas las personas que intervengan en el Tratamiento de datos personales que no tengan la naturaleza de públicos están obligadas a garantizar la reserva de la información, inclusive después de finalizada su relación con alguna de las labores que comprende el Tratamiento, pudiendo sólo realizar suministro o comunicación de datos personales cuando ello corresponda al desarrollo de las actividades autorizadas en la presente ley y en los términos de la misma.
                                 </div>
                             </div>
-                            
+
                             <div class="w-100">
                                 <h2>CAPITULO II</h2>
                             </div>
                             <div class="container">
                                 <div class="padding">
                                     <h3><strong>AUTORIZACIÓN</strong></h3> <br>
-                                    
+
                                     <strong>Artículo 7.</strong> <br> <br>
-                                    
+
                                     Autorización. <br> <br>
-                                    
+
 El tratamiento de datos personales por parte de Milano requiere consentimiento, libre, previo, expreso e informado del titular de los mismos. Milano en su condición de responsable del tratamiento de los datos personales, ha dispuesto de los mecanismos necesarios para obtener la autorización de los titulares garantizando en todo caso que sea posible el otorgamiento de dicha autorización. <br> <br>
 
                                     <strong>Artículo 8.</strong> <br> <br>
-                                    
+
                                     Forma y Mecanismo para Otorgar la Autorización. <br> <br>
-                                    
+
 La autorización puede constar en cualquier mecanismo que permita garantizar su posterior consulta, la autorización podrá constar: <br> <br>
 
 i.	por escrito, <br> <br>
@@ -239,15 +240,15 @@ d.	Cómo ejercer derechos de acceso, corrección, actualización o supresión de
 e.	Si se recopilan datos sensibles, y la posibilidad de no darlos a conocer. <br> <br>
 
                                     <strong>Artículo 9.</strong> <br> <br>
-                                    
+
                                     Prueba de Autorización. <br> <br>
-                                    
+
 Milano, adoptará todas las mecanismos idóneos y necesarios con el fin de mantener el registro de cuando y como se obtuvo la autorización por parte de los titulares de los datos personales para el tratamiento de los mismos. <br> <br>
 
                                     <strong>Artículo 10.</strong> <br> <br>
-                                    
+
                                     Aviso de Privacidad. <br> <br>
-                                    
+
 El aviso de privacidad es el documento físico o electrónico que se pondrá a disposición del titular en el cual se pone en conocimiento de este, la existencia de las políticas de tratamiento de la información que serán aplicadas a sus datos personales, la forma de acceder a las mismas y el tipo de tratamiento que se llevara a cabo. El aviso de privacidad contendrá la siguiente información:  <br> <br>
 
 a.	Nombre o razón social y datos de contacto del responsable del tratamiento. <br><br>
@@ -257,18 +258,18 @@ d.	Los mecanismos dispuestos por el responsable para que el titular conozca la p
 
                                 </div>
                             </div>
-                            
+
                             <div class="w-100">
                                 <h2>CAPITULO III</h2>
                             </div>
                             <div class="container">
                                 <div class="padding">
                                     <h3><strong>DERECHOS Y DEBERES</strong></h3> <br>
-                                    
+
                                     <strong>Artículo 11.</strong> <br> <br>
-                                    
+
                                     Derechos de los Titulares de la Información. <br> <br>
-                                    
+
 De conformidad con lo establecido en el artículo 8 de la Ley 1581 de 2012, el titular de la información tendrá los siguientes derechos: <br> <br>
 
 a.	Conocer, actualizar y rectificar sus datos personales frente a los Responsables del Tratamiento o Encargados del Tratamiento. Este derecho se podrá ejercer, entre otros frente a datos parciales, inexactos, incompletos, fraccionados, que induzcan a error, o aquellos cuyo Tratamiento esté expresamente prohibido o no haya sido autorizado; <br><br>
@@ -282,11 +283,11 @@ d.	Presentar ante la Superintendencia de Industria y Comercio quejas por infracc
 e.	Revocar la autorización y/o solicitar la supresión del dato cuando en el Tratamiento no se respeten los principios, derechos y garantías constitucionales y legales. La revocatoria y/o supresión procederá cuando la Superintendencia de Industria y Comercio haya determinado que en el Tratamiento el Responsable o Encargado han incurrido en conductas contrarias a esta ley y a la Constitución; <br><br>
 
 f.	Acceder en forma gratuita a sus datos personales que hayan sido objeto de Tratamiento.  <br>  <br><br>
-                            
+
                                     <strong>Artículo 12.</strong> <br> <br>
-                                    
+
                                     Deberes de Milano en Relación con el Tratamiento de los Datos Personales. <br> <br>
-                                    
+
 Milano dará estricto cumplimiento, en su condición de responsable de la información, a las obligaciones contenidas en el artículo 17 de la Ley 1581 de 2012; así mismo es consciente de la importancia de observar las políticas y protocolos tendientes a proteger los datos personales de los titulares ya que es conocedor que los datos son propiedad de los titulares y solo estos últimos pueden decidir sobre los mismos. Consecuentemente Milano se obliga a cumplir con los siguientes deberes en relación con el tratamiento de datos personales:<br> <br>
 
 a.	Garantizar al Titular, en todo tiempo, el pleno y efectivo ejercicio del derecho de hábeas data.<br><br>
@@ -315,11 +316,11 @@ l.	Informar a solicitud del Titular sobre el uso dado a sus datos; <br><br>
 
 m.	Informar a la autoridad de protección de datos cuando se presenten violaciones a los códigos de seguridad y existan riesgos en la administración de la información de los Titulares.<br><br>
 
-n.	Cumplir las instrucciones y requerimientos que imparta la Superintendencia de Industria y Comercio. 
+n.	Cumplir las instrucciones y requerimientos que imparta la Superintendencia de Industria y Comercio.
 
                                 </div>
                             </div>
-                            
+
                             <div class="w-100">
                                 <h2>
                                     CAPITULO IV
@@ -328,38 +329,38 @@ n.	Cumplir las instrucciones y requerimientos que imparta la Superintendencia de
                             <div class="container">
                                 <div class="padding">
                                     <h3><strong>TRATAMIENTO AL CUAL SERÁN SOMETIDOS LOS DATOS Y FINALIDAD DEL MISMO</strong></h3> <br>
-                                    
+
                                     <strong>Artículo 13.</strong>
-                                    
+
                                     Tratamiento y Finalidad de los Datos. <br> <br>
-                                    
+
 El tratamiento de los datos personales, entendiendo la misma como recolección, almacenamiento, uso, circulación o supresión se realizará para el cumplimiento del objeto social de Milano, incluyendo pero sin limitarse a: <br> <br>
-                                    
+
                                     <ul>
                                         <li>Informar sobre nuestras promociones, ofertas, novedades, productos y servicios, alianzas, concursos, contenidos actuales y futuros relacionados con los eventos, concursos, actividades de promoción y otras finalidades comerciales directa o indirectamente relacionadas con nuestra actividad</li>
                                         <li>
                                             Informar sobre nuevos productos o servicios que estén relacionados con el o los contratado(s) o adquirido(s) o cambios en los mismos;
                                         </li>
-                                        
+
                                         <li>Dar cumplimiento a obligaciones contraídas con nuestros clientes, proveedores, y empleados Titulares de Información;</li>
-                                        
+
                                         <li>Evaluar la calidad del servicio;</li>
-                                        
+
                                         <li>Realizar estudios internos sobre hábitos de consumo y estudios estadísticos que permitan diseñar mejoras en los productos y/o en los servicios prestados;</li>
-                                        
+
                                         <li>
                                             Facilitar la correcta ejecución de las compras y prestación de los servicios contratados;
                                         </li>
-                                        
+
                                         <li>
                                             Gestionar tareas básicas de administración.
                                         </li>
                                     </ul> <br>
-                                    
+
                                     La base de datos busca tener actualizada la información con el fin de que la relación con clientes, proveedores, contratantes o contratistas se desarrolle de manera adecuada. El tratamiento de los datos personales no se limita a los eventos antes descritos, si no que el tratamiento de los mismos, se realizará en forma general para el desarrollo del objeto social de Milano y para cumplir las obligaciones legales.
                                 </div>
                             </div>
-                            
+
                             <div class="w-100">
                                 <h2>
                                     CAPITULO V
@@ -368,15 +369,15 @@ El tratamiento de los datos personales, entendiendo la misma como recolección, 
                             <div class="container">
                                 <div class="padding">
                                     <h3><strong>PERSONA O ÁREA RESPONSABLE DE LA ATENCIÓN DE LAS PETICIONES, CONSULTAS Y RECLAMOS</strong></h3> <br>
-                                    
+
                                     <strong>Artículo 14.</strong> <br> <br>
-                                    
+
                                     Persona o área responsable de la atención de peticiones, consultas y reclamos. <br> <br>
-                                    
+
 Milano ha designado como área responsable de velar por el cumplimiento de esta política Servicio Al Cliente con el apoyo de Coordinador Call Center. Esta dependencia estará atenta para resolver peticiones, consultas y reclamos por parte de los titulares y para realizar cualquier actualización, rectificación y supresión de datos personales, a través del correo electrónico reservas@milanocar.com alfredo.aragon@milanocar.com <br> <br>
 
                                     <strong>Artículo 15.</strong> <br> <br>
-                                    
+
                                     Datos de Contacto de Persona o Área Responsable del Tratamiento de la Información. <br> <br>
 Milano Rent a Car <br> <br>
                                     <ul>
@@ -385,38 +386,38 @@ Milano Rent a Car <br> <br>
                                     </ul>
                                 </div>
                             </div>
-                            
+
                             <div class="w-100">
                                 <h2>CAPITULO VI</h2>
                             </div>
                             <div class="container">
                                 <div class="padding">
                                     <h3><strong>PROCEDIMIENTO PARA LA ATENCIÓN DE CONSULTAS, RECLAMOS Y PETICIONES</strong></h3> <br>
-                                    
+
                                     <strong>Artículo 16.</strong> <br> <br>
-                                    
+
                                     Consultas. <br> <br>
 En aplicación de lo dispuesto en el artículo 14 de la Ley 1581 de 2012, los titulares o sus causahabientes podrán consultar la información personal del titular que repose en bases de datos administradas por Milano. El titular de la información podrá solicitar la consulta de su información por escrito o por medio electrónico al mail reservas@milanocar.com alfredo.aragon@milanocar.com, en estos casos, con el fin de proteger los datos personales, deberá adjuntar copia de los documentos de identidad vigentes. Cuando la información quiera ser consultada por los causahabientes, deberá formular su solicitud por medio escrito o electrónico, adjuntar documento que demuestre el parentesco y documento de identidad. Si revisado los documentos aportados y el nombre del Titular, se encuentra que hay conformidad en los mismos, se procederá a dar respuesta en un término de diez (10) días hábiles. En el evento en que Milano considere que requiere de un mayor tiempo para dar respuesta a la consulta, informará al Titular de tal situación y dará respuesta en un término que no excederá de cinco (5) días hábiles siguientes al vencimiento del término. <br> <br>
-                                
+
                                 <strong>Artículo 17.</strong> <br> <br>
-                                
+
                                 Reclamos. <br> <br>
-                                
+
 De conformidad con lo preceptuado en el artículo 15 de la Ley 1581 de 2012, el titular o los causahabientes que consideren que la información contenida en una base de datos debe ser objeto de corrección, actualización o supresión, o cuando advierta el presunto incumplimiento de cualquier deber contenido en la Ley, podrá presentar un reclamo ante Milano el cual será tramitado bajo el siguiente procedimiento: <br> <br>
 
                                     <ol>
                                         <li>El reclamo se formulará a Milano o al Encargado del Tratamiento, con la identificación del Titular, la descripción de los hechos que dan lugar al reclamo, la dirección, y acompañando los documentos que se quiera hacer valer.</li>
                                         <li>Si el reclamo resulta incompleto, se requerirá al interesado dentro de los cinco (5) días siguientes a la recepción del reclamo para que subsane las fallas.</li>
-                                        
+
                                         <li>Transcurridos dos (2) meses desde la fecha del requerimiento, sin que el solicitante presente la información requerida, se entenderá que ha desistido del reclamo.</li>
-                                        
+
                                         <li>En caso de que quien reciba el reclamo no sea competente para resolverlo, dará traslado a quien corresponda en un término máximo de dos (2) días hábiles e informará de la situación al interesado.</li>
-                                        
+
                                         <li>Una vez recibido el reclamo completo, se incluirá en la base de datos una leyenda que diga “reclamo en trámite” y el motivo del mismo, en un término no mayor a dos (2) días hábiles. Dicha leyenda deberá mantenerse hasta que el reclamo sea decidido.</li>
-                                        
+
                                         <li>El término máximo para atender el reclamo será de quince (15) días hábiles contados a partir del día siguiente a la fecha de su recibo. Cuando no fuere posible atender el reclamo dentro de dicho término, se informará al interesado los motivos de la demora y la fecha en que se atenderá su reclamo, la cual en ningún caso podrá superar los ocho (8) días hábiles siguientes al vencimiento del primer término.</li>
                                     </ol> <br>
-                                    
+
                                     <strong>Artículo 18.</strong> <br> <br>
 
 Petición de Actualización, Rectificación y Supresión de Datos. <br> <br>
@@ -424,52 +425,52 @@ Petición de Actualización, Rectificación y Supresión de Datos. <br> <br>
 Milano Rent a Car rectificará y actualizará, a solicitud del titular, la información de éste que resulte ser incompleta o inexacta, de conformidad con el procedimiento y los términos antes señalados, para lo cual el titular podrá formular su solicitud por escrito o por medio electrónico al mail reservas@milanocar.com, jose.diaz@milanocar.com, indicando la actualización, rectificación del dato y adjuntara la documentación que soporte su petición necesaria y valedera.  <br> <br>
 
                                     <strong>Artículo 19.</strong> <br> <br>
-                                    
+
                                     Revocatoria de La Autorización y/o Supresión del Dato. <br> <br>
-                                    
+
 Los titulares de los datos personales pueden revocar el consentimiento al tratamiento de sus datos personales en cualquier momento, siempre y cuando no lo impida una disposición legal o contractual, para ello el titular podrá realizar la revocatoria por medio escrito o por medio electrónico al mail reservas@milanocar.com alfredo.aragon@milanocar.com. Si vencido el término legal respectivo, Milano, según fuera el caso, no hubieran suprimido los datos personales, el Titular tendrá derecho a solicitar a la Superintendencia de Industria y Comercio que ordene la revocatoria de la autorización y/o la supresión de los datos personales. Para estos efectos se aplicará el procedimiento descrito en el artículo 22 de la Ley 1581 de 2012. <br> <br>
 
                                 <strong>Artículo 20.</strong> <br> <br>
-                                
+
                                 Milano recaudará los datos que sean estrictamente necesarios para llevar a cabo las finalidades perseguidas y los conservará para alcanzar la necesidad con que se han registrado, así mismo respetará la libertad que tiene el Titular para autorizar o no el uso de sus datos personales, y en consecuencia, los mecanismos que utilice para obtener el consentimiento le permitirán al Titular manifestar de manera inequívoca que otorga tal autorización.
 
                                 </div>
                             </div>
-                            
+
                             <div class="w-100">
                                 <h2>CAPITULO VII</h2>
                             </div>
                             <div class="container">
                                 <div class="padding">
                                     <h3><strong>SEGURIDAD DE LA INFORMACIÓN</strong></h3> <br>
-                                    
+
                                     <strong>Artículo 21.</strong> <br> <br>
-                                    
+
                                     Medidas de Seguridad. <br> <br>
-                                    
+
 Milano adoptará las medidas técnicas, humanas y administrativas necesarias para garantizar la seguridad de los datos personales objeto de tratamiento, evitando su consulta o acceso no autorizada, adulteración o uso fraudulento.
 
                                 </div>
                             </div>
-                            
+
                             <div class="w-100">
                                 <h2>CAPITULO VIII</h2>
                             </div>
                             <div class="container">
                                 <div class="padding">
                                     <h3><strong>FECHA DE ENTRADA EN VIGENCIA DE LA POLÍTICA DE TRATAMIENTO</strong></h3> <br>
-                                    
+
                                     <strong>Artículo 22.</strong> <br> <br>
-                                    
+
                                     Este Manual Interno de Políticas y Procedimientos para la Protección de Datos Personales de la Información, fue informado a nuestro equipo de trabajo en sus aspectos sustanciales y el cumplimiento obligatorio de todos y cada uno de los aspectos que componen el mismo, en consonancia con lo anterior, el presente manual empezará a regir dentro del marco establecido por la ley.
                                 </div>
                             </div>
                         </div>
                     </div>
-                
+
                 </section>
             </main>
-            
+
             <div class="container-footer">
             <div class="footer w-100">
                 <div class="container-flex">
