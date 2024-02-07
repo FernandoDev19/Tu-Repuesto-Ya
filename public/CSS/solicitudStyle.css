@@ -22,7 +22,7 @@
 }
 
 .rojo{
-    background-color: red !important;
+    background: transparent;
 }
 
 .item{
@@ -51,49 +51,40 @@
     display: flex;
     justify-content: flex-start;
     flex-wrap: wrap;
-    gap: 2%;
+    gap: 1rem;
 }
 
 .item_selected {
-    min-width: 70px;
+    min-width: 100%;
     height: max-content;
-    border-radius: .25rem;
+    display: flex;
+    justify-content: space-between;
+    /* border-radius: .25rem; */
     border: 1px solid lightgray;
-    margin: 3px;
+    border-top: none;
+    border-left: none;
+    border-right: none;
     font-weight: 600;
-    padding: 1.5% 5%;
-    background-color: lightgray;
+    padding: 2% 5%;
+    /* background-color: lightgray; */
     text-align: center;
     transition: all 0.3s ease;
+    width: 100%;
+    cursor: default !important;
 }
 
 .item_selected_cliente {
-    min-width: 70px;
+    min-width: 100%;
     height: max-content;
     border-radius: .25rem;
     border: 1px solid lightgray;
-    margin: 3px;
     font-weight: 600;
     padding: 1.5% 5%;
     background-color: lightgray;
     text-align: center;
     transition: all 0.3s ease;
     cursor: default !important;
-}
-
-.btn_borrar_item {
-    color: lightgray;
-    transform: translate(10px, 0);
-    transition: all 300ms ease;
-    display: inline-block;
-}
-
-.item_selected:hover {
-    border: 1px solid gray;
-}
-
-.item_selected:hover .btn_borrar_item {
-    color: black;
+    width: 100%;
 }
 
 

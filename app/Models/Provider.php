@@ -12,9 +12,9 @@ class Provider extends Model
     use HasFactory;
 
     public function user()
-    {
-        return $this->hasOne(User::class, 'proveedor_id');
-    }
+{
+    return $this->hasMany(User::class, 'proveedor_id');
+}
 
     protected static function booted()
     {
@@ -26,7 +26,7 @@ class Provider extends Model
                 Mail::to($email)->send(new ProveedorActivo($email, $password));
             }
         });
-}
+    }
 
 
 }
