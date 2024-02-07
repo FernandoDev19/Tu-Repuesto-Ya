@@ -1523,7 +1523,7 @@
                     if (numEspacios > 1) {
                         comentario.value = texto.replace(/ +/g, ' '.repeat(1));
                     }
-                    if (numSaltosLinea > 2) {
+                    if (numSaltosLinea > 1) {
                         comentario.value = texto.replace(/\n+/g, '\n'.repeat(1));
                     }
                     if (texto.length > 400) {
