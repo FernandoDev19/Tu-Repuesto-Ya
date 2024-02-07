@@ -78,7 +78,8 @@
                                                     <div class="text-start">
                                                         <label for="referencia" class="mb-2"
                                                             style="color:blue; font-weigth: 900;">
-                                                            <h5 style="letter-spacing: 1px; font-weight: 700;">Referencia</h5>
+                                                            <h5 style="letter-spacing: 1px; font-weight: 700;">Referencia
+                                                            </h5>
                                                         </label>
                                                         <span style="background-color: rgb(143 143 143 / 21%);"
                                                             type="text" name="referencia"
@@ -107,7 +108,8 @@
                                                     <div class="text-start">
                                                         <label for="tipo" class="mb-2"
                                                             style="color:blue; font-weigth: 900;">
-                                                            <h5 style="letter-spacing: 1px; font-weight: 700;">Tipo de transmisión</h5>
+                                                            <h5 style="letter-spacing: 1px; font-weight: 700;">Tipo de
+                                                                transmisión</h5>
                                                         </label>
                                                         <span style="background-color: rgb(143 143 143 / 21%);"
                                                             type="text" name="tipo"
@@ -121,7 +123,8 @@
                                                     <div class="text-start">
                                                         <label for="repuesto" class="mb-2"
                                                             style="color:blue; font-weigth: 900;">
-                                                            <h5 style="letter-spacing: 1px; font-weight: 700;">Repuestos</h5>
+                                                            <h5 style="letter-spacing: 1px; font-weight: 700;">Repuestos
+                                                            </h5>
                                                         </label>
                                                         <div class="form-control text-start"
                                                             style="background-color: rgb(143 143 143 / 21%); height: auto; display: flex; justify-content: space-between; align-items: center;">
@@ -155,7 +158,8 @@
                                                     <div class="text-start">
                                                         <label for="comentario" class="mb-2"
                                                             style="color:blue; font-weigth: 900;">
-                                                            <h5 style="letter-spacing: 1px; font-weight: 700;">Comentarios</h5>
+                                                            <h5 style="letter-spacing: 1px; font-weight: 700;">Comentarios
+                                                            </h5>
                                                         </label>
                                                         <textarea id="comentariosC" style="background-color: rgb(143 143 143 / 21%);" name="comentario"
                                                             class="form-control text-start datos_pedido" placeholder="Vacio..." aria-label="Comentario" rows="6"
@@ -183,12 +187,14 @@
                                                 <div class="flex flex-col mb-3">
                                                     <label for="nit" class="mb-2"
                                                         style="color:blue; font-weigth: 900;">
-                                                        <h5 style="letter-spacing: 1px; font-weight: 700;"><span class="text-danger">*</span>NIT del almacén</h5>
+                                                        <h5 style="letter-spacing: 1px; font-weight: 700;"><span
+                                                                class="text-danger">*</span>NIT del almacén</h5>
                                                     </label>
                                                     <input type="text" name="nit" id="nit"
                                                         class="form-control text-start" placeholder="NIT"
                                                         aria-label="Nit"
-                                                        value="@if(auth()->check()and auth()->user()->hasRole('Proveedor')){{ auth()->user()->proveedor->nit_empresa }}@else{{ old('nit') }}@endif"
+                                                        value="@if (auth()->check() and
+                                                                auth()->user()->hasRole('Proveedor')) {{ auth()->user()->proveedor->nit_empresa }}@else{{ old('nit') }} @endif"
                                                         required>
                                                     @error('nit')
                                                         <small class="text-danger text-xs pt-1">{{ $message }}</small>
@@ -198,22 +204,31 @@
                                                 <div class="flex flex-col mb-3" style="overflow-x: hidden;">
                                                     <label for="repuesto" class="mb-3"
                                                         style="color:blue; font-weigth: 900;">
-                                                        <h5 class="mb-2" style="letter-spacing: 1px; font-weight: 700;"><span class="text-danger">*</span>Repuestos solicitados</h5>
-                                                        <span style="color: #344767de; font-size: 1.2rem !important;">¿Tienes alguno de estos?</span> <br><br>
-                                                        <span class="text-primary pt-1" style="font-size: 1rem !important;">¡SELECCIONA!</span>
+                                                        <h5 class="mb-2" style="letter-spacing: 1px; font-weight: 700;">
+                                                            <span class="text-danger">*</span>Repuestos solicitados</h5>
+                                                        <span
+                                                            style="color: #344767de; font-size: 1.2rem !important;">¿Tienes
+                                                            alguno de estos?</span> <br><br>
+                                                        <span class="text-primary pt-1"
+                                                            style="font-size: 1rem !important;">¡SELECCIONA!</span>
                                                     </label>
 
-                                                    <div class="form-control" style="height: auto; border: none; border: none; padding: 0;">
+                                                    <div class="form-control"
+                                                        style="height: auto; border: none; border: none; padding: 0;">
                                                         <div class="items_container" id="items_container">
                                                             @foreach ($repuesto as $repuestos)
-                                                            <div style="width:100%; display: flex; gap: 1rem;">
-                                                                <button type="button" class="item_selected rojo {{ $count_class++ }}"
-                                                                    name="item"><input type="checkbox" class="btn_borrar_item" id="check_{{$count_btns++}}">{{ $repuestos }}</button>
-                                                            </div>
+                                                                <div style="width:100%; display: flex; gap: 1rem;">
+                                                                    <button type="button"
+                                                                        class="item_selected rojo {{ $count_class++ }}"
+                                                                        name="item"><input type="checkbox"
+                                                                            class="btn_borrar_item"
+                                                                            id="check_{{ $count_btns++ }}">{{ $repuestos }}</button>
+                                                                </div>
                                                             @endforeach
                                                         </div>
                                                     </div>
-                                                    <span class="text-primary pt-1" style="font-size: 1rem !important; font-weight: 600;">COTIZA</span>
+                                                    <span class="text-primary pt-1"
+                                                        style="font-size: 1rem !important; font-weight: 600;">COTIZA</span>
                                                     @error('json_repuestos')
                                                         <small class="text-danger text-xs pt-1">{{ $message }}</small>
                                                     @enderror
@@ -312,7 +327,8 @@
                                                                 <h5><strong>{{ $count++ . '. ' . $repuestos }}</strong>
                                                                 </h5>
 
-                                                                <span style="color: #344767;"><span class="text-danger">*</span>Precio</span>
+                                                                <span style="color: #344767;"><span
+                                                                        class="text-danger">*</span>Precio</span>
                                                                 <input type="text" name="precio[]" id="precio"
                                                                     class="form-control text-start"
                                                                     placeholder="ejemplo: 12345..." aria-label="Precio"
@@ -381,10 +397,11 @@
                                                     <div class="text-start">
                                                         <label for="comentarioP" class="mb-2"
                                                             style="color:blue; font-weigth: 900;">
-                                                            <h5 style="letter-spacing: 1px; font-weight: 700;">Comentarios</h5>
+                                                            <h5 style="letter-spacing: 1px; font-weight: 700;">Comentarios
+                                                            </h5>
                                                         </label>
-                                                        <textarea id="comentario_proveedor" name="comentarioP" class="form-control text-center" placeholder="¿Tienes algúnos Comentarios?"
-                                                            aria-label="ComentarioP" rows="6"></textarea>
+                                                        <textarea id="comentario_proveedor" name="comentarioP" class="form-control text-center"
+                                                            placeholder="¿Tienes algúnos Comentarios?" aria-label="ComentarioP" rows="6"></textarea>
                                                     </div>
                                                 </div>
                                             </div>
@@ -557,8 +574,11 @@
 
     <script>
         function formatoPrecio(input) {
-            // Obtén el valor actual del campo de entrada
-            let valor = input.value.replace(/\D/g, ''); // Elimina cualquier caracter que no sea un número
+            // Elimina cualquier caracter que no sea un número
+            let valor = input.value.replace(/\D/g, '');
+
+            // Limita la longitud máxima del número
+            valor = valor.slice(0, 9);
 
             // Formatea el valor con comas cada tres dígitos
             valor = valor.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
@@ -566,49 +586,34 @@
             // Establece el valor formateado en el campo de entrada
             input.value = valor;
         }
-
-        function garantiaSelect(input) {
-            let value = input.value.replace(/\D/g, '');
-            var select = document.getElementById('garantiaSeleccion');
-
-            if (value == 0 || value == 1) {
-                select.options[0].innerHTML = 'Mes';
-                select.options[0].value = 'mes';
-                select.options[1].innerHTML = 'Año';
-                select.options[1].value = 'año';
-            } else {
-                select.options[0].innerHTML = 'Meses';
-                select.options[0].value = 'meses';
-                select.options[1].innerHTML = 'Años';
-                select.options[1].value = 'años';
-            }
-        }
     </script>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        let comentario = document.getElementById('comentario_proveedor');
-        function restringirCaracteres(){
-            let texto = comentario.value;
-            let numEspacios = (texto.match(/ /g) || []).length;
-            let numSaltosLinea = (texto.match(/\n/g) || []).length;
 
-            if (numEspacios > 2) {
-                comentario.value = texto.replace(/ +/g, ' '.repeat(1));
-            }
-            if (numSaltosLinea > 2) {
-                comentario.value = texto.replace(/\n+/g, '\n'.repeat(1));
-            }
-            if (texto.length > 400) {
-                comentario.value = texto.slice(0, 400);
-            }
-        }
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            let comentario = document.getElementById('comentario_proveedor');
 
-        comentario.addEventListener('input', function(){
-            restringirCaracteres();
+            function restringirCaracteresComentario() {
+                let texto = comentario.value;
+                let numEspacios = (texto.match(/ /g) || []).length;
+                let numSaltosLinea = (texto.match(/\n/g) || []).length;
+
+                if (numEspacios > 2) {
+                    comentario.value = texto.replace(/ +/g, ' '.repeat(1));
+                }
+                if (numSaltosLinea > 2) {
+                    comentario.value = texto.replace(/\n+/g, '\n'.repeat(1));
+                }
+                if (texto.length > 400) {
+                    comentario.value = texto.slice(0, 400);
+                }
+            }
+
+            comentario.addEventListener('input', function() {
+                restringirCaracteresComentario();
+            });
         });
-    });
-</script>
+    </script>
 
 
 
