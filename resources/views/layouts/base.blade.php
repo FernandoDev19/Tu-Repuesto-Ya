@@ -23,7 +23,7 @@
 
                     <div class="container_nav" id="Cnav1">
                         <li class="nav-item">
-                            <p class="nav-link active" id="nav_e" aria-current="page">Inicio</p>
+                            <a class="nav-link active" href="{{route('servicios')}}" id="nav_e" aria-current="page">Inicio</a>
                         </li>
                         <div class="animate__animated animate__fadeInUp animate__delay-0s animate__faster nav_active">
                         </div>
@@ -44,15 +44,34 @@
 
                     <div class="container_nav container_flex container_flex_user">
                         @guest
-                            <li class="nav-item">
-                                <a class="nav_link nav_e1" href="{{ route('login') }}">
-                                    ¿Eres proveedor?
+                        <li id="container_user" class="nav-item dropdown no-arrow">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: white;">
+                                <span class="nav_e1"
+                                    class="mr-2 d-none d-lg-inline text-gray-600 small">¿Eres proveedor?</span>
+                            </a>
+                            <!-- Dropdown - User Information -->
+                            <div class="dropdown-menu end-0 dropdown-menu-right shadow animated--grow-in"
+                                aria-labelledby="userDropdown">
+                                <a class="dropdown-item" href="{{ route('login') }}">
+                                    <span class="fas fa-sign-in-alt fa-sm fa-fw mr-2 text-gray-400"></span>
+                                    Iniciar sesión
                                 </a>
-                            </li>
+                                <a class="dropdown-item" href="{{ route('register') }}">
+                                    <span class="fas fa-user-plus fa-sm fa-fw mr-2 text-gray-400"></span>
+                                    Registrarse
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#">
+                                    <span class="fas fa-info-circle fa-sm fa-fw mr-2 text-gray-400"></span>
+                                    Saber cómo funciona
+                                </a>
+                            </div>
+                        </li>
                         @else
                             <li id="container_user" class="nav-item dropdown no-arrow">
                                 <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
-                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: white;">
                                     <i class="fas fa-user" style="color: #b3b3b3 !important;"></i>
                                     <span class="nav_e1"
                                         class="mr-2 d-none d-lg-inline text-gray-600 small">{{ $name }}</span>

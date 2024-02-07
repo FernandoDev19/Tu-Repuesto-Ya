@@ -215,6 +215,7 @@ header y navegador */
     font-weight: bold !important;
     height: auto;
     text-wrap: nowrap;
+    color: white !important;
     transition: color 300ms !important;
 }
 
@@ -1187,6 +1188,7 @@ footer {
     .container-icons-footer{
         justify-content: center;
         font-size: 2.5rem;
+        padding-bottom: 1.5rem;
     }
 
     img#logo{
