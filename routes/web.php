@@ -18,7 +18,7 @@ use App\Http\Controllers\ProveedorController;
 */
 
 /*Route::get('/', function(){
-   return view('mantenimiento'); 
+   return view('mantenimiento');
 });*/
 
 Route::controller(HomeController::class)->group(function () {
@@ -48,16 +48,12 @@ Route::middleware('auth')->group(function () {
         Route::get('/solicitud/{codigo}/{id?}', 'solicitudRepuesto')->name('solicitud');
         Route::get('/solicitud/{filename}', 'verImagenSolicitud')->name('verImagen');
     });
-    
+
     Route::get('/admin/dashboard', [AdminController::class, 'index'])->name("dashboard")->middleware('can:dashboard');
     /*Route::get('/profile', [AdminController::class, 'profile'])->name('profile');
     Route::get('/profile/update', [AdminController::class, 'profileUpdate'])->name('profileUpdate');*/
-    Route::get('/profile', function(){
-        return view('mantenimiento');
-    })->name('profile');
-    Route::get('/profile/update', function(){
-        return view('mantenimiento');
-    })->name('profileUpdate');
+    Route::get('/profile', [AdminController::class, 'profile'])->name('profile');
+    Route::post('/profile/update', [AdminController::class, 'profileUpdate'])->name('profileUpdate');
     Route::get('/admin/provider/{nit}/{notificationId}', [AdminController::class, 'verProveedor'])->name('verProveedor')->middleware('can:notifications.viewNotifications');
     Route::get('markAsRead', function (){
         auth()->user()->unreadNotifications->markAsRead();
@@ -77,14 +73,6 @@ Route::middleware('auth')->group(function () {
     Route::post('/admin/logout', [AdminController::class, 'logout'])->name("logout");
 });
 
-Route::get('public/img/logo_whatsapp.png', function () {
-    $imgPath = public_path('img/logo_whatsapp.png');
-
-    return Response::make(file_get_contents($imgPath), 200, [
-        'Content-Type' => 'image/png',
-        'Content-Disposition' => 'inline; filename=logo_whatsapp.png',
-    ]);
-})->name('video');
 
 Route::get('/privacy_policy_TRYA', function(){
      $name = null;
@@ -92,6 +80,6 @@ Route::get('/privacy_policy_TRYA', function(){
     if (auth()->check()) {
         $name = auth()->user()->name;
     }
-    
+
     return view('privacy-policy', compact('name'));
 })->name('privacy-policy');
