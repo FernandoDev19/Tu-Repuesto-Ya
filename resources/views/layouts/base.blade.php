@@ -38,7 +38,7 @@
 
                     <div class="container_nav" id="Cnav3">
                         <li class="nav-item">
-                            <a class="nav-link nav_e1" href="#container-icons-footer">Contacto</a>
+                            <a class="nav-link nav_e1" href="#contacto">Contacto</a>
                         </li>
                     </div>
 
@@ -122,7 +122,7 @@
                         <span class="item none">|</span>
                         <a class="item" href="#">Acerca de...</a>
                     </div>
-                    <div class="container-icons-footer" id="container-icons-footer">
+                    <div class="container-icons-footer" id="contacto">
                         <a target="_blank"
                             href="https://api.whatsapp.com/send?phone=573249216736&text=%2A%C2%A1Hola%21%2A%20%E2%9C%8B%20Vengo%20de%20la%20p%C3%A1gina%20web%20de%20%2ATu%20Repuesto%20Ya%2A%20Me%20gustar%C3%ADa%20recibir%20cotizaciones%20sobre%20un%20repuesto%20que%20necesito."
                             class="item" id="whatsapp-icon"><i class="fab fa-whatsapp"></i></a>
@@ -470,7 +470,7 @@
                                             @error('img_repuesto')
                                                 <div class="text-danger text-xs pt-1">{{ $message }}</div>
                                             @else
-                                                <small class="text-primary tex-xs pt-1">Máximo ( 3 ) imágenes en
+                                                <small class="text-primary tex-xs pt-1">Máximo ( 3 ) imágenes del repuesto;
                                                     formato
                                                     png/jpg/jpeg.</small>
                                             @enderror

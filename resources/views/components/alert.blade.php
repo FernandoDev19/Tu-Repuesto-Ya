@@ -61,7 +61,7 @@
             <div id="btn-close-success">×</div>
 
             <div class="text-alert">
-                <i class="fa fa-check"></i>
+                <i class="fa fa-check" style="color: #5593e8;"></i>
                 <strong>{{ session('message') }}</strong>
             </div>
 

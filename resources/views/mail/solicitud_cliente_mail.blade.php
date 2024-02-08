@@ -31,14 +31,14 @@
     </div>
     <hr>
     <footer>
-        <p style="letter-spacing: 0.6px; font-size: 100%; font-weight: 700; color: gray; text-align: center;">Saludos, El equipo de Tu Repuesto Ya</p>
+        <p style="letter-spacing: 0.6px; font-size: 100%; font-weight: 700; color: #105ea8; text-align: center;">Saludos, El equipo de Tu Repuesto Ya</p>
       <div id="icons-container" class="container-flex justify-content-center" style="height: 55px; display: flex; align-items: center; justify-content: space-between;">
         <div class="icon-world-container" style="margin: auto 0 auto auto;">
-          <a href="{{route('servicios')}}"><img src="{{asset('icon/sitio_web.png')}}" alt="sitio web" width="20" height="20"></a>
+          <a href="{{route('servicios')}}"><img src="{{asset('icon/sitio_web.png')}}" alt="sitio web" width="30" height="30"></a>
         </div>
         <span style="color: gray; font-size: 110%; height: 55%; width: 0; border: 0.1rem solid darkgray; margin: auto 10px auto 10px;"></span>
         <div class="icon-whatsapp-container" style="margin: auto auto auto 0;">
-          <a href="https://api.whatsapp.com/send?phone=573249216736"><img src="{{asset('icon/whatsapp.png')}}" alt="whatsapp" width="20" height="20"></a>
+          <a href="https://api.whatsapp.com/send?phone=573249216736"><img src="{{asset('icon/whatsapp.png')}}" alt="whatsapp" width="30" height="30"></a>
         </div>
       </div>
     </footer>
