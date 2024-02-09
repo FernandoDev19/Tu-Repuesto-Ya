@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Console\Scheduling\Schedule;
 use Carbon\Carbon;
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 
 //Modelos
 use App\Models\Solicitude;
@@ -29,7 +31,7 @@ use App\Notifications\NuevaSolicitudRepuesto;
 class HomeController extends Controller
 {
 
-    public function index()
+    public function index(): view
     {
         // Lista de codigos
         $codigos = Country_code::all();
@@ -54,7 +56,7 @@ class HomeController extends Controller
         return view("home.index", compact('name', 'departamentos', 'group', 'codigos'));
     }
 
-    public function validation(Request $request)
+    public function validation(Request $request): redirectResponse
     {
         $validator = Validator::make(
             $request->all(),
@@ -199,7 +201,7 @@ class HomeController extends Controller
                     $solicitud->img_repuesto = json_encode(['No se subieron archivos válidos']);
                 }
             } else {
-                return back()->withErrors(['img_repuesto' => 'No puedes subir más de 3 imágenes'])->withInput()->with('error', '¡Error! ¡No se pudo enviar la solicitud!, Revise sus datos y envie nuevamente');;
+                return redirect()->back()->withErrors(['img_repuesto' => 'No puedes subir más de 3 imágenes'])->with('error', '¡Error! ¡No se pudo enviar la solicitud!, Revise sus datos y envie nuevamente')->withInput();
             }
         } else {
             $solicitud->img_repuesto = json_encode(['No se subió ningun archivo']);
@@ -431,7 +433,7 @@ class HomeController extends Controller
         }
     }
 
-    public function storeDP(Request $request, $codigo)
+    public function storeDP(Request $request, $codigo): redirectResponse
     {
         // Validar los datos de entrada
         $validator = Validator::make($request->all(), [
@@ -591,7 +593,7 @@ class HomeController extends Controller
         //         ],
         //     ],
         // ];
-        if(count(json_decode($answer->repuesto)) == 1){
+        if (count(json_decode($answer->repuesto)) == 1) {
             $mensajeData = [
                 'messaging_product' => 'whatsapp',
                 'recipient_type' => 'individual',
@@ -643,7 +645,7 @@ class HomeController extends Controller
                     ],
                 ],
             ];
-        }else if(count(json_decode($answer->repuesto)) == 2){
+        } else if (count(json_decode($answer->repuesto)) == 2) {
             $mensajeData = [
                 'messaging_product' => 'whatsapp',
                 'recipient_type' => 'individual',
@@ -703,7 +705,7 @@ class HomeController extends Controller
                     ],
                 ],
             ];
-        }else if(count(json_decode($answer->repuesto)) == 3){
+        } else if (count(json_decode($answer->repuesto)) == 3) {
             $mensajeData = [
                 'messaging_product' => 'whatsapp',
                 'recipient_type' => 'individual',
@@ -771,7 +773,7 @@ class HomeController extends Controller
                     ],
                 ],
             ];
-        }else if(count(json_decode($answer->repuesto)) == 4){
+        } else if (count(json_decode($answer->repuesto)) == 4) {
             $mensajeData = [
                 'messaging_product' => 'whatsapp',
                 'recipient_type' => 'individual',
@@ -847,7 +849,7 @@ class HomeController extends Controller
                     ],
                 ],
             ];
-        }else if(count(json_decode($answer->repuesto)) == 5){
+        } else if (count(json_decode($answer->repuesto)) == 5) {
             $mensajeData = [
                 'messaging_product' => 'whatsapp',
                 'recipient_type' => 'individual',
