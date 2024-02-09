@@ -7,6 +7,10 @@
         display: none;
     }
 
+    .paso_activo{
+    font-weight: 600; color: #5593E8 !important;
+}
+
     .items_container {
         min-height: 50px;
         height: auto !important;
@@ -421,7 +425,7 @@
                                                                 <button class="btn mt-0 align-self-end"
                                                                     data-id="{{ $proveedores->id }}" data-toggle="modal"
                                                                     data-target="#editModal{{ $proveedores->id }}"
-                                                                    onclick="resaltarBotonActivo(this)">
+                                                                    >
                                                                     <i class="fas fa-edit"></i>
                                                                 </button>
                                                             </div>
@@ -431,7 +435,7 @@
                                                                 <button class="btn btn-danger"
                                                                     data-id="{{ $proveedores->id }}" data-toggle="modal"
                                                                     data-target="#eraseModal{{ $proveedores->id }}"
-                                                                    onclick="resaltarBotonActivo(this)">
+                                                                    >
                                                                     Eliminar
                                                                 </button>
                                                                 <button class="btn btn-secondary" type="button"
@@ -441,10 +445,586 @@
                                                     </div>
                                                 </div>
 
-                                                <!-- Modal de edición -->
                                                 <div class="modal fade editModal" id="editModal{{ $proveedores->id }}"
                                                     tabindex="-1" role="dialog" aria-labelledby="editModalLabel"
                                                     aria-hidden="true" style="z-index: 1041;">
+
+                                                    <div class="modal-dialog" role="document" style="z-index: 1042;">
+                                                        <div class="modal-content" style="z-index: 1043;">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title"
+                                                                    id="editModalLabel{{ $proveedores->id }}">
+                                                                    Editar proveedor</h5>
+                                                                <button class="close" type="button"
+                                                                    data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">×</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <!-- Pestañas del formulario -->
+                                                                <ul class="nav nav-tabs" id="formTabs">
+                                                                    <li class="nav-item">
+                                                                        <a class="nav-link text-secondary active paso_activo" href="#" id="tab1_{{$proveedores->id}}">Inf. básica</a>
+                                                                    </li>
+                                                                    <li class="nav-item">
+                                                                        <a class="nav-link text-secondary" href="#" id="tab2_{{$proveedores->id}}">Contacto</a>
+                                                                    </li>
+                                                                    <li class="nav-item">
+                                                                        <a class="nav-link text-secondary" href="#" id="tab3_{{$proveedores->id}}">Inf. legal</a>
+                                                                    </li>
+                                                                    <li class="nav-item">
+                                                                        <a class="nav-link text-secondary" href="#" id="tab4_{{$proveedores->id}}">Marcas</a>
+                                                                    </li>
+                                                                </ul>
+
+                                                                <!-- Contenido de las pestañas -->
+                                                                <div class="tab-content">
+                                                                    <form id="edit_modal{{ $proveedores->id }}"
+                                                                        action="{{ route('editarProveedor') }}"
+                                                                        method="POST" enctype="multipart/form-data">
+                                                                        @csrf
+
+                                                                        <input type="hidden" name="id"
+                                                                        value="{{ $proveedores->id }}">
+
+                                                                        <!-- Parte 1 del formulario -->
+                                                                        <div class="tab-pane fade show active" id="tab-content1_{{$proveedores->id}}"
+                                                                            style="transition: all 300ms ease;">
+
+                                                                            <div class="form-group">
+
+                                                                                <div class="form-group">
+                                                                                    <label for="nit_edit_{{ $proveedores->id }}">NIT:</label>
+                                                                                    <input class="form-control" type="text"
+                                                                                        id="nit_edit_{{ $proveedores->id }}"
+                                                                                        name="nit_edit"
+                                                                                        placeholder="{{ $proveedores->nit_empresa }}"
+                                                                                        value="{{ $proveedores->nit_empresa }}"
+                                                                                        autocomplete="on">
+                                                                                    @error('nit_edit')
+                                                                                        <small
+                                                                                            class="text-danger text-xs pt-1">{{ $message }}</small>
+                                                                                    @enderror
+                                                                                </div>
+
+                                                                                <div class="form-group">
+                                                                                    <label for="nombre_comercial_edit_{{ $proveedores->id }}">Nombre Establecimiento:</label>
+                                                                                    <input type="text" class="form-control" id="nombre_comercial_edit_{{ $proveedores->id }}" name="nombre_comercial_edit" placeholder="{{$proveedores->nombre_comercial}}" value="{{$proveedores->nombre_comercial}}" maxlength="50" autocomplete="on">
+                                                                                    @error('nombre_comercial_edit')
+                                                                                        <small class="text-danger text-xs pt-1">{{ $message }}</small>
+                                                                                    @enderror
+                                                                                </div>
+
+                                                                                <div class="form-group">
+                                                                                    <label for="razon_social_edit">Razón
+                                                                                        Social:</label>
+                                                                                    <input class="form-control" type="text"
+                                                                                        id="razon_social_edit{{ $proveedores->id }}"
+                                                                                        name="razon_social_edit"
+                                                                                        placeholder="{{ $proveedores->razon_social }}"
+                                                                                        value="{{ $proveedores->razon_social }}" maxlength="100"
+                                                                                        autocomplete="on">
+                                                                                    @error('razon_social_edit')
+                                                                                        <small
+                                                                                            class="text-danger text-xs pt-1">{{ $message }}</small>
+                                                                                    @enderror
+                                                                                </div>
+
+                                                                                <div id="pais{{ $proveedores->id }}"
+                                                                                    class="flex flex-col mb-3 hide">
+                                                                                    <label>País:</label>
+                                                                                    <div class="form-control">
+                                                                                        <span type="text"
+                                                                                            id="text-pais_edit{{ $proveedores->id }}"
+                                                                                            name="pais"
+                                                                                            style="border: none !important;">{{ $proveedores->pais }}</span>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                                <div id="ciudad{{ $proveedores->id }}"
+                                                                                    class="flex flex-col mb-3 hide">
+                                                                                    <label for="ciudad_edit">Ciudad:</label>
+                                                                                    <input id="ciudad_input_{{ $proveedores->id }}"
+                                                                                        type="text" class="form-control"
+                                                                                        name="ciudad_edit"
+                                                                                        value="{{ $proveedores->municipio }}">
+                                                                                </div>
+
+                                                                                <div class="form-group"
+                                                                                    id="departamentos{{ $proveedores->id }}">
+                                                                                    <label for="departamento">Departamento:</label>
+                                                                                    <select id="departamento{{ $proveedores->id }}"
+                                                                                        name="departamento_edit"
+                                                                                        class="departamento form-control">
+                                                                                        <option value="">
+                                                                                            Seleccione un departamento
+                                                                                        </option>
+                                                                                        @foreach ($departamentos as $departamento)
+                                                                                            <option value="{{ $departamento }}">
+                                                                                                {{ $departamento }}
+                                                                                            </option>
+                                                                                        @endforeach
+                                                                                    </select>
+                                                                                </div>
+
+                                                                                <div id="municipios{{ $proveedores->id }}"
+                                                                                    class="form-group">
+                                                                                    <label for="municipio_edit">Municipio:</label>
+                                                                                    <select id="municipio{{ $proveedores->id }}"
+                                                                                        name="municipio_edit"
+                                                                                        class="municipio form-control">
+                                                                                        <option value="">
+                                                                                            Seleccione un municipio
+                                                                                        </option>
+                                                                                    </select>
+                                                                                </div>
+
+                                                                                <div class="form-group">
+                                                                                    <label for="direccion">Dirección:</label>
+                                                                                    <input type="text" class="form-control"
+                                                                                        id="direccion{{ $proveedores->id }}"
+                                                                                        name="direccion_edit"
+                                                                                        placeholder="{{ $proveedores->direccion }}"
+                                                                                        value="{{ $proveedores->direccion }}" maxlength="50"
+                                                                                        autocomplete="on">
+                                                                                </div>
+
+                                                                            </div>
+
+                                                                            <hr>
+
+                                                                            <div
+                                                                                style="width:100%; height: max-content; display: flex; justify-content: flex-end;">
+                                                                                <button id="btn_siguiente_basica{{$proveedores->id}}" type="button" class="btn btn-primary"
+                                                                                   >Siguiente</button>
+                                                                            </div>
+
+                                                                        </div>
+
+                                                                        <!-- Parte 2 del formulario -->
+                                                                        <div class="tab-pane fade" id="tab-content2_{{$proveedores->id}}" style="transition: all 300ms ease;">
+
+                                                                            <div class="form-group">
+                                                                                <div class="form-group">
+                                                                                    <label for="cel_edit">Número de celular:</label>
+                                                                                    <div class="form-control"
+                                                                                        style="display: flex; justify-content: space-between; align-items: center; padding: 0;">
+                                                                                        <select name="codigo_cel"
+                                                                                            id="codigo-cel{{ $proveedores->id }}"
+                                                                                            style="border: none; transform: translate(1.5%, 0px); height: auto;">
+                                                                                            @foreach ($codigos as $codigo)
+                                                                                                <option value="{{ $codigo->codigo }}"
+                                                                                                    title="{{ $codigo->pais }}">
+                                                                                                    {{ $codigo->iso . ' ' . $codigo->codigo }}
+                                                                                                </option>
+                                                                                            @endforeach
+                                                                                        </select>
+                                                                                        <input type="text" class="form-control"
+                                                                                            id="cel_edit_{{ $proveedores->id }}"
+                                                                                            name="cel_edit"
+                                                                                            value="@if($proveedores->pais=='Colombia'||$proveedores->pais=='Argentina'||$proveedores->pais=='Venezuela'||$proveedores->pais=='Mexico'||$proveedores->pais=='Chile'||$proveedores->pais=='Venezuela'||$proveedores->pais=='Perú'||$proveedores->pais=='Brasil'){{substr($proveedores->celular,3)}}@elseif($proveedores->pais=='Bolivia'||$proveedores->pais=='Perú'||$proveedores->pais=='Ecuador'||$proveedores->pais=='Guayana Francesa'||$proveedores->pais=='Guyana'||$proveedores->pais=='Paraguay'||$proveedores->pais=='Surinam'||$proveedores->pais=='Uruguay'||$proveedores->pais=='Costa Rica'||$proveedores->pais=='El Salvador'||$proveedores->pais=='Guatemala'||$proveedores->pais=='Honduras'||$proveedores->pais=='Nicaragua'||$proveedores->pais=='Panamá'){{substr($proveedores->celular,4)}}@else{{substr($proveedores->celular,3)}}@endif"
+                                                                                            autocomplete="on">
+                                                                                    </div>
+                                                                                    @error('cel')
+                                                                                        <p class='text-danger text-xs pt-1'>
+                                                                                            {{ $message }}</p>
+                                                                                    @else
+                                                                                        <div class="w-100 text-center">
+                                                                                            <small
+                                                                                                class="text-center text-xs text-color-secondary">¡Debe tener Whatsapp! <i class="fa fa-whatsapp"
+                                                                                                    aria-hidden="true"
+                                                                                                    style="color: #25D366; font-size: 15px; transform: translate(0px, 2.4px);">
+                                                                                                </i></small>
+                                                                                        </div>
+                                                                                    @enderror
+                                                                                </div>
+
+                                                                                <div class="form-group">
+                                                                                    <label for="tel">Número
+                                                                                        de celular 2°:</label>
+                                                                                    <input type="text" class="form-control"
+                                                                                        id="tel{{ $proveedores->id }}"
+                                                                                        name="tel_edit"
+                                                                                        placeholder="{{ $proveedores->telefono }}"
+                                                                                        value="@if($proveedores->pais=='Colombia'||$proveedores->pais=='Argentina'||$proveedores->pais=='Venezuela'||$proveedores->pais=='Mexico'||$proveedores->pais=='Chile'||$proveedores->pais=='Venezuela'||$proveedores->pais=='Perú'||$proveedores->pais=='Brasil'){{substr($proveedores->telefono,3)}}@elseif($proveedores->pais=='Bolivia'||$proveedores->pais=='Perú'||$proveedores->pais=='Ecuador'||$proveedores->pais=='Guayana Francesa'||$proveedores->pais=='Guyana'||$proveedores->pais=='Paraguay'||$proveedores->pais=='Surinam'||$proveedores->pais=='Uruguay'||$proveedores->pais=='Costa Rica'||$proveedores->pais=='El Salvador'||$proveedores->pais=='Guatemala'||$proveedores->pais=='Honduras'||$proveedores->pais=='Nicaragua'||$proveedores->pais=='Panamá'){{substr($proveedores->telefono,4)}}@else{{substr($proveedores->telefono,3)}}@endif"
+                                                                                        autocomplete="on">
+                                                                                    @error('tel_edit')
+                                                                                        <small
+                                                                                            class="text-danger text-xs pt-1">{{ $message }}</small>
+                                                                                    @enderror
+                                                                                </div>
+
+                                                                                <div class="flex flex-col mb-3">
+                                                                                    <label for="representante_legal">Representante
+                                                                                        Legal:</label>
+                                                                                    <input
+                                                                                        id="representante_legal_{{ $proveedores->id }}"
+                                                                                        type="text" class="form-control"
+                                                                                        name="representante_legal"
+                                                                                        value="{{ $proveedores->representante_legal }}" maxlength="60" autocomplete="on">
+                                                                                </div>
+
+                                                                                <div class="flex flex-col mb-3">
+                                                                                    <label for="contacto_principal">Contacto
+                                                                                        Principal:</label>
+                                                                                    <input
+                                                                                        id="contacto_principal_{{ $proveedores->id }}"
+                                                                                        type="text" class="form-control"
+                                                                                        name="contacto_principal"
+                                                                                        value="{{ $proveedores->contacto_principal }}" autocomplete="on">
+                                                                                </div>
+             <div class="form-group">
+                                                                                    <label for="email">Correo
+                                                                                        electrónico:</label>
+                                                                                    <input type="email" class="form-control"
+                                                                                        id="email{{ $proveedores->id }}"
+                                                                                        name="email_edit"
+                                                                                        placeholder="{{ $proveedores->email }}"
+                                                                                        value="{{ $proveedores->email }}"
+                                                                                        autocomplete="on">
+                                                                                    @error('email_edit')
+                                                                                        <small
+                                                                                            class="text-danger text-xs pt-1">{{ $message }}</small>
+                                                                                    @enderror
+                                                                                </div>
+
+                                                                                <div class="form-group">
+                                                                                    <label for="email_2">Correo
+                                                                                        electrónico (2°):</label>
+                                                                                    <input type="email" class="form-control"
+                                                                                        id="email_2{{ $proveedores->id }}"
+                                                                                        name="email_2_edit"
+                                                                                        placeholder="{{ $proveedores->email_secundario }}"
+                                                                                        value="{{ $proveedores->email_secundario }}"
+                                                                                        autocomplete="on">
+                                                                                    @error('email_edit')
+                                                                                        <small
+                                                                                            class="text-danger text-xs pt-1">{{ $message }}</small>
+                                                                                    @enderror
+                                                                                </div>
+                                                                                <div class="form-group">
+                                                                                    <label for="estado">Estado:</label>
+                                                                                    <select class="form-control"
+                                                                                        id="estado{{ $proveedores->id }}"
+                                                                                        name="estado_edit">
+                                                                                        <option value="" disabled selected>
+                                                                                            Estado
+                                                                                            ({{ $proveedores->estado ? 'Activo' : 'Inactivo' }})
+                                                                                        </option>
+                                                                                        <option value="1">
+                                                                                            Activo</option>
+                                                                                        <option value="0">
+                                                                                            Inactivo</option>
+                                                                                    </select>
+                                                                                </div>
+                                                                            </div>
+
+                                                                            <div
+                                                                                style="width:100%; height: max-content; display: flex; justify-content: flex-end; gap: 5px;">
+                                                                                <button type="button" id="btn_anterior_contacto{{$proveedores->id}}" class="btn btn-secondary"
+                                                                                    >Anterior</button>
+                                                                                <button id="btn_siguiente_contacto{{$proveedores->id}}" type="button" class="btn btn-primary"
+                                                                                    >Siguiente</button>
+                                                                            </div>
+
+                                                                        </div>
+
+                                                                        <div class="tab-pane fade" id="tab-content3_{{$proveedores->id}}" style="transition: all 300ms ease;">
+
+                                                                            <div class="form-group">
+                                                                                <div class="form-group flex flex-col">
+                                                                                    <span>RUT:</span>
+                                                                                    <label id="btn1{{ $proveedores->id }}"
+                                                                                        class="button form-control"
+                                                                                        for="rut{{ $proveedores->id }}"
+                                                                                        style="margin: 0; cursor: pointer; display: flex; justify-content: space-between;">
+                                                                                        <div id="text_file_rut{{ $proveedores->id }}"
+                                                                                            placeholder="{{ $proveedores->rut }}">
+                                                                                        </div>
+                                                                                        <div><i id="check1{{ $proveedores->id }}"
+                                                                                                class="fa fa-check"
+                                                                                                aria-hidden="true"></i>
+                                                                                        </div>
+                                                                                    </label>
+                                                                                    <input type="file" accept=".pdf"
+                                                                                        name="rut"
+                                                                                        id="rut{{ $proveedores->id }}"
+                                                                                        class="form-control" aria-label="Rut"
+                                                                                        style="display: none;">
+                                                                                    @error('rut')
+                                                                                        <div class="text-danger text-xs pt-1">
+                                                                                            {{ $message }}</div>
+                                                                                    @enderror
+                                                                                </div>
+
+                                                                                <div class="form-group flex flex-col">
+                                                                                    <span>Camara de comercio:</span>
+                                                                                    <label id="btn2{{ $proveedores->id }}"
+                                                                                        class="button form-control"
+                                                                                        for="cam{{ $proveedores->id }}"
+                                                                                        style="margin: 0; cursor: pointer; display: flex; justify-content: space-between;">
+                                                                                        <div id="text_file_cam{{ $proveedores->id }}"
+                                                                                            placeholder="{{ $proveedores->camara_comercio }}">
+                                                                                        </div>
+                                                                                        <div><i id="check2{{ $proveedores->id }}"
+                                                                                                class="fa fa-check"
+                                                                                                aria-hidden="true"></i></div>
+                                                                                    </label>
+                                                                                    <input type="file" accept=".pdf"
+                                                                                        name="cam"
+                                                                                        id="cam{{ $proveedores->id }}"
+                                                                                        class="form-control" aria-label="Cam"
+                                                                                        style="display: none;">
+                                                                                    @error('cam')
+                                                                                        <div class="text-danger text-xs pt-1">
+                                                                                            {{ $message }}</div>
+                                                                                    @enderror
+                                                                                </div>
+                                                                            </div>
+
+                                                                            <div
+                                                                                style="width:100%; height: max-content; display: flex; justify-content: flex-end; gap: 5px;">
+                                                                                <button type="button" id="btn_anterior_legal{{$proveedores->id}}" class="btn btn-secondary"
+                                                                                    >Anterior</button>
+                                                                                    <button id="btn_siguiente_legal{{$proveedores->id}}" type="button" class="btn btn-primary"
+                                                                                        >Siguiente</button>
+                                                                            </div>
+
+                                                                        </div>
+
+                                                                        <div class="tab-pane fade" id="tab-content4_{{$proveedores->id}}" style="transition: all 300ms ease;">
+
+                                                                            <div class="form-group">
+                                                                                <div class="flex flex-col">
+                                                                                    <label for="marcas">Preferencias de
+                                                                                        Marcas:</label>
+                                                                                    <select name="marcas"
+                                                                                        id="marcas{{ $proveedores->id }}"
+                                                                                        class="form-control"
+                                                                                        style="color: var(--bs-secondary-color);">
+                                                                                        <option value="" disabled selected>
+                                                                                            Seleccionar Preferencias</option>
+                                                                                        <option value="Todas las marcas">Todas las
+                                                                                            marcas</option>
+                                                                                        <!--<option value="AKT">AKT</option>-->
+                                                                                        <option value="Alfa Romeo">Alfa Romeo
+                                                                                        </option>
+                                                                                        <option value="Alpine">Alpine</option>
+                                                                                        <option value="Aston Martin">Aston Martin
+                                                                                        </option>
+                                                                                        <!--<option value="Apollo Motors">Apollo Motors</option>-->
+                                                                                        <!--<option value="Aprilia">Aprilia</option>-->
+                                                                                        <option value="Acura">Acura</option>
+                                                                                        <option value="Audi">Audi</option>
+                                                                                        <!--<option value="Auteco">Auteco</option>-->
+                                                                                        <!--<option value="Ayco">Ayco</option>-->
+                                                                                        <option value="BAIC">BAIC</option>
+                                                                                        <!--<option value="Bajaj">Bajaj</option>-->
+                                                                                        <!--<option value="Benelli">Benelli</option>-->
+                                                                                        <option value="Bugatti">Bugatti</option>
+                                                                                        <option value="Brabus">Brabus</option>
+                                                                                        <option value="BMW">BMW</option>
+                                                                                        <option value="BYD">BYD</option>
+                                                                                        <!--<option value="CF Moto">CF Moto</option>-->
+                                                                                        <option value="Changan">Changan</option>
+                                                                                        <option value="Chery">Chery</option>
+                                                                                        <option value="Cupra">Cupra</option>
+                                                                                        <option value="Chevrolet">Chevrolet
+                                                                                        </option>
+                                                                                        <option value="Cadillac">Cadillac</option>
+                                                                                        <option value="Citroën">Citroën</option>
+                                                                                        <option value="Dodge">Dodge</option>
+                                                                                        <option value="DFSK">DFSK</option>
+                                                                                        <option value="DS">DS</option>
+                                                                                        <!--<option value="Ducati">Ducati</option>-->
+                                                                                        <!--<option value="FAW">FAW</option>-->
+                                                                                        <option value="Fiat">Fiat</option>
+                                                                                        <option value="Ferrari">Ferrari</option>
+                                                                                        <option value="Ford">Ford</option>
+                                                                                        <option value="Foton">Foton</option>
+                                                                                        <option value="Great Wall">Great Wall
+                                                                                        </option>
+                                                                                        <option value="GMC">GMC</option>
+                                                                                        <option value="Haval">Haval</option>
+                                                                                        <!--<option value="Harley Davidson">Harley Davidson</option>-->
+                                                                                        <!--<option value="Hero Motos">Hero Motos</option>-->
+                                                                                        <option value="Honda">Honda</option>
+                                                                                        <option value="Hummer">Hummer</option>
+                                                                                        <option value="Hennessey">Hennessey
+                                                                                        </option>
+                                                                                        <option value="Hyundai">Hyundai</option>
+                                                                                        <option value="Infiniti">Infiniti</option>
+                                                                                        <!--<option value="Husqvarna">Husqvarna</option>-->
+                                                                                        <option value="JAC">JAC</option>
+                                                                                        <!--<option value="Jialing Motos">Jialing Motos</option>-->
+                                                                                        <option value="JMC">JMC</option>
+                                                                                        <option value="Jeep">Jeep</option>
+                                                                                        <!--<option value="Kawasaki">Kawasaki</option>-->
+                                                                                        <!--<option value="Keeway">Keeway</option>-->
+                                                                                        <option value="Kia">Kia</option>
+                                                                                        <!--<option value="KTM">KTM</option>-->
+                                                                                        <option value="Kenworth">Kenworth</option>
+                                                                                        <option value="Koenigsegg">Koenigsegg
+                                                                                        </option>
+                                                                                        <!--<option value="Kymco">Kymco</option>-->
+                                                                                        <option value="Land Rover">Land Rover
+                                                                                        </option>
+                                                                                        <option value="Lamborghini">Lamborghini
+                                                                                        </option>
+                                                                                        <option value="Lexus">Lexus</option>
+                                                                                        <option value="Lotus">Lotus</option>
+                                                                                        <option value="Lincoln">Lincoln</option>
+                                                                                        <!--<option value="Lifan">Lifan</option>-->
+                                                                                        <option value="Mahindra">Mahindra</option>
+                                                                                        <option value="Mazda">Mazda</option>
+                                                                                        <option value="McLaren">McLaren</option>
+                                                                                        <option value="Maserati">Maserati</option>
+                                                                                        <option value="Mercedes-Benz">Mercedes-Benz
+                                                                                        </option>
+                                                                                        <option value="MG">MG</option>
+                                                                                        <option value="Mini">Mini</option>
+                                                                                        <option value="Mitsubishi">Mitsubishi
+                                                                                        </option>
+                                                                                        <!--<option value="Moto Guzzi Colombia">Moto Guzzi Colombia</option>-->
+                                                                                        <option value="Nissan">Nissan</option>
+                                                                                        <option value="Opel">Opel</option>
+                                                                                        <option value="Peugeot">Peugeot</option>
+                                                                                        <option value="Pontiac">Pontiac</option>
+                                                                                        <!--<option value="Piaggio">Piaggio</option>-->
+                                                                                        <option value="Porsche">Porsche</option>
+                                                                                        <option value="Pagani">Pagani</option>
+                                                                                        <!--<option value="Pulsar">Pulsar</option>-->
+                                                                                        <option value="Renault">Renault</option>
+                                                                                        <option value="Rivian">Rivian</option>
+                                                                                        <option value="Rolls Royce">Rolls Royce
+                                                                                        </option>
+                                                                                        <!--<option value="Royal Enfield">Royal Enfield</option>-->
+                                                                                        <option value="SEAT">SEAT</option>
+                                                                                        <!--<option value="Sherco">Sherco</option>-->
+                                                                                        <option value="Skoda">Skoda</option>
+                                                                                        <option value="SsangYong">SsangYong
+                                                                                        </option>
+                                                                                        <!--<option value="Starker">Starker</option>-->
+                                                                                        <option value="Subaru">Subaru</option>
+                                                                                        <option value="Scania">Scania</option>
+                                                                                        <option value="Suzuki">Suzuki</option>
+                                                                                        <!--<option value="SYM">SYM</option>-->
+                                                                                        <option value="Tesla">Tesla</option>
+                                                                                        <option value="Toyota">Toyota</option>
+                                                                                        <!--<option value="Triumph">Triumph</option>-->
+                                                                                        <!--<option value="TVS">TVS</option>-->
+                                                                                        <!--<option value="Vespa">Vespa</option>-->
+                                                                                        <option value="Volkswagen">Volkswagen
+                                                                                        </option>
+                                                                                        <option value="Volvo">Volvo</option>
+                                                                                        <!--<option value="Yamaha">Yamaha</option>-->
+                                                                                        <!--<option value="Zotye">Zotye</option>-->
+                                                                                        <option value="otro">Otro</option>
+
+                                                                                    </select>
+                                                                                </div>
+                                                                                <div id="marcas_preferencias{{ $proveedores->id }}"
+                                                                                    class="marcas_preferencias flex flex-col mb-3">
+                                                                                    <div id="items_container{{ $proveedores->id }}"
+                                                                                        class="items_container form-control">
+                                                                                        @if (is_string($proveedores->marcas_preferencias))
+                                                                                            @php
+                                                                                                $marcas = json_decode($proveedores->marcas_preferencias);
+                                                                                            @endphp
+                                                                                            @foreach ($marcas as $marca)
+                                                                                                <button type="button"
+                                                                                                    class="item_selected"
+                                                                                                    name="item">{{ $marca }}
+                                                                                                    <span
+                                                                                                        class="btn_borrar_item">×</span>
+                                                                                                </button>
+                                                                                            @endforeach
+                                                                                        @endif
+                                                                                    </div>
+                                                                                    <div class="text-secondary text-xs pt-1">¡Solo
+                                                                                        le llegaran solicitudes de las marcas que
+                                                                                        elijas!.</div>
+                                                                                </div>
+                                                                            </div>
+
+                                                                            <div class="flex flex-col mb-3">
+                                                                                <label
+                                                                                    for="categoria_repuesto{{ $proveedores->id }}">Especialidades:</label>
+                                                                                <select
+                                                                                    title="Especialidad: ¿En que repuestos se especializa?"
+                                                                                    class="form-control" name="categoria_repuesto"
+                                                                                    id="categoria_repuesto{{ $proveedores->id }}"
+                                                                                    name="categoria_repuesto"
+                                                                                    style="color: var(--bs-secondary-color);"
+                                                                                    required>
+                                                                                    <option value="" disabled selected>
+                                                                                        *Seleccionar Especialidad</option>
+                                                                                    <option value="Todas las especialidades">Todas
+                                                                                        las especialidades</option>
+                                                                                    <option value="LLantas">LLantas</option>
+                                                                                    <option value="Frenos">Frenos</option>
+                                                                                    <option value="Suspensión">Suspensión</option>
+                                                                                    <option value="Dirección">Sistema de Dirección</option>
+                                                                                    <option value="Motor">Motor</option>
+                                                                                    <option value="Transmisión">Transmisión
+                                                                                    </option>
+                                                                                    <option value="Tren motriz">Tren motriz</option>
+                                                                                    <option value="Latas">Latas</option>
+                                                                                    <option value="Refrigeración">Refrigeración</option>
+                                                                                    <option value="Eléctricos">Eléctricos
+                                                                                    </option>
+                                                                                    <option value="otros">Otros</option>
+                                                                                </select>
+                                                                                <div id="categorias_preferencias{{ $proveedores->id }}"
+                                                                                    class="categorias_preferencias flex flex-col mb-3">
+                                                                                    <div id="items_container_categorias{{ $proveedores->id }}"
+                                                                                        class="items_container form-control">
+                                                                                        @if (is_string($proveedores->especialidad))
+                                                                                            @php
+                                                                                                $preferencias = json_decode($proveedores->especialidad);
+                                                                                            @endphp
+                                                                                            @foreach ($preferencias as $preferencia)
+                                                                                                <button type="button"
+                                                                                                    class="item_selected"
+                                                                                                    name="item_category">{{ $preferencia }}
+                                                                                                    <span
+                                                                                                        class="btn_borrar_item">×</span></button>
+                                                                                            @endforeach
+                                                                                        @endif
+                                                                                    </div>
+                                                                                    @error('json_marcas')
+                                                                                        <div class="text-danger text-xs pt-1">
+                                                                                            {{ $message }}</div>
+                                                                                    @else
+                                                                                        <div class="text-secondary text-xs pt-1">¡Solo
+                                                                                            le llegaran solicitudes de las marcas que
+                                                                                            elijas!.</div>
+                                                                                    @enderror
+                                                                                </div>
+                                                                            </div>
+
+                                                                            <div
+                                                                                style="width:100%; height: max-content; display: flex; justify-content: flex-end; gap: 5px;">
+                                                                                <button type="button" id="btn_anterior_marcas{{$proveedores->id}}" class="btn btn-secondary"
+                                                                                    >Anterior</button>
+                                                                                    <button id="btn_submit" type="submit" class="btn btn-primary"
+                                                                                        >Guardar todo</button>
+                                                                            </div>
+
+                                                                        </div>
+
+                                                                    </form>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Modal de edición -->
+                                                {{-- <div class="modal fade editModal" id=""
+                                                    tabindex="-1" role="dialog" aria-labelledby="editModalLabel"
+                                                    aria-hidden="true" style="z-index: 1041;">
+
                                                     <div class="modal-dialog" role="document" style="z-index: 1042;">
                                                         <div class="modal-content" style="z-index: 1043;">
                                                             <div class="modal-header">
@@ -944,7 +1524,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                </div> --}}
 
                                                 <!-- Modal para eliminar -->
                                                 <div class="modal fade" id="eraseModal{{ $proveedores->id }}"
@@ -1044,6 +1624,79 @@
                                                     let textPais = document.getElementById('text-pais_edit{{ $proveedores->id }}');
                                                     let departamento = document.getElementById('departamentos{{ $proveedores->id }}');
                                                     let municipio = document.getElementById('municipios{{ $proveedores->id }}');
+
+                                                    // Función para limpiar el número de celular
+                                                    function limpiarCelular() {
+                                                        cel.value = cel.value.replace(/[^\d]/g, '');
+                                                        if (codigo.value == '+54') {
+                                                            cel.value = cel.value.slice(0, 10);
+                                                            tel.value = tel.value.slice(0, 10);
+                                                        } else if (codigo.value == '+591') {
+                                                            cel.value = cel.value.slice(0, 8);
+                                                            tel.value = tel.value.slice(0, 8);
+                                                        } else if (codigo.value == '+55') {
+                                                            cel.value = cel.value.slice(0, 11);
+                                                            tel.value = tel.value.slice(0, 11);
+                                                        } else if (codigo.value == '+56') {
+                                                            cel.value = cel.value.slice(0, 9);
+                                                            tel.value = tel.value.slice(0, 9);
+                                                        } else if (codigo.value == '+593') {
+                                                            cel.value = cel.value.slice(0, 10);
+                                                            tel.value = tel.value.slice(0, 10);
+                                                        } else if (codigo.value == '+594') {
+                                                            cel.value = cel.value.slice(0, 9);
+                                                            tel.value = tel.value.slice(0, 9);
+                                                        } else if (codigo.value == '+592') {
+                                                            cel.value = cel.value.slice(0, 7);
+                                                            tel.value = tel.value.slice(0, 7);
+                                                        } else if (codigo.value == '+595') {
+                                                            cel.value = cel.value.slice(0, 9);
+                                                            tel.value = tel.value.slice(0, 9);
+                                                        } else if (codigo.value == '+51') {
+                                                            cel.value = cel.value.slice(0, 9);
+                                                            tel.value = tel.value.slice(0, 9);
+                                                        } else if (codigo.value == '+597') {
+                                                            cel.value = cel.value.slice(0, 7);
+                                                            tel.value = tel.value.slice(0, 7);
+                                                        } else if (codigo.value == '+598') {
+                                                            cel.value = cel.value.slice(0, 8);
+                                                            tel.value = tel.value.slice(0, 8);
+                                                        } else if (codigo.value == '+58') {
+                                                            cel.value = cel.value.slice(0, 10);
+                                                            tel.value = tel.value.slice(0, 10);
+                                                        } else if (codigo.value == '+57') {
+                                                            cel.value = cel.value.slice(0, 10);
+                                                            tel.value = tel.value.slice(0, 10);
+                                                        } else if (codigo.value == '+1') {
+                                                            cel.value = cel.value.slice(0, 10);
+                                                            tel.value = tel.value.slice(0, 10);
+                                                        } else if (codigo.value == '+506') {
+                                                            cel.value = cel.value.slice(0, 8);
+                                                            tel.value = tel.value.slice(0, 8);
+                                                        } else if (codigo.value == '+503') {
+                                                            cel.value = cel.value.slice(0, 8);
+                                                            tel.value = tel.value.slice(0, 8);
+                                                        } else if (codigo.value == '+502') {
+                                                            cel.value = cel.value.slice(0, 8);
+                                                            tel.value = tel.value.slice(0, 8);
+                                                        } else if (codigo.value == '+504') {
+                                                            cel.value = cel.value.slice(0, 8);
+                                                            tel.value = tel.value.slice(0, 8);
+                                                        } else if (codigo.value == '+52') {
+                                                            cel.value = cel.value.slice(0, 10);
+                                                            tel.value = tel.value.slice(0, 10);
+                                                        } else if (codigo.value == '+505') {
+                                                            cel.value = cel.value.slice(0, 8);
+                                                            tel.value = tel.value.slice(0, 8);
+                                                        } else if (codigo.value == '+507') {
+                                                            cel.value = cel.value.slice(0, 8);
+                                                            tel.value = tel.value.slice(0, 8);
+                                                        }
+                                                    }
+
+                                                    // Asigna la función al evento input del campo de celular
+                                                    cel.addEventListener('input', limpiarCelular);
+                                                    tel.addEventListener('input', limpiarCelular);
 
                                                     function updateVisibility() {
                                                         sessionStorage.setItem('codigo', codigo.value);
@@ -1820,8 +2473,9 @@
 
                                                     function nitValidity() {
                                                         if (nit.value.length != 0) {
-                                                            if (nit.value.length > 12 || nit.value.length < 8) {
-                                                                nit.setCustomValidity("El nit es muy largo o muy corto");
+                                                            nit.value = nit.value.slice(0, 12);
+                                                            if (nit.value.length < 8) {
+                                                                nit.setCustomValidity("El nit es muy corto");
                                                             } else if (isNaN(nit.value)) {
                                                                 nit.setCustomValidity("El nit debe contener solo números");
                                                             } else {
@@ -1832,10 +2486,360 @@
                                                         }
                                                     }
 
-                                                    nit.addEventListener('change', nitValidity);
+                                                    nit.addEventListener('input', nitValidity);
 
                                                     nitValidity();
                                                 });
+                                            </script>
+
+                                            <script>
+                                                document.addEventListener('DOMContentLoaded', function(){
+
+                                                    let tab1 = document.getElementById('tab1_{{$proveedores->id}}');
+                                                    let btnSTab1 = document.getElementById('btn_siguiente_basica{{$proveedores->id}}');
+
+                                                    let tab2 = document.getElementById('tab2_{{$proveedores->id}}');
+                                                    let btnATab2 = document.getElementById('btn_anterior_contacto{{$proveedores->id}}');
+                                                    let btnSTab2 = document.getElementById('btn_siguiente_contacto{{$proveedores->id}}');
+
+                                                    let tab3 = document.getElementById('tab3_{{$proveedores->id}}');
+                                                    let btnATab3 = document.getElementById('btn_anterior_legal{{$proveedores->id}}');
+                                                    let btnSTab3 = document.getElementById('btn_siguiente_legal{{$proveedores->id}}');
+
+                                                    let tab4 = document.getElementById('tab4_{{$proveedores->id}}');
+                                                    let btnATab4 = document.getElementById('btn_anterior_marcas{{$proveedores->id}}');
+
+                                                    tab1.addEventListener('click', function () {
+                                                        let tabId1 = document.getElementById('tab-content1_{{$proveedores->id}}');
+                                                        let tabId2 = document.getElementById('tab-content2_{{$proveedores->id}}');
+                                                        let tabId3 = document.getElementById('tab-content3_{{$proveedores->id}}');
+                                                        let tabId4 = document.getElementById('tab-content4_{{$proveedores->id}}');
+
+                                                        tabId1.classList.remove('hide');
+                                                        tab1.classList.add('active');
+                                                        tab1.classList.add('paso_activo');
+                                                        tabId1.classList.add('show');
+                                                        tabId1.classList.add('active');
+
+                                                        tabId2.classList.add('hide');
+                                                        tabId2.classList.remove('active');
+                                                        tab2.classList.remove('active');
+                                                        tab2.classList.remove('paso_activo');
+                                                        tabId2.classList.remove('show');
+
+                                                        tabId3.classList.add('hide');
+                                                        tabId3.classList.remove('active');
+                                                        tab3.classList.remove('active');
+                                                        tab3.classList.remove('paso_activo');
+                                                        tabId3.classList.remove('show');
+
+                                                        tabId4.classList.add('hide');
+                                                        tabId4.classList.remove('active');
+                                                        tab4.classList.remove('active');
+                                                        tab4.classList.remove('paso_activo');
+                                                        tabId4.classList.remove('show');
+                                                    });
+                                                    btnSTab1.addEventListener('click', function () {
+                                                        let tabId1 = document.getElementById('tab-content1_{{$proveedores->id}}');
+                                                        let tabId2 = document.getElementById('tab-content2_{{$proveedores->id}}');
+                                                        let tabId3 = document.getElementById('tab-content3_{{$proveedores->id}}');
+                                                        let tabId4 = document.getElementById('tab-content4_{{$proveedores->id}}');
+
+                                                        tabId1.classList.add('hide');
+                                                        tabId1.classList.remove('active');
+                                                        tab1.classList.remove('active');
+                                                        tab1.classList.remove('paso_activo');
+                                                        tabId1.classList.remove('show');
+
+                                                        tabId2.classList.remove('hide');
+                                                        tab2.classList.add('active');
+                                                        tab2.classList.add('paso_activo');
+                                                        tabId2.classList.add('show');
+                                                        tabId2.classList.add('active');
+
+                                                        tabId3.classList.add('hide');
+                                                        tabId3.classList.remove('active');
+                                                        tab3.classList.remove('active');
+                                                        tab3.classList.remove('paso_activo');
+                                                        tabId3.classList.remove('show');
+
+                                                        tabId4.classList.add('hide');
+                                                        tabId4.classList.remove('active');
+                                                        tab4.classList.remove('active');
+                                                        tab4.classList.remove('paso_activo');
+                                                        tabId4.classList.remove('show');
+                                                    });
+
+                                                    tab2.addEventListener('click', function () {
+                                                        let tabId1 = document.getElementById('tab-content1_{{$proveedores->id}}');
+                                                        let tabId2 = document.getElementById('tab-content2_{{$proveedores->id}}');
+                                                        let tabId3 = document.getElementById('tab-content3_{{$proveedores->id}}');
+                                                        let tabId4 = document.getElementById('tab-content4_{{$proveedores->id}}');
+
+                                                        tabId1.classList.add('hide');
+                                                        tabId1.classList.remove('active');
+                                                        tab1.classList.remove('active');
+                                                        tab1.classList.remove('paso_activo');
+                                                        tabId1.classList.remove('show');
+
+                                                        tabId2.classList.remove('hide');
+                                                        tab2.classList.add('active');
+                                                        tab2.classList.add('paso_activo');
+                                                        tabId2.classList.add('show');
+                                                        tabId2.classList.add('active');
+
+                                                        tabId3.classList.add('hide');
+                                                        tabId3.classList.remove('active');
+                                                        tab3.classList.remove('active');
+                                                        tab3.classList.remove('paso_activo');
+                                                        tabId3.classList.remove('show');
+
+                                                        tabId4.classList.add('hide');
+                                                        tabId4.classList.remove('active');
+                                                        tab4.classList.remove('active');
+                                                        tab4.classList.remove('paso_activo');
+                                                        tabId4.classList.remove('show');
+                                                    });
+                                                    btnATab2.addEventListener('click', function () {
+                                                        let tabId1 = document.getElementById('tab-content1_{{$proveedores->id}}');
+                                                        let tabId2 = document.getElementById('tab-content2_{{$proveedores->id}}');
+                                                        let tabId3 = document.getElementById('tab-content3_{{$proveedores->id}}');
+                                                        let tabId4 = document.getElementById('tab-content4_{{$proveedores->id}}');
+
+                                                        tabId1.classList.remove('hide');
+                                                        tab1.classList.add('active');
+                                                        tab1.classList.add('paso_activo');
+                                                        tabId1.classList.add('show');
+                                                        tabId1.classList.add('active');
+
+                                                        tabId2.classList.add('hide');
+                                                        tabId2.classList.remove('active');
+                                                        tab2.classList.remove('active');
+                                                        tab2.classList.remove('paso_activo');
+                                                        tabId2.classList.remove('show');
+
+                                                        tabId3.classList.add('hide');
+                                                        tabId3.classList.remove('active');
+                                                        tab3.classList.remove('active');
+                                                        tab3.classList.remove('paso_activo');
+                                                        tabId3.classList.remove('show');
+
+                                                        tabId4.classList.add('hide');
+                                                        tabId4.classList.remove('active');
+                                                        tab4.classList.remove('active');
+                                                        tab4.classList.remove('paso_activo');
+                                                        tabId4.classList.remove('show');
+                                                    });
+                                                    btnSTab2.addEventListener('click', function () {
+                                                        let tabId1 = document.getElementById('tab-content1_{{$proveedores->id}}');
+                                                        let tabId2 = document.getElementById('tab-content2_{{$proveedores->id}}');
+                                                        let tabId3 = document.getElementById('tab-content3_{{$proveedores->id}}');
+                                                        let tabId4 = document.getElementById('tab-content4_{{$proveedores->id}}');
+
+                                                        tabId1.classList.add('hide');
+                                                        tabId1.classList.remove('active');
+                                                        tab1.classList.remove('active');
+                                                        tab1.classList.remove('paso_activo');
+                                                        tabId1.classList.remove('show');
+
+                                                        tabId2.classList.add('hide');
+                                                        tabId2.classList.remove('active');
+                                                        tab2.classList.remove('active');
+                                                        tab2.classList.remove('paso_activo');
+                                                        tabId2.classList.remove('show');
+
+                                                        tabId3.classList.remove('hide');
+                                                        tab3.classList.add('active');
+                                                        tab3.classList.add('paso_activo');
+                                                        tabId3.classList.add('show');
+                                                        tabId3.classList.add('active');
+
+                                                        tabId4.classList.add('hide');
+                                                        tabId4.classList.remove('active');
+                                                        tab4.classList.remove('active');
+                                                        tab4.classList.remove('paso_activo');
+                                                        tabId4.classList.remove('show');
+                                                    });
+
+                                                    tab3.addEventListener('click', function () {
+                                                        let tabId1 = document.getElementById('tab-content1_{{$proveedores->id}}');
+                                                        let tabId2 = document.getElementById('tab-content2_{{$proveedores->id}}');
+                                                        let tabId3 = document.getElementById('tab-content3_{{$proveedores->id}}');
+                                                        let tabId4 = document.getElementById('tab-content4_{{$proveedores->id}}');
+
+                                                        tabId1.classList.add('hide');
+                                                        tabId1.classList.remove('active');
+                                                        tab1.classList.remove('active');
+                                                        tab1.classList.remove('paso_activo');
+                                                        tabId1.classList.remove('show');
+
+                                                        tabId2.classList.add('hide');
+                                                        tabId2.classList.remove('active');
+                                                        tab2.classList.remove('active');
+                                                        tab2.classList.remove('paso_activo');
+                                                        tabId2.classList.remove('show');
+
+                                                        tabId3.classList.remove('hide');
+                                                        tab3.classList.add('active');
+                                                        tab3.classList.add('paso_activo');
+                                                        tabId3.classList.add('show');
+                                                        tabId3.classList.add('active');
+
+                                                        tabId4.classList.add('hide');
+                                                        tabId4.classList.remove('active');
+                                                        tab4.classList.remove('active');
+                                                        tab4.classList.remove('paso_activo');
+                                                        tabId4.classList.remove('show');
+                                                    });
+                                                    btnATab3.addEventListener('click', function () {
+                                                        let tabId1 = document.getElementById('tab-content1_{{$proveedores->id}}');
+                                                        let tabId2 = document.getElementById('tab-content2_{{$proveedores->id}}');
+                                                        let tabId3 = document.getElementById('tab-content3_{{$proveedores->id}}');
+                                                        let tabId4 = document.getElementById('tab-content4_{{$proveedores->id}}');
+
+                                                        tabId1.classList.add('hide');
+                                                        tabId1.classList.remove('active');
+                                                        tab1.classList.remove('active');
+                                                        tab1.classList.remove('paso_activo');
+                                                        tabId1.classList.remove('show');
+
+                                                        tabId2.classList.remove('hide');
+                                                        tab2.classList.add('active');
+                                                        tab2.classList.add('paso_activo');
+                                                        tabId2.classList.add('show');
+                                                        tabId2.classList.add('active');
+
+                                                        tabId3.classList.add('hide');
+                                                        tabId3.classList.remove('active');
+                                                        tab3.classList.remove('active');
+                                                        tab3.classList.remove('paso_activo');
+                                                        tabId3.classList.remove('show');
+
+                                                        tabId4.classList.add('hide');
+                                                        tabId4.classList.remove('active');
+                                                        tab4.classList.remove('active');
+                                                        tab4.classList.remove('paso_activo');
+                                                        tabId4.classList.remove('show');
+                                                    });
+                                                    btnSTab3.addEventListener('click', function () {
+                                                        let tabId1 = document.getElementById('tab-content1_{{$proveedores->id}}');
+                                                        let tabId2 = document.getElementById('tab-content2_{{$proveedores->id}}');
+                                                        let tabId3 = document.getElementById('tab-content3_{{$proveedores->id}}');
+                                                        let tabId4 = document.getElementById('tab-content4_{{$proveedores->id}}');
+
+                                                        tabId1.classList.add('hide');
+                                                        tabId1.classList.remove('active');
+                                                        tab1.classList.remove('active');
+                                                        tab1.classList.remove('paso_activo');
+                                                        tabId1.classList.remove('show');
+
+                                                        tabId2.classList.add('hide');
+                                                        tabId2.classList.remove('active');
+                                                        tab2.classList.remove('active');
+                                                        tab2.classList.remove('paso_activo');
+                                                        tabId2.classList.remove('show');
+
+                                                        tabId3.classList.add('hide');
+                                                        tabId3.classList.remove('active');
+                                                        tab3.classList.remove('active');
+                                                        tab3.classList.remove('paso_activo');
+                                                        tabId3.classList.remove('show');
+
+                                                        tabId4.classList.remove('hide');
+                                                        tab4.classList.add('active');
+                                                        tab4.classList.add('paso_activo');
+                                                        tabId4.classList.add('show');
+                                                        tabId4.classList.add('active');
+                                                    });
+
+                                                    tab4.addEventListener('click', function () {
+                                                        let tabId1 = document.getElementById('tab-content1_{{$proveedores->id}}');
+                                                        let tabId2 = document.getElementById('tab-content2_{{$proveedores->id}}');
+                                                        let tabId3 = document.getElementById('tab-content3_{{$proveedores->id}}');
+                                                        let tabId4 = document.getElementById('tab-content4_{{$proveedores->id}}');
+
+                                                        tabId1.classList.add('hide');
+                                                        tabId1.classList.remove('active');
+                                                        tab1.classList.remove('active');
+                                                        tab1.classList.remove('paso_activo');
+                                                        tabId1.classList.remove('show');
+
+                                                        tabId2.classList.add('hide');
+                                                        tabId2.classList.remove('active');
+                                                        tab2.classList.remove('active');
+                                                        tab2.classList.remove('paso_activo');
+                                                        tabId2.classList.remove('show');
+
+                                                        tabId3.classList.add('hide');
+                                                        tabId3.classList.remove('active');
+                                                        tab3.classList.remove('active');
+                                                        tab3.classList.remove('paso_activo');
+                                                        tabId3.classList.remove('show');
+
+                                                        tabId4.classList.remove('hide');
+                                                        tab4.classList.add('active');
+                                                        tab4.classList.add('paso_activo');
+                                                        tabId4.classList.add('show');
+                                                        tabId4.classList.add('active');
+                                                    });
+                                                    btnATab4.addEventListener('click', function () {
+                                                        let tabId1 = document.getElementById('tab-content1_{{$proveedores->id}}');
+                                                        let tabId2 = document.getElementById('tab-content2_{{$proveedores->id}}');
+                                                        let tabId3 = document.getElementById('tab-content3_{{$proveedores->id}}');
+                                                        let tabId4 = document.getElementById('tab-content4_{{$proveedores->id}}');
+
+                                                        tabId1.classList.add('hide');
+                                                        tabId1.classList.remove('active');
+                                                        tab1.classList.remove('active');
+                                                        tab1.classList.remove('paso_activo');
+                                                        tabId1.classList.remove('show');
+
+                                                        tabId2.classList.add('hide');
+                                                        tabId2.classList.remove('active');
+                                                        tab2.classList.remove('active');
+                                                        tab2.classList.remove('paso_activo');
+                                                        tabId2.classList.remove('show');
+
+                                                        tabId3.classList.remove('hide');
+                                                        tab3.classList.add('active');
+                                                        tab3.classList.add('paso_activo');
+                                                        tabId3.classList.add('show');
+                                                        tabId3.classList.add('active');
+
+                                                        tabId4.classList.add('hide');
+                                                        tabId4.classList.remove('active');
+                                                        tab4.classList.remove('active');
+                                                        tab4.classList.remove('paso_activo');
+                                                        tabId4.classList.remove('show');
+                                                    });
+
+                                                    // function validateForm1() {
+                                                    //     campo_nombre.removeAttribute('required');
+                                                    //     campo_cel.setCustomValidity("");
+                                                    //     campo_cel.removeAttribute("required");
+                                                    //     campo_departamento.removeAttribute('required');
+                                                    //     campo_municipio.removeAttribute('required');
+
+                                                    //     let form = document.getElementById('form_client');
+                                                    //     if (!form.reportValidity()) {
+                                                    //         return;
+                                                    //     }
+
+                                                    //     // Cambiar a la siguiente pestaña solo si todos los campos son válidos
+                                                    //     changeTab1();
+                                                    // }
+
+                                                    // function validateForm2() {
+                                                    //     campo_nombre.setAttribute('required', true);
+                                                    //     campo_cel.setAttribute("required", true);
+
+                                                    //     let form = document.getElementById('form_client');
+                                                    //     if (!form.reportValidity()) {
+                                                    //         return;
+                                                    //     }
+                                                    // }
+
+                                                })
                                             </script>
                                         @endforeach
                                     @endif
@@ -1907,7 +2911,7 @@
                                                 @csrf
 
                                                 <div class="form-group">
-                                                    <label for="nit_create">NIT:</label>
+                                                    <label for="nit_create"><span class="text-danger">*</span>NIT:</label>
                                                     <input class="form-control" type="text" id="nit_create"
                                                         name="nit_create" placeholder="Eje. 12345678..."
                                                         autocomplete="on" value="{{ old('nit_create') }}">
@@ -1917,26 +2921,26 @@
                                                 </div>
 
                                                 <div class="form-group">
-                                                    <label for="nombre_comercial_create">Nombre Establecimiento:</label>
-                                                    <input type="text" class="form-control" id="nombre_comercial_create" name="nombre_comercial_create" placeholder="" value="{{old('nombre_comercial_create')}}" autocomplete="on" required>
+                                                    <label for="nombre_comercial_create"><span class="text-danger">*</span>Nombre Establecimiento:</label>
+                                                    <input type="text" class="form-control" id="nombre_comercial_create" name="nombre_comercial_create" placeholder="" value="{{old('nombre_comercial_create')}}" maxlength="50" autocomplete="on" required>
                                                     @error('nombre_comercial_create')
                                                         <small class="text-danger text-xs pt-1">{{ $message }}</small>
                                                     @enderror
                                                 </div>
 
                                                 <div class="form-group">
-                                                    <label for="razon_create">Razón
+                                                    <label for="razon_create"><span class="text-danger">*</span>Razón
                                                         Social:</label>
                                                     <input class="form-control" type="text" id="razon_create"
                                                         name="razon_create" placeholder="Eje. Autos Repuestos S A S"
-                                                        autocomplete="on" value="{{ old('razon_create') }}" required>
+                                                        autocomplete="on" value="{{ old('razon_create') }}" maxlength="100" required>
                                                     @error('razon_create')
                                                         <small class="text-danger text-xs pt-1">{{ $message }}</small>
                                                     @enderror
                                                 </div>
 
                                                 <div class="form-group">
-                                                    <label for="cel_create">Número de celular:</label>
+                                                    <label for="cel_create"><span class="text-danger">*</span>Número de celular:</label>
                                                     <div class="form-control"
                                                         style="display: flex; justify-content: space-between; align-items: center; padding: 0;">
                                                         <select name="codigo_cel_create" id="codigo_cel_create"
@@ -1979,14 +2983,14 @@
                                                     <label for="representante_legal_create">Representante Legal:</label>
                                                     <input id="representante_legal_create" type="text"
                                                         class="form-control" name="representante_legal_create"
-                                                        value="{{ old('representante_legal_create') }}">
+                                                        value="{{ old('representante_legal_create') }}" maxlength="60" autocomplete="on">
                                                 </div>
 
                                                 <div class="flex flex-col mb-3">
                                                     <label for="contacto_principal_create">Contacto Principal:</label>
                                                     <input id="contacto_principal_create" type="text"
                                                         class="form-control" name="contacto_principal_cerate"
-                                                        value="{{ old('contacto_principal_create') }}">
+                                                        value="{{ old('contacto_principal_create') }}" autocomplete="on">
                                                 </div>
 
                                                 <div id="pais_create" class="flex flex-col mb-3 hide">
@@ -1998,13 +3002,13 @@
                                                 </div>
 
                                                 <div id="ciudad_create" class="flex flex-col mb-3 hide">
-                                                    <labe for="ciudad_create">Ciudad:</labe>
+                                                    <label for="ciudad_create"><span class="text-danger">*</span>Ciudad:</label>
                                                     <input id="ciudad_input_create" type="text" class="form-control"
                                                         name="ciudad_create" value="{{ old('ciudad_create') }}">
                                                 </div>
 
                                                 <div class="form-group">
-                                                    <label for="email_create">Correo
+                                                    <label for="email_create"><span class="text-danger">*</span>Correo
                                                         electrónico:</label>
                                                     <input type="email" class="form-control" id="email_create"
                                                         name="email_create" placeholder="Eje. ejemplo123@ejemplo.com"
@@ -2026,7 +3030,7 @@
                                                 </div>
 
                                                 <div class="form-group" id="departamentos_create">
-                                                    <label for="departamento">Departamento:</label>
+                                                    <label for="departamento"><span class="text-danger">*</span>Departamento:</label>
                                                     <select id="departamento_create" name="departamento_create"
                                                         class="departamento form-control"
                                                         value="{{ old('departamento_create') }}" required>
@@ -2045,7 +3049,7 @@
                                                 </div>
 
                                                 <div id="municipios_create" class="form-group">
-                                                    <label for="municipio_create">Municipio:</label>
+                                                    <label for="municipio_create"><span class="text-danger">*</span>Municipio:</label>
                                                     <select id="municipio_create" name="municipio_create"
                                                         class="municipio form-control"
                                                         value="{{ old('municipio_create') }}" required>
@@ -2059,10 +3063,10 @@
                                                 </div>
 
                                                 <div class="form-group">
-                                                    <label for="direccion">Dirección:</label>
+                                                    <label for="direccion"><span class="text-danger">*</span>Dirección:</label>
                                                     <input type="text" class="form-control" id="direccion_create"
-                                                        name="direccion_create" autocomplete="on"
-                                                        value="{{ old('direccion_create') }}" required>
+                                                        name="direccion_create" placeholder="Obligatorio" autocomplete="on"
+                                                        value="{{ old('direccion_create') }}" maxlength="50" required>
                                                     @error('direccion_create')
                                                         <small class="text-danger text-xs pt-1">{{ $message }}</small>
                                                     @enderror
@@ -2070,7 +3074,7 @@
 
                                                 <div class="form-group">
                                                     <div class="flex flex-col">
-                                                        <label for="marcas_create">Preferencias de Marcas:</label>
+                                                        <label for="marcas_create"><span class="text-danger">*</span>Preferencias de Marcas:</label>
                                                         <select name="marcas_create" id="marcas_create"
                                                             class="form-control"
                                                             style="color: var(--bs-secondary-color);">
@@ -2193,7 +3197,7 @@
                                                 </div>
 
                                                 <div class="flex flex-col mb-3">
-                                                    <label for="categoria_repuesto_create">Especialidades:</label>
+                                                    <label for="categoria_repuesto_create"><span class="text-danger">*</span>Especialidades:</label>
                                                     <select title="Especialidad: ¿En que repuestos se especializa?"
                                                         class="form-control" name="categoria_repuesto_create"
                                                         id="categoria_repuesto_create"
@@ -2296,17 +3300,21 @@
                                     let nit = document.getElementById('nit_create');
 
                                     function nitValidity() {
-                                        if (nit.value.length > 12 || nit.value.length < 8) {
-                                            nit.setCustomValidity("El nit es muy largo o muy corto");
-                                        } else if (isNaN(nit.value)) {
-                                            nit.setCustomValidity("El nit debe contener solo números");
+                                        if (nit.value.length != 0) {
+                                            nit.value = nit.value.slice(0, 12);
+                                            if (nit.value.length < 8) {
+                                                nit.setCustomValidity("El nit es muy corto");
+                                            } else if (isNaN(nit.value)) {
+                                                nit.setCustomValidity("El nit debe contener solo números");
+                                            } else {
+                                                nit.setCustomValidity("");
+                                            }
                                         } else {
                                             nit.setCustomValidity("");
                                         }
-
                                     }
 
-                                    nit.addEventListener('change', nitValidity);
+                                    nit.addEventListener('input', nitValidity);
 
                                     nitValidity();
                                 });
@@ -2444,6 +3452,7 @@
                                     });
                                 });
                             </script>
+
                             <script>
                                 document.addEventListener('DOMContentLoaded', function() {
                                     let marcas = document.getElementById('marcas_create');
@@ -2595,6 +3604,79 @@
                                     let textPais = document.getElementById('text_pais_create');
                                     let departamento = document.getElementById('departamentos_create');
                                     let municipio = document.getElementById('municipios_create');
+
+                                    // Función para limpiar el número de celular
+                                    function limpiarCelular() {
+                                        cel.value = cel.value.replace(/[^\d]/g, '');
+                                        if (codigo.value == '+54') {
+                                            cel.value = cel.value.slice(0, 10);
+                                            tel.value = tel.value.slice(0, 10);
+                                        } else if (codigo.value == '+591') {
+                                            cel.value = cel.value.slice(0, 8);
+                                            tel.value = tel.value.slice(0, 8);
+                                        } else if (codigo.value == '+55') {
+                                            cel.value = cel.value.slice(0, 11);
+                                            tel.value = tel.value.slice(0, 11);
+                                        } else if (codigo.value == '+56') {
+                                            cel.value = cel.value.slice(0, 9);
+                                            tel.value = tel.value.slice(0, 9);
+                                        } else if (codigo.value == '+593') {
+                                            cel.value = cel.value.slice(0, 10);
+                                            tel.value = tel.value.slice(0, 10);
+                                        } else if (codigo.value == '+594') {
+                                            cel.value = cel.value.slice(0, 9);
+                                            tel.value = tel.value.slice(0, 9);
+                                        } else if (codigo.value == '+592') {
+                                            cel.value = cel.value.slice(0, 7);
+                                            tel.value = tel.value.slice(0, 7);
+                                        } else if (codigo.value == '+595') {
+                                            cel.value = cel.value.slice(0, 9);
+                                            tel.value = tel.value.slice(0, 9);
+                                        } else if (codigo.value == '+51') {
+                                            cel.value = cel.value.slice(0, 9);
+                                            tel.value = tel.value.slice(0, 9);
+                                        } else if (codigo.value == '+597') {
+                                            cel.value = cel.value.slice(0, 7);
+                                            tel.value = tel.value.slice(0, 7);
+                                        } else if (codigo.value == '+598') {
+                                            cel.value = cel.value.slice(0, 8);
+                                            tel.value = tel.value.slice(0, 8);
+                                        } else if (codigo.value == '+58') {
+                                            cel.value = cel.value.slice(0, 10);
+                                            tel.value = tel.value.slice(0, 10);
+                                        } else if (codigo.value == '+57') {
+                                            cel.value = cel.value.slice(0, 10);
+                                            tel.value = tel.value.slice(0, 10);
+                                        } else if (codigo.value == '+1') {
+                                            cel.value = cel.value.slice(0, 10);
+                                            tel.value = tel.value.slice(0, 10);
+                                        } else if (codigo.value == '+506') {
+                                            cel.value = cel.value.slice(0, 8);
+                                            tel.value = tel.value.slice(0, 8);
+                                        } else if (codigo.value == '+503') {
+                                            cel.value = cel.value.slice(0, 8);
+                                            tel.value = tel.value.slice(0, 8);
+                                        } else if (codigo.value == '+502') {
+                                            cel.value = cel.value.slice(0, 8);
+                                            tel.value = tel.value.slice(0, 8);
+                                        } else if (codigo.value == '+504') {
+                                            cel.value = cel.value.slice(0, 8);
+                                            tel.value = tel.value.slice(0, 8);
+                                        } else if (codigo.value == '+52') {
+                                            cel.value = cel.value.slice(0, 10);
+                                            tel.value = tel.value.slice(0, 10);
+                                        } else if (codigo.value == '+505') {
+                                            cel.value = cel.value.slice(0, 8);
+                                            tel.value = tel.value.slice(0, 8);
+                                        } else if (codigo.value == '+507') {
+                                            cel.value = cel.value.slice(0, 8);
+                                            tel.value = tel.value.slice(0, 8);
+                                        }
+                                    }
+
+                                    // Asigna la función al evento input del campo de celular
+                                    cel.addEventListener('input', limpiarCelular);
+                                    tel.addEventListener('input', limpiarCelular);
 
                                     function updateVisibility() {
                                         sessionStorage.setItem('codigo', codigo.value);

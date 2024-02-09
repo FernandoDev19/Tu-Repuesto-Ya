@@ -366,8 +366,8 @@ class AdminController extends Controller
                 ->orWhere('referencia', 'like', '%' . request('search') . '%')
                 ->orWhere('modelo', 'like', '%' . request('search') . '%')
                 ->orWhere('tipo_de_transmision', 'like', '%' . request('search') . '%')
-                ->orWhere('repuesto', 'like', '%' . request('search') . '%')
-                ->orWhere('categoria', 'like', '%' . request('search') . '%')
+                ->orWhereJsonContains('repuesto', request('search'))
+                ->orWhereJsonContains('categoria', request('search'))
                 ->orWhere('nombre', 'like', '%' . request('search') . '%')
                 ->orWhere('correo', 'like', '%' . request('search') . '%')
                 ->orWhere('comentario', 'like', '%' . request('search') . '%')
@@ -407,7 +407,19 @@ class AdminController extends Controller
 
     function viewAnswers(): view
     {
-        $respuestas = Answer::with('proveedor', 'solicitud')->paginate(15);
+        $respuestas = Answer::query()->when(request('search'), function ($query){
+            return $query->whereHas('solicitud', function ($subquery) {
+                        $subquery->where('nombre', 'like', '%' . request('search') . '%');
+                    })
+                    ->orWhereHas('proveedor', function ($subquery) {
+                        $subquery->where('razon_social', 'like', '%' . request('search') . '%');
+                    })
+                    ->orWhereJsonContains('repuesto', request('search'))
+                    ->orWhereJsonContains('precio', request('search'));
+            })
+            ->with('proveedor', 'solicitud')
+            ->paginate(15)
+            ->withQueryString();
 
         $name = auth()->user()->name;
 
@@ -791,6 +803,18 @@ class AdminController extends Controller
             }
         });
 
+        $validator->after(function ($validator) use ($request, $id){
+            $tel = $request->tel_edit;
+            $providerId = $id;
+
+            $existingUser = User::where('tel', $tel)->where('proveedor_id', '!=', $providerId)->first();
+            $existingProvider = Provider::where('telefono', $tel)->where('id', '!=', $providerId)->first();
+
+            if($existingUser || $existingProvider){
+                $validator->errors()->add('tel_edit', 'Este número de celular ya está en uso');
+            }
+        });
+
         $validator->after(function ($validator) use ($request, $id) {
             $nombre_comercial = $request->input('nombre_comercial_edit');
             $providerId = $id;
@@ -818,9 +842,22 @@ class AdminController extends Controller
             $existingProvider = Provider::where('email', $email)->where('id', '!=', $providerId)->first();
 
             if ($existingUser || $existingProvider) {
-                $validator->errors()->add('email_edit', 'El correo electronico ingresado se encuentra en uso.');
+                $validator->errors()->add('email_edit', 'El correo electrónico ingresado se encuentra en uso.');
             }
         });
+
+        if($request->has('email_2_edit') && $request->filled('email_2_edit')){
+            $validator->after(function ($validator) use ($request, $id){
+                $email2 = $request->input('email_2_edit');
+                $providerId = $id;
+
+                $existingProvider = Provider::where('email_secundario', $email2)->where('id', '!=', $providerId)->first();
+
+                if($existingProvider){
+                    $validator->errors()->add('email_2_edit', 'El correo electrónico ingresado se encuentra en uso.');
+                }
+            });
+        }
 
         // Si hay algun fallo, retorna la misma vista pero con los errores y un mensaje de error
         if ($validator->fails()) {

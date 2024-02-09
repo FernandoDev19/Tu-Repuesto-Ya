@@ -290,7 +290,7 @@
                                                                                             data-toggle="modal"
                                                                                             data-target="#imgModal{{ $solicitud->id }}"
                                                                                             href="#">Ver
-                                                                                            Imagen</a>
+                                                                                            Imagen</a> 
                                                                                     @endif
                                                                                 </li>
                                                                                 <li><strong>Comentarios del cliente:

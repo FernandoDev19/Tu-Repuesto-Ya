@@ -23,10 +23,8 @@ class RespuestasExport implements FromCollection, WithHeadings, WithMapping
             'Id',
             'Solicitud',
             'Proveedor',
-            'Repuesto',
-            'Tipo de repuesto',
-            'Precio',
-            'Garantía',
+            'Repuestos',
+            'Precios',
             'Comentarios',
             'Fecha de creación'
         ];
@@ -37,10 +35,8 @@ class RespuestasExport implements FromCollection, WithHeadings, WithMapping
             $answer->id,
             $answer->idSolicitud,
             $answer->idProveedor,
-            $answer->repuesto,
-            $answer->tipo_repuesto,
-            $answer->precio,
-            $answer->garantia,
+            implode(', ', json_decode($answer->repuesto)),
+            implode(', ', json_decode($answer->precio)),
             $answer->comentarios,
             $answer->created_at
         ];

@@ -26,7 +26,7 @@ class ProveedorExport implements FromCollection, WithHeadings, WithMapping
             'Municipio',
             'Direccion',
             'Celular',
-            'Telefono',
+            'Celular 2°',
             'Representante legal',
             'Contacto principal',
             'Preferencias de Marcas',
