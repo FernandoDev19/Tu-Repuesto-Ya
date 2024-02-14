@@ -91,8 +91,9 @@ class UsersController extends Controller
         ]);
 
         $user = User::where('email', $request->email)->first();
+        $provider = Provider::where('email', $request->email)->orWhere('email_secundario', $request->email)->first();
 
-        if ($user) {
+        if ($user || $provider) {
             // Genera un token único
             $token = Str::random(60);
 
@@ -106,7 +107,7 @@ class UsersController extends Controller
                 'token' => $token, // Pasamos el token al correo
             ];
 
-            Mail::to($user->email)->send(new RestablecerContrasenia($email));
+            Mail::to($user->email)->cc($provider->email_secundario)->send(new RestablecerContrasenia($email));
 
             return redirect()->route('login_outAnimate')->with('message', 'Se ha enviado un correo con instrucciones para cambiar la contraseña.');
         }
@@ -221,7 +222,6 @@ class UsersController extends Controller
                 'confirm_password' => 'required| ',
                 'json_marcas' => 'required',
                 'json_categorias' => 'required',
-                'categoria_repuesto' => 'required',
                 'rut' => 'required|file|mimes:pdf|max:5024',
                 'cam' => 'required|file|mimes:pdf|max:5024',
                 'terms' => 'required',

@@ -51,7 +51,7 @@
                                             <div class="flex flex-col mb-3">
                                                 <input type="text" name="nit" id="nit" class="form-control"
                                                     placeholder="*NIT de la empresa" aria-label="Nit"
-                                                    value="{{ old('nit') }}" required>
+                                                    value="{{ old('nit') }}" maxlength="12" required>
                                                 @error('nit')
                                                     <div class="text-danger text-xs pt-1">{{ $message }}</div>
                                                 @enderror
@@ -60,7 +60,7 @@
                                             <div class="flex flex-col mb-3">
                                                 <input type="text" name="razon" id="razonSocial" class="form-control"
                                                     placeholder="*Razón social" aria-label="Razon"
-                                                    value="{{ old('razon') }}" required>
+                                                    value="{{ old('razon') }}" maxlength="100" required>
                                                 @error('razon')
                                                     <div class="text-danger text-xs pt-1">{{ $message }}</div>
                                                 @enderror
@@ -155,7 +155,7 @@
                                             <div class="flex flex-col mb-3">
                                                 <input type="text" name="direccion" id="direccion"
                                                     class="form-control" placeholder="Dirección" aria-label="Direccion"
-                                                    value="{{ old('direccion') }}">
+                                                    value="{{ old('direccion') }}" maxlength="50">
                                                 @error('direccion')
                                                     <div class="text-danger text-xs pt-1">{{ $message }}</div>
                                                 @enderror
@@ -360,7 +360,7 @@
                                                     <div id="items_container_categorias" class="form-control"></div>
 
                                                 </div>
-                                                @error('json_cateorias')
+                                                @error('json_categorias')
                                                     <div class="text-danger text-xs pt-1">{{ $message }}</div>
                                                 @else
                                                     <div class="text-secondary text-xs pt-1">¿En que repuestos se especializa?
@@ -402,7 +402,7 @@
 
                                             <div class="form-check form-check-info text-start">
                                                 <input class="form-check-input" type="checkbox" name="terms"
-                                                    id="flexCheckDefault" {{ old('terms') ? 'checked' : '' }}>
+                                                    id="flexCheckDefault" {{ old('terms') ? 'checked' : '' }} required>
                                                 <label class="form-check-label text-white-cel" for="flexCheckDefault">
                                                     Acepto los <a href="javascript:;"
                                                         class="text-primary font-weight-bolder">Términos y
@@ -508,6 +508,79 @@
             // Establece los campos como obligatorios
             departamento.setAttribute('required', true);
             municipio.setAttribute('required', true);
+
+           // Función para limpiar el número de celular
+            function limpiarCelular() {
+                cel.value = cel.value.replace(/[^\d]/g, '');
+                if (codigo.value == '+54') {
+                    cel.value = cel.value.slice(0, 10);
+                    tel.value = tel.value.slice(0, 10);
+                } else if (codigo.value == '+591') {
+                    cel.value = cel.value.slice(0, 8);
+                    tel.value = tel.value.slice(0, 8);
+                } else if (codigo.value == '+55') {
+                    cel.value = cel.value.slice(0, 11);
+                    tel.value = tel.value.slice(0, 11);
+                } else if (codigo.value == '+56') {
+                    cel.value = cel.value.slice(0, 9);
+                    tel.value = tel.value.slice(0, 9);
+                } else if (codigo.value == '+593') {
+                    cel.value = cel.value.slice(0, 10);
+                    tel.value = tel.value.slice(0, 10);
+                } else if (codigo.value == '+594') {
+                    cel.value = cel.value.slice(0, 9);
+                    tel.value = tel.value.slice(0, 9);
+                } else if (codigo.value == '+592') {
+                    cel.value = cel.value.slice(0, 7);
+                    tel.value = tel.value.slice(0, 7);
+                } else if (codigo.value == '+595') {
+                    cel.value = cel.value.slice(0, 9);
+                    tel.value = tel.value.slice(0, 9);
+                } else if (codigo.value == '+51') {
+                    cel.value = cel.value.slice(0, 9);
+                    tel.value = tel.value.slice(0, 9);
+                } else if (codigo.value == '+597') {
+                    cel.value = cel.value.slice(0, 7);
+                    tel.value = tel.value.slice(0, 7);
+                } else if (codigo.value == '+598') {
+                    cel.value = cel.value.slice(0, 8);
+                    tel.value = tel.value.slice(0, 8);
+                } else if (codigo.value == '+58') {
+                    cel.value = cel.value.slice(0, 10);
+                    tel.value = tel.value.slice(0, 10);
+                } else if (codigo.value == '+57') {
+                    cel.value = cel.value.slice(0, 10);
+                    tel.value = tel.value.slice(0, 10);
+                } else if (codigo.value == '+1') {
+                    cel.value = cel.value.slice(0, 10);
+                    tel.value = tel.value.slice(0, 10);
+                } else if (codigo.value == '+506') {
+                    cel.value = cel.value.slice(0, 8);
+                    tel.value = tel.value.slice(0, 8);
+                } else if (codigo.value == '+503') {
+                    cel.value = cel.value.slice(0, 8);
+                    tel.value = tel.value.slice(0, 8);
+                } else if (codigo.value == '+502') {
+                    cel.value = cel.value.slice(0, 8);
+                    tel.value = tel.value.slice(0, 8);
+                } else if (codigo.value == '+504') {
+                    cel.value = cel.value.slice(0, 8);
+                    tel.value = tel.value.slice(0, 8);
+                } else if (codigo.value == '+52') {
+                    cel.value = cel.value.slice(0, 10);
+                    tel.value = tel.value.slice(0, 10);
+                } else if (codigo.value == '+505') {
+                    cel.value = cel.value.slice(0, 8);
+                    tel.value = tel.value.slice(0, 8);
+                } else if (codigo.value == '+507') {
+                    cel.value = cel.value.slice(0, 8);
+                    tel.value = tel.value.slice(0, 8);
+                }
+            }
+
+            // Asigna la función al evento input del campo de celular
+            cel.addEventListener('input', limpiarCelular);
+            tel.addEventListener('input', limpiarCelular);
 
             function updateVisibility() {
                 sessionStorage.setItem('codigo', codigo.value);
@@ -1096,10 +1169,14 @@
                 let button = document.createElement('button');
                 button.classList.add('item_selected');
                 button.setAttribute('name', 'item');
-                button.textContent = item;
+                button.innerHTML = item + '<span class="btn_borrar_item">×</span>';
+
+                marcas.setCustomValidity('');
 
                 // Agregar un evento de escucha de clics al botón
                 button.addEventListener('click', function() {
+                    event.preventDefault();
+
                     // Eliminar el botón del contenedor
                     container.removeChild(button);
 
@@ -1109,8 +1186,12 @@
                     // Guardar las marcas seleccionadas en el localStorage
                     localStorage.setItem('seleccionados', JSON.stringify(seleccionados));
 
-                    if (!Object.keys(seleccionados).length === 0) {
-                        marcas.removeAttribute('required');
+                    if (container.children.length === 0) {
+                        marcas_preferencias.classList.add('hide');
+                        marcas.setCustomValidity('No has agregado ninguna marca');
+                    }
+                    else{
+                        marcas.setCustomValidity('');
                     }
                 });
 
@@ -1132,7 +1213,13 @@
                 }
             }
 
+            if (container.children.length > 0) {
+                marcas_preferencias.classList.remove('hide');
+                marcas.removeAttribute('required');
+            }
+
             marcas.addEventListener('change', function() {
+
                 let item = marcas.value;
                 if (item !== "") {
                     if (!seleccionados[item]) {
@@ -1149,13 +1236,14 @@
                 marcas.setAttribute('required', true);
             } else {
                 marcas.removeAttribute('required');
+                marcas.setCustomValidity('');
             }
 
             document.getElementById('registrationForm').addEventListener('submit', function(event) {
                 event.preventDefault(); // Evitar el envío del formulario para manejarlo manualmente
 
                 // Obtener los textos de los botones en un arreglo
-                let textosSeleccionados = Object.keys(seleccionados);
+                let textosSeleccionados = Array.from(container.children).map(button => button.textContent);
 
                 // Convertir el arreglo a una cadena JSON
                 let jsonTextosSeleccionados = JSON.stringify(textosSeleccionados);
@@ -1164,7 +1252,7 @@
                 let inputJson = document.createElement('input');
                 inputJson.type = 'hidden';
                 inputJson.name = 'json_marcas';
-                inputJson.value = jsonTextosSeleccionados;
+                inputJson.value = jsonTextosSeleccionados.replace(/×/g, '').replace(/\n/g, '').replace(/\r/g, '');
                 this.appendChild(inputJson);
 
                 // Limpiar los datos en localStorage después de enviar el formulario
@@ -1192,7 +1280,9 @@
                 let button = document.createElement('button');
                 button.classList.add('item_selected');
                 button.setAttribute('name', 'item_category');
-                button.textContent = item_category;
+                button.innerHTML = item_category + '<span class="btn_borrar_item">×</span>';
+
+                categoria.setCustomValidity('');
 
                 // Agregar un evento de escucha de clics al botón
                 button.addEventListener('click', function() {
@@ -1205,8 +1295,12 @@
                     // Guardar las categorias seleccionadas en el localStorage
                     localStorage.setItem('categoriaSeleccionados', JSON.stringify(categoriaSeleccionados));
 
-                    if (Object.keys(categoriaSeleccionados).length === 0) {
-                        categoria.setAttribute('required', true);
+                    if (container.children.length === 0) {
+                        categorias_preferencias.classList.add('hide');
+                        categoria.setCustomValidity('No has agregado ninguna caterogia');
+                    }
+                    else{
+                        categoria.setCustomValidity('');
                     }
                 });
 
@@ -1228,6 +1322,11 @@
                 }
             }
 
+            if (container.children.length > 0) {
+                categorias_preferencias.classList.remove('hide');
+                categoria.removeAttribute('required');
+            }
+
             categoria.addEventListener('change', function() {
                 let item_category = categoria.value;
                 if (item_category !== "") {
@@ -1241,8 +1340,9 @@
 
             if (Object.keys(categoriaSeleccionados).length === 0) {
                 categoria.setAttribute('required', true);
-            } else {
+            }else {
                 categoria.removeAttribute('required');
+                categoria.setCustomValidity('');
             }
 
             document.getElementById('registrationForm').addEventListener('submit', function(event) {

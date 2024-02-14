@@ -234,7 +234,7 @@
                                                                 <div class="modal-header">
                                                                     <h5 class="modal-title" id="infoModalLabel">
                                                                         <strong>Información
-                                                                        del Proveedor</strong</h5>
+                                                                        del Proveedor</strong></h5>
                                                                     <button class="close" type="button"
                                                                         data-dismiss="modal" aria-label="Close">
                                                                         <span aria-hidden="true">×</span>
