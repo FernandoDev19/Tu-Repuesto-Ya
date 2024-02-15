@@ -932,12 +932,7 @@
                                                                                                 $marcas = json_decode($proveedores->marcas_preferencias);
                                                                                             @endphp
                                                                                             @foreach ($marcas as $marca)
-                                                                                                <button type="button"
-                                                                                                    class="item_selected"
-                                                                                                    name="item">{{ $marca }}
-                                                                                                    <span
-                                                                                                        class="btn_borrar_item">×</span>
-                                                                                                </button>
+                                                                                                <button type="button" class="item_selected" name="item">{{ $marca }}<span class="btn_borrar_item">×</span></button>
                                                                                             @endforeach
                                                                                         @endif
                                                                                     </div>
@@ -984,11 +979,7 @@
                                                                                                 $preferencias = json_decode($proveedores->especialidad);
                                                                                             @endphp
                                                                                             @foreach ($preferencias as $preferencia)
-                                                                                                <button type="button"
-                                                                                                    class="item_selected"
-                                                                                                    name="item_category">{{ $preferencia }}
-                                                                                                    <span
-                                                                                                        class="btn_borrar_item">×</span></button>
+                                                                                                <button type="button" class="item_selected" name="item_category">{{ $preferencia }}<span class="btn_borrar_item">×</span></button>
                                                                                             @endforeach
                                                                                         @endif
                                                                                     </div>

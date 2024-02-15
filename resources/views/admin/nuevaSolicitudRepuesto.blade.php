@@ -3,7 +3,7 @@
 @section('title', 'Tu Repuesto Ya - Solicitudes')
 
 @section('sidebar')
-    
+
     <!-- Nav Item - Dashboard -->
     <li class="nav-item">
         <a class="nav-link" href="{{ route('dashboard') }}">
@@ -63,7 +63,7 @@
 @endsection
 
 @section('content')
-        
+
     <div class="container-fluid h-100">
             <div class="row h-100 justify-content-center">
                 <div class="col-lg-12 mb-4">
@@ -87,31 +87,31 @@
                                                         Respuestas
                                             </th>
                                             <th class="text-muted" style="padding:10px 5px; text-align:center;">
-                                                        Repuesto</th>
-                                            <th class="text-muted" style="padding:10px 5px; text-align:center;">
                                                         Marca</th>
                                             <th class="text-muted" style="padding:10px 5px; text-align:center;">
                                                         Referencia</th>
                                             <th class="text-muted" style="padding:10px 5px; text-align:center;">
                                                         Modelo</th>
                                             <th class="text-muted" style="padding:10px 5px; text-align:center;">
-                                                        Fecha de Creación</th>            
+                                                        Repuestos</th>
+                                            <th class="text-muted" style="padding:10px 5px; text-align:center;">
+                                                        Fecha de Creación</th>
                                             <th class="text-muted" style="padding:10px 5px; text-align:center;">
                                                         Estado</th>
                                             <th class="text-muted" style="padding:10px 5px; text-align:center;">
-                                                        Detalles</th>            
+                                                        Detalles</th>
                                         </tr>
                                             </thead>
                                             <tbody>
                                                     @php
                                                         $proveedor = auth()->user()->id;
                                                         $proveedorId = auth()->user()->proveedor_id;
-                                                                
+
                                                         // Verifica si $solicitudAnswers no es nulo antes de usar el método where()
                                                         $solicitudAnswers = $answers[$solicitud->id] ?? null;
-                                                                
+
                                                         $proveedorHaRespondido = false;
-                                                                
+
                                                         if ($solicitudAnswers) {
                                                             // Ahora puedes usar el método where() de manera segura
                                                             $proveedorHaRespondido = $solicitudAnswers->where('idProveedor', $proveedorId)->isNotEmpty();
@@ -167,10 +167,9 @@
                                                     </td>
                                                     <td style="padding:10px; width: 6vw;" class="text-center">
                                                            <a title="Ver detalles"
-                                                                            href="{{ route('solicitud', [$solicitud->codigo, $proveedor]) }}"
-                                                                            class="btn btn-primary">
-                                                                            
-                                                                        </a>
+                                                                href="{{ route('solicitud', [$solicitud->codigo, $proveedor]) }}"
+                                                                class="btn btn-primary">Cotizar
+                                                            </a>
 
                                                     </td>
 
@@ -214,7 +213,7 @@
                                             </tbody>
                                         </table>
                                     </div>
-                                
+
                         </div>
                     </div>
                 </div>

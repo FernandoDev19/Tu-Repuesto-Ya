@@ -218,7 +218,7 @@ class AdminController extends Controller
         }
     }
 
-    function profileUpdate(Request $request)
+    function profileUpdate(Request $request, $id_provider = null)
     {
         $validator = Validator::make(
             $request->all(),
@@ -232,7 +232,7 @@ class AdminController extends Controller
                     'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d.@!¡?¿]{8,}$/',
                 ],
                 'confirm_password' => 'nullable|same:password',
-
+                'nit' => 'nullable|numeric|digits_between:8,15',
             ],
             [
                 'cel.numeric' => 'Este campo solo permite números',
@@ -317,6 +317,10 @@ class AdminController extends Controller
             });
         }
 
+        if(auth()->check() && auth()->user()->hasRole('Proveedor')){
+
+        }
+
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput()->with('error', 'No se pudieron guardar los cambios');
         }
@@ -326,6 +330,7 @@ class AdminController extends Controller
             $id = auth()->user()->id;
 
             $userUpdate = User::findOrFail($id);
+
             if($request->has('name') && $request->filled('name')){
                 $userUpdate->name = $request->input('name');
             }
@@ -335,11 +340,11 @@ class AdminController extends Controller
             }
 
             if($request->has('tel') && $request->filled('tel')){
-                $userUpdate->tel = $request->input('tel');
+                $userUpdate->tel = $request->codigo_cel . $request->input('tel');
             }
 
             if($request->has('email') && $request->filled('email')){
-                $userUpdate->email = $request->input('tel');
+                $userUpdate->email = $request->codigo_cel . $request->input('tel');
             }
 
             if($request->has('password') && $request->filled('password')){
@@ -350,6 +355,101 @@ class AdminController extends Controller
             }catch(\exception $e){
                 return redirect()->back()->whithErrors($validator)->with('error', 'Error al guardar. '.$e->getMessage());
             }
+        }
+
+        if(auth()->check() && auth()->user()->hasRole('Proveedor')){
+
+            $userUpdate = Provider::findOrFail($id_provider);
+
+            $id = auth()->user()->id;
+
+            $account = User::findOrFail($id);
+
+            if($request->has('nit') && $request->filled('nit')){
+                $userUpdate->nit = $request->input('nit');
+            }
+
+            if($request->has('nombre_establecimiento') && $request->filled('nombre_establecimiento')){
+                $userUpdate->nombre_comercial = $request->input('nombre_establecimiento');
+            }
+
+            if($request->has('razon_social') && $request->filled('razon_social')){
+                $userUpdate->razon_social = $request->input('tel');
+            }
+
+            if($request->has('departamento') && $request->filled('departamento')){
+                $userUpdate->departamento = $request->input('departamento');
+            }
+
+            if($request->has('municipio') && $request->filled('municipio')){
+                $userUpdate->municipio = $request->input('municipio');
+            }
+
+            if($request->has('pais') && $request->filled('pais')){
+                $userUpdate->pais = $request->input('pais');
+            }
+
+            if($request->has('ciudad') && $request->filled('ciudad')){
+                $userUpdate->municipio = $request->input('ciudad');
+            }
+
+            if($request->has('direccion') && $request->filled('direccion')){
+                $userUpdate->direccion = $request->input('direccion');
+            }
+
+            if($request->has('cel') && $request->filled('cel')){
+                $userUpdate->celular = $request->codigo_cel . $request->input('cel');
+                $account->cel = $request->codigo_cel . $request->input('cel');
+            }
+
+            if($request->has('tel') && $request->filled('tel')){
+                $userUpdate->telefono = $request->codigo_cel . $request->input('tel');
+                $account->tel = $request->codigo_cel . $request->input('tel');
+            }
+
+            if($request->has('representante_legal') && $request->filled('representante_legal')){
+                $userUpdate->representante_legal = $request->input('representante_legal');
+            }
+
+            if($request->has('contacto_principal') && $request->filled('contacto_principal')){
+                $userUpdate->contacto_principal = $request->input('contacto_principal');
+            }
+
+            if($request->has('email') && $request->filled('email')){
+                $userUpdate->email = $request->input('email');
+                $account->email = $request->input('email');
+            }
+
+            if($request->has('email2') && $request->filled('email2')){
+                $userUpdate->email_secundario = $request->input('email2');
+            }
+
+            if ($request->json_marcas) {
+                $cleanedMarcas = str_replace(["×", "\n", "\r"], "", $request->json_marcas);
+                $userUpdate->marcas_preferencias = $cleanedMarcas;
+            }
+
+            if ($request->json_categorias) {
+                $cleanedCategorias = str_replace(["×", "\n", "\r"], "", $request->json_categorias);
+                $userUpdate->especialidad = $cleanedCategorias;
+            }
+
+            if($request->has('password') && $request->filled('password')){
+                $userUpdate->password = bcrypt($request->password);
+                $account->password = bcrypt($request->password);
+            }
+
+            // if($request->has('password') && $request->filled('password')){
+            //     $userUpdate->password = bcrypt($request->password);
+            // }
+
+            try{
+                $userUpdate->save();
+                $account->save();
+            }catch(\exception $e){
+                return redirect()->back()->withErrors($validator)->with('error', 'Error al guardar. '.$e->getMessage());
+            }
+
         }
 
         return redirect()->back()->with('message', 'Los datos se han guardado correctamente');
@@ -950,16 +1050,16 @@ class AdminController extends Controller
             $proveedor->estado = $request->input('estado_edit');
         }
 
-        if ($request->input('json_marcas')) {
-            $jsonMarcas = $request->input('json_marcas');
-            $proveedor->marcas_preferencias = $jsonMarcas;
+        if ($request->json_marcas) {
+            $cleanedMarcas = str_replace(["×", "\n", "\r"], "", $request->json_marcas);
+            $proveedor->marcas_preferencias = $cleanedMarcas;
         }
 
-
-        if ($request->input('json_categorias')) {
-            $jsonCategorias = $request->input('json_categorias');
-            $proveedor->especialidad = $jsonCategorias;
+        if ($request->json_categorias) {
+            $cleanedCategorias = str_replace(["×", "\n", "\r"], "", $request->json_categorias);
+            $proveedor->especialidad = $cleanedCategorias;
         }
+
 
         // Obtener los archivos RUT y Cámara de Comercio
         $archivoRut = $request->file('rut');

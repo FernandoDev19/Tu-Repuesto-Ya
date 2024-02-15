@@ -53,7 +53,7 @@ Route::middleware('auth')->group(function () {
     /*Route::get('/profile', [AdminController::class, 'profile'])->name('profile');
     Route::get('/profile/update', [AdminController::class, 'profileUpdate'])->name('profileUpdate');*/
     Route::get('/profile', [AdminController::class, 'profile'])->name('profile');
-    Route::post('/profile/update', [AdminController::class, 'profileUpdate'])->name('profileUpdate');
+    Route::post('/profile/update/{id?}', [AdminController::class, 'profileUpdate'])->name('profileUpdate');
     Route::get('/admin/provider/{nit}/{notificationId}', [AdminController::class, 'verProveedor'])->name('verProveedor')->middleware('can:notifications.viewNotifications');
     Route::get('markAsRead', function (){
         auth()->user()->unreadNotifications->markAsRead();
@@ -73,6 +73,14 @@ Route::middleware('auth')->group(function () {
     Route::post('/admin/logout', [AdminController::class, 'logout'])->name("logout");
 });
 
+Route::get('public/img/logo_whatsapp.png', function () {
+    $imgPath = public_path('img/logo_whatsapp.png');
+
+    return Response::make(file_get_contents($imgPath), 200, [
+        'Content-Type' => 'image/png',
+        'Content-Disposition' => 'inline; filename=logo_whatsapp.png',
+    ]);
+})->name('video');
 
 Route::get('/privacy_policy_TRYA', function(){
      $name = null;
