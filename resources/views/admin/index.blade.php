@@ -21,21 +21,27 @@
                 <i class="fas fa-fw fa-tachometer-alt"> </i>
                 <span class="nav-items-cel-small"> Panel</span></a>
         </li>
+        
+        @can('providers.loadProviders')
+            <li class="nav-item mx-1">
+                <a href="{{ route('loadProviders') }}" class="nav-link" style="gap: 3px;"><i
+                        class="fas fa-users"> </i><span class="nav-items-cel-small">Proveedores</span> </a>
+            </li>
+        @endcan
 
-        <li class="nav-item mx-1">
-            <a href="{{ route('loadProviders') }}" class="nav-link" style="gap: 3px;"><i
-                    class="fas fa-users"> </i><span class="nav-items-cel-small">Proveedores</span> </a>
-        </li>
+        @can('solicitudes.view')
+            <li class="nav-item mx-1">
+                <a class="nav-link" href="{{ route('viewSolicitudes') }}" style="gap: 3px;"><i
+                        class="fas fa-link"> </i> <span class="nav-items-cel-small">Solicitudes</span></a>
+            </li>
+        @endcan
 
-        <li class="nav-item mx-1">
-            <a class="nav-link" href="{{ route('viewSolicitudes') }}" style="gap: 3px;"><i
-                    class="fas fa-link"> </i> <span class="nav-items-cel-small">Solicitudes</span></a>
-        </li>
-
-        <li class="nav-item mx-1">
-            <a class="nav-link" href="{{ route('viewRespuestas') }}" style="gap: 3px;"><i
-                    class="fas fa-reply"> </i><span class="nav-items-cel-small">Respuestas</span> </a>
-        </li>
+        @can('answers.view')
+            <li class="nav-item mx-1">
+                <a class="nav-link" href="{{ route('viewRespuestas') }}" style="gap: 3px;"><i
+                        class="fas fa-reply"> </i><span class="nav-items-cel-small">Respuestas</span> </a>
+            </li>
+        @endcan
 
     </ul>
     </nav>
