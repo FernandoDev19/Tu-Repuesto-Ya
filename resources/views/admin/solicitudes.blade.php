@@ -9,62 +9,35 @@
 </style>
 
 @section('sidebar')
-    <!-- Nav Item - Dashboard -->
-    <li class="nav-item">
-        <a class="nav-link" href="{{ route('dashboard') }}">
-            <i class="fas fa-fw fa-tachometer-alt"></i>
-            <span>Panel de control</span></a>
-    </li>
+    <nav
+    class="navbar navbar-expand navbar-light bg-white topbar static-top d-flex justify-content-center">
 
-    <!-- Divider -->
-    <hr class="sidebar-divider">
+    <!-- Topbar Navbar -->
+    <ul class="navbar-nav">
 
-    <!-- Heading -->
-    <div class="sidebar-heading">
-        Interface
-    </div>
-
-    <!-- Nav Item - Pages Collapse Menu -->
-    @can('solicitudes.view')
-        <li class="nav-item active">
-            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true"
-                aria-controls="collapseTwo">
-                <i class="fas fa-fw fa-cog"></i>
-                <span>Componentes</span>
-            </a>
-            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                <div class="bg-white py-2 collapse-inner rounded">
-                    <h6 class="collapse-header">Custom Components:</h6>
-                    <a class="collapse-item active" href="{{ route('viewSolicitudes') }}">Solicitudes</a>
-                    @can('answers.view')
-                        <a class="collapse-item" href="{{ route('viewRespuestas') }}">Respuestas</a>
-                    @endcan
-                </div>
-            </div>
+        <li class="nav-item active mx-1">
+            <a class="nav-link" style="gap: 3px;" href="{{ route('dashboard') }}">
+                <i class="fas fa-fw fa-tachometer-alt"> </i>
+                <span class="nav-items-cel-small">Panel</span></a>
         </li>
-    @endcan
 
-    <!-- Nav Item - Proveedores -->
-    @can('providers.loadProviders')
-        <li class="nav-item">
-            <a class="nav-link" href="{{ route('loadProviders') }}">
-                <i class="fas fa-fw fa-chart-area"></i>
-                <span>Proveedores</span></a>
+        <li class="nav-item mx-1">
+            <a href="{{ route('loadProviders') }}" class="nav-link" style="gap: 3px;"><i
+                    class="fas fa-users"> </i> <span class="nav-items-cel-small">Proveedores</span></a>
         </li>
-    @endcan
 
+        <li class="nav-item mx-1">
+            <a class="nav-link" href="{{ route('viewSolicitudes') }}" style="color:#4e73df; gap: 3px;"><i
+                    class="fas fa-link"> </i> <span class="nav-items-cel-small">Solicitudes</span></a>
+        </li>
 
-    <!-- Divider -->
-    <hr class="sidebar-divider d-none d-md-block">
-
-    <!-- Sidebar Toggler (Sidebar) -->
-    <div class="text-center d-none d-md-inline">
-        <button class="rounded-circle border-0" id="sidebarToggle"></button>
-    </div>
-    <!-- End of Sidebar -->
-    </div>
+        <li class="nav-item mx-1">
+            <a class="nav-link" href="{{ route('viewRespuestas') }}" style="gap: 3px;"><i
+                    class="fas fa-reply"> </i> <span class="nav-items-cel-small">Respuestas</span></a>
+        </li>
 
     </ul>
+    </nav>
 @endsection
 
 @section('content')
@@ -290,7 +263,7 @@
                                                                                             data-toggle="modal"
                                                                                             data-target="#imgModal{{ $solicitud->id }}"
                                                                                             href="#">Ver
-                                                                                            Imagen</a> 
+                                                                                            Imagen</a>
                                                                                     @endif
                                                                                 </li>
                                                                                 <li><strong>Comentarios del cliente:

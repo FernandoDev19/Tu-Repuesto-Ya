@@ -3,60 +3,35 @@
 @section('title', 'Tu Repuesto Ya - Respuestas')
 
 @section('sidebar')
+    <nav
+    class="navbar navbar-expand navbar-light bg-white topbar static-top d-flex justify-content-center">
 
+    <!-- Topbar Navbar -->
+    <ul class="navbar-nav">
 
-    <!-- Nav Item - Dashboard -->
-    <li class="nav-item">
-        <a class="nav-link" href="{{ route('dashboard') }}">
-            <i class="fas fa-fw fa-tachometer-alt"></i>
-            <span>Panel de control</span></a>
-    </li>
-
-    <!-- Divider -->
-    <hr class="sidebar-divider">
-
-    <!-- Heading -->
-    <div class="sidebar-heading">
-        Interface
-    </div>
-
-    <!-- Nav Item - Pages Collapse Menu -->
-    <li class="nav-item active">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true"
-            aria-controls="collapseTwo">
-            <i class="fas fa-fw fa-cog"></i>
-            <span>Componentes</span>
-        </a>
-        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                <h6 class="collapse-header">Custom Components:</h6>
-                <a class="collapse-item" href="{{ route('viewSolicitudes') }}">Solicitudes</a>
-                <a class="collapse-item active" href="{{ route('viewRespuestas') }}">Respuestas</a>
-            </div>
-        </div>
-    </li>
-
-    <!-- Nav Item - Proveedores -->
-    @can('providers.loadProviders')
-        <li class="nav-item">
-            <a class="nav-link" href="{{ route('loadProviders') }}">
-                <i class="fas fa-fw fa-chart-area"></i>
-                <span>Proveedores</span></a>
+        <li class="nav-item active mx-1">
+            <a class="nav-link" style="gap: 3px;" href="{{ route('dashboard') }}">
+                <i class="fas fa-fw fa-tachometer-alt"> </i>
+                <span class="nav-items-cel-small"> Panel</span></a>
         </li>
-    @endcan
 
+        <li class="nav-item mx-1">
+            <a href="{{ route('loadProviders') }}" class="nav-link" style="gap: 3px;"><i
+                    class="fas fa-users"> </i><span class="nav-items-cel-small">Proveedores</span></a>
+        </li>
 
-    <!-- Divider -->
-    <hr class="sidebar-divider d-none d-md-block">
+        <li class="nav-item mx-1">
+            <a class="nav-link" href="{{ route('viewSolicitudes') }}" style="gap: 3px;"><i
+                    class="fas fa-link"> </i> <span class="nav-items-cel-small">Solicitudes</span></a>
+        </li>
 
-    <!-- Sidebar Toggler (Sidebar) -->
-    <div class="text-center d-none d-md-inline">
-        <button class="rounded-circle border-0" id="sidebarToggle"></button>
-    </div>
-    <!-- End of Sidebar -->
-    </div>
+        <li class="nav-item mx-1">
+            <a class="nav-link" href="{{ route('viewRespuestas') }}" style="color:#4e73df; gap: 3px;"><i
+                    class="fas fa-reply"> </i> <span class="nav-items-cel-small">Respuestas</span> </a>
+        </li>
 
     </ul>
+    </nav>
 @endsection
 
 @section('content')
