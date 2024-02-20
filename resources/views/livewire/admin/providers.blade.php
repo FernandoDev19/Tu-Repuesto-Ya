@@ -941,8 +941,6 @@
                                                                                     <option value="Suspensión">Suspensión</option>
                                                                                     <option value="Dirección">Sistema de Dirección</option>
                                                                                     <option value="Motor">Motor</option>
-                                                                                    <option value="Transmisión">Transmisión
-                                                                                    </option>
                                                                                     <option value="Tren motriz">Tren motriz</option>
                                                                                     <option value="Latas">Latas</option>
                                                                                     <option value="Refrigeración">Refrigeración</option>
@@ -3182,8 +3180,6 @@
                                                         <option value="Suspensión">Suspensión</option>
                                                         <option value="Dirección">Sistema de Dirección</option>
                                                         <option value="Motor">Motor</option>
-                                                        <option value="Transmisión">Transmisión
-                                                        </option>
                                                         <option value="Tren motriz">Tren motriz</option>
                                                         <option value="Latas">Latas</option>
                                                         <option value="Refrigeración">Refrigeración</option>
