@@ -11,34 +11,34 @@
 <!-- Sidebar -->
 @section('sidebar')
     <nav
-    class="navbar navbar-expand navbar-light bg-white topbar static-top d-flex justify-content-center">
+    class="navbar navbar-expand navbar-light bg-white shadow topbar static-top d-flex justify-content-center">
 
     <!-- Topbar Navbar -->
     <ul class="navbar-nav">
 
-        <li class="nav-item active mx-1">
+        <li class="nav-item active">
             <a class="nav-link" style="color:#4e73df; gap: 3px;" href="{{ route('dashboard') }}">
                 <i class="fas fa-fw fa-tachometer-alt"> </i>
                 <span class="nav-items-cel-small"> Panel</span></a>
         </li>
-        
+
         @can('providers.loadProviders')
-            <li class="nav-item mx-1">
-                <a href="{{ route('loadProviders') }}" class="nav-link" style="gap: 3px;"><i
+            <li class="nav-item">
+                <a href="{{ route('loadProviders') }}" class="nav-link" style="padding: 0 .50rem; gap: 3px;"><i
                         class="fas fa-users"> </i><span class="nav-items-cel-small">Proveedores</span> </a>
             </li>
         @endcan
 
         @can('solicitudes.view')
-            <li class="nav-item mx-1">
-                <a class="nav-link" href="{{ route('viewSolicitudes') }}" style="gap: 3px;"><i
-                        class="fas fa-link"> </i> <span class="nav-items-cel-small">Solicitudes</span></a>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('viewSolicitudes') }}" style="padding: 0 .50rem; gap: 3px;"><i
+                        class="fas fa-file-alt"> </i> <span class="nav-items-cel-small">Solicitudes</span></a>
             </li>
         @endcan
 
         @can('answers.view')
-            <li class="nav-item mx-1">
-                <a class="nav-link" href="{{ route('viewRespuestas') }}" style="gap: 3px;"><i
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('viewRespuestas') }}" style="padding: 0 .50rem; gap: 3px;"><i
                         class="fas fa-reply"> </i><span class="nav-items-cel-small">Respuestas</span> </a>
             </li>
         @endcan

@@ -10,7 +10,7 @@
 
     <div style="position: sticky; top: 0; z-index: 3;">
         <!-- Topbar -->
-        <nav class="navbar navbar-expand navbar-light bg-white topbar static-top shadow">
+        <nav class="navbar navbar-expand navbar-light bg-white topbar static-top" style="z-index: 1;">
 
             <a class="sidebar-brand d-flex align-items-center justify-content-center mr-3"
                 href="{{ route('servicios') }}">
@@ -21,6 +21,13 @@
 
             <!-- Topbar Navbar -->
             <ul class="navbar-nav ml-auto">
+
+                <li class="nav-item dropdown no-arrow mx-1">
+                    <a class="nav-link" href="#">
+                        <i class="fas fa-key fa-fw"></i>
+                    </a>
+                </li>
+
                 <!-- Dropdown - Messages -->
                 <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
                     aria-labelledby="searchDropdown">
@@ -47,8 +54,8 @@
                         @if (count(auth()->user()->unreadNotifications))
                             <span
                                 class="badge badge-danger badge-counter">{{ count(auth()->user()->unreadNotifications) }}</span>
+                            </span>
                         @endif
-                        </span>
                     </a>
                     <!-- Dropdown - Alerts -->
                     <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
