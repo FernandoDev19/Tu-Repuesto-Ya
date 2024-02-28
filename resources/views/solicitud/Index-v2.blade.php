@@ -56,7 +56,7 @@
                     style="border-radius: 0.75rem; background-color: rgb(255, 255, 255); box-shadow: 0em 0em 12px -2px #2c3e59; max-width: 1328px !important; width: 100%;">
                     <a class="logo-solicitud-cel-position text-dark top-0 left-0" href="{{ route('servicios') }}"
                         style="padding: 1% 0 0 1%; position: absolute; z-index: 2;">
-                        <img decoding="async" class="logo" src="{{ asset('img/logo tu repuesto ya/icono_pagina.png') }}"
+                        <img decoding="async" class="logo" src="{{ asset('img/logo tu repuesto ya/icono_pagina.webp') }}"
                             alt="logo" style="height: 6vh; width: auto;" height="30" width="30">
                     </a>
                     <div class="container-form-w" style="width: 100%;">

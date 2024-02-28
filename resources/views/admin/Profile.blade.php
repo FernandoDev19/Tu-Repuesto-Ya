@@ -1,125 +1,45 @@
 @extends('layouts.baseAdmin')
 
-@section('title', 'Tu Repuesto Ya - Perfil')
+<link rel="stylesheet" href="{{asset('css/profileStyle.css')}}">
 
-<style>
-    p {
-        padding: 0 !important;
-        margin: 0 !important;
-    }
-
-    .edit-button {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background-color: rgba(0, 0, 0, 0.7);
-        color: white;
-        padding: 10px 20px;
-        border-radius: 5px;
-        display: none;
-        cursor: pointer;
-    }
-
-    .hide {
-        display: none;
-    }
-
-    .items_container {
-        min-height: 50px;
-        height: auto !important;
-        width: 100%;
-        display: flex;
-        justify-content: flex-start;
-        flex-wrap: wrap;
-        gap: 2%;
-    }
-
-    .item_selected {
-        min-width: 70px;
-        height: max-content;
-        border-radius: .25rem;
-        border: 1px solid lightgray;
-        margin: 3px;
-        font-weight: 600;
-        padding: 1.5% 5%;
-        background-color: lightgray;
-        text-align: center;
-        transition: all 0.3s ease;
-    }
-
-    .btn_borrar_item {
-        color: lightgray;
-        transform: translate(10px, 0);
-        transition: all 300ms ease;
-        display: inline-block;
-    }
-
-    .item_selected:hover {
-        border: 1px solid gray;
-    }
-
-    .item_selected:hover .btn_borrar_item {
-        color: black;
-    }
-</style>
+@section('title', 'Perfil | Tu Repuesto Ya')
 
 @section('sidebar')
+    <nav
+    class="navbar navbar-expand navbar-light bg-white shadow topbar static-top d-flex justify-content-center">
 
-    <!-- Nav Item - Dashboard -->
-    <li class="nav-item">
-        <a class="nav-link" href="{{ route('dashboard') }}">
-            <i class="fas fa-fw fa-tachometer-alt"></i>
-            <span>Panel de control</span></a>
-    </li>
+    <!-- Topbar Navbar -->
+    <ul class="navbar-nav">
 
-    @can('solicitudes.view')
-        <!-- Divider -->
-        <hr class="sidebar-divider">
-
-        <!-- Heading -->
-        <div class="sidebar-heading">
-            Interface
-        </div>
-        <!-- Nav Item - Pages Collapse Menu -->
         <li class="nav-item">
-            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true"
-                aria-controls="collapseTwo">
-                <i class="fas fa-fw fa-cog"></i>
-                <span>Componentes</span>
-            </a>
-            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                <div class="bg-white py-2 collapse-inner rounded">
-                    <h6 class="collapse-header">Custom Components:</h6>
-                    <a class="collapse-item" href="{{ route('viewSolicitudes') }}">Solicitudes</a>
-                    @can('answers.view')
-                        <a class="collapse-item" href="{{ route('viewRespuestas') }}">Respuestas</a>
-                    @endcan
-                </div>
-            </div>
+            <a class="nav-link" style="color: var(--gray); padding: 0 .50rem; gap: 3px;" href="{{ route('dashboard') }}">
+                <i class="fas fa-fw fa-tachometer-alt"> </i>
+                <span class="nav-items-cel-small">Panel</span></a>
         </li>
-    @endcan
 
+        @can('providers.loadProviders')
+            <li class="nav-item">
+                <a href="{{ route('loadProviders') }}" class="nav-link" style="color: var(--gray); padding: 0 .50rem; gap: 3px;"><i
+                        class="fas fa-users"> </i><span class="nav-items-cel-small">Proveedores</span> </a>
+            </li>
+        @endcan
 
-    <!-- Nav Item - Proveedores -->
-    @can('providers.loadProviders')
-        <li class="nav-item">
-            <a class="nav-link" href="{{ route('loadProviders') }}">
-                <i class="fas fa-fw fa-chart-area"></i>
-                <span>Proveedores</span></a>
-        </li>
-    @endcan
+        @can('solicitudes.view')
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('viewSolicitudes') }}" style="color: var(--gray); padding: 0 .50rem; gap: 3px;"><i
+                        class="fas fa-file-alt"> </i> <span class="nav-items-cel-small">Solicitudes</span></a>
+            </li>
+        @endcan
 
-    <!-- Divider -->
-    <hr class="sidebar-divider d-none d-md-block">
+        @can('answers.view')
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('viewRespuestas') }}" style="color: var(--gray); padding: 0 .50rem; gap: 3px;"><i
+                        class="fas fa-reply"> </i><span class="nav-items-cel-small">Respuestas</span> </a>
+            </li>
+        @endcan
 
-    <!-- Sidebar Toggler (Sidebar) -->
-    <div class="text-center d-none d-md-inline">
-        <button class="rounded-circle border-0" id="sidebarToggle"></button>
-    </div>
-
-    </div>
     </ul>
+    </nav>
 @endsection
 
 @section('content')
@@ -128,7 +48,7 @@
     <div class="container-fluid">
 
         <!-- Content Row -->
-        <div class="container-fluid h-100">
+        <div class="h-100">
             <div class="row h-100 justify-content-center">
                 <div class="col-lg-12 mb-4">
                     <div class="card shadow mb-4">
@@ -138,9 +58,9 @@
                                 <form id="form_profile_edit" action="{{ route('profileUpdate') }}" method="POST"
                                     class="form w-100">
                                     @csrf
-                                    <div class="container-cols" style="display: flex;">
-                                        <div class="col1" style="width: 50%;">
-                                            <div class="row"
+                                    <div class="container-cols">
+                                        <div class="col" id="col1" >
+                                            <div class="row_cols"
                                                 style="display: flex; flex-direction: column; padding-left: 6%;  padding-top: 2%">
                                                 <div class="titles" style="margin-bottom: 1%; padding: 0;">
                                                     <div class="text">
@@ -148,7 +68,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="container">
-                                                    <div class="col-md-8">
+                                                    <div class="w-default">
                                                         <!-- Información del perfil -->
                                                         <div class="form-group">
                                                             <label for="name">Nombre:</label>
@@ -211,8 +131,8 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col2" style="width: 50%;">
-                                            <div class="row"
+                                        <div class="col" id="col2" >
+                                            <div class="row_cols"
                                                 style="display: flex; flex-direction: column; padding-left: 6%;  padding-top: 2%">
                                                 <div class="titles" style="margin-bottom: 1%; padding: 0;">
                                                     <div class="text">
@@ -220,7 +140,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="container">
-                                                    <div class="col-md-8">
+                                                    <div class="w-default">
                                                         <!-- Información del perfil -->
                                                         <div class="form-group">
                                                             <label for="email">Correo electrónico:</label>
@@ -277,7 +197,6 @@
                                                     </div>
                                                 </div>
                                             </div>
-
                                         </div>
                                     </div>
                                     <div id="boton-container" style="display: flex; justify-content: flex-end;">
@@ -289,9 +208,9 @@
                                 <form id="form_profile_edit" action="{{ route('profileUpdate', $usuario->proveedor_id) }}" method="POST"
                                     class="form w-100">
                                     @csrf
-                                    <div class="container-cols" style="display: flex;">
-                                        <div class="col1" style="width: 50%;">
-                                            <div class="row"
+                                    <div class="container-cols">
+                                        <div class="col" id="col1">
+                                            <div class="row_cols"
                                                 style="display: flex; flex-direction: column; padding-left: 6%;  padding-top: 2%">
                                                 <div class="titles" style="margin-bottom: 1%; padding: 0;">
                                                     <div class="text">
@@ -299,7 +218,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="container">
-                                                    <div class="col-md-8">
+                                                    <div class="w-default">
                                                         <!-- Información del perfil -->
                                                         <div class="form-group">
                                                             <label for="nit">NIT:</label>
@@ -392,113 +311,7 @@
                                                 </div>
                                             </div>
 
-                                            <div class="row"
-                                                style="display: flex; flex-direction: column; padding-left: 6%;  padding-top: 2%">
-                                                <div class="titles" style="margin-bottom: 1%; padding: 0;">
-                                                    <div class="text">
-                                                        <h4 class="text-primary">Información legal</h4>
-                                                    </div>
-                                                </div>
-                                                <div class="container">
-                                                    <div class="col-md-8">
-                                                        <div class="form-group flex flex-col">
-                                                            <span>RUT:</span>
-                                                            <label id="btn1"
-                                                                class="button form-control form-control-lg" for="rut"
-                                                                style="margin: 0; cursor: pointer; display: flex; justify-content: space-between;">
-                                                                <div id="text_file_rut"
-                                                                    placeholder="{{ $usuario->proveedor->rut }}">
-                                                                </div>
-                                                                <div><i id="check1" class="fa fa-check"
-                                                                        aria-hidden="true"></i>
-                                                                </div>
-                                                            </label>
-                                                            <input type="file" accept=".pdf" name="rut"
-                                                                id="rut" class="form-control" aria-label="Rut"
-                                                                style="display: none;">
-                                                            @error('rut')
-                                                                <div class="text-danger text-xs pt-1">
-                                                                    {{ $message }}</div>
-                                                            @enderror
-                                                        </div>
-
-                                                        <div class="form-group flex flex-col">
-                                                            <span>Camara de comercio:</span>
-                                                            <label id="btn2"
-                                                                class="button form-control form-control-lg" for="cam"
-                                                                style="margin: 0; cursor: pointer; display: flex; justify-content: space-between;">
-                                                                <div id="text_file_cam"
-                                                                    placeholder="{{ $usuario->proveedor->camara_comercio }}">
-                                                                </div>
-                                                                <div><i id="check2" class="fa fa-check"
-                                                                        aria-hidden="true"></i></div>
-                                                            </label>
-                                                            <input type="file" accept=".pdf" name="cam"
-                                                                id="cam" class="form-control" aria-label="Cam"
-                                                                style="display: none;">
-                                                            @error('cam')
-                                                                <div class="text-danger text-xs pt-1">
-                                                                    {{ $message }}</div>
-                                                            @enderror
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="row"
-                                                style="display: flex; flex-direction: column; padding-left: 6%;  padding-top: 2%">
-                                                <div class="titles" style="margin-bottom: 1%; padding: 0;">
-                                                    <div class="text">
-                                                        <h4 class="text-primary">Acceso a la plataforma</h4>
-                                                    </div>
-                                                </div>
-                                                <div class="container">
-                                                    <div class="col-md-8">
-                                                        <div class="form-group">
-                                                            <label for="password">Nueva contraseña:</label>
-                                                            <div class="input-group">
-                                                                <input id="password" type="password" name="password"
-                                                                    class="form-control form-control-lg"
-                                                                    aria-label="Password" value="{{ old('password') }}"
-                                                                    placeholder="Nueva contraseña">
-                                                                <div class="input-group-append">
-                                                                    <span class="input-group-text"
-                                                                        style="height: 100%; border-radius: 0% 0.5rem 0.5rem 0% !important; border: 1px solid lightgray;"><i
-                                                                            id="togglePassword"
-                                                                            class="fas fa-eye"></i></span>
-                                                                </div>
-                                                            </div>
-                                                            @error('password')
-                                                                <p class="text-danger text-xs pt-1"> {{ $message }} </p>
-                                                            @enderror
-                                                        </div>
-
-                                                        <div class="form-group">
-                                                            <label for="password">Confirmar nueva contraseña:</label>
-                                                            <div class="input-group">
-                                                                <input id="confirm_password" type="password"
-                                                                    name="confirm_password"
-                                                                    class="form-control form-control-lg"
-                                                                    aria-label="Confirm Password"
-                                                                    value="{{ old('confirm_password') }}"
-                                                                    placeholder="Confirmar contraseña">
-                                                                <div class="input-group-append">
-                                                                    <span class="input-group-text"
-                                                                        style="height: 100%; border-radius: 0% 0.5rem 0.5rem 0% !important; border: 1px solid lightgray;"><i
-                                                                            id="toggleConfirmPassword"
-                                                                            class="fas fa-eye"></i></span>
-                                                                </div>
-                                                            </div>
-                                                            @error('confirm_password')
-                                                                <p class="text-danger text-xs pt-1"> {{ $message }} </p>
-                                                            @enderror
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col2" style="width: 50%;">
-                                            <div class="row"
+                                            <div class="row_cols"
                                                 style="display: flex; flex-direction: column; padding-left: 6%;  padding-top: 2%">
                                                 <div class="titles" style="margin-bottom: 1%; padding: 0;">
                                                     <div class="text">
@@ -506,7 +319,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="container">
-                                                    <div class="col-md-8">
+                                                    <div class="w-default">
                                                         <!-- Información del perfil -->
                                                         <div class="form-group">
                                                             <label for="cel_edit">Celular:</label>
@@ -597,7 +410,63 @@
                                                 </div>
                                             </div>
 
-                                            <div class="row"
+                                        </div>
+                                        <div class="col" id="col2">
+
+                                            <div class="row_cols"
+                                                style="display: flex; flex-direction: column; padding-left: 6%;  padding-top: 2%">
+                                                <div class="titles" style="margin-bottom: 1%; padding: 0;">
+                                                    <div class="text">
+                                                        <h4 class="text-primary">Información legal</h4>
+                                                    </div>
+                                                </div>
+                                                <div class="container">
+                                                    <div class="w-default">
+                                                        <div class="form-group flex flex-col">
+                                                            <span>RUT:</span>
+                                                            <label id="btn1"
+                                                                class="button form-control form-control-lg" for="rut"
+                                                                style="margin: 0; cursor: pointer; display: flex; justify-content: space-between;">
+                                                                <div id="text_file_rut"
+                                                                    placeholder="{{ $usuario->proveedor->rut }}">
+                                                                </div>
+                                                                <div><i id="check1" class="fa fa-check"
+                                                                        aria-hidden="true"></i>
+                                                                </div>
+                                                            </label>
+                                                            <input type="file" accept=".pdf" name="rut"
+                                                                id="rut" class="form-control" aria-label="Rut"
+                                                                style="display: none;">
+                                                            @error('rut')
+                                                                <div class="text-danger text-xs pt-1">
+                                                                    {{ $message }}</div>
+                                                            @enderror
+                                                        </div>
+
+                                                        <div class="form-group flex flex-col">
+                                                            <span>Camara de comercio:</span>
+                                                            <label id="btn2"
+                                                                class="button form-control form-control-lg" for="cam"
+                                                                style="margin: 0; cursor: pointer; display: flex; justify-content: space-between;">
+                                                                <div id="text_file_cam"
+                                                                    placeholder="{{ $usuario->proveedor->camara_comercio }}">
+                                                                </div>
+                                                                <div><i id="check2" class="fa fa-check"
+                                                                        aria-hidden="true"></i></div>
+                                                            </label>
+                                                            <input type="file" accept=".pdf" name="cam"
+                                                                id="cam" class="form-control" aria-label="Cam"
+                                                                style="display: none;">
+                                                            @error('cam')
+                                                                <div class="text-danger text-xs pt-1">
+                                                                    {{ $message }}</div>
+                                                            @enderror
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row_cols"
                                                 style="display: flex; flex-direction: column; padding-left: 6%;  padding-top: 2%">
                                                 <div class="titles" style="margin-bottom: 1%; padding: 0;">
                                                     <div class="text">
@@ -605,16 +474,15 @@
                                                     </div>
                                                 </div>
                                                 <div class="container">
-                                                    <div class="col-md-8">
+                                                    <div class="w-default">
                                                         <div class="form-group">
                                                             <div class="flex flex-col">
-                                                                <label for="marcas">Preferencias de
-                                                                    Marcas:</label>
+                                                                <label for="marcas">Marcas:</label>
                                                                 <select name="marcas" id="marcas"
                                                                     class="form-control form-control-lg"
                                                                     style="color: var(--bs-secondary-color);">
-                                                                    <option value="" disabled selected>
-                                                                        Seleccionar Preferencias</option>
+                                                                    {{-- <option value="" disabled selected>
+                                                                        Seleccionar Preferencias</option> --}}
                                                                     <option value="Todas las marcas">Todas las
                                                                         marcas</option>
                                                                     <!--<option value="AKT">AKT</option>-->
@@ -757,19 +625,14 @@
                                                             <select title="Especialidad: ¿En que repuestos se especializa?"
                                                                 class="form-control form-control-lg"
                                                                 name="categoria_repuesto" id="categoria_repuesto"
-                                                                name="categoria_repuesto"
                                                                 style="color: var(--bs-secondary-color);" required>
-                                                                <option value="" disabled selected>
-                                                                    *Seleccionar Especialidad</option>
-                                                                <option value="Todas las especialidades">Todas
-                                                                    las especialidades</option>
+                                                                <option value="Todas las especialidades">Todas las especialidades</option>
                                                                 <option value="LLantas">LLantas</option>
                                                                 <option value="Frenos">Frenos</option>
                                                                 <option value="Suspensión">Suspensión</option>
                                                                 <option value="Dirección">Sistema de Dirección</option>
                                                                 <option value="Motor">Motor</option>
-                                                                <option value="Transmisión">Transmisión
-                                                                </option>
+                                                                <option value="Transmisión">Transmisión</option>
                                                                 <option value="Tren motriz">Tren motriz</option>
                                                                 <option value="Latas">Latas</option>
                                                                 <option value="Refrigeración">Refrigeración</option>
@@ -804,6 +667,58 @@
 
                                                 </div>
 
+                                            </div>
+
+                                            <div class="row_cols"
+                                                style="display: flex; flex-direction: column; padding-left: 6%;  padding-top: 2%">
+                                                <div class="titles" style="margin-bottom: 1%; padding: 0;">
+                                                    <div class="text">
+                                                        <h4 class="text-primary">Acceso a la plataforma</h4>
+                                                    </div>
+                                                </div>
+                                                <div class="container">
+                                                    <div class="w-default">
+                                                        <div class="form-group">
+                                                            <label for="password">Nueva contraseña:</label>
+                                                            <div class="input-group">
+                                                                <input id="password" type="password" name="password"
+                                                                    class="form-control form-control-lg"
+                                                                    aria-label="Password" value="{{ old('password') }}"
+                                                                    placeholder="Nueva contraseña">
+                                                                <div class="input-group-append">
+                                                                    <span class="input-group-text"
+                                                                        style="height: 100%; border-radius: 0% 0.5rem 0.5rem 0% !important; border: 1px solid lightgray;"><i
+                                                                            id="togglePassword"
+                                                                            class="fas fa-eye"></i></span>
+                                                                </div>
+                                                            </div>
+                                                            @error('password')
+                                                                <p class="text-danger text-xs pt-1"> {{ $message }} </p>
+                                                            @enderror
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label for="password">Confirmar nueva contraseña:</label>
+                                                            <div class="input-group">
+                                                                <input id="confirm_password" type="password"
+                                                                    name="confirm_password"
+                                                                    class="form-control form-control-lg"
+                                                                    aria-label="Confirm Password"
+                                                                    value="{{ old('confirm_password') }}"
+                                                                    placeholder="Confirmar contraseña">
+                                                                <div class="input-group-append">
+                                                                    <span class="input-group-text"
+                                                                        style="height: 100%; border-radius: 0% 0.5rem 0.5rem 0% !important; border: 1px solid lightgray;"><i
+                                                                            id="toggleConfirmPassword"
+                                                                            class="fas fa-eye"></i></span>
+                                                                </div>
+                                                            </div>
+                                                            @error('confirm_password')
+                                                                <p class="text-danger text-xs pt-1"> {{ $message }} </p>
+                                                            @enderror
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -861,6 +776,8 @@
     </div>
     <!-- /.container-fluid -->
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <!-- Core plugin JavaScript-->
     <script src="{{ asset('vendor/jquery-easing/jquery.easing.min.js') }}"></script>
 
@@ -869,9 +786,6 @@
 
     <!-- Page level plugins -->
     <script src="{{ asset('vendor/chart.js/Chart.min.js') }}"></script>
-
-    <!-- Page level custom scripts -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
 
@@ -2224,14 +2138,14 @@
 
             // Función para agregar un botón
             function agregarBoton(item) {
-                const botonesExistentes = Array.from(container.children).map(button => button.textContent);
+                const botonesExistentes = Array.from(container.children).map(button => button.textContent.replace(/×/g, ''))
 
                 if (!botonesExistentes.includes(item)) {
                     let button = document.createElement('button');
                     button.type = 'button'; // Cambiamos el tipo de submit a button
                     button.classList.add('item_selected');
                     button.setAttribute('name', 'item');
-                    button.innerHTML = item + '<span class="btn_borrar_item">×</span>';
+                    button.innerHTML = item  + '<span class="btn_borrar_item">×</span>';
 
                     // Agregar un evento de escucha de clics al botón
                     button.addEventListener('click', function(event) {
@@ -2314,7 +2228,7 @@
 
             // Función para agregar un botón
             function agregarBoton(item) {
-                const botonesExistentes = Array.from(container.children).map(button => button.textContent);
+                const botonesExistentes = Array.from(container.children).map(button => button.textContent.replace(/×/g, ''));
 
                 if (!botonesExistentes.includes(item)) {
                     let button = document.createElement('button');

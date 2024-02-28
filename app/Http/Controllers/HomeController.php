@@ -56,6 +56,31 @@ class HomeController extends Controller
         return view("home.index", compact('name', 'departamentos', 'group', 'codigos'));
     }
 
+    public function modalUrlView():view
+    {
+        // Lista de codigos
+        $codigos = Country_code::all();
+
+        // Lista de departamentos
+        $departamentos = Geolocation::distinct()->pluck('departamento');
+
+        // Lista de municipios
+        $group = [];
+
+        foreach ($departamentos as $departamento) {
+            $municipios = Geolocation::where('departamento', $departamento)->pluck('municipio');
+            $group[$departamento] = $municipios;
+        }
+
+        $name = null;
+
+        // Si existe una sesión activa se obtiene el nombre para pasarlo a la vista
+        if (auth()->check()) {
+            $name = auth()->user()->name;
+        }
+        return view("home.indexModal", compact('name', 'departamentos', 'group', 'codigos'));
+    }
+
     public function validation(Request $request): redirectResponse
     {
         $validator = Validator::make(
@@ -396,7 +421,32 @@ class HomeController extends Controller
             Mail::to($solicitud->correo)->send(new SolicitudClienteMail($solicitud->nombre));
         }
 
-        return redirect()->back()->with('message', "¡Envío exitoso! \n Revise su Whatsapp o su Correo electrónico");
+        return redirect()->route('graciasView');
+    }
+
+    public function graciasView():view
+    {
+        // Lista de codigos
+        $codigos = Country_code::all();
+
+        // Lista de departamentos
+        $departamentos = Geolocation::distinct()->pluck('departamento');
+
+        // Lista de municipios
+        $group = [];
+
+        foreach ($departamentos as $departamento) {
+            $municipios = Geolocation::where('departamento', $departamento)->pluck('municipio');
+            $group[$departamento] = $municipios;
+        }
+
+        $name = null;
+
+        // Si existe una sesión activa se obtiene el nombre para pasarlo a la vista
+        if (auth()->check()) {
+            $name = auth()->user()->name;
+        }
+        return view("gracias", compact('name', 'departamentos', 'group', 'codigos'));
     }
 
     public function solicitudRepuesto($codigo, $id = null)

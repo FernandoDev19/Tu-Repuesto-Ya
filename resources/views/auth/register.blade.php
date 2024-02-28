@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Register - Tu Repuesto Ya')
+@section('title', 'Registro | Tu Repuesto Ya')
 
 <link rel="stylesheet" href="{{ asset('css/registerStyle.css') }}">
 
@@ -32,7 +32,7 @@
                     width: 100%;">
                     <a class="logo-register-cel-position text-dark top-0 end-0" href="{{ route('servicios') }}"
                         style="padding: 1% 1% 0 0; position: absolute; z-index: 2;">
-                        <img decoding="async" class="logo" src="{{ asset('img/logo tu repuesto ya/icono_pagina.png') }}"
+                        <img decoding="async" class="logo" src="{{ asset('img/logo tu repuesto ya/icono_pagina.webp') }}"
                             alt="logo" style="height: 6vh; width: auto;" height="30" width="30">
                     </a>
                     <div class="container contenedor-register" style="margin-right: unset;">
@@ -427,7 +427,7 @@
                             <div
                                 class="animate__animated animate__bounceInRight animate__fast col-6 d-lg-flex d-none h-100 my-auto position-absolute top-0 start-0 text-center justify-content-center flex-column">
                                 <div class="position-relative bg-gradient-primary h-100 px-7 d-flex flex-column justify-content-center overflow-hidden"
-                                    style="background-image: url('/img/backgrounds/img_register.jpg');
+                                    style="background-image: url('/img/backgrounds/img_register.webp');
                                     background-size: cover; background-repeat: no-repeat; background-position: center;">
                                     <span class="mask opacity-6"
                                         style="background-image: linear-gradient(60deg, #06090D 0%, #132340 100%);"></span>

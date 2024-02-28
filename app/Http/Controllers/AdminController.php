@@ -178,6 +178,7 @@ class AdminController extends Controller
             'group_by_field' => 'municipio',
             'aggregate_function' => 'count',
             'aggregate_field' => 'id',
+            'filter_days' => 30,
             'filter_field' => 'municipio', // Ajustado al campo correcto
             'chart_data' => $datasetCiudades,
             'chart_color' => "28,200,136",
@@ -185,9 +186,32 @@ class AdminController extends Controller
 
         $chart4 = new LaravelChart($chartOptionsCiudades);
 
+        $chart_options = [
+            'chart_title' => 'Solicitudes por més',
+            'report_type' => 'group_by_date',
+            'model' => 'App\Models\Solicitude',
+            'group_by_field' => 'created_at',
+            'group_by_period' => 'month',
+            'chart_type' => 'bar',
+            'chart_color' => "28,200,136"
+        ];
+
+        $chartSoli = new LaravelChart($chart_options);
+
+        $chart_options = [
+            'chart_title' => 'Proveedores por més',
+            'report_type' => 'group_by_date',
+            'model' => 'App\Models\Provider',
+            'group_by_field' => 'created_at',
+            'group_by_period' => 'month',
+            'chart_type' => 'bar',
+            'chart_color' => "54,185,204"
+        ];
+
+        $chartProv = new LaravelChart($chart_options);
 
         // Vista principal del administrador
-        return view('admin.index', compact('name', 'ft', 'cantidad_proveedores', 'proveedores_activos', 'cantidad_solicitudes', 'cantidad_respuestas', 'departamentos', 'chart1', 'chart2', 'chart3', 'chart4'));
+        return view('admin.index', compact('name', 'ft', 'cantidad_proveedores', 'proveedores_activos', 'cantidad_solicitudes', 'cantidad_respuestas', 'departamentos', 'chart1', 'chart2', 'chart3', 'chart4', 'chartSoli', 'chartProv'));
     }
 
     function profile(): view
@@ -476,7 +500,7 @@ class AdminController extends Controller
                 ->orWhere('departamento', 'like', '%' . request('search') . '%')
                 ->orWhere('municipio', 'like', '%' . request('search') . '%');
         })
-            ->paginate(15)->withQueryString();
+        ->latest()->paginate(15)->withQueryString();
 
         $name = auth()->user()->name;
 
@@ -518,7 +542,7 @@ class AdminController extends Controller
                     ->orWhereJsonContains('precio', request('search'));
             })
             ->with('proveedor', 'solicitud')
-            ->paginate(15)
+            ->latest()->paginate(15)
             ->withQueryString();
 
         $name = auth()->user()->name;
@@ -569,7 +593,7 @@ class AdminController extends Controller
                     ->orWhere('marcas_preferencias', 'like', '%' . request('search') . '%')
                     ->orWhere('especialidad', 'like', '%' . request('search') . '%');
             })
-            ->paginate(15)->withQueryString();
+            ->latest()->paginate(15)->withQueryString();
 
         $proveedores = Provider::all();
         $preferencias_de_marcas = [];

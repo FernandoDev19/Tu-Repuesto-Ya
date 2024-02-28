@@ -15,7 +15,7 @@
             <a class="sidebar-brand d-flex align-items-center justify-content-center mr-3"
                 href="{{ route('servicios') }}">
                 <div class="sidebar-brand-icon">
-                    <img src="{{ asset('img/logo tu repuesto ya/icono_pagina.png') }}" whith="40" height="40">
+                    <img src="{{ asset('img/logo tu repuesto ya/icono_pagina.webp') }}" whith="40" height="40">
                 </div>
             </a>
 

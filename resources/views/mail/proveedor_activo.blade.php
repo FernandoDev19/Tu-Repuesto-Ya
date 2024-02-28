@@ -11,8 +11,8 @@
     <header class="header" style="height: 3%;padding: 1% 15%;background-color: black;">
         <div class="container" style="height: auto;width: 100%">
             <div class="img_container" style="height: 80px;width: auto;">
-                <img decoding="async" id="logo" src="{{ asset('img/logo_tu_repuesto.png') }}"
-                    alt="Logo_TuRepuestoYa" style="height: 100%; width: auto;">
+                <img decoding="async" id="logo" src="{{ asset('img/logo-tu-repuesto.webp') }}"
+                    alt="Logo TuRepuestoYa" style="height: 100%; width: auto;">
             </div>
         </div>
     </header>

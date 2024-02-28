@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Login - Tu Repuesto Ya')
+@section('title', 'Iniciar sesión | Tu Repuesto Ya')
 <link rel="stylesheet" href="{{asset('css/loginStyle.css')}}">
 
 @section('style-body', "background: linear-gradient(180deg, #4794F9 , #0f3d79);
@@ -24,7 +24,7 @@ background-size: 200% 100%; min-height: 100%; min-width: 100%;
                 width: 100%;">
                     <a class="logo-login-cel-position text-dark top-0 left-0" href="{{ route('servicios') }}"
                         style="padding: 1% 0 0 1%; position: absolute; z-index: 2;">
-                        <img decoding="async" class="logo" src="{{ asset('img/logo tu repuesto ya/icono_pagina.png') }}"
+                        <img decoding="async" class="logo" src="{{ asset('img/logo tu repuesto ya/icono_pagina.webp') }}"
                             alt="logo" style="height: 6vh; width: auto;">
                     </a>
                     <div style="position: absolute; bottom: 3%; right: 3%; z-index: 2;color: white; background: transparent; border: none;"><img id="muteButton" height="20" style="height: 25px; width: auto;" src="{{asset('icon/mute.png')}}"></div>
@@ -130,7 +130,7 @@ background-size: 200% 100%; min-height: 100%; min-width: 100%;
 <script>
     const togglePassword = document.querySelector('#togglePassword');
     const password = document.querySelector('#password');
-    
+
     togglePassword.addEventListener('click', function (e) {
         // toggle the type attribute
         const type = password.getAttribute('type') === 'password' ? 'text' : 'password';

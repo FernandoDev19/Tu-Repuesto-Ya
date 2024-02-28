@@ -1,6 +1,6 @@
 @extends('layouts.baseAdmin')
 
-@section('title', 'Tu Repuesto Ya - Solicitudes')
+@section('title', 'Solicitudes | Tu Repuesto Ya')
 
 <style>
     .bg-green {
@@ -16,14 +16,14 @@
     <ul class="navbar-nav">
 
         <li class="nav-item">
-            <a class="nav-link" style="padding: 0 .50rem; gap: 3px;" href="{{ route('dashboard') }}">
+            <a class="nav-link" style="color: var(--gray); padding: 0 .50rem; gap: 3px;" href="{{ route('dashboard') }}">
                 <i class="fas fa-fw fa-tachometer-alt"> </i>
                 <span class="nav-items-cel-small">Panel</span></a>
         </li>
 
         @can('providers.loadProviders')
             <li class="nav-item">
-                <a href="{{ route('loadProviders') }}" class="nav-link" style="padding: 0 .50rem; gap: 3px;"><i
+                <a href="{{ route('loadProviders') }}" class="nav-link" style="color: var(--gray); padding: 0 .50rem; gap: 3px;"><i
                         class="fas fa-users"> </i><span class="nav-items-cel-small">Proveedores</span> </a>
             </li>
         @endcan
@@ -37,7 +37,7 @@
 
         @can('answers.view')
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('viewRespuestas') }}" style="padding: 0 .50rem; gap: 3px;"><i
+                <a class="nav-link" href="{{ route('viewRespuestas') }}" style="color: var(--gray); padding: 0 .50rem; gap: 3px;"><i
                         class="fas fa-reply"> </i><span class="nav-items-cel-small">Respuestas</span> </a>
             </li>
         @endcan
@@ -85,7 +85,7 @@
                                         <th class="text-muted" style="padding:10px 5px; text-align:center;">Id
                                         </th>
                                         <th class="text-muted" style="padding:10px 5px; text-align:center;">
-                                            Repuestas
+                                            Respuestas
                                         </th>
                                         <th class="text-muted" style="padding:10px 5px; text-align:center;">
                                             Marca</th>
@@ -740,7 +740,8 @@
                                 </tbody>
                             </table>
                             <!-- Botones de paginación -->
-                            <div class="text-center" style="display: flex;">
+                            {{$solicitudes->links()}}
+                            {{-- <div class="text-center" style="display: flex;">
                                 <ul class="pagination">
                                     <!-- Botón "Anterior" -->
                                     @if ($solicitudes->onFirstPage())
@@ -775,7 +776,7 @@
                                         </li>
                                     @endif
                                 </ul>
-                            </div>
+                            </div> --}}
                         </div>
 
                     </div>

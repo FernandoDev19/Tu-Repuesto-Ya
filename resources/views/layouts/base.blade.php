@@ -10,8 +10,7 @@
     <nav id="nav" class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid" style="max-width: 2080px;">
             <a title="Inicio" class="navbar-brand" href="{{ asset(route('servicios')) }}"><img decoding="async"
-                    id="logo" src="{{ asset('img/logo tu repuesto ya/logo tu repuesto.png') }}"
-                    alt="Logo_TuRepuestoYa"></a>
+                    id="logo" src="{{ asset('img/logo-tu-repuesto.webp') }}" alt="Logo TuRepuestoYa"></a>
             <button class="navbar-toggler btn" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
                 aria-label="Toggle navigation">
@@ -21,90 +20,91 @@
                 <ul class="navbar-nav ml-auto flex-end-cel"
                     style="align-items: center;box-sizing: border-box; font-size: 120%;">
 
-                    <div class="container_nav" id="Cnav1">
-                        <li class="nav-item">
-                            <a class="nav-link active" href="{{route('servicios')}}" id="nav_e" aria-current="page">Inicio</a>
-                        </li>
-                        <div class="animate__animated animate__fadeInUp animate__delay-0s animate__faster nav_active">
-                        </div>
-                    </div>
-
-                    <div class="container_nav" id="Cnav2">
-                        <li class="nav-item">
-                            <a class="nav-link nav_e1" href="#sesion-de-inf-de-solicitud-de-repuestos">¿Cómo
-                                funciona?</a>
-                        </li>
-                    </div>
-
-                    <div class="container_nav" id="Cnav3">
-                        <li class="nav-item">
-                            <a class="nav-link nav_e1" href="#contacto">Contacto</a>
-                        </li>
-                    </div>
-
-                    <div class="container_nav container_flex container_flex_user">
-                        @guest
-                        <li id="container_user" class="nav-item dropdown no-arrow">
-                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: white;">
-                                <span class="nav_e1"
-                                    class="mr-2 d-none d-lg-inline text-gray-600 small">¿Eres proveedor?</span>
-                            </a>
-                            <!-- Dropdown - User Information -->
-                            <div class="dropdown-menu end-0 dropdown-menu-right shadow animated--grow-in"
-                                aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="{{ route('login') }}">
-                                    <span class="fas fa-sign-in-alt fa-sm fa-fw mr-2 text-gray-400"></span>
-                                    Iniciar sesión
-                                </a>
-                                <a class="dropdown-item" href="{{ route('register') }}">
-                                    <span class="fas fa-user-plus fa-sm fa-fw mr-2 text-gray-400"></span>
-                                    Registrarse
-                                </a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#">
-                                    <span class="fas fa-info-circle fa-sm fa-fw mr-2 text-gray-400"></span>
-                                    Saber cómo funciona
-                                </a>
+                    <li class="nav-item">
+                        <div class="container_nav" id="Cnav1">
+                            <a class="nav-link active" href="{{ route('servicios') }}" id="nav_e"
+                                aria-current="page">Inicio</a>
+                            <div
+                                class="animate__animated animate__fadeInUp animate__delay-0s animate__faster nav_active">
                             </div>
-                        </li>
-                        @else
-                            <li id="container_user" class="nav-item dropdown no-arrow">
+                        </div>
+                    </li>
+
+                    <li class="nav-item">
+                        <div class="container_nav" id="Cnav2">
+                            <a class="nav-link nav_e1" href="#solicitud-de-repuestos">¿Cómo
+                                funciona?</a>
+                        </div>
+                    </li>
+
+                    <li class="nav-item">
+                        <div class="container_nav" id="Cnav3">
+                            <a class="nav-link nav_e1" href="#contacto">Contacto</a>
+                        </div>
+                    </li>
+
+                    @guest
+                        <li id="container_user" class="nav-item dropdown no-arrow">
+                            <div class="container_nav container_flex container_flex_user">
                                 <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: white;">
-                                    <i class="fas fa-user" style="color: #b3b3b3 !important;"></i>
-                                    <span class="nav_e1"
-                                        class="mr-2 d-none d-lg-inline text-gray-600 small">{{ $name }}</span>
+                                    <span class="nav_e1" class="mr-2 d-none d-lg-inline text-gray-600 small">¿Eres
+                                        proveedor?</span>
                                 </a>
                                 <!-- Dropdown - User Information -->
                                 <div class="dropdown-menu end-0 dropdown-menu-right shadow animated--grow-in"
                                     aria-labelledby="userDropdown">
-                                    <a class="dropdown-item" href="{{ route('dashboard') }}">
-                                        <i class="fas fa-home fa-sm fa-fw mr-2 text-gray-400"></i>
-                                        Administrador
+                                    <a class="dropdown-item" href="{{ route('login') }}">
+                                        <span class="fas fa-sign-in-alt fa-sm fa-fw mr-2 text-gray-400"></span>
+                                        Iniciar sesión
                                     </a>
-                                    <a class="dropdown-item" href="{{ route('profile') }}">
-                                        <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                                        Perfil
-                                    </a>
-                                    <a class="dropdown-item" href="#">
-                                        <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                        Configuraciones
-                                    </a>
-                                    <a class="dropdown-item" href="#">
-                                        <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                                        Activity Log
+                                    <a class="dropdown-item" href="{{ route('register') }}">
+                                        <span class="fas fa-user-plus fa-sm fa-fw mr-2 text-gray-400"></span>
+                                        Registrarse
                                     </a>
                                     <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
-                                        <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                        Cerrar sesión
+                                    <a class="dropdown-item" href="#">
+                                        <span class="fas fa-info-circle fa-sm fa-fw mr-2 text-gray-400"></span>
+                                        Saber cómo funciona
                                     </a>
                                 </div>
-                            </li>
-                        @endguest
-                    </div>
-
+                            </div>
+                        </li>
+                    @else
+                        <li id="container_user" class="nav-item dropdown no-arrow">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: white;">
+                                <i class="fas fa-user" style="color: #b3b3b3 !important;"></i>
+                                <span class="nav_e1"
+                                    class="mr-2 d-none d-lg-inline text-gray-600 small">{{ $name }}</span>
+                            </a>
+                            <!-- Dropdown - User Information -->
+                            <div class="dropdown-menu end-0 dropdown-menu-right shadow animated--grow-in"
+                                aria-labelledby="userDropdown">
+                                <a class="dropdown-item" href="{{ route('dashboard') }}">
+                                    <i class="fas fa-home fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Administrador
+                                </a>
+                                <a class="dropdown-item" href="{{ route('profile') }}">
+                                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Perfil
+                                </a>
+                                <a class="dropdown-item" href="#">
+                                    <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Configuraciones
+                                </a>
+                                <a class="dropdown-item" href="#">
+                                    <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Activity Log
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Cerrar sesión
+                                </a>
+                            </div>
+                        </li>
+                    @endguest
                 </ul>
             </div>
         </div>
@@ -123,12 +123,14 @@
                         <a class="item" href="#">Acerca de...</a>
                     </div>
                     <div class="container-icons-footer" id="contacto">
-                        <a target="_blank"
+                        <a target="_blank" aria-label="Enviar mensaje por whatsapp a Tu Repuesto Ya"
                             href="https://api.whatsapp.com/send?phone=573249216736&text=%2A%C2%A1Hola%21%2A%20%E2%9C%8B%20Vengo%20de%20la%20p%C3%A1gina%20web%20de%20%2ATu%20Repuesto%20Ya%2A%20Me%20gustar%C3%ADa%20recibir%20cotizaciones%20sobre%20un%20repuesto%20que%20necesito."
                             class="item" id="whatsapp-icon"><i class="fab fa-whatsapp"></i></a>
-                        <a href="https://www.instagram.com/turepuestoya_col?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
+                        <a aria-label="Ver perfil de instagram de Tu Repuesto Ya"
+                            href="https://www.instagram.com/turepuestoya_col?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
                             class="item" id="instagram-footer"><i class="fab fa-instagram"></i></a>
-                        <a href="https://www.tiktok.com/@tu_repuesto_ya" class="item" id="tiktok-footer"><i
+                        <a aria-label="Ver perfil de tik tok de Tu Repuesto Ya"
+                            href="https://www.tiktok.com/@tu_repuesto_ya" class="item" id="tiktok-footer"><i
                                 class="fab fa-tiktok"></i></a>
                     </div>
                 </div>
@@ -141,17 +143,20 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" style="font-weight: 700;">Crea tu solicitud</h5>
-                        <button type="button" class="btn btn-close close" data-dismiss="modal" aria-label="Close">
+                        <button type="button" id="btn-close-cliente-modal" class="btn btn-close close"
+                            data-dismiss="modal" aria-label="Close">
                         </button>
                     </div>
                     <div class="modal-body">
                         <!-- Pestañas del formulario -->
                         <ul class="nav nav-tabs" id="formTabs">
                             <li class="nav-item">
-                                <a class="nav-link text-secondary active paso_activo" href="#" onclick="changeTab2()" id="tab1">Paso 1</a>
+                                <a class="nav-link text-secondary active paso_activo" href="#"
+                                    onclick="changeTab2()" id="tab1">Paso 1</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-secondary" href="#" onclick="validateForm1()" id="tab2">Paso 2</a>
+                                <a class="nav-link text-secondary" href="#" onclick="validateForm1()"
+                                    id="tab2">Paso 2</a>
                             </li>
                         </ul>
 
@@ -178,14 +183,16 @@
                                         <div class="flex flex-col mb-4 text-center">
                                             <div style="display: flex; align-items: center;">
                                                 <span class="form-control numeros_campos">1</span>
-                                                <input title="Marca" id="marca-otro" style="border-color: var(--bs-dark-border-subtle); border-radius: 0 .375rem .375rem 0;"
+                                                <input title="Marca" id="marca-otro"
+                                                    style="border-color: var(--bs-dark-border-subtle); border-radius: 0 .375rem .375rem 0;"
                                                     class="form-control text-center hide" value="{{ old('marca') }}"
                                                     placeholder="*Otra Marca" autofocus>
                                                 <select name="marca" id="marca"
                                                     class="form-control text-center"
                                                     style="color: var(--bs-secondary-color); border-color: var(--bs-dark-border-subtle); border-radius: 0 .375rem .375rem 0;"
                                                     required>
-                                                    <option value="" disabled selected>*Marca del vehiculo</option>
+                                                    <option value="" disabled selected>*Marca del vehiculo
+                                                    </option>
                                                     <!--<option value="AKT">AKT</option>-->
                                                     <option value="Alfa Romeo">Alfa Romeo</option>
                                                     <option value="Alpine">Alpine</option>
@@ -297,10 +304,10 @@
 
                                         <div class="flex flex-col mb-4 text-center">
                                             <div style="display: flex; align-items: center;">
-                                                <span
-                                                class="form-control numeros_campos">2</span>
+                                                <span class="form-control numeros_campos">2</span>
                                                 <input type="text" name="referencia" id="referencia"
-                                                    class="form-control text-center" style="border-color: var(--bs-dark-border-subtle); border-radius: 0 .375rem .375rem 0;"
+                                                    class="form-control text-center"
+                                                    style="border-color: var(--bs-dark-border-subtle); border-radius: 0 .375rem .375rem 0;"
                                                     placeholder="*Referencia del vehiculo (Ej. Joy)"
                                                     aria-label="Referencia" value="{{ old('referencia') }}" required>
                                             </div>
@@ -312,13 +319,13 @@
                                         <div class="flex flex-col mb-4 text-center">
 
                                             <div style="display: flex; align-items: center;">
-                                                <span
-                                                class="form-control numeros_campos">3</span>
+                                                <span class="form-control numeros_campos">3</span>
                                                 <select id="modelo" name="modelo"
                                                     class="form-control text-center"
                                                     style="color: var(--bs-secondary-color); border-color: var(--bs-dark-border-subtle); border-radius: 0 .375rem .375rem 0;"
                                                     required>
-                                                    <option value='' disabled selected>*Modelo del vehiculo (Año)</option>
+                                                    <option value='' disabled selected>*Modelo del vehiculo (Año)
+                                                    </option>
                                                     <?php
                                                     $anioActual = date('Y');
                                                     for ($modelo = $anioActual + 1; $modelo >= 1950; $modelo--) {
@@ -336,8 +343,7 @@
 
                                         <div class="flex flex-col mb-4 text-center">
                                             <div style="display: flex; align-items: center;">
-                                                <span
-                                                class="form-control numeros_campos">4</span>
+                                                <span class="form-control numeros_campos">4</span>
                                                 <select class="form-control" name="tipo" id="tipo"
                                                     name="tipo"
                                                     style="color: var(--bs-secondary-color); text-align: center; border-color: var(--bs-dark-border-subtle); border-radius: 0 .375rem .375rem 0;"
@@ -381,13 +387,13 @@
 
                                         <div class="flex flex-col text-center">
                                             <div style="display: flex; align-items: center;">
-                                                <span
-                                                class="form-control numeros_campos" style="height: 5rem; display: flex; align-items: center;">5</span>
+                                                <span class="form-control numeros_campos"
+                                                    style="height: 5rem; display: flex; align-items: center;">5</span>
                                                 <input name="repuesto" id="repuesto"
                                                     style="height: 5rem; border-radius: 0.375rem 0.375rem 0 0.375rem; border-color: var(--bs-dark-border-subtle); border-radius: 0 .375rem .375rem 0;"
                                                     class="form-control text-center"
-                                                    placeholder="*Agrega tus repuestos" aria-label="Repuesto"
-                                                    value="{{ old('repuesto') }}">
+                                                    placeholder="*Agrega uno a uno tus repuestos"
+                                                    aria-label="Repuesto" value="{{ old('repuesto') }}">
                                                 {{-- <datalist id="lista_repuestos">
 
                                                     <?php
@@ -398,18 +404,22 @@
                                             </div>
                                         </div>
 
-                                        <div class="mb-3"
-                                            style="display: flex; justify-content: flex-end; width: 100%;">
+                                        <div style="display: flex; justify-content: flex-end; width: 100%;">
                                             <button type="button" name="agregar_repuesto" id="agregar_repuesto"
-                                                class="btn btn-primary"
+                                                class="btn btn-primary mb-3"
                                                 style="transform: translate(-1.5%, 0); transition: all 300ms ease; border-radius: 0 0 .50rem .50rem !important;">
                                                 Agregar
                                             </button>
                                         </div>
 
+                                        <div class="text-ejemplo-for-repuestos w-100 text-center mb-4" class="hide">
+                                            <small class="text-xs text-secondary">Ejemplo: 3 Bujías</small>
+                                        </div>
+
                                         <div class="flex flex-col">
                                             <div id="campo_repuestos">
-                                                <div id="items_container" class="items_container form-control" style="border-color: var(--bs-dark-border-subtle);">
+                                                <div id="items_container" class="items_container form-control"
+                                                    style="border-color: var(--bs-dark-border-subtle);">
                                                     <div style="width: 100%; height: 1.5rem;"><small
                                                             class="text-xs text-secondary"
                                                             style="position: absolute;">Repuestos agregados:</small>
@@ -421,7 +431,8 @@
                                         @error('json_repuestos')
                                             <div class="text-danger text-xs pb-2">{{ $message }}</div>
                                         @else
-                                            <div style="display: flex; width: 100%; justify-content: center;">
+                                            <div id="text-maximo-repuestos"
+                                                style="display: flex; width: 100%; justify-content: center;">
                                                 <small class="text-xs mb-4 text-secondary">Máximo 5 repuestos</small>
                                             </div>
                                         @enderror
@@ -501,10 +512,10 @@
                                         </legend>
                                         <div class="flex flex-col mb-4 text-center">
                                             <div style="display: flex; align-items: center;">
-                                                <span
-                                                class="form-control numeros_campos">1</span>
+                                                <span class="form-control numeros_campos">1</span>
                                                 <input type="text" class="form-control text-center" id="nombre"
-                                                    name="nombre" placeholder="*Nombre" style="border-color: var(--bs-dark-border-subtle); border-radius: 0 .375rem .375rem 0;"
+                                                    name="nombre" placeholder="*Nombre"
+                                                    style="border-color: var(--bs-dark-border-subtle); border-radius: 0 .375rem .375rem 0;"
                                                     aria-label="Nombre" value="{{ old('nombre') }}" required>
                                             </div>
 
@@ -517,8 +528,7 @@
                                             <div class="flex flex-col mb-4 text-center">
                                                 <div
                                                     style="display: flex; justify-content: space-between; align-items: center; padding: 0; margin-bottom: .3rem;">
-                                                    <div
-                                                        style="display: flex; align-items: center; width: 100%;">
+                                                    <div style="display: flex; align-items: center; width: 100%;">
                                                         <span class="form-control numeros_campos">2</span>
                                                         <select name="codigo_cel" id="codigo-cel"
                                                             style="border: none; transform: translate(2.3rem, 0px); position: absolute;">
@@ -531,7 +541,8 @@
                                                         <input type="text" class="text-center form-control"
                                                             id="cel" name="cel"
                                                             placeholder="*Número de celular" aria-label='Cel'
-                                                            value="{{ old('cel') }}" style="width: 100%; border-color: var(--bs-dark-border-subtle); border-radius: 0 .375rem .375rem 0;"
+                                                            value="{{ old('cel') }}"
+                                                            style="width: 100%; border-color: var(--bs-dark-border-subtle); border-radius: 0 .375rem .375rem 0;"
                                                             required>
                                                     </div>
 
@@ -547,7 +558,8 @@
                                             </div>
 
                                             <div id="pais" class="flex flex-col mb-4 text-center hide">
-                                                <div class="form-control" style="border-color: var(--bs-dark-border-subtle);">
+                                                <div class="form-control"
+                                                    style="border-color: var(--bs-dark-border-subtle);">
                                                     <span id="text-pais"></span>
                                                 </div>
                                             </div>
@@ -555,10 +567,10 @@
 
                                         <div class="flex flex-col mb-4 text-center">
                                             <div style="display: flex; align-items: center;">
-                                                <span
-                                                class="form-control numeros_campos">3</span>
+                                                <span class="form-control numeros_campos">3</span>
                                                 <input type="email" class="form-control text-center" id="email"
-                                                    name="email" placeholder="E-mail" style="border-color: var(--bs-dark-border-subtle); border-radius: 0 .375rem .375rem 0;"
+                                                    name="email" placeholder="E-mail"
+                                                    style="border-color: var(--bs-dark-border-subtle); border-radius: 0 .375rem .375rem 0;"
                                                     aria-label="Email" value="{{ old('email') }}">
                                             </div>
 
@@ -569,8 +581,8 @@
 
                                         <div class="flex flex-col mb-4 text-center" id="contenedor_departamento">
                                             <div style="display: flex; align-items: center;">
-                                                <span
-                                                class="form-control numeros_campos" id="numero_campo_departamento">4</span>
+                                                <span class="form-control numeros_campos"
+                                                    id="numero_campo_departamento">4</span>
                                                 <select id="departamento" name="departamento"
                                                     class="form-control text-center"
                                                     style="color: var(--bs-secondary-color); border-color: var(--bs-dark-border-subtle); border-radius: 0 .375rem .375rem 0;">
@@ -589,8 +601,8 @@
 
                                         <div class="flex flex-col mb-4 text-center" id="contenedor_municipio">
                                             <div style="display: flex; align-items: center;">
-                                                <span
-                                                class="form-control numeros_campos" id="numero_campo_municipio">5</span>
+                                                <span class="form-control numeros_campos"
+                                                    id="numero_campo_municipio">5</span>
                                                 <select name="municipio" id="municipio"
                                                     class="form-control text-center"
                                                     style="color: var(--bs-secondary-color); border-color: var(--bs-dark-border-subtle); border-radius: 0 .375rem .375rem 0;">
@@ -605,7 +617,8 @@
 
                                         <div class="flex flex-col mb-4 text-center">
                                             <div style="display: flex; align-items: center;">
-                                                <textarea name="comentario" id="comentario" class="form-control text-center" style="border-color: var(--bs-dark-border-subtle);" placeholder="¿Tienes algun comentario?"
+                                                <textarea name="comentario" id="comentario" class="form-control text-center"
+                                                    style="border-color: var(--bs-dark-border-subtle);" placeholder="¿Tienes algun comentario?"
                                                     aria-label="Comentario" rows="5">{{ old('comentario') }}</textarea>
                                             </div>
 
@@ -662,10 +675,12 @@
                 let btn_agregar = document.getElementById('agregar_repuesto');
                 let campo_repuestos = document.getElementById('campo_repuestos');
                 let container = document.getElementById('items_container');
+                let text_maximo_repuestos = document.getElementById('text-maximo-repuestos');
 
                 // Inicializar elementos ocultos
                 campo_repuestos.classList.add('hide');
                 btn_agregar.classList.add('hide');
+                text_maximo_repuestos.classList.add('hide');
 
                 // Intentar recuperar los repuestos seleccionados del localStorage
                 let seleccionados = JSON.parse(localStorage.getItem('seleccionados')) || {};
@@ -690,6 +705,7 @@
 
                         if (container.children.length === 1) {
                             campo_repuestos.classList.add('hide');
+                            text_maximo_repuestos.classList.add('hide');
                             btn_agregar.classList.add('hide');
                             campo_repuesto.setCustomValidity('No has agregado ningún repuesto');
                         }
@@ -708,6 +724,7 @@
                 // Si hay repuestos seleccionadas, recrear los botones
                 if (Object.keys(seleccionados).length > 0) {
                     campo_repuestos.classList.remove('hide');
+                    text_maximo_repuestos.classList.remove('hide');
                     for (let item in seleccionados) {
                         agregarBoton(item);
                     }
@@ -729,6 +746,7 @@
                             if (!seleccionados[item]) {
                                 agregarBoton(item);
                                 campo_repuestos.classList.remove('hide');
+                                text_maximo_repuestos.classList.remove('hide');
                             }
                         } else {
                             alert('Ya has agregado un máximo de 5 repuestos.');
@@ -746,6 +764,7 @@
                 // Ocultar elementos si no hay repuestos seleccionadas
                 if (container.children.length === 1) {
                     campo_repuestos.classList.add('hide');
+                    text_maximo_repuestos.classList.add('hide');
                     btn_agregar.classList.add('hide');
                     campo_repuesto.setCustomValidity('No has agregado ningún repuesto');
                 }
@@ -1494,7 +1513,7 @@
                 let comentario = document.getElementById('comentario');
 
                 // Funciones paso 1
-                function restringirCaracteresReferencia(){
+                function restringirCaracteresReferencia() {
                     let texto = referencia.value;
                     let numEspacios = (texto.match(/ /g) || []).length;
                     let numSaltosLinea = (texto.match(/\n/g) || []).length;
@@ -1505,16 +1524,16 @@
                     if (numSaltosLinea > 0) {
                         referencia.value = texto.replace(/\n+/g, '\n'.repeat(0));
                     }
-                    if(texto.length > 30){
+                    if (texto.length > 30) {
                         referencia.value = texto.slice(0, 30);
                     }
                 }
 
-                referencia.addEventListener('input', function(){
+                referencia.addEventListener('input', function() {
                     restringirCaracteresReferencia();
                 });
 
-                function restringirCaracteresRepuesto(){
+                function restringirCaracteresRepuesto() {
                     let texto = repuestos.value;
                     let numEspacios = (texto.match(/ /g) || []).length;
                     let numSaltosLinea = (texto.match(/\n/g) || []).length;
@@ -1525,16 +1544,16 @@
                     if (numSaltosLinea > 0) {
                         repuestos.value = texto.replace(/\n+/g, '\n'.repeat(0));
                     }
-                    if(texto.length > 100){
+                    if (texto.length > 100) {
                         repuestos.value = texto.slice(0, 100);
                     }
                 }
 
-                repuestos.addEventListener('input', function(){
+                repuestos.addEventListener('input', function() {
                     restringirCaracteresRepuesto();
                 });
 
-                function restringirCaracteresComentario(){
+                function restringirCaracteresComentario() {
                     let texto = comentario.value;
                     let numEspacios = (texto.match(/ /g) || []).length;
                     let numSaltosLinea = (texto.match(/\n/g) || []).length;
@@ -1550,12 +1569,12 @@
                     }
                 }
 
-                comentario.addEventListener('input', function(){
+                comentario.addEventListener('input', function() {
                     restringirCaracteresComentario();
                 });
 
                 // Funciones paso 2
-                function restringirCaracteresNombre(){
+                function restringirCaracteresNombre() {
                     let texto = nombre.value;
                     let numEspacios = (texto.match(/ /g) || []).length;
                     let numSaltosLinea = (texto.match(/\n/g) || []).length;
@@ -1566,12 +1585,12 @@
                     if (numSaltosLinea > 0) {
                         nombre.value = texto.replace(/\n+/g, '\n'.repeat(0));
                     }
-                    if (texto.length > 35){
+                    if (texto.length > 35) {
                         nombre.value = texto.slice(0, 35);
                     }
                 }
 
-                nombre.addEventListener('input', function(){
+                nombre.addEventListener('input', function() {
                     restringirCaracteresNombre();
                 });
             });

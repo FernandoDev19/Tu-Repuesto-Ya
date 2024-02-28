@@ -58,7 +58,7 @@
     <div class="background-alert" id="success-alert">
         <div class="alert alert-info" id="success_message">
 
-            <div id="btn-close-success">×</div>
+            <a href="{{route('graciasView')}}" id="btn-close-success">×</a>
 
             <div class="text-alert">
                 <i class="fa fa-check" style="color: #5593e8;"></i>
@@ -120,7 +120,7 @@
     <div class="background-alert" id="error-alert">
         <div class="alert alert-danger" id="error_message">
 
-            <div id="btn-close-error">×</div>
+            <a href="{{route('graciasView')}}" id="btn-close-error">×</a>
 
             <div class="text-alert">
                 <i class="fa fa-ban"></i>

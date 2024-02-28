@@ -1,6 +1,6 @@
 @extends('layouts.baseAdmin')
 
-@section('title', 'Tu Repuesto Ya - Respuestas')
+@section('title', 'Respuestas | Tu Repuesto Ya')
 
 @section('sidebar')
     <nav
@@ -10,21 +10,21 @@
     <ul class="navbar-nav">
 
         <li class="nav-item">
-            <a class="nav-link" style="padding: 0 .50rem; gap: 3px;" href="{{ route('dashboard') }}">
+            <a class="nav-link" style="color: var(--gray); padding: 0 .50rem; gap: 3px;" href="{{ route('dashboard') }}">
                 <i class="fas fa-fw fa-tachometer-alt"> </i>
                 <span class="nav-items-cel-small"> Panel</span></a>
         </li>
 
         @can('providers.loadProviders')
         <li class="nav-item">
-            <a href="{{ route('loadProviders') }}" class="nav-link" style="padding: 0 .50rem; gap: 3px;"><i
+            <a href="{{ route('loadProviders') }}" class="nav-link" style="color: var(--gray); padding: 0 .50rem; gap: 3px;"><i
                     class="fas fa-users"> </i><span class="nav-items-cel-small">Proveedores</span> </a>
         </li>
         @endcan
 
         @can('solicitudes.view')
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('viewSolicitudes') }}" style="padding: 0 .50rem; gap: 3px;"><i
+                <a class="nav-link" href="{{ route('viewSolicitudes') }}" style="color: var(--gray); padding: 0 .50rem; gap: 3px;"><i
                         class="fas fa-file-alt"> </i> <span class="nav-items-cel-small">Solicitudes</span></a>
             </li>
         @endcan
@@ -556,7 +556,8 @@
                                 </tbody>
                             </table>
                             <!-- Botones de paginación -->
-                            <div class="text-center" style="display: flex;">
+                            {{$respuestas->links()}}
+                            {{-- <div class="text-center" style="display: flex;">
                                 <ul class="pagination">
                                     <!-- Botón "Anterior" -->
                                     @if ($respuestas->onFirstPage())
@@ -591,7 +592,7 @@
                                         </li>
                                     @endif
                                 </ul>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
                 </div>

@@ -20,9 +20,6 @@
 @stack('js')
 
 <script>
-    document.oncontextmenu = function() {
-        return false;
-    };
 
     const form = document.getElementById('form_client');
     const overlay = document.getElementById('overlay');

@@ -76,10 +76,6 @@
 </script>
 
 <script>
-    document.oncontextmenu = function() {
-        return false;
-    };
-
     //loader
 
     const form = document.getElementById('form_client');

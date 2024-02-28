@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Change password - Tu Repuesto Ya')
+@section('title', 'Cambiar contraseña | Tu Repuesto Ya')
 
 <link rel="stylesheet" href="{{asset('css/change-password-style.css')}}">
 
@@ -24,7 +24,7 @@ background-size: 200% 100%; min-height: 100%; min-width: 100%;
                 width: 100%;">
                 <a class="text-dark logo-reset-cel-position top-0 left-0" href="{{ route('servicios') }}"
                         style="padding: 1% 0 0 1%; position: absolute; margin-bottom: 20%;">
-                        <img decoding="async" class="logo" src="{{ asset('img/logo tu repuesto ya/icono_pagina.png') }}"
+                        <img decoding="async" class="logo" src="{{ asset('img/logo tu repuesto ya/icono_pagina.webp') }}"
                             alt="logo" style="height: 6vh; width: auto;" height="30" width="30">
                     </a>
                     <div class="container contenedor-reset">
@@ -90,7 +90,7 @@ background-size: 200% 100%; min-height: 100%; min-width: 100%;
                             <div
                                 class="animate__animated animate__bounceInLeft animate__fast col-6 d-lg-flex d-none h-100 my-auto pe-0 position-absolute top-0 end-0 text-center justify-content-center flex-column">
                                 <div class="position-relative bg-gradient-primary h-100 px-7 d-flex flex-column justify-content-center overflow-hidden"
-                                style="background-image: url('/img/backgrounds/change_password.jpg');
+                                style="background-image: url('/img/backgrounds/change_password.webp');
                                     background-size: cover; background-repeat: no-repeat; background-position: center;">
                                 <span class="mask opacity-6" style="background-image: linear-gradient(310deg, #06090D 0%, #132340 100%);"></span>
 

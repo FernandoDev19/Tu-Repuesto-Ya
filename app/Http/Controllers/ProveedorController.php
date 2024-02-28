@@ -25,7 +25,7 @@ class ProveedorController extends Controller
         return view('admin.index', compact('name', 'ft'));
     }
 
-    public function verSolicitudNoti(int $idSoli, int $idNoti):view
+    public function verSolicitudNoti(int $idSoli, $idNoti):view
     {
         // Nombre del usuario
         $name = auth()->user()->name;

@@ -1,6 +1,6 @@
 @extends('layouts.baseAdmin')
 
-@section('title', 'Tu Repuesto Ya - Dashboard')
+@section('title', 'Panel | Tu Repuesto Ya')
 
 <style>
     .hide{
@@ -24,21 +24,21 @@
 
         @can('providers.loadProviders')
             <li class="nav-item">
-                <a href="{{ route('loadProviders') }}" class="nav-link" style="padding: 0 .50rem; gap: 3px;"><i
+                <a href="{{ route('loadProviders') }}" class="nav-link" style="color: var(--gray); padding: 0 .50rem; gap: 3px;"><i
                         class="fas fa-users"> </i><span class="nav-items-cel-small">Proveedores</span> </a>
             </li>
         @endcan
 
         @can('solicitudes.view')
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('viewSolicitudes') }}" style="padding: 0 .50rem; gap: 3px;"><i
+                <a class="nav-link" href="{{ route('viewSolicitudes') }}" style="color: var(--gray); padding: 0 .50rem; gap: 3px;"><i
                         class="fas fa-file-alt"> </i> <span class="nav-items-cel-small">Solicitudes</span></a>
             </li>
         @endcan
 
         @can('answers.view')
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('viewRespuestas') }}" style="padding: 0 .50rem; gap: 3px;"><i
+                <a class="nav-link" href="{{ route('viewRespuestas') }}" style="color: var(--gray); padding: 0 .50rem; gap: 3px;"><i
                         class="fas fa-reply"> </i><span class="nav-items-cel-small">Respuestas</span> </a>
             </li>
         @endcan
@@ -445,66 +445,66 @@
         });
     </script>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function(){
-        let marcas_est = document.getElementById('marcas_est');
-        let repuestos_est = document.getElementById('repuestos_est');
-        let departamentos_est = document.getElementById('departamentos_est');
-        let ciudades_est = document.getElementById('ciudades_est');
-        let solicitudes_est = document.getElementById('solicitudes_est');
-        let proveedores_est = document.getElementById('proveedores_est');
+    <script>
+        document.addEventListener('DOMContentLoaded', function(){
+            let marcas_est = document.getElementById('marcas_est');
+            let repuestos_est = document.getElementById('repuestos_est');
+            let departamentos_est = document.getElementById('departamentos_est');
+            let ciudades_est = document.getElementById('ciudades_est');
+            let solicitudes_est = document.getElementById('solicitudes_est');
+            let proveedores_est = document.getElementById('proveedores_est');
 
-        let myChart1 = document.getElementById('myChart1');
-        let myChart2 = document.getElementById('myChart2');
-        let myChart3 = document.getElementById('myChart3');
-        let myChart4 = document.getElementById('myChart4');
-        let myChart5 = document.getElementById('myChart5');
-        let myChart6 = document.getElementById('myChart6');
+            let myChart1 = document.getElementById('myChart1');
+            let myChart2 = document.getElementById('myChart2');
+            let myChart3 = document.getElementById('myChart3');
+            let myChart4 = document.getElementById('myChart4');
+            let myChart5 = document.getElementById('myChart5');
+            let myChart6 = document.getElementById('myChart6');
 
-        myChart1.classList.remove('hide');
-        myChart2.classList.add('hide');
-        myChart3.classList.add('hide');
-        myChart4.classList.add('hide');
-        myChart5.classList.remove('hide');
-        myChart6.classList.add('hide');
-
-       marcas_est.addEventListener('click', function(){
             myChart1.classList.remove('hide');
             myChart2.classList.add('hide');
             myChart3.classList.add('hide');
             myChart4.classList.add('hide');
-       });
-
-       repuestos_est.addEventListener('click', function(){
-            myChart2.classList.remove('hide');
-            myChart1.classList.add('hide');
-            myChart3.classList.add('hide');
-            myChart4.classList.add('hide');
-       });
-
-       departamentos_est.addEventListener('click', function(){
-            myChart1.classList.add('hide');
-            myChart2.classList.add('hide');
-            myChart3.classList.remove('hide');
-            myChart4.classList.add('hide');
-       });
-
-       ciudades_est.addEventListener('click', function(){
-            myChart1.classList.add('hide');
-            myChart2.classList.add('hide');
-            myChart3.classList.add('hide');
-            myChart4.classList.remove('hide');
-       });
-
-       solicitudes_est.addEventListener('click', function(){
             myChart5.classList.remove('hide');
             myChart6.classList.add('hide');
-       });
 
-       proveedores_est.addEventListener('click', function(){
-            myChart5.classList.add('hide');
-            myChart6.classList.remove('hide');
-       });
-    });
-</script>
+        marcas_est.addEventListener('click', function(){
+                myChart1.classList.remove('hide');
+                myChart2.classList.add('hide');
+                myChart3.classList.add('hide');
+                myChart4.classList.add('hide');
+        });
+
+        repuestos_est.addEventListener('click', function(){
+                myChart2.classList.remove('hide');
+                myChart1.classList.add('hide');
+                myChart3.classList.add('hide');
+                myChart4.classList.add('hide');
+        });
+
+        departamentos_est.addEventListener('click', function(){
+                myChart1.classList.add('hide');
+                myChart2.classList.add('hide');
+                myChart3.classList.remove('hide');
+                myChart4.classList.add('hide');
+        });
+
+        ciudades_est.addEventListener('click', function(){
+                myChart1.classList.add('hide');
+                myChart2.classList.add('hide');
+                myChart3.classList.add('hide');
+                myChart4.classList.remove('hide');
+        });
+
+        solicitudes_est.addEventListener('click', function(){
+                myChart5.classList.remove('hide');
+                myChart6.classList.add('hide');
+        });
+
+        proveedores_est.addEventListener('click', function(){
+                myChart5.classList.add('hide');
+                myChart6.classList.remove('hide');
+        });
+        });
+    </script>
 @endsection

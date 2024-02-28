@@ -1,6 +1,6 @@
 @extends('layouts.baseAdmin')
 
-@section('title', 'Tu Repuesto Ya - Proveedores')
+@section('title', 'Proveedor | Tu Repuesto Ya')
 
 <style>
     .hide {
@@ -47,60 +47,41 @@
 </style>
 
 @section('sidebar')
+    <nav
+    class="navbar navbar-expand navbar-light bg-white shadow topbar static-top d-flex justify-content-center">
 
-    <!-- Nav Item - Dashboard -->
-    <li class="nav-item">
-        <a class="nav-link" href="{{ route('dashboard') }}">
-            <i class="fas fa-fw fa-tachometer-alt"></i>
-            <span>Panel de control</span></a>
-    </li>
+    <!-- Topbar Navbar -->
+    <ul class="navbar-nav">
 
-    <!-- Divider -->
-    <hr class="sidebar-divider">
-
-    @can('solicitudes.view')
-        <!-- Heading -->
-        <div class="sidebar-heading">
-            Interface
-        </div>
-        <!-- Nav Item - Pages Collapse Menu -->
         <li class="nav-item">
-            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true"
-                aria-controls="collapseTwo">
-                <i class="fas fa-fw fa-cog"></i>
-                <span>Componentes</span>
-            </a>
-            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                <div class="bg-white py-2 collapse-inner rounded">
-                    <h6 class="collapse-header">Custom Components:</h6>
-                    <a class="collapse-item" href="{{ route('viewSolicitudes') }}">Solicitudes</a>
-                    <a class="collapse-item" href="{{ route('viewRespuestas') }}">Respuestas</a>
-                </div>
-            </div>
+            <a class="nav-link" style="color: var(--gray); padding: 0 .50rem; gap: 3px;" href="{{ route('dashboard') }}">
+                <i class="fas fa-fw fa-tachometer-alt"> </i>
+                <span class="nav-items-cel-small">Panel</span></a>
         </li>
-    @endcan
 
-    <!-- Nav Item - Proveedores -->
-    @can('providers.loadProviders')
-        <li class="nav-item active">
-            <a class="nav-link" href="{{ route('loadProviders') }}">
-                <i class="fas fa-fw fa-chart-area"></i>
-                <span>Proveedores</span></a>
-        </li>
-    @endcan
+        @can('providers.loadProviders')
+            <li class="nav-item">
+                <a href="{{ route('loadProviders') }}" class="nav-link" style="color:#4e73df; padding: 0 .50rem; gap: 3px;"><i
+                        class="fas fa-users"> </i><span class="nav-items-cel-small">Proveedores</span> </a>
+            </li>
+        @endcan
 
+        @can('solicitudes.view')
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('viewSolicitudes') }}" style="color: var(--gray); padding: 0 .50rem; gap: 3px;"><i
+                        class="fas fa-file-alt"> </i> <span class="nav-items-cel-small">Solicitudes</span></a>
+            </li>
+        @endcan
 
-    <!-- Divider -->
-    <hr class="sidebar-divider d-none d-md-block">
-
-    <!-- Sidebar Toggler (Sidebar) -->
-    <div class="text-center d-none d-md-inline">
-        <button class="rounded-circle border-0" id="sidebarToggle"></button>
-    </div>
-    <!-- End of Sidebar -->
-    </div>
+        @can('answers.view')
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('viewRespuestas') }}" style="color: var(--gray); padding: 0 .50rem; gap: 3px;"><i
+                        class="fas fa-reply"> </i><span class="nav-items-cel-small">Respuestas</span> </a>
+            </li>
+        @endcan
 
     </ul>
+    </nav>
 @endsection
 
 @section('content')
