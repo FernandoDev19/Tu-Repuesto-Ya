@@ -12,7 +12,7 @@
 }
 
 .hide {
-    display: none;
+    display: none !important;
 }
 
 .paso_activo{
@@ -71,6 +71,9 @@ hr {
     color: #bfbfbf;
 }
 
+.footer-sesion-de-contacto-por-whatsapp a {
+    margin-bottom: 8rem !important;
+}
 
 section {
     height: 500px;
@@ -80,15 +83,6 @@ section {
 
 .none-pc{
     display: none;
-}
-
-.text-color-primary {
-    color: var(--color-primary);
-    font-size: 320%;
-    font-weight: 900;
-    letter-spacing: 1;
-    line-height: 1.1;
-    margin-bottom: 2rem;
 }
 
 .flex-j-center-cel {
@@ -224,7 +218,7 @@ header y navegador */
 }
 
 #logo {
-    height: 90%;
+    height: 6rem;
     width: 95%;
     transition-property: transform;
     transition-duration: 300ms;
@@ -358,7 +352,7 @@ header y navegador */
     align-items: center;
 }
 
-#WSP {
+.WSP {
     width: 250px;
     max-height: 82px;
     margin-bottom: 4%;
@@ -378,42 +372,51 @@ header y navegador */
     justify-content: center;
 }
 
-#WSP:hover {
+.WSP:hover {
     background-color: #2bb15d;
     transform: scale(1.05);
 }
 
-#WSP i {
+.WSP i {
     transition-property: transform;
     transition-duration: 0.3s;
     z-index: 2;
 }
 
 
-#WSP:hover i {
+.WSP:hover i {
     transform: scale(1.05);
 }
 
-#WSP span {
+.WSP span {
     transition-property: transform;
     transition-duration: 0.3s;
     line-height: 1;
 }
 
-#WSP:hover span {
+.WSP:hover span {
     transform: scale(1.05);
 }
 
 #parrafo-3-sesion-de-contacto-por-whatsapp {
     font-size: 170%;
     font-weight: bold;
-    letter-spacing: 1.4;
+    letter-spacing: 1.4px;
     line-height: 1.2;
 }
 
 .footer-sesion-de-contacto-por-whatsapp {
     display: flex;
     justify-content: center;
+}
+
+.text-color-primary {
+    color: var(--color-primary);
+    font-size: 320%;
+    font-weight: 900;
+    letter-spacing: 1px;
+    line-height: 1.1;
+    margin-bottom: 2rem;
 }
 
 .text-center h1 {
@@ -447,6 +450,7 @@ header y navegador */
 #sesion-de-marcas-y-cotizaciones.visible {
     opacity: 1;
     transform: scale(1);
+    padding: 1rem;
 }
 
 #sesion-de-marcas-y-cotizaciones #text {
@@ -707,7 +711,7 @@ header y navegador */
 
 /* Start sesion de informacion de solicitud de repuestos*/
 
-#sesion-de-inf-de-solicitud-de-repuestos {
+#solicitud-de-repuestos {
     height: 18.5%;
 }
 
@@ -838,7 +842,7 @@ footer {
     font-size: 100%;
     font-weight: 700;
     text-decoration: none;
-    color: gray;
+    color: unset;
     padding: 0.5%;
     text-align: center;
     margin: 0;
@@ -865,7 +869,7 @@ footer {
 
 /* *************************************************************************************************************************** */
 
-@media screen and (max-width: 991px) {
+@media (max-width: 991px) {
     .nav_active {
         display: none;
     }
@@ -907,14 +911,14 @@ footer {
 
 }
 
-@media screen and (min-width: 1200px) and (max-width: 1422px){
+@media (min-width: 1200px) and (max-width: 1422px){
     .text-color-primary{
         font-size: 285%;
     }
 }
 
 
-@media screen and (max-width: 280px) {
+@media (max-width: 280px) {
     /* ********************************************************************************************************************************** */
 
     .btn_borrar_item {
@@ -1068,7 +1072,7 @@ footer {
 
     /* ********************************************************************************************************************************** */
 
-    #sesion-de-inf-de-solicitud-de-repuestos{
+    #solicitud-de-repuestos{
         height: 200px;
     }
 
@@ -1164,7 +1168,7 @@ footer {
 
 }
 
-@media screen and (max-width: 450px) {
+@media (max-width: 450px) {
 
     .btn_borrar_item {
         color: gray;
@@ -1212,7 +1216,7 @@ footer {
     .container-btn-solicitud-cel a {
         width: 80% !important;
         font-size: 85% !important;
-        padding: 0% 0 !important;
+        padding: 3% 0 !important;
         margin-top: 0 !important;
     }
 
@@ -1243,34 +1247,37 @@ footer {
 
     #container-text .text-center p {
         font-size: 160%;
+        position: relative;
+        z-index: 1;
         margin: 1%;
-        letter-spacing: 1;
+        letter-spacing: 0.8px;
     }
 
     #parrafo-3-sesion-de-contacto-por-whatsapp {
         font-size: 90% !important;
         letter-spacing: 0.5px;
-        transform: translate(0, 100%);
+        transform: translate(0, 75%);
     }
 
-    #wsp {
+    .wsp {
         height: 10%;
         font-size: 100%;
         padding: 3.5% 0;
         width: 80%;
     }
 
-    #wsp i {
+    .WSP i {
         font-size: 110% !important;
     }
 
       #sesion-de-marcas-y-cotizaciones #article_marcas p span {
+        letter-spacing: 1px;
         font-size: 60% !important;
     }
 
 }
 
-@media screen and (min-width: 281px) and (max-width: 560px) {
+@media (min-width: 281px) and (max-width: 560px) {
     /* ********************************************************************************************************************************** */
 
     #btn_whatsapp_kommo{
@@ -1282,6 +1289,7 @@ footer {
 
     #sesion-de-marcas-y-cotizaciones{
         height: 5%;
+        padding: 0.3rem !important;
     }
 
     #sesion-de-marcas-y-cotizaciones #article_marcas p {
@@ -1404,7 +1412,7 @@ footer {
 
     /* ********************************************************************************************************************************** */
 
-    #sesion-de-inf-de-solicitud-de-repuestos{
+    #solicitud-de-repuestos{
         height: 230px;
     }
 
@@ -1483,6 +1491,7 @@ footer {
     padding: 1.8% 0 !important;
     height: auto !important;
     margin-top: 2% !important;
+    margin-bottom: 0rem !important;
     font-size: 110% !important
     }
 
@@ -1557,7 +1566,7 @@ height: 10%;
     }
 }*/
 
-@media screen and (min-width: 451px) and (max-width: 560px) {
+@media (min-width: 451px) and (max-width: 560px) {
 
     .btn_borrar_item {
         color: gray;
@@ -1604,18 +1613,18 @@ height: 10%;
         letter-spacing: 0.5px;
     }
 
-    #wsp {
+    .WSP {
 height: 10%;
     font-size: 90%;
     padding: 3% 0;
     width: 65%;
     }
 
-    #wsp i {
+    .WSP i {
         font-size: 110% !important;
     }
 
-        #sesion-de-inf-de-solicitud-de-repuestos{
+        #solicitud-de-repuestos{
         height: 17%;
     }
 
@@ -1648,7 +1657,7 @@ height: 10%;
     }
 }
 
-@media screen and (min-width: 561px) and (max-width: 750px) {
+@media (min-width: 561px) and (max-width: 750px) {
 
     .btn_borrar_item {
         color: gray;
@@ -1697,20 +1706,19 @@ height: 10%;
         width: 45% !important;
     }
 
-    #wsp {
+    .WSP {
 height: 10% !important;
     font-size: 90%;
     padding: 3% 0;
     width: 65% !important;
     }
 
-    #wsp i {
+    .WSP i {
         font-size: 110% !important;
     }
 
     #sesion-de-marcas-y-cotizaciones #article_marcas p span{
         font-size: 140%;
-        letter-spacing: 0;
     }
 
     #logo_marca_bmw {
@@ -1832,7 +1840,7 @@ height: 10% !important;
         padding: 2% 0 0 0;
     }
 
-    #sesion-de-inf-de-solicitud-de-repuestos{
+    #solicitud-de-repuestos{
         height: 14.3%;
     }
 
@@ -1889,7 +1897,7 @@ height: 10% !important;
 
 }
 
-@media screen and (min-width: 751px) and (max-width: 1150px) {
+@media (min-width: 751px) and (max-width: 1150px) {
 
     #sesion-de-contacto-por-whatsapp {
    height: 18.2%;
@@ -1930,14 +1938,14 @@ height: 10% !important;
         width: 45% !important;
     }
 
-    #wsp {
+    .WSP {
 height: 10% !important;
     font-size: 140%;
     padding: 3% 0;
     width: 65% !important;
     }
 
-    #wsp i {
+    .WSP i {
         font-size: 110% !important;
     }
 
@@ -2065,7 +2073,7 @@ height: 10% !important;
         padding: 2% 0 0 0;
     }
 
-    #sesion-de-inf-de-solicitud-de-repuestos{
+    #solicitud-de-repuestos{
         height: 15.3%;
     }
 
