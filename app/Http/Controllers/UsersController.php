@@ -26,17 +26,17 @@ use App\Notifications\NuevoProveedorRegistrado;
 
 class UsersController extends Controller
 {
-    public function login(Request $request):view
+    public function login(Request $request): view
     {
         return view('auth.login-v1');
     }
 
-    public function login2(Request $request):view
+    public function login2(Request $request): view
     {
         return view('auth.login-v2');
     }
 
-    public function verification(Request $request):RedirectResponse
+    public function verification(Request $request): RedirectResponse
     {
         $request->validate([
             'email' => 'required|email',
@@ -79,7 +79,7 @@ class UsersController extends Controller
         ]);
     }
 
-    public function resetPassword():view
+    public function resetPassword(): view
     {
         return view("auth.reset-password");
     }
@@ -139,7 +139,7 @@ class UsersController extends Controller
         $request->validate([
             'email' => 'required|email',
             'password' => [
-                'required',// Requisitos de seguridad de contraseña
+                'required', // Requisitos de seguridad de contraseña
                 'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d.@!¡?¿]{8,}$/',
             ],
             'confirm-password' => 'required|same:password', // Debe coincidir con la contraseña
@@ -182,11 +182,13 @@ class UsersController extends Controller
             'email' => 'No se encontró una cuenta con el correo proporcionado.',
         ]);
     }
-
-    public function register(Request $request):view
+ 
+    public function register(Request $request): view
     {
         // Lista de codigos
         $codigos = Country_code::all();
+
+        $proveedores = Provider::all();
 
         // Lista de departamentos
         $departamentos = Geolocation::distinct()->pluck('departamento');
@@ -199,10 +201,10 @@ class UsersController extends Controller
             $group[$departamento] = $municipios;
         }
 
-        return view('auth.register', compact('departamentos', 'group', 'codigos'));
+        return view('auth.register', compact('departamentos', 'group', 'codigos', 'proveedores'));
     }
 
-    public function store(Request $request):RedirectResponse
+    public function store(Request $request): RedirectResponse
     {
         // Validar los datos del formulario utilizando
         $validator = Validator::make(
@@ -273,14 +275,26 @@ class UsersController extends Controller
         // Validar si el número de celular ya está registrado
         $validator->after(function ($validator) use ($request) {
             $cel = $request->input('cel');
+
+            $existingUser = User::where('cel', $cel)->first();
             $existingProvider = Provider::where('celular', $cel)->first();
 
-            if ($existingProvider) {
+            if ($existingUser || $existingProvider) {
                 $validator->errors()->add('cel', 'Este número de celular ya está registrado.');
             }
         });
 
-         // Validar si el número de telefono ya está registrado
+        // Validar si el número de telefono ya está registrado
+        $validator->after(function ($validator) use ($request) {
+            $tel = $request->tel;
+
+            $existingUser = User::where('tel', $tel)->where('tel', '!=', "")->first();
+            $existingProvider = Provider::where('telefono', $tel)->where('telefono', '!=', "")->first();
+
+            if ($existingUser || $existingProvider) {
+                $validator->errors()->add('tel', 'Este número de celular ya está en uso');
+            }
+        });
 
         // Validar el tamaño del archivo RUT
         $validator->after(function ($validator) use ($request) {
@@ -317,28 +331,28 @@ class UsersController extends Controller
         $proveedor->municipio = $request->municipio;
         $proveedor->direccion = $request->direccion;
         $paises = [
-           '+57' => 'Colombia',
-           '+54' => 'Argentina',
-           '+591' => 'Bolivia',
-           '+55' => 'Brasil',
-           '+56' => 'Chile',
-           '+593' => 'Ecuador',
-           '+594' => 'Guyana Francesa',
-           '+592' => 'Guyana',
-           '+595' => 'Paraguay',
-           '+51' => 'Perú',
-           '+597' => 'Surinam',
-           '+598' => 'Uruguay',
-           '+58' => 'Venezuela',
-           '+1' => 'Estados Unidos',
-           '+506' => 'Costa Rica',
-           '+503' => 'El Salvador',
-           '+502' => 'Guatemala',
-           '+504' => 'Honduras',
-           '+52' => 'México',
-           '+505' => 'Nicaragua',
-           '+507' => 'Panamá',
-            ];
+            '+57' => 'Colombia',
+            '+54' => 'Argentina',
+            '+591' => 'Bolivia',
+            '+55' => 'Brasil',
+            '+56' => 'Chile',
+            '+593' => 'Ecuador',
+            '+594' => 'Guyana Francesa',
+            '+592' => 'Guyana',
+            '+595' => 'Paraguay',
+            '+51' => 'Perú',
+            '+597' => 'Surinam',
+            '+598' => 'Uruguay',
+            '+58' => 'Venezuela',
+            '+1' => 'Estados Unidos',
+            '+506' => 'Costa Rica',
+            '+503' => 'El Salvador',
+            '+502' => 'Guatemala',
+            '+504' => 'Honduras',
+            '+52' => 'México',
+            '+505' => 'Nicaragua',
+            '+507' => 'Panamá',
+        ];
 
         $proveedor->pais = $paises[$request->codigo_cel];
         $proveedor->celular = $request->codigo_cel . $request->cel;
@@ -346,14 +360,22 @@ class UsersController extends Controller
         $proveedor->email = $request->email;
         $proveedor->password = bcrypt($request->password); // Encriptar la contraseña
 
-        if($request->input('json_marcas')){
+        if ($request->input('json_marcas')) {
             $jsonMarcas = $request->input('json_marcas');
             $proveedor->marcas_preferencias = $jsonMarcas;
+        } else {
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
         }
 
-        if($request->input('json_categorias')){
+        if ($request->input('json_categorias')) {
             $jsonCategorias = $request->input('json_categorias');
             $proveedor->especialidad = $jsonCategorias;
+        } else {
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
         }
 
         $proveedor->estado = false;
@@ -383,7 +405,9 @@ class UsersController extends Controller
             $user = new User();
             $user->name = $proveedor->razon_social;
             $user->cel = $proveedor->celular;
-            $user->tel = $proveedor->telefono;
+            if ($request->has('tel') && $request->filled('tel')) {
+                $user->tel = $proveedor->telefono;
+            }
             $user->email = $request->email;
             $user->role = 'Proveedor';
             $user->password = bcrypt($request->password); // Encriptar la contraseña
@@ -399,62 +423,61 @@ class UsersController extends Controller
             Mail::to($user->email)->send(new RegistroProveedorMail($data));
 
             // Notificar al administrador
-              $admin = User::where('role', 'Admin')->first();
+            $admin = User::where('role', 'Admin')->first();
 
-              if ($admin) {
-                  Notification::send($admin, new NuevoProveedorRegistrado($proveedor));
+            if ($admin) {
+                Notification::send($admin, new NuevoProveedorRegistrado($proveedor));
 
-                  foreach(auth()->user()->unreadNotifications as $notification){
-                      $enlace = "$request->nit/$notification->id";
-                  }
-                    $token = 'EAAyaksOlpN4BO64MEL1cjlEGMvDQb6liWd3oCOIhvnUZBMeF5tbhAvjZABvBnnaYh9V9waBGZCBJW0LnCFaDcUQMZArNbLSKCUEL1MLmgdoRpQHyvEGdAC0CYOxt3l5N2u2Wi0yAlVFE7mCRtHVkZCSOyZAXyVtbrxxeOjkJqOkFDjloKrVuZBLXJUF4S1KG3u7';
-                    $url = 'https://graph.facebook.com/v17.0/196744616845968/messages';
+                foreach (auth()->user()->unreadNotifications as $notification) {
+                    $enlace = "$request->nit/$notification->id";
+                }
+                $token = 'EAAyaksOlpN4BO64MEL1cjlEGMvDQb6liWd3oCOIhvnUZBMeF5tbhAvjZABvBnnaYh9V9waBGZCBJW0LnCFaDcUQMZArNbLSKCUEL1MLmgdoRpQHyvEGdAC0CYOxt3l5N2u2Wi0yAlVFE7mCRtHVkZCSOyZAXyVtbrxxeOjkJqOkFDjloKrVuZBLXJUF4S1KG3u7';
+                $url = 'https://graph.facebook.com/v17.0/196744616845968/messages';
 
-                  $mensajeData = [
-                'messaging_product' => 'whatsapp',
-                'recipient_type' => 'individual',
-                'to' => $admin->cel,
-                'type' => 'template',
-                'template' => [
-                    'name' => 'nuevo_proveedor',
-                    'language' => [
-                        'code' => 'es',
-                    ],
-                    'components' => [
-                        [
-                            'type' => 'button',
-                            'sub_type' => 'url',
-                            'index' => '0',
-                            'parameters' => [
-                                [
-                                    'type' => 'text',
-                                    'text' => $enlace,
+                $mensajeData = [
+                    'messaging_product' => 'whatsapp',
+                    'recipient_type' => 'individual',
+                    'to' => $admin->cel,
+                    'type' => 'template',
+                    'template' => [
+                        'name' => 'nuevo_proveedor',
+                        'language' => [
+                            'code' => 'es',
+                        ],
+                        'components' => [
+                            [
+                                'type' => 'button',
+                                'sub_type' => 'url',
+                                'index' => '0',
+                                'parameters' => [
+                                    [
+                                        'type' => 'text',
+                                        'text' => $enlace,
+                                    ],
                                 ],
                             ],
                         ],
                     ],
-                ],
-            ];
+                ];
 
-            $mensaje = json_encode($mensajeData);
+                $mensaje = json_encode($mensajeData);
 
-            $header = [
-                "Authorization: Bearer " . $token,
-                "Content-Type: application/json",
-            ];
-            $curl = curl_init();
-            curl_setopt($curl, CURLOPT_URL, $url);
-            curl_setopt($curl, CURLOPT_POSTFIELDS, $mensaje);
-            curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
-            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+                $header = [
+                    "Authorization: Bearer " . $token,
+                    "Content-Type: application/json",
+                ];
+                $curl = curl_init();
+                curl_setopt($curl, CURLOPT_URL, $url);
+                curl_setopt($curl, CURLOPT_POSTFIELDS, $mensaje);
+                curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
+                curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 
-            $response = json_decode(curl_exec($curl), true);
+                $response = json_decode(curl_exec($curl), true);
 
-            $status_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+                $status_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 
-            curl_close($curl);
-
-              }
+                curl_close($curl);
+            }
 
             // Redirigir a la página de inicio con un mensaje de éxito
             return redirect()->route("servicios")->with('message', '¡Registro exitoso! Por favor, revise su correo electrónico en unos minutos.');

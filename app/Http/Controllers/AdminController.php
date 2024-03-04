@@ -931,8 +931,8 @@ class AdminController extends Controller
             $tel = $request->tel_edit;
             $providerId = $id;
 
-            $existingUser = User::where('tel', $tel)->where('proveedor_id', '!=', $providerId)->first();
-            $existingProvider = Provider::where('telefono', $tel)->where('id', '!=', $providerId)->first();
+            $existingUser = User::where('tel', $tel)->where('proveedor_id', '!=', $providerId)->where('tel', '!=', "")->first();
+            $existingProvider = Provider::where('telefono', $tel)->where('id', '!=', $providerId)->where('telefono', '!=', "")->first();
 
             if($existingUser || $existingProvider){
                 $validator->errors()->add('tel_edit', 'Este número de celular ya está en uso');

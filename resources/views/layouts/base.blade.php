@@ -116,9 +116,9 @@
             <div class="footer w-100">
                 <div class="container-flex container-flex-col-cel">
                     <div class="container-items">
-                        <a class="item" href="#">Terminos y condiciones</a>
+                        <a class="item" href="#">Términos y Condiciones</a>
                         <span class="item none">|</span>
-                        <a class="item" href="{{ route('privacy-policy') }}">Politica de privacidad</a>
+                        <a class="item" href="{{ route('privacy-policy') }}">Política de privacidad</a>
                         <span class="item none">|</span>
                         <a class="item" href="#">Acerca de...</a>
                     </div>

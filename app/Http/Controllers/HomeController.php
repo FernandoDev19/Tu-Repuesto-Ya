@@ -23,6 +23,7 @@ use App\Models\Geolocation;
 use App\Models\Country_code;
 
 use App\Mail\SolicitudClienteMail;
+use App\Mail\SolicitudRepuestoMail;
 
 use App\Jobs\WhatsAppMessageJob;
 
@@ -343,6 +344,24 @@ class HomeController extends Controller
                             $token,
                             $url
                         );
+                    }
+
+                    $data = [
+                        'repuesto' => $request->json_repuestos,
+                        'marca' => $request->marca,
+                        'referencia' => $request->referencia,
+                        'modelo' => $request->modelo,
+                        'comentarios' => $request->comentario,
+                        'nombre' => $request->nombre,
+                        'pais' => $solicitud->pais,
+                        'departamento' => $request->departamento,
+                        'municipio' => $request->municipio,
+                        'codigo' => $solicitud->codigo
+                    ];
+
+                    if ($proveedor->email || $proveedor->email_secundario) {
+                        Mail::to($proveedor->email)->cc($proveedor->email_secundario)->send(new SolicitudRepuestoMail($data));
+                        Log::info('Correo 1 enviado:');
                     }
                 }
             }

@@ -11,6 +11,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
 
+
 class WhatsAppMessageJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
@@ -114,7 +115,7 @@ class WhatsAppMessageJob implements ShouldQueue
                             ],
                         ],
                     ],
-                ]; */
+            ]; */
 
             $mensajeData = [
                 'messaging_product' => 'whatsapp',

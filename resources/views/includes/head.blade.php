@@ -1,7 +1,7 @@
 <meta charset="UTF-8">
 
 <meta name="description" content="Valoración 5⭐ Busca aquí repuestos para carros, haz una solicitud y recibe los mejores precios. Autopartes de motores, eléctricas, frenos, llantas y suspensión.">
-<meta name="keywords" content="Chevrolet,Renault,Ford,Toyota,Mazda,Hyundai,Kia,Nissan,Volkswagen,BMW,Mercedes-Benz,Audi,Fiat,Peugeot,Suzuki,Mitsubishi,Aceite,Filtro de aceite,Filtro de aire,Batería,Bujías,Pastillas de freno,Discos de freno,Amortiguadores,Resortes,Llantas,Neumáticos,Rines,Radiador,Mangueras,Correas,Sensores,Cables,Bombas,Turbos,Piezas de motor,Piezas de transmisión,Piezas de suspensión,Piezas de dirección,Piezas de carrocería,Piezas eléctricas,Bogotá,Medellín,Cali,Barranquilla,Cartagena,Bucaramanga,Cúcuta,Ibagué,Pereira,Manizales,Santa Marta,Montería,Baranoa,Neiva,Pasto,Popayán,Armenia,Villavicencio,Mecánico,Taller,Automotriz,Repuestos originales,Repuestos genéricos,Repuestos usados,Repuestos nuevos,Accesorios,Cotización,Precio,Compra,Venta,En línea,Tienda,Servicio,Garantía,Repuestos Chevrolet Barranquilla,Llantas Toyota Medellín,Batería carro Cali,Filtro de aceite Renault Bogotá,Piezas de moto Suzuki Cartagena,Repuestos originales Ford Bucaramanga,Repuestos genéricos Kia Cúcuta,Repuestos usados Mazda Ibagué,Accesorios carro Pereira,Cotización de repuestos Manizales,Precio de repuestos Santa Marta,Compra de repuestos en línea Montería,Venta de repuestos Neiva,Tienda de repuestos Pasto,Servicio de mecánica Popayán,Garantía de repuestos Armenia,Taller de carros Villavicencio,Repuesto,Repuestos,Tú repuesto,Tus repuestos,Turepuesto,Tusrepuestos,Turepuesto ya,Tu repuesto ya,Tusrepuestosya,Turepuestoya,Tu repuesto ya,Tus repuestos ya,Tu repuestoya,Tusrepuestosya,Tu_repuesto_ya,Repuesto ya,Repuestos ya,Repuestos de carro,Piezas para moto,Repuestos en Barranquilla,Repuestos para Colombia,El repuesto,Los repuestos,La llanta,Las llantas,El repuesto de carro,Los repuestos de moto,Repuestos,Llantas,Piezas,Accesorios,Cotizaciones,Precios,Compras,Ventas,Servicios,Garantías,Repuesto,Llanta,Pieza,Accesorio,Cotización,Precio,Compra,Venta,Servicio,Garantía,Comprar repuestos,Vender repuestos,Cambiar repuestos,Cotizar repuestos,Buscar repuestos,Encontrar repuestos,Repuestos nuevos,Repuestos usados,Repuestos originales,Repuestos genéricos,Repuestos baratos,Repuestos caros,Repuestos rápido,Repuestos fácil,Repuestos seguro,No hay repuestos,No tengo repuestos,No necesito repuestos,¿Dónde hay repuestos?,¿Cuánto cuestan los repuestos?,¿Cómo cambiar un repuesto,¡Necesito repuestos!,¡Tengo que comprar repuestos!,¡No puedo encontrar repuestos!,¿Qué repuestos necesito?,¿Dónde puedo comprar repuestos?,¿Cómo puedo cambiar un repuesto?,repuestos para carros, autopartes, motores, eléctricas, frenos, llantas, suspensión, repuestos para chevrolet, repuestos para renault, repuestos para kia, repuestos para toyota">
+<meta name="keywords" content="repuestos para carros, autopartes, motores, eléctricas, frenos, llantas, suspensión, repuestos para chevrolet, repuestos para renault, repuestos para kia, repuestos para toyota">
 <meta name="author" content="Fernando Cano">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -45,7 +45,10 @@
 <link
     href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
     rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<link rel="stylesheet" href="{{ asset('css/home/styles.css') }}">
+
 <script src="https://code.jquery.com/jquery-3.7.0.min.js"
     integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<link rel="stylesheet" href="{{ asset('css/home/styles.css') }}">

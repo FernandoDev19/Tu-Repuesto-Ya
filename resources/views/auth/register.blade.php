@@ -54,15 +54,30 @@
                                                     value="{{ old('nit') }}" maxlength="12" required>
                                                 @error('nit')
                                                     <div class="text-danger text-xs pt-1">{{ $message }}</div>
+                                                @else
+                                                    <div id="nit-error" class="text-danger text-xs pt-1 hide"></div>
                                                 @enderror
                                             </div>
 
                                             <div class="flex flex-col mb-3">
                                                 <input type="text" name="razon" id="razonSocial" class="form-control"
                                                     placeholder="*Razón social" aria-label="Razon"
-                                                    value="{{ old('razon') }}" maxlength="100" required>
+                                                    value="{{ old('razon') }}" maxlength="50" required>
                                                 @error('razon')
                                                     <div class="text-danger text-xs pt-1">{{ $message }}</div>
+                                                @else
+                                                    <div id="razon-error" class="text-danger text-xs pt-1 hide"></div>
+                                                @enderror
+                                            </div>
+
+                                            <div class="flex flex-col mb-3">
+                                                <input type="text" name="nombre_establecimiento" id="nombre_establecimiento" class="form-control"
+                                                    placeholder="*Nombre del establecimiento" aria-label="Nombre del establecimiento"
+                                                    value="{{ old('nombre_establecimiento') }}" maxlength="100" required>
+                                                @error('nombre_establecimiento')
+                                                    <div class="text-danger text-xs pt-1">{{ $message }}</div>
+                                                @else
+                                                    <div id="nombre-error" class="text-danger text-xs pt-1 hide"></div>
                                                 @enderror
                                             </div>
 
@@ -112,6 +127,8 @@
                                                         value="{{ old('tel') }}">
                                                     @error('tel')
                                                         <div class="text-danger text-xs pt-1">{{ $message }}</div>
+                                                    @else
+                                                        <div id="errorTel" class="text-danger text-xs pt-1 hide"></div>
                                                     @enderror
                                                 </div>
                                             </div>
@@ -126,7 +143,7 @@
                                                 style="display:flex; justify-content: space-between;">
                                                 <div class="flex flex-col mb-3" style="width: 49%;">
                                                     <select id="departamento" name="departamento" class="form-control">
-                                                        <option value="{{ old('departamento') }}" disabled selected>
+                                                        <option value="{{ old('departamento') }}" selected>
                                                             {{ old('departamento') ? old('departamento') . ' (Seleccionado)' : '*Seleccione un departamento' }}
                                                         </option>
                                                         @foreach ($departamentos as $departamento)
@@ -167,6 +184,8 @@
                                                     value="{{ old('email') }}" required>
                                                 @error('email')
                                                     <p class='text-danger text-xs pt-1'> {{ $message }} </p>
+                                                @else
+                                                    <p id="email-error" class='text-danger text-xs pt-1 hide'></p>
                                                 @enderror
                                             </div>
 
@@ -220,6 +239,8 @@
                                                         class="form-control" style="color: var(--bs-secondary-color);">
                                                         <option value="" disabled selected>*Preferencias de Marcas
                                                         </option>
+                                                        <option value="Todas las marcas">Todas las
+                                                            marcas</option>
                                                         <!--<option value="AKT">AKT</option>-->
                                                         <option value="Alfa Romeo">Alfa Romeo</option>
                                                         <option value="Alpine">Alpine</option>
@@ -343,6 +364,8 @@
                                                     id="categoria_repuesto" style="color: var(--bs-secondary-color);"
                                                     required>
                                                     <option value="" disabled selected>*Especialidad</option>
+                                                    <option value="Todas las especialidades">Todas
+                                                        las especialidades</option>
                                                     <option value="LLantas">LLantas</option>
                                                     <option value="Frenos">Frenos</option>
                                                     <option value="Suspensión">Suspensión</option>
@@ -381,6 +404,8 @@
                                                         class="form-control" aria-label="Rut" style="display: none;">
                                                     @error('rut')
                                                         <div class="text-danger text-xs pt-1">{{ $message }}</div>
+                                                    @else
+                                                        <div class="text-danger text-xs pt-1">*El RUT es obligatorio</div>
                                                     @enderror
                                                 </div>
                                                 <div class="flex flex-col" style="width: 49%;">
@@ -394,6 +419,8 @@
                                                         class="form-control" aria-label="Cam" style="display: none;">
                                                     @error('cam')
                                                         <div class="text-danger text-xs pt-1">{{ $message }}</div>
+                                                    @else
+                                                        <div class="text-danger text-xs pt-1">*La cámara de comercio es obligatoria</div>
                                                     @enderror
                                                 </div>
                                             </div>
@@ -497,6 +524,9 @@
             codigo.value = valorInicial;
             let cel = document.getElementById('cel');
             let tel = document.getElementById('numeroTel');
+            let proveedores = @json($proveedores);
+
+            let errorTel = document.getElementById('errorTel');
 
             let pais = document.getElementById('pais');
             let textPais = document.getElementById('text-pais');
@@ -583,6 +613,9 @@
             function updateVisibility() {
                 sessionStorage.setItem('codigo', codigo.value);
 
+                let celValue = codigo.value + cel.value;
+                let telValue = codigo.value + tel.value;
+
                 if (codigo.value == '+54') {
                     departamento.classList.add('hide');
                     municipio.classList.add('hide');
@@ -591,7 +624,14 @@
                     if (isNaN(cel.value) || cel.value.length != 10) {
                         cel.setCustomValidity("El número de celular debe tener 10 dígitos");
                     } else {
-                        cel.setCustomValidity("");
+                        for (let i = 0; i < proveedores.length; i++) {
+                            if (proveedores[i].celular == celValue) {
+                                cel.setCustomValidity('El número de celular ya está registrado');
+                                return;
+                            }else{
+                                cel.setCustomValidity('');
+                            }
+                        }
                     }
 
                     if (tel.value == "") {
@@ -599,7 +639,18 @@
                     } else if (isNaN(tel.value) || tel.value.length != 10) {
                         tel.setCustomValidity("El número de celular debe tener 10 dígitos");
                     } else {
-                        tel.setCustomValidity("");
+                        for (let i = 0; i < proveedores.length; i++) {
+                            if(proveedores[i].telefono == telValue && telValue != ''){
+                                errorTel.classList.remove('hide');
+                                errorTel.textContent = 'El número de celular ya está registrado';
+                                tel.setCustomValidity('El número de celular ya está registrado');
+                                return;
+                            }else{
+                                errorTel.classList.add('hide');
+                                errorTel.textContent = '';
+                                tel.setCustomValidity('');
+                            }
+                        }
                     }
 
                     textPais.textContent = 'Argentina';
@@ -614,7 +665,14 @@
                     if (isNaN(cel.value) || cel.value.length != 8) {
                         cel.setCustomValidity("El número de celular debe tener 8 dígitos");
                     } else {
-                        cel.setCustomValidity("");
+                        for (let i = 0; i < proveedores.length; i++) {
+                            if (proveedores[i].celular == celValue) {
+                                cel.setCustomValidity('El número de celular ya está registrado');
+                                return;
+                            }else{
+                                cel.setCustomValidity('');
+                            }
+                        }
                     }
 
                     if (tel.value == "") {
@@ -622,9 +680,19 @@
                     } else if (isNaN(tel.value) || tel.value.length != 8) {
                         tel.setCustomValidity("El número de celular debe tener 8 dígitos");
                     } else {
-                        tel.setCustomValidity("");
+                        for (let i = 0; i < proveedores.length; i++) {
+                            if(proveedores[i].telefono == telValue && telValue != ''){
+                                errorTel.classList.remove('hide');
+                                errorTel.textContent = 'El número de celular ya está registrado';
+                                tel.setCustomValidity('El número de celular ya está registrado');
+                                return;
+                            }else{
+                                errorTel.classList.add('hide');
+                                errorTel.textContent = '';
+                                tel.setCustomValidity('');
+                            }
+                        }
                     }
-
 
                     textPais.textContent = 'Bolivia';
 
@@ -637,7 +705,14 @@
                     if (isNaN(cel.value) || cel.value.length != 11) {
                         cel.setCustomValidity("El número de celular debe tener 11 dígitos");
                     } else {
-                        cel.setCustomValidity("");
+                        for (let i = 0; i < proveedores.length; i++) {
+                            if (proveedores[i].celular == celValue) {
+                                cel.setCustomValidity('El número de celular ya está registrado');
+                                return;
+                            }else{
+                                cel.setCustomValidity('');
+                            }
+                        }
                     }
 
                     if (tel.value == "") {
@@ -645,7 +720,18 @@
                     } else if (isNaN(tel.value) || tel.value.length != 11) {
                         tel.setCustomValidity("El número de celular debe tener 11 dígitos");
                     } else {
-                        tel.setCustomValidity("");
+                        for (let i = 0; i < proveedores.length; i++) {
+                            if(proveedores[i].telefono == telValue && telValue != ''){
+                                errorTel.classList.remove('hide');
+                                errorTel.textContent = 'El número de celular ya está registrado';
+                                tel.setCustomValidity('El número de celular ya está registrado');
+                                return;
+                            }else{
+                                errorTel.classList.add('hide');
+                                errorTel.textContent = '';
+                                tel.setCustomValidity('');
+                            }
+                        }
                     }
 
 
@@ -661,7 +747,14 @@
                     if (isNaN(cel.value) || cel.value.length != 9) {
                         cel.setCustomValidity("El número de celular debe tener 9 dígitos");
                     } else {
-                        cel.setCustomValidity("");
+                        for (let i = 0; i < proveedores.length; i++) {
+                            if (proveedores[i].celular == celValue) {
+                                cel.setCustomValidity('El número de celular ya está registrado');
+                                return;
+                            }else{
+                                cel.setCustomValidity('');
+                            }
+                        }
                     }
 
                     if (tel.value == "") {
@@ -669,7 +762,18 @@
                     } else if (isNaN(tel.value) || tel.value.length != 9) {
                         tel.setCustomValidity("El número de celular debe tener 9 dígitos");
                     } else {
-                        tel.setCustomValidity("");
+                        for (let i = 0; i < proveedores.length; i++) {
+                            if(proveedores[i].telefono == telValue && telValue != ''){
+                                errorTel.classList.remove('hide');
+                                errorTel.textContent = 'El número de celular ya está registrado';
+                                tel.setCustomValidity('El número de celular ya está registrado');
+                                return;
+                            }else{
+                                errorTel.classList.add('hide');
+                                errorTel.textContent = '';
+                                tel.setCustomValidity('');
+                            }
+                        }
                     }
 
 
@@ -684,7 +788,14 @@
                     if (isNaN(cel.value) || cel.value.length != 10) {
                         cel.setCustomValidity("El número de celular debe tener 10 dígitos");
                     } else {
-                        cel.setCustomValidity("");
+                        for (let i = 0; i < proveedores.length; i++) {
+                            if (proveedores[i].celular == celValue) {
+                                cel.setCustomValidity('El número de celular ya está registrado');
+                                return;
+                            }else{
+                                cel.setCustomValidity('');
+                            }
+                        }
                     }
 
                     if (tel.value == "") {
@@ -692,7 +803,18 @@
                     } else if (isNaN(tel.value) || tel.value.length != 10) {
                         tel.setCustomValidity("El número de celular debe tener 10 dígitos");
                     } else {
-                        tel.setCustomValidity("");
+                        for (let i = 0; i < proveedores.length; i++) {
+                            if(proveedores[i].telefono == telValue && telValue != ''){
+                                errorTel.classList.remove('hide');
+                                errorTel.textContent = 'El número de celular ya está registrado';
+                                tel.setCustomValidity('El número de celular ya está registrado');
+                                return;
+                            }else{
+                                errorTel.classList.add('hide');
+                                errorTel.textContent = '';
+                                tel.setCustomValidity('');
+                            }
+                        }
                     }
 
 
@@ -707,7 +829,14 @@
                     if (isNaN(cel.value) || cel.value.length != 9) {
                         cel.setCustomValidity("El número de celular debe tener 9 dígitos");
                     } else {
-                        cel.setCustomValidity("");
+                        for (let i = 0; i < proveedores.length; i++) {
+                            if (proveedores[i].celular == celValue) {
+                                cel.setCustomValidity('El número de celular ya está registrado');
+                                return;
+                            }else{
+                                cel.setCustomValidity('');
+                            }
+                        }
                     }
 
                     if (tel.value == "") {
@@ -715,7 +844,18 @@
                     } else if (isNaN(tel.value) || tel.value.length != 9) {
                         tel.setCustomValidity("El número de celular debe tener 9 dígitos");
                     } else {
-                        tel.setCustomValidity("");
+                        for (let i = 0; i < proveedores.length; i++) {
+                            if(proveedores[i].telefono == telValue && telValue != ''){
+                                errorTel.classList.remove('hide');
+                                errorTel.textContent = 'El número de celular ya está registrado';
+                                tel.setCustomValidity('El número de celular ya está registrado');
+                                return;
+                            }else{
+                                errorTel.classList.add('hide');
+                                errorTel.textContent = '';
+                                tel.setCustomValidity('');
+                            }
+                        }
                     }
 
 
@@ -730,7 +870,14 @@
                     if (isNaN(cel.value) || cel.value.length != 7) {
                         cel.setCustomValidity("El número de celular debe tener 7 dígitos");
                     } else {
-                        cel.setCustomValidity("");
+                        for (let i = 0; i < proveedores.length; i++) {
+                            if (proveedores[i].celular == celValue) {
+                                cel.setCustomValidity('El número de celular ya está registrado');
+                                return;
+                            }else{
+                                cel.setCustomValidity('');
+                            }
+                        }
                     }
 
                     if (tel.value == "") {
@@ -738,7 +885,18 @@
                     } else if (isNaN(tel.value) || tel.value.length != 7) {
                         tel.setCustomValidity("El número de celular debe tener 7 dígitos");
                     } else {
-                        tel.setCustomValidity("");
+                        for (let i = 0; i < proveedores.length; i++) {
+                            if(proveedores[i].telefono == telValue && telValue != ''){
+                                errorTel.classList.remove('hide');
+                                errorTel.textContent = 'El número de celular ya está registrado';
+                                tel.setCustomValidity('El número de celular ya está registrado');
+                                return;
+                            }else{
+                                errorTel.classList.add('hide');
+                                errorTel.textContent = '';
+                                tel.setCustomValidity('');
+                            }
+                        }
                     }
 
 
@@ -753,7 +911,14 @@
                     if (isNaN(cel.value) || cel.value.length != 9) {
                         cel.setCustomValidity("El número de celular debe tener 9 dígitos");
                     } else {
-                        cel.setCustomValidity("");
+                        for (let i = 0; i < proveedores.length; i++) {
+                            if (proveedores[i].celular == celValue) {
+                                cel.setCustomValidity('El número de celular ya está registrado');
+                                return;
+                            }else{
+                                cel.setCustomValidity('');
+                            }
+                        }
                     }
 
                     if (tel.value == "") {
@@ -761,7 +926,18 @@
                     } else if (isNaN(tel.value) || tel.value.length != 9) {
                         tel.setCustomValidity("El número de celular debe tener 9 dígitos");
                     } else {
-                        tel.setCustomValidity("");
+                        for (let i = 0; i < proveedores.length; i++) {
+                            if(proveedores[i].telefono == telValue && telValue != ''){
+                                errorTel.classList.remove('hide');
+                                errorTel.textContent = 'El número de celular ya está registrado';
+                                tel.setCustomValidity('El número de celular ya está registrado');
+                                return;
+                            }else{
+                                errorTel.classList.add('hide');
+                                errorTel.textContent = '';
+                                tel.setCustomValidity('');
+                            }
+                        }
                     }
 
 
@@ -776,7 +952,14 @@
                     if (isNaN(cel.value) || cel.value.length != 9) {
                         cel.setCustomValidity("El número de celular debe tener 9 dígitos");
                     } else {
-                        cel.setCustomValidity("");
+                        for (let i = 0; i < proveedores.length; i++) {
+                            if (proveedores[i].celular == celValue) {
+                                cel.setCustomValidity('El número de celular ya está registrado');
+                                return;
+                            }else{
+                                cel.setCustomValidity('');
+                            }
+                        }
                     }
 
                     if (tel.value == "") {
@@ -784,7 +967,18 @@
                     } else if (isNaN(tel.value) || tel.value.length != 9) {
                         tel.setCustomValidity("El número de celular debe tener 9 dígitos");
                     } else {
-                        tel.setCustomValidity("");
+                        for (let i = 0; i < proveedores.length; i++) {
+                            if(proveedores[i].telefono == telValue && telValue != ''){
+                                errorTel.classList.remove('hide');
+                                errorTel.textContent = 'El número de celular ya está registrado';
+                                tel.setCustomValidity('El número de celular ya está registrado');
+                                return;
+                            }else{
+                                errorTel.classList.add('hide');
+                                errorTel.textContent = '';
+                                tel.setCustomValidity('');
+                            }
+                        }
                     }
 
 
@@ -799,7 +993,14 @@
                     if (isNaN(cel.value) || cel.value.length != 7) {
                         cel.setCustomValidity("El número de celular debe tener 7 dígitos");
                     } else {
-                        cel.setCustomValidity("");
+                        for (let i = 0; i < proveedores.length; i++) {
+                            if (proveedores[i].celular == celValue) {
+                                cel.setCustomValidity('El número de celular ya está registrado');
+                                return;
+                            }else{
+                                cel.setCustomValidity('');
+                            }
+                        }
                     }
 
                     if (tel.value == "") {
@@ -807,7 +1008,18 @@
                     } else if (isNaN(tel.value) || tel.value.length != 7) {
                         tel.setCustomValidity("El número de celular debe tener 7 dígitos");
                     } else {
-                        tel.setCustomValidity("");
+                        for (let i = 0; i < proveedores.length; i++) {
+                            if(proveedores[i].telefono == telValue && telValue != ''){
+                                errorTel.classList.remove('hide');
+                                errorTel.textContent = 'El número de celular ya está registrado';
+                                tel.setCustomValidity('El número de celular ya está registrado');
+                                return;
+                            }else{
+                                errorTel.classList.add('hide');
+                                errorTel.textContent = '';
+                                tel.setCustomValidity('');
+                            }
+                        }
                     }
 
 
@@ -822,7 +1034,14 @@
                     if (isNaN(cel.value) || cel.value.length != 8) {
                         cel.setCustomValidity("El número de celular debe tener 8 dígitos");
                     } else {
-                        cel.setCustomValidity("");
+                        for (let i = 0; i < proveedores.length; i++) {
+                            if (proveedores[i].celular == celValue) {
+                                cel.setCustomValidity('El número de celular ya está registrado');
+                                return;
+                            }else{
+                                cel.setCustomValidity('');
+                            }
+                        }
                     }
 
                     if (tel.value == "") {
@@ -830,7 +1049,18 @@
                     } else if (isNaN(tel.value) || tel.value.length != 8) {
                         tel.setCustomValidity("El número de celular debe tener 8 dígitos");
                     } else {
-                        tel.setCustomValidity("");
+                        for (let i = 0; i < proveedores.length; i++) {
+                            if(proveedores[i].telefono == telValue && telValue != ''){
+                                errorTel.classList.remove('hide');
+                                errorTel.textContent = 'El número de celular ya está registrado';
+                                tel.setCustomValidity('El número de celular ya está registrado');
+                                return;
+                            }else{
+                                errorTel.classList.add('hide');
+                                errorTel.textContent = '';
+                                tel.setCustomValidity('');
+                            }
+                        }
                     }
 
 
@@ -845,7 +1075,14 @@
                     if (isNaN(cel.value) || cel.value.length != 10) {
                         cel.setCustomValidity("El número de celular debe tener 10 dígitos");
                     } else {
-                        cel.setCustomValidity("");
+                        for (let i = 0; i < proveedores.length; i++) {
+                            if (proveedores[i].celular == celValue) {
+                                cel.setCustomValidity('El número de celular ya está registrado');
+                                return;
+                            }else{
+                                cel.setCustomValidity('');
+                            }
+                        }
                     }
 
                     if (tel.value == "") {
@@ -853,7 +1090,18 @@
                     } else if (isNaN(tel.value) || tel.value.length != 10) {
                         tel.setCustomValidity("El número de celular debe tener 10 dígitos");
                     } else {
-                        tel.setCustomValidity("");
+                        for (let i = 0; i < proveedores.length; i++) {
+                            if(proveedores[i].telefono == telValue && telValue != ''){
+                                errorTel.classList.remove('hide');
+                                errorTel.textContent = 'El número de celular ya está registrado';
+                                tel.setCustomValidity('El número de celular ya está registrado');
+                                return;
+                            }else{
+                                errorTel.classList.add('hide');
+                                errorTel.textContent = '';
+                                tel.setCustomValidity('');
+                            }
+                        }
                     }
 
 
@@ -866,10 +1114,18 @@
                     departamento.classList.remove('hide');
                     municipio.classList.remove('hide');
                     pais.classList.add('hide');
+
                     if (isNaN(cel.value) || cel.value.length != 10) {
                         cel.setCustomValidity("El número de celular debe tener 10 dígitos");
                     } else {
-                        cel.setCustomValidity("");
+                        for (let i = 0; i < proveedores.length; i++) {
+                            if (proveedores[i].celular == celValue) {
+                                cel.setCustomValidity('El número de celular ya está registrado');
+                                return;
+                            }else{
+                                cel.setCustomValidity('');
+                            }
+                        }
                     }
 
                     if (tel.value == "") {
@@ -877,9 +1133,19 @@
                     } else if (isNaN(tel.value) || tel.value.length != 10) {
                         tel.setCustomValidity("El número de celular debe tener 10 dígitos");
                     } else {
-                        tel.setCustomValidity("");
+                        for (let i = 0; i < proveedores.length; i++) {
+                            if(proveedores[i].telefono == telValue && telValue != ''){
+                                errorTel.classList.remove('hide');
+                                errorTel.textContent = 'El número de celular ya está registrado';
+                                tel.setCustomValidity('El número de celular ya está registrado');
+                                return;
+                            }else{
+                                errorTel.classList.add('hide');
+                                errorTel.textContent = '';
+                                tel.setCustomValidity('');
+                            }
+                        }
                     }
-
 
                     // Establece los campos como obligatorios
                     departamento.setAttribute('required', true);
@@ -891,7 +1157,14 @@
                     if (isNaN(cel.value) || cel.value.length != 10) {
                         cel.setCustomValidity("El número de celular debe tener 10 dígitos")
                     } else {
-                        cel.setCustomValidity("");
+                        for (let i = 0; i < proveedores.length; i++) {
+                            if (proveedores[i].celular == celValue) {
+                                cel.setCustomValidity('El número de celular ya está registrado');
+                                return;
+                            }else{
+                                cel.setCustomValidity('');
+                            }
+                        }
                     }
 
                     if (tel.value == "") {
@@ -899,7 +1172,18 @@
                     } else if (isNaN(tel.value) || tel.value.length != 10) {
                         tel.setCustomValidity("El número de celular debe tener 10 dígitos");
                     } else {
-                        tel.setCustomValidity("");
+                        for (let i = 0; i < proveedores.length; i++) {
+                            if(proveedores[i].telefono == telValue && telValue != ''){
+                                errorTel.classList.remove('hide');
+                                errorTel.textContent = 'El número de celular ya está registrado';
+                                tel.setCustomValidity('El número de celular ya está registrado');
+                                return;
+                            }else{
+                                errorTel.classList.add('hide');
+                                errorTel.textContent = '';
+                                tel.setCustomValidity('');
+                            }
+                        }
                     }
 
 
@@ -914,7 +1198,14 @@
                     if (isNaN(cel.value) || cel.value.length != 8) {
                         cel.setCustomValidity("El número de celular debe tener 8 dígitos")
                     } else {
-                        cel.setCustomValidity("");
+                        for (let i = 0; i < proveedores.length; i++) {
+                            if (proveedores[i].celular == celValue) {
+                                cel.setCustomValidity('El número de celular ya está registrado');
+                                return;
+                            }else{
+                                cel.setCustomValidity('');
+                            }
+                        }
                     }
 
                     if (tel.value == "") {
@@ -922,7 +1213,18 @@
                     } else if (isNaN(tel.value) || tel.value.length != 8) {
                         tel.setCustomValidity("El número de celular debe tener 8 dígitos");
                     } else {
-                        tel.setCustomValidity("");
+                        for (let i = 0; i < proveedores.length; i++) {
+                            if(proveedores[i].telefono == telValue && telValue != ''){
+                                errorTel.classList.remove('hide');
+                                errorTel.textContent = 'El número de celular ya está registrado';
+                                tel.setCustomValidity('El número de celular ya está registrado');
+                                return;
+                            }else{
+                                errorTel.classList.add('hide');
+                                errorTel.textContent = '';
+                                tel.setCustomValidity('');
+                            }
+                        }
                     }
 
 
@@ -937,7 +1239,14 @@
                     if (isNaN(cel.value) || cel.value.length != 8) {
                         cel.setCustomValidity("El número de celular debe tener 8 dígitos")
                     } else {
-                        cel.setCustomValidity("");
+                        for (let i = 0; i < proveedores.length; i++) {
+                            if (proveedores[i].celular == celValue) {
+                                cel.setCustomValidity('El número de celular ya está registrado');
+                                return;
+                            }else{
+                                cel.setCustomValidity('');
+                            }
+                        }
                     }
 
                     if (tel.value == "") {
@@ -945,7 +1254,18 @@
                     } else if (isNaN(tel.value) || tel.value.length != 8) {
                         tel.setCustomValidity("El número de celular debe tener 8 dígitos");
                     } else {
-                        tel.setCustomValidity("");
+                        for (let i = 0; i < proveedores.length; i++) {
+                            if(proveedores[i].telefono == telValue && telValue != ''){
+                                errorTel.classList.remove('hide');
+                                errorTel.textContent = 'El número de celular ya está registrado';
+                                tel.setCustomValidity('El número de celular ya está registrado');
+                                return;
+                            }else{
+                                errorTel.classList.add('hide');
+                                errorTel.textContent = '';
+                                tel.setCustomValidity('');
+                            }
+                        }
                     }
 
 
@@ -960,7 +1280,14 @@
                     if (isNaN(cel.value) || cel.value.length != 8) {
                         cel.setCustomValidity("El número de celular debe tener 8 dígitos")
                     } else {
-                        cel.setCustomValidity("");
+                        for (let i = 0; i < proveedores.length; i++) {
+                            if (proveedores[i].celular == celValue) {
+                                cel.setCustomValidity('El número de celular ya está registrado');
+                                return;
+                            }else{
+                                cel.setCustomValidity('');
+                            }
+                        }
                     }
 
                     if (tel.value == "") {
@@ -968,7 +1295,18 @@
                     } else if (isNaN(tel.value) || tel.value.length != 8) {
                         tel.setCustomValidity("El número de celular debe tener 8 dígitos");
                     } else {
-                        tel.setCustomValidity("");
+                        for (let i = 0; i < proveedores.length; i++) {
+                            if(proveedores[i].telefono == telValue && telValue != ''){
+                                errorTel.classList.remove('hide');
+                                errorTel.textContent = 'El número de celular ya está registrado';
+                                tel.setCustomValidity('El número de celular ya está registrado');
+                                return;
+                            }else{
+                                errorTel.classList.add('hide');
+                                errorTel.textContent = '';
+                                tel.setCustomValidity('');
+                            }
+                        }
                     }
 
 
@@ -983,7 +1321,14 @@
                     if (isNaN(cel.value) || cel.value.length != 8) {
                         cel.setCustomValidity("El número de celular debe tener 8 dígitos")
                     } else {
-                        cel.setCustomValidity("");
+                        for (let i = 0; i < proveedores.length; i++) {
+                            if (proveedores[i].celular == celValue) {
+                                cel.setCustomValidity('El número de celular ya está registrado');
+                                return;
+                            }else{
+                                cel.setCustomValidity('');
+                            }
+                        }
                     }
 
                     if (tel.value == "") {
@@ -991,7 +1336,18 @@
                     } else if (isNaN(tel.value) || tel.value.length != 8) {
                         tel.setCustomValidity("El número de celular debe tener 8 dígitos");
                     } else {
-                        tel.setCustomValidity("");
+                        for (let i = 0; i < proveedores.length; i++) {
+                            if(proveedores[i].telefono == telValue && telValue != ''){
+                                errorTel.classList.remove('hide');
+                                errorTel.textContent = 'El número de celular ya está registrado';
+                                tel.setCustomValidity('El número de celular ya está registrado');
+                                return;
+                            }else{
+                                errorTel.classList.add('hide');
+                                errorTel.textContent = '';
+                                tel.setCustomValidity('');
+                            }
+                        }
                     }
 
 
@@ -1006,7 +1362,14 @@
                     if (isNaN(cel.value) || cel.value.length != 10) {
                         cel.setCustomValidity("El número de celular debe tener 10 dígitos")
                     } else {
-                        cel.setCustomValidity("");
+                        for (let i = 0; i < proveedores.length; i++) {
+                            if (proveedores[i].celular == celValue) {
+                                cel.setCustomValidity('El número de celular ya está registrado');
+                                return;
+                            }else{
+                                cel.setCustomValidity('');
+                            }
+                        }
                     }
 
                     if (tel.value == "") {
@@ -1014,7 +1377,18 @@
                     } else if (isNaN(tel.value) || tel.value.length != 10) {
                         tel.setCustomValidity("El número de celular debe tener 10 dígitos");
                     } else {
-                        tel.setCustomValidity("");
+                        for (let i = 0; i < proveedores.length; i++) {
+                            if(proveedores[i].telefono == telValue && telValue != ''){
+                                errorTel.classList.remove('hide');
+                                errorTel.textContent = 'El número de celular ya está registrado';
+                                tel.setCustomValidity('El número de celular ya está registrado');
+                                return;
+                            }else{
+                                errorTel.classList.add('hide');
+                                errorTel.textContent = '';
+                                tel.setCustomValidity('');
+                            }
+                        }
                     }
 
 
@@ -1029,7 +1403,14 @@
                     if (isNaN(cel.value) || cel.value.length != 8) {
                         cel.setCustomValidity("El número de celular debe tener 8 dígitos")
                     } else {
-                        cel.setCustomValidity("");
+                        for (let i = 0; i < proveedores.length; i++) {
+                            if (proveedores[i].celular == celValue) {
+                                cel.setCustomValidity('El número de celular ya está registrado');
+                                return;
+                            }else{
+                                cel.setCustomValidity('');
+                            }
+                        }
                     }
 
                     if (tel.value == "") {
@@ -1037,7 +1418,18 @@
                     } else if (isNaN(tel.value) || tel.value.length != 8) {
                         tel.setCustomValidity("El número de celular debe tener 8 dígitos");
                     } else {
-                        tel.setCustomValidity("");
+                        for (let i = 0; i < proveedores.length; i++) {
+                            if(proveedores[i].telefono == telValue && telValue != ''){
+                                errorTel.classList.remove('hide');
+                                errorTel.textContent = 'El número de celular ya está registrado';
+                                tel.setCustomValidity('El número de celular ya está registrado');
+                                return;
+                            }else{
+                                errorTel.classList.add('hide');
+                                errorTel.textContent = '';
+                                tel.setCustomValidity('');
+                            }
+                        }
                     }
 
 
@@ -1052,7 +1444,14 @@
                     if (isNaN(cel.value) || cel.value.length != 8) {
                         cel.setCustomValidity("El número de celular debe tener 8 dígitos")
                     } else {
-                        cel.setCustomValidity("");
+                        for (let i = 0; i < proveedores.length; i++) {
+                            if (proveedores[i].celular == celValue) {
+                                cel.setCustomValidity('El número de celular ya está registrado');
+                                return;
+                            }else{
+                                cel.setCustomValidity('');
+                            }
+                        }
                     }
 
                     if (tel.value == "") {
@@ -1060,7 +1459,18 @@
                     } else if (isNaN(tel.value) || tel.value.length != 8) {
                         tel.setCustomValidity("El número de celular debe tener 8 dígitos");
                     } else {
-                        tel.setCustomValidity("");
+                        for (let i = 0; i < proveedores.length; i++) {
+                            if(proveedores[i].telefono == telValue && telValue != ''){
+                                errorTel.classList.remove('hide');
+                                errorTel.textContent = 'El número de celular ya está registrado';
+                                tel.setCustomValidity('El número de celular ya está registrado');
+                                return;
+                            }else{
+                                errorTel.classList.add('hide');
+                                errorTel.textContent = '';
+                                tel.setCustomValidity('');
+                            }
+                        }
                     }
 
 
@@ -1069,6 +1479,7 @@
                     departamento.removeAttribute('required');
                     municipio.removeAttribute('required');
                 }
+
             }
 
             codigo.addEventListener('change', updateVisibility);
@@ -1082,26 +1493,152 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             let nit = document.getElementById('nit');
+            let error = document.getElementById('nit-error');
+            let proveedores = @json($proveedores);
 
             function nitValidity() {
-                nit.addEventListener('change', function() {
-                    if (this.value.length != 0) {
-                        if (isNaN(this.value) || this.value.length > 12 || this.value.length < 8) {
-                            this.setCustomValidity("El nit es muy largo o muy corto");
-                        } else {
-                            this.setCustomValidity("");
-                        }
+                if (nit.value.length != 0) {
+                    nit.value = nit.value.slice(0, 12);
+                    if (isNaN(nit.value)) {
+                        nit.setCustomValidity("El nit debe contener solo números");
+                        error.classList.remove('hide');
+                        error.textContent = 'El nit debe contener solo números';
+                    } else if (nit.value.length < 8) {
+                        nit.setCustomValidity("El nit es muy corto");
+                        error.classList.remove('hide');
+                        error.textContent = 'El nit es muy corto';
                     } else {
-                        this.setCustomValidity("El nit es obligatorio");
+                        nit.setCustomValidity("");
+                        error.classList.add('hide');
+                        error.textContent = '';
                     }
-                });
+
+                    let nitValue = nit.value; // Corrección aquí
+                    for (let i = 0; i < proveedores.length; i++) { // Corrección aquí
+                        if (proveedores[i].nit_empresa == nitValue) { // Corrección aquí
+                            error.classList.remove('hide');
+                            error.textContent = 'El nit ya está registrado';
+                            nit.setCustomValidity("El nit ya está registrado");
+                            return; // Corrección aquí
+                        }
+                    }
+                } else {
+                    nit.setCustomValidity("");
+                    error.classList.add('hide');
+                    error.textContent = '';
+                }
             }
 
-            nit.addEventListener('change', nitValidity);
+            nit.addEventListener('input', nitValidity);
 
             nitValidity();
         });
     </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function(){
+            let razon = document.getElementById('razonSocial');
+            let proveedores = @json($proveedores);
+            let error = document.getElementById('razon-error');
+
+            function razonValidity(){
+                if (razon.value.length != 0) {
+                    let razonValue = razon.value;
+
+                    for(let i = 0; i < proveedores.length; i++){
+                        if(proveedores[i].razon_social.toLowerCase() == razonValue.toLowerCase()){
+                            razon.setCustomValidity('Esta razón social ya está registrada');
+                            error.classList.remove('hide');
+                            error.textContent = 'Esta razón social ya está registrada';
+                            return;
+                        }else{
+                            razon.setCustomValidity('');
+                            error.classList.add('hide');
+                            error.textContent = '';
+                        }
+                    }
+                }else {
+                    razon.setCustomValidity("");
+                    error.classList.add('hide');
+                    error.textContent = '';
+                }
+            }
+
+            razon.addEventListener('input', razonValidity);
+
+            razonValidity();
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function(){
+            let email = document.getElementById('email');
+            let proveedores = @json($proveedores);
+            let error = document.getElementById('email-error');
+
+            function emailValidity(){
+                if (email.value.length != 0) {
+                    let emailValue = email.value;
+
+                    for(let i = 0; i < proveedores.length; i++){
+                        if(proveedores[i].email.toLowerCase() == emailValue.toLowerCase()){
+                            email.setCustomValidity('Esta correo electrónico ya está registrado');
+                            error.classList.remove('hide');
+                            error.textContent = 'Esta correo electrónico ya está registrado';
+                            return;
+                        }else{
+                            email.setCustomValidity('');
+                            error.classList.add('hide');
+                            error.textContent = '';
+                        }
+                    }
+                }else {
+                    email.setCustomValidity("");
+                    error.classList.add('hide');
+                    error.textContent = '';
+                }
+            }
+
+            email.addEventListener('input', emailValidity);
+
+            emailValidity();
+        });
+    </script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function(){
+        let nombre = document.getElementById('nombre_establecimiento');
+        let proveedores = @json($proveedores);
+        let error = document.getElementById('nombre-error');
+
+        function nombreValidity(){
+            if (nombre.value.length != 0) {
+                let nombreValue = nombre.value;
+
+                for(let i = 0; i < proveedores.length; i++){
+                    if(proveedores[i].nombre_comercial.toLowerCase() == nombreValue.toLowerCase()){
+                        nombre.setCustomValidity('Este nombre ya está registrado');
+                        error.classList.remove('hide');
+                        error.textContent = 'Este nombre ya está registrado';
+                        return;
+                    }else{
+                        nombre.setCustomValidity('');
+                        error.classList.add('hide');
+                        error.textContent = '';
+                    }
+                }
+            }else {
+                nombre.setCustomValidity("");
+                error.classList.add('hide');
+                error.textContent = '';
+            }
+        }
+
+        nombre.addEventListener('input', emailValidity);
+
+        nombreValidity();
+    });
+</script>
 
     <script>
         // Obtener los elementos del formulario
@@ -1367,7 +1904,6 @@
             });
         });
     </script>
-
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 

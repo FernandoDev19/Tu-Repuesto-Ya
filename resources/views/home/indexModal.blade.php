@@ -1,6 +1,6 @@
 @extends('layouts.base')
 
-@section('title', 'Inicio | Tu Repuesto Ya')
+@section('title', 'Repuestos para Carros | Tu Repuesto Ya')
 
 @section('content')
 
@@ -18,18 +18,18 @@
                         <p class="text-color-primary">
                             <span class="none">OLVÍDATE DE IR A BUSCAR</span> <br>
                             TUS
-                            REPUESTOS</p>
+                            REPUESTOS PARA CARROS</p>
                             <div class="flex-j-center-cel w-100">
                                 <a title="Crear solicitud de repuesto" class="WSP" href="{{route('vistaFormulario')}}">
                                     <span class="none">¡Busca aquí!</span> <span class="none-pc">¡Buscalos aquí!</span>
                                     <i class="fa fa-whatsapp" style="font-size: 40px;" aria-hidden="true"></i>
                                 </a>
                             </div>
-                        <p id="parrafo-3-sesion-de-contacto-por-whatsapp" style="width: 100%;">
+                        <h6 id="parrafo-3-sesion-de-contacto-por-whatsapp" style="width: 100%;">
                             Nosotros enviaremos tu solicitud <br> a 500 almacenes.
 
                             Recibirás <br> las 5 mejores Cotizaciones 🏆
-                        </p>
+                        </h6>
                     </div>
                 </article>
                 <div id="container-img">
@@ -44,8 +44,7 @@
                 <div class="row align-items-center" style="width: 100%;">
                     <div class="col-md-14" style="padding: 0;">
                         <div id="text">
-                            <p><span class="font_size_article_marcas2">REPUESTOS DISPONIBLES PARA TODO TIPO DE
-                                    CARROS</span></p>
+                            <p><span class="font_size_article_marcas2">REPUESTOS PARA CARROS CON LOS MEJORES PRECIOS DEL MERCADO DE MANERA FÁCIL Y RÁPIDA</span></p>
                         </div>
                     </div>
                 </div>
@@ -216,7 +215,7 @@
         <section id="solicitud-de-repuestos">
             <div class="container-flex">
                 <div class="w-50" id="container-text-cuentanos">
-                    <h1>1. CUÉNTANOS:</h1>
+                    <h2>1. CUÉNTANOS:</h2>
                     <div id="container-list-cuentanos">
                         <ul id="list-cuentanos">
                             <li style='display: flex;'><i class="check-list-sesion-de-marcas-y-cotizaciones fas fa-check-circle"
@@ -261,7 +260,7 @@
                         alt="correo" width="736">
                 </div>
                 <div class="w-50" id="container-text-envia-tu-requerimiento">
-                    <h1>2. ENVÍA TU <br> REQUERIMIENTO:</h1>
+                    <h3>2. ENVÍA TU <br> REQUERIMIENTO:</h3>
 
                     <p>Los almacenes afiliados del país recibirán
                         tu solicitud y en menos de 24 horas
@@ -284,7 +283,7 @@
         <section id="sesion-de-eleccion-de-opciones">
             <div class="container-flex">
                 <div class="w-50" id="container-text-elige-tu-mejor-opcion">
-                    <h1>3. ELIGE TU MEJOR OPCIÓN:</h1>
+                    <h4>3. ELIGE TU MEJOR OPCIÓN:</h4>
 
                     <p>Ponte de acuerdo con el establecimiento <br>
                         para el pago y el envío.</p>
@@ -311,7 +310,7 @@
     <footer id="sesion-de-busqueda-de-productos-diferentes">
         <div class="container-flex-col">
             <div id="container-text-header-busqueda-de-productos-diferentes">
-                <h1 style="text-align: center;">¿BUSCAS ALGO DIFERENTE A REPUESTOS DE CARROS?</h1>
+                <h1 style="text-align: center;">¿BUSCAS ALGO DIFERENTE A REPUESTOS PARA CARROS?</h1>
                 <div class="footer-sesion-de-contacto-por-whatsapp w-100">
                     <a style="width: 300px; height: 70px; background-color: #25D366; margin-top: 4% !important; margin-bottom: 0;" title="Crear solicitud de repuesto" id="WSP" href="https://api.whatsapp.com/send?phone=+573249216736&text=%2A%C2%A1Hola%21%2A%20%E2%9C%8B%20Vengo%20de%20la%20p%C3%A1gina%20web%20de%20%2ATu%20Repuesto%20Ya%2A%20Estoy%20buscando%20lo%20siguiente%3A">
                         ¡Busca aquí!
