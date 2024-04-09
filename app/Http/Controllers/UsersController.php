@@ -6,6 +6,7 @@ use App\Models\Provider;
 use App\Models\User;
 use App\Models\Country_code;
 use App\Models\Geolocation;
+use App\Models\Category;
 
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
@@ -17,6 +18,10 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
+use App\Models\Activity_log;
+use Illuminate\Support\Facades\Log;
+
+use Carbon\Carbon;
 
 use App\Mail\RegistroProveedorMail;
 use App\Mail\RestablecerContrasenia;
@@ -53,6 +58,26 @@ class UsersController extends Controller
                 $request->session()->regenerate();
 
                 if ($user->role === 'Admin') {
+
+                    $new_log = new Activity_log();
+                    $new_log->fecha = Carbon::now();
+                    if(auth()->check()){
+                        $new_log->usuario = auth()->user()->name;
+                    }else{
+                        $new_log->usuario = 'Desconocido';
+                    }
+                    $new_log->actividad = 'Ha iniciado sesión.';
+                    $new_log->descripcion = 'Se ha iniciado una sesión';
+                    $new_log->navegador = request()->header('user-agent');
+                    $new_log->direccion_ip = request()->ip();
+                    $new_log->role = 'Admin';
+
+                    try{
+                        $new_log->save();
+                    }catch(\exception $e){
+                        Log::error('Error al registrar la nueva actividad: ' . $e->getMessage());
+                    }
+
                     return redirect()->intended(route('dashboard'));
                 } elseif ($user->role === 'Proveedor') {
                     if (!$user->proveedor->estado) {
@@ -61,6 +86,25 @@ class UsersController extends Controller
                         return redirect()->route('login_outAnimate')->withErrors([
                             'email' => 'Tu cuenta está inactiva. Contacta al administrador para obtener acceso.',
                         ]);
+                    }
+
+                    $new_log = new Activity_log();
+                    $new_log->fecha = Carbon::now();
+                    if(auth()->check()){
+                        $new_log->usuario = auth()->user()->name;
+                    }else{
+                        $new_log->usuario = 'Desconocido';
+                    }
+                    $new_log->actividad = 'Ha iniciado sesión.';
+                    $new_log->descripcion = 'Se ha iniciado una sesión';
+                    $new_log->navegador = request()->header('user-agent');
+                    $new_log->direccion_ip = request()->ip();
+                    $new_log->role = 'Admin';
+
+                    try{
+                        $new_log->save();
+                    }catch(\exception $e){
+                        Log::error('Error al registrar la nueva actividad: ' . $e->getMessage());
                     }
 
                     return redirect()->intended(route('dashboard'));
@@ -81,7 +125,8 @@ class UsersController extends Controller
 
     public function resetPassword(): view
     {
-        return view("auth.reset-password");
+        $proveedores = Provider::all();
+        return view("auth.reset-password", compact('proveedores'));
     }
 
     public function emailVerification(Request $request)
@@ -90,10 +135,9 @@ class UsersController extends Controller
             'email' => 'required|email',
         ]);
 
-        $user = User::where('email', $request->email)->first();
-        $provider = Provider::where('email', $request->email)->orWhere('email_secundario', $request->email)->first();
+        $user = User::where('email', $request->email)->orWhere('email_secundario', $request->email)->first();
 
-        if ($user || $provider) {
+        if ($user) {
             // Genera un token único
             $token = Str::random(60);
 
@@ -107,7 +151,7 @@ class UsersController extends Controller
                 'token' => $token, // Pasamos el token al correo
             ];
 
-            Mail::to($user->email)->cc($provider->email_secundario)->send(new RestablecerContrasenia($email));
+            Mail::to($request->email)->send(new RestablecerContrasenia($email));
 
             return redirect()->route('login_outAnimate')->with('message', 'Se ha enviado un correo con instrucciones para cambiar la contraseña.');
         }
@@ -182,7 +226,7 @@ class UsersController extends Controller
             'email' => 'No se encontró una cuenta con el correo proporcionado.',
         ]);
     }
- 
+
     public function register(Request $request): view
     {
         // Lista de codigos
@@ -201,7 +245,9 @@ class UsersController extends Controller
             $group[$departamento] = $municipios;
         }
 
-        return view('auth.register', compact('departamentos', 'group', 'codigos', 'proveedores'));
+        $categorias = Category::where('nombre_categoria', '!=', 'Prueba')->get();
+
+        return view('auth.register', compact('departamentos', 'group', 'codigos', 'proveedores', 'categorias'));
     }
 
     public function store(Request $request): RedirectResponse
@@ -212,6 +258,9 @@ class UsersController extends Controller
             [
                 'nit' => 'required|numeric|digits_between:8,16',
                 'razon' => 'required',
+                'nombre_establecimiento' => 'required',
+                'gerente' => 'required',
+                'administrador' => 'required',
                 'direccion' => 'required',
                 'codigo_cel' => 'required',
                 'cel' => 'required|numeric|digits:10',
@@ -225,7 +274,7 @@ class UsersController extends Controller
                 'json_marcas' => 'required',
                 'json_categorias' => 'required',
                 'rut' => 'required|file|mimes:pdf|max:5024',
-                'cam' => 'required|file|mimes:pdf|max:5024',
+                'cam' => 'nullable|file|mimes:pdf|max:5024',
                 'terms' => 'required',
             ],
             [
@@ -264,6 +313,16 @@ class UsersController extends Controller
 
         // Validar si la razón social ya está registrada
         $validator->after(function ($validator) use ($request) {
+            $nombre_establecimiento = $request->input('nombre_establecimiento');
+            $existingProvider = Provider::where('nombre_comercial', $nombre_establecimiento)->first();
+
+            if ($existingProvider) {
+                $validator->errors()->add('nombre_establecimiento', 'Este Nombre ya está registrado.');
+            }
+        });
+
+          // Validar si la razón social ya está registrada
+          $validator->after(function ($validator) use ($request) {
             $razon = $request->input('razon');
             $existingProvider = Provider::where('razon_social', $razon)->first();
 
@@ -307,14 +366,17 @@ class UsersController extends Controller
         });
 
         // Validar el tamaño del archivo de la Cámara de Comercio
-        $validator->after(function ($validator) use ($request) {
-            $maxFileSize = 5024 * 1024; // Tamaño máximo en bytes (5 MB)
-            $camFile = $request->file('cam');
+        if($request->has('cam') && $request->filled('cam')){
+            // Validar el tamaño del archivo de la Cámara de Comercio
+            $validator->after(function ($validator) use ($request) {
+                $maxFileSize = 5024 * 1024; // Tamaño máximo en bytes (5 MB)
+                $camFile = $request->file('cam');
 
-            if ($camFile && $camFile->getSize() > $maxFileSize) {
-                $validator->errors()->add('cam', 'El archivo de la Cámara de Comercio es demasiado grande. El tamaño máximo permitido es 5 MB.');
-            }
-        });
+                if ($camFile && $camFile->getSize() > $maxFileSize) {
+                    $validator->errors()->add('cam', 'El archivo de la Cámara de Comercio es demasiado grande. El tamaño máximo permitido es 5 MB.');
+                }
+            });
+        }
 
         if ($validator->fails()) {
             // Si la validación falla, redirigir de nuevo al formulario con errores y datos anteriores
@@ -327,6 +389,9 @@ class UsersController extends Controller
         $proveedor = new Provider();
         $proveedor->nit_empresa = $request->nit;
         $proveedor->razon_social = $request->razon;
+        $proveedor->nombre_comercial = $request->nombre_establecimiento;
+        $proveedor->gerente = $request->gerente;
+        $proveedor->administrador = $request->administrador;
         $proveedor->departamento = $request->departamento;
         $proveedor->municipio = $request->municipio;
         $proveedor->direccion = $request->direccion;
@@ -356,7 +421,9 @@ class UsersController extends Controller
 
         $proveedor->pais = $paises[$request->codigo_cel];
         $proveedor->celular = $request->codigo_cel . $request->cel;
-        $proveedor->telefono = $request->tel;
+        if ($request->has('tel') && $request->filled('tel')) {
+            $proveedor->telefono = $request->codigo_cel . $request->tel;
+        }
         $proveedor->email = $request->email;
         $proveedor->password = bcrypt($request->password); // Encriptar la contraseña
 
@@ -385,18 +452,21 @@ class UsersController extends Controller
         $archivoCam = $request->file('cam');
 
         // Guardar los archivos con nombres personalizados
-        if ($archivoRut && $archivoCam) {
+        if ($archivoRut) {
             $nit = $request->nit;
             $nombreRutPersonalizado = 'RUT_' . $nit . '.pdf';
             $nombreCamPersonalizado = 'Camara_de_comercio_' . $nit . '.pdf';
 
             // Mover y guardar los archivos con los nombres personalizados en la carpeta 'uploads'
             $archivoRut->storeAs('uploads', $nombreRutPersonalizado);
-            $archivoCam->storeAs('uploads', $nombreCamPersonalizado);
-
-            // Asignar los nombres personalizados a los campos en la base de datos
             $proveedor->rut = $nombreRutPersonalizado;
-            $proveedor->camara_comercio = $nombreCamPersonalizado;
+
+            if($archivoCam){
+                $archivoCam->storeAs('uploads', $nombreCamPersonalizado);
+                $proveedor->camara_comercio = $nombreCamPersonalizado;
+            }else{
+                $proveedor->camara_comercio = 'pendiente';
+            }
 
             // Guardar el proveedor en la base de datos
             $proveedor->save();
@@ -413,14 +483,86 @@ class UsersController extends Controller
             $user->password = bcrypt($request->password); // Encriptar la contraseña
             $user->proveedor()->associate($proveedor);
             $user->assignRole('Proveedor');
-            $user->save();
+            try{
+                $user->save();
+
+                $new_log = new Activity_log();
+                $new_log->fecha = Carbon::now();
+                $new_log->usuario = $proveedor->razon_social;
+                $new_log->actividad = 'Se ha registrado cómo provedor.';
+                $new_log->descripcion = 'Se ha registrado un nuevo proveedor';
+                $new_log->navegador = request()->header('user-agent');
+                $new_log->direccion_ip = request()->ip();
+                $new_log->role = 'Admin';
+
+                try{
+                    $new_log->save();
+                }catch(\exception $e){
+                    Log::error('Error al registrar la nueva actividad: ' . $e->getMessage());
+                }
+            }catch(\exception $e){
+
+            }
+
 
             //Envia confirmación de registro por email al proveedor
             $data = [
                 'name' => $user->name,
             ];
 
-            Mail::to($user->email)->send(new RegistroProveedorMail($data));
+            try{
+                Mail::to($user->email)->send(new RegistroProveedorMail($data));
+            }catch(\exception $e){
+                $token = 'EAAyaksOlpN4BO64MEL1cjlEGMvDQb6liWd3oCOIhvnUZBMeF5tbhAvjZABvBnnaYh9V9waBGZCBJW0LnCFaDcUQMZArNbLSKCUEL1MLmgdoRpQHyvEGdAC0CYOxt3l5N2u2Wi0yAlVFE7mCRtHVkZCSOyZAXyVtbrxxeOjkJqOkFDjloKrVuZBLXJUF4S1KG3u7';
+                $url = 'https://graph.facebook.com/v17.0/196744616845968/messages';
+                $admin = auth()->user()->cel;
+
+                $mensajeData = [
+                    'messaging_product' => 'whatsapp',
+                    'recipient_type' => 'individual',
+                    'to' => $admin,
+                    'type' => 'template',
+                    'template' => [
+                        'name' => 'errors_reports',
+                        'language' => [
+                            'code' => 'es',
+                        ],
+                        'components' => [
+                            [
+                                'type' => 'body',
+                                'parameters' => [
+                                    [
+                                        'type' => 'text',
+                                        'text' => 'https://turepuestoya.co/administrador/proveedores',
+                                    ],
+                                    [
+                                        'type' => 'text',
+                                        'text' => 'Error al enviar email a '. $user->email .' : '. $e->getMessage(),
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ];
+
+                $mensaje = json_encode($mensajeData);
+
+                $header = [
+                    "Authorization: Bearer " . $token,
+                    "Content-Type: application/json",
+                ];
+                $curl = curl_init();
+                curl_setopt($curl, CURLOPT_URL, $url);
+                curl_setopt($curl, CURLOPT_POSTFIELDS, $mensaje);
+                curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
+                curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+
+                $response = json_decode(curl_exec($curl), true);
+
+                $status_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+
+                curl_close($curl);
+            }
 
             // Notificar al administrador
             $admin = User::where('role', 'Admin')->first();
@@ -428,9 +570,12 @@ class UsersController extends Controller
             if ($admin) {
                 Notification::send($admin, new NuevoProveedorRegistrado($proveedor));
 
-                foreach (auth()->user()->unreadNotifications as $notification) {
-                    $enlace = "$request->nit/$notification->id";
+                if(auth()->user()->unreadNotifications){
+                    foreach (auth()->user()->unreadNotifications as $notification) {
+                        $enlace = "$request->nit/$notification->id";
+                    }
                 }
+                
                 $token = 'EAAyaksOlpN4BO64MEL1cjlEGMvDQb6liWd3oCOIhvnUZBMeF5tbhAvjZABvBnnaYh9V9waBGZCBJW0LnCFaDcUQMZArNbLSKCUEL1MLmgdoRpQHyvEGdAC0CYOxt3l5N2u2Wi0yAlVFE7mCRtHVkZCSOyZAXyVtbrxxeOjkJqOkFDjloKrVuZBLXJUF4S1KG3u7';
                 $url = 'https://graph.facebook.com/v17.0/196744616845968/messages';
 

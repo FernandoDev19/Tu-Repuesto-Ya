@@ -2,6 +2,9 @@
 
 @section('title', 'Repuestos para Carros | Tu Repuesto Ya')
 
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"
+    integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+
 @section('content')
 
     <div id="overlay" class="overlay" style="display:flex; flex-direction:column;">
@@ -15,14 +18,11 @@
                 <article id="container-text">
                     <div class="text-center">
                         <h1 style="margin-bottom: 10px;">AHORRA <span class="typed"></span></h1>
-                        <p class="text-color-primary">
-                            <span class="none">OLVÍDATE DE IR A BUSCAR</span> <br>
-                            TUS
-                            REPUESTOS PARA CARROS</p>
+                        <p class="text-color-primary">REPUESTOS PARA CARROS</p>
                             <div class="flex-j-center-cel w-100">
                                 <a title="Crear solicitud de repuesto" class="WSP" href="{{route('vistaFormulario')}}">
-                                    <span class="none">¡Busca aquí!</span> <span class="none-pc">¡Buscalos aquí!</span>
-                                    <i class="fa fa-whatsapp" style="font-size: 40px;" aria-hidden="true"></i>
+                                    <span>¡Busca aquí!</span>
+                                    <i class="fab fa-whatsapp" style="font-size: 40px;" aria-hidden="true"></i>
                                 </a>
                             </div>
                         <h6 id="parrafo-3-sesion-de-contacto-por-whatsapp" style="width: 100%;">
@@ -33,13 +33,137 @@
                     </div>
                 </article>
                 <div id="container-img">
-                    <img src="{{asset('img/App.webp')}}"
+                    <img src="{{asset('img/turepuestoya-repuestos-para-carros.webp')}}"
                         alt="celular" width="736">
                 </div>
             </div>
         </section>
+        
+        <div class="separator" style="width:100%; padding: 0 5%;">
+            <hr>
+        </div>
 
-        <section id="sesion-de-marcas-y-cotizaciones">
+        <section id="solicitud-de-repuestos">
+            <div class="container-flex" id="cuentanos-flex-container">
+                <div class="w-50" id="container-text-cuentanos">
+                    <h2>1. CUÉNTANOS:</h2>
+                    <div id="container-list-cuentanos">
+                        <ul id="list-cuentanos">
+                            <li style='display: flex;'><i class="check-list-sesion-de-marcas-y-cotizaciones fas fa-check-circle"
+                                    style="margin-right: 2%; padding-top: 1.5%;"> </i> La Marca de tu carro</li>
+
+                            <li style='display: flex;'><i class="check-list-sesion-de-marcas-y-cotizaciones fas fa-check-circle"
+                                    style="margin-right: 2%; padding-top: 1.5%;"> </i> Modelo (Año)</li>
+
+                            <li style='display: flex;'><i class="check-list-sesion-de-marcas-y-cotizaciones fas fa-check-circle"
+                                    style="margin-right: 2%; padding-top: 1.5%;"> </i> Referencia o línea como aparece en la tarjeta de
+                                propiedad</li>
+
+                            <li style='display: flex;'><i class="check-list-sesion-de-marcas-y-cotizaciones fas fa-check-circle"
+                                    style="margin-right: 2%; padding-top: 1.5%;"> </i> Describe tu repuesto</li>
+
+                            <li style='display: flex;'><i class="check-list-sesion-de-marcas-y-cotizaciones fas fa-check-circle"
+                                    style="margin-right: 2%; padding-top: 1.5%;"> </i> Agrega fotos del repuesto (opcional)</li>
+                        </ul>
+                    </div>
+                    <div class="container-btn-solicitud-cel w-100">
+                        <a title="Crear solicitud de repuesto" class="WSP" href="{{route('vistaFormulario')}}" style="margin-bottom: 0;">
+                        ¡Busca aquí!
+                        <i class="fa fa-search" style="font-size: 40px;" aria-hidden="true"></i></a>
+                    </div>
+                </div>
+
+                 <div id="container-img-cuentanos">
+                    <h2 id="text-video-turepuestoya" style="font-size: 1.2rem; font-weight: 700;">ASÍ FUNCIONA</h2>
+                    <iframe style="width: 100%;" width="600" height="380" src="https://www.youtube.com/embed/nVWdoFRnccA" title="video explicativo de Tu Repuesto Ya" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                </div>
+            </div>
+        </section>
+
+        <div class="separator" style="width:100%; padding: 0 5%;">
+            <hr>
+        </div>
+
+        <section id="sesion-de-envio-de-requerimientos">
+            <div class="container-flex">
+                <div class="w-40" id="container-img-envia-tu-requerimiento">
+                    <img src="{{asset('img/img-correo.webp')}}"
+                        alt="correo" width="736">
+                </div>
+                <div class="w-50" id="container-text-envia-tu-requerimiento">
+                    <h3>2. ENVÍA TU <br> REQUERIMIENTO:</h3>
+
+                    <p>Los almacenes afiliados del país recibirán
+                        tu solicitud y en menos de 24 horas
+                        TU REPUESTO YA te enviará las 5 mejores
+                        cotizaciones.</p>
+
+                    <div class="container-btn-solicitud-cel w-100">
+                        <a title="Crear solicitud de repuesto" class="WSP" href="{{route('vistaFormulario')}}" style="margin-bottom: 0;">
+                        ¡Busca aquí!
+                        <i class="fa fa-search" style="font-size: 40px;" aria-hidden="true"></i></a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="separator" style="width:100%; padding: 0 5%;" >
+            <hr>
+        </div>
+
+        <section id="sesion-de-eleccion-de-opciones">
+            <div class="container-flex">
+                <div class="w-50" id="container-text-elige-tu-mejor-opcion">
+                    <h4>3. ELIGE TU MEJOR OPCIÓN:</h4>
+
+                    <p>Ponte de acuerdo con el establecimiento <br>
+                        para el pago y el envío.</p>
+
+                        <div class="container-btn-solicitud-cel w-100">
+                            <a title="Crear solicitud de repuesto" class="WSP" href="{{route('vistaFormulario')}}" style="margin-bottom: 0;">
+                            ¡Busca aquí!
+                            <i class="fa fa-search" style="font-size: 40px;" aria-hidden="true"></i></a>
+                        </div>
+                </div>
+                <div class="w-40" id="container-img-elige-tu-mejor-opcion">
+                    <img src="{{asset('img/cel-mano.webp')}}"
+                        alt="cel-mano" width="736">
+                </div>
+            </div>
+        </section>
+
+        <div class="separator" style="width:100%; padding: 0 5%;">
+            <hr>
+        </div>
+
+    </div>
+
+    <footer id="sesion-de-busqueda-de-productos-diferentes">
+        <div class="container-flex-col">
+            <div id="container-text-header-busqueda-de-productos-diferentes">
+                <h1 style="text-align: center;">¿BUSCAS ALGO DIFERENTE A REPUESTOS PARA CARROS?</h1>
+                <div class="footer-sesion-de-contacto-por-whatsapp w-100">
+                    <a style="width: 300px; height: 70px; background-color: #25D366; margin-top: 4% !important; margin-bottom: 0;" title="Crear solicitud de repuesto" id="WSP" href="https://api.whatsapp.com/send?phone=+573249216736&text=%2A%C2%A1Hola%21%2A%20%E2%9C%8B%20Vengo%20de%20la%20p%C3%A1gina%20web%20de%20%2ATu%20Repuesto%20Ya%2A%20Estoy%20buscando%20lo%20siguiente%3A">
+                        ¡Busca aquí!
+                        <i class="fab fa-whatsapp" style="font-size: 40px;" aria-hidden="true"></i>
+
+                    </a>
+                </div>
+            </div>
+            <div id="container-text-body-busqueda-de-productos-diferentes">
+                <p><span style="font-weight: 700;">Cuéntale a tus amigos</span><br>y por cada compra de repuestos para carros que realicen tus referidos,<br>gánate un obsequio</p>
+                <div id="container-img-busqueda-de-productos-diferentes">
+                    <img class="icon_chat" id='icon_chat' src="{{ asset('img/img-megafono.webp') }}" alt="megafono">
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+       <div class="separator" style="width:100%; padding: 0 5%;" >
+            <hr>
+        </div>
+    
+    <section id="sesion-de-marcas-y-cotizaciones">
             <div id="article_marcas">
                 <div class="row align-items-center" style="width: 100%;">
                     <div class="col-md-14" style="padding: 0;">
@@ -212,122 +336,6 @@
             </div>
         </section>
 
-        <section id="solicitud-de-repuestos">
-            <div class="container-flex">
-                <div class="w-50" id="container-text-cuentanos">
-                    <h2>1. CUÉNTANOS:</h2>
-                    <div id="container-list-cuentanos">
-                        <ul id="list-cuentanos">
-                            <li style='display: flex;'><i class="check-list-sesion-de-marcas-y-cotizaciones fas fa-check-circle"
-                                    style="margin-right: 2%; padding-top: 1.5%;"> </i> La Marca de tu carro</li>
-
-                            <li style='display: flex;'><i class="check-list-sesion-de-marcas-y-cotizaciones fas fa-check-circle"
-                                    style="margin-right: 2%; padding-top: 1.5%;"> </i> Modelo (Año)</li>
-
-                            <li style='display: flex;'><i class="check-list-sesion-de-marcas-y-cotizaciones fas fa-check-circle"
-                                    style="margin-right: 2%; padding-top: 1.5%;"> </i> Referencia o línea como aparece en la tarjeta de
-                                propiedad</li>
-
-                            <li style='display: flex;'><i class="check-list-sesion-de-marcas-y-cotizaciones fas fa-check-circle"
-                                    style="margin-right: 2%; padding-top: 1.5%;"> </i> Describe tu repuesto</li>
-
-                            <li style='display: flex;'><i class="check-list-sesion-de-marcas-y-cotizaciones fas fa-check-circle"
-                                    style="margin-right: 2%; padding-top: 1.5%;"> </i> Agrega fotos del repuesto (opcional)</li>
-                        </ul>
-                    </div>
-                    <div class="container-btn-solicitud-cel w-100">
-                        <a title="Crear solicitud de repuesto" class="WSP" href="{{route('vistaFormulario')}}" style="margin-bottom: 0;">
-                        ¡Busca aquí!
-                        <i class="fa fa-search" style="font-size: 40px;" aria-hidden="true"></i></a>
-                    </div>
-                </div>
-
-                <div class="w-40" id="container-img-cuentanos">
-                    <img src="{{asset('img/img-carro.webp')}}"
-                        alt="carro" width="736">
-                </div>
-            </div>
-        </section>
-
-        <div class="separator" style="width:100%; padding: 0 5%;">
-            <hr>
-        </div>
-
-        <section id="sesion-de-envio-de-requerimientos">
-            <div class="container-flex">
-                <div class="w-40" id="container-img-envia-tu-requerimiento">
-                    <img src="{{asset('img/img-correo.webp')}}"
-                        alt="correo" width="736">
-                </div>
-                <div class="w-50" id="container-text-envia-tu-requerimiento">
-                    <h3>2. ENVÍA TU <br> REQUERIMIENTO:</h3>
-
-                    <p>Los almacenes afiliados del país recibirán
-                        tu solicitud y en menos de 24 horas
-                        TU REPUESTO YA te enviará las 5 mejores
-                        cotizaciones.</p>
-
-                    <div class="container-btn-solicitud-cel w-100">
-                        <a title="Crear solicitud de repuesto" class="WSP" href="{{route('vistaFormulario')}}" style="margin-bottom: 0;">
-                        ¡Busca aquí!
-                        <i class="fa fa-search" style="font-size: 40px;" aria-hidden="true"></i></a>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <div class="separator" style="width:100%; padding: 0 5%;" >
-            <hr>
-        </div>
-
-        <section id="sesion-de-eleccion-de-opciones">
-            <div class="container-flex">
-                <div class="w-50" id="container-text-elige-tu-mejor-opcion">
-                    <h4>3. ELIGE TU MEJOR OPCIÓN:</h4>
-
-                    <p>Ponte de acuerdo con el establecimiento <br>
-                        para el pago y el envío.</p>
-
-                        <div class="container-btn-solicitud-cel w-100">
-                            <a title="Crear solicitud de repuesto" class="WSP" href="{{route('vistaFormulario')}}" style="margin-bottom: 0;">
-                            ¡Busca aquí!
-                            <i class="fa fa-search" style="font-size: 40px;" aria-hidden="true"></i></a>
-                        </div>
-                </div>
-                <div class="w-40" id="container-img-elige-tu-mejor-opcion">
-                    <img src="{{asset('img/cel-mano.webp')}}"
-                        alt="cel-mano" width="736">
-                </div>
-            </div>
-        </section>
-
-        <div class="separator" style="width:100%; padding: 0 5%;">
-            <hr>
-        </div>
-
-    </div>
-
-    <footer id="sesion-de-busqueda-de-productos-diferentes">
-        <div class="container-flex-col">
-            <div id="container-text-header-busqueda-de-productos-diferentes">
-                <h1 style="text-align: center;">¿BUSCAS ALGO DIFERENTE A REPUESTOS PARA CARROS?</h1>
-                <div class="footer-sesion-de-contacto-por-whatsapp w-100">
-                    <a style="width: 300px; height: 70px; background-color: #25D366; margin-top: 4% !important; margin-bottom: 0;" title="Crear solicitud de repuesto" id="WSP" href="https://api.whatsapp.com/send?phone=+573249216736&text=%2A%C2%A1Hola%21%2A%20%E2%9C%8B%20Vengo%20de%20la%20p%C3%A1gina%20web%20de%20%2ATu%20Repuesto%20Ya%2A%20Estoy%20buscando%20lo%20siguiente%3A">
-                        ¡Busca aquí!
-                        <i class="fa fa-whatsapp" style="font-size: 40px;" aria-hidden="true"></i>
-
-                    </a>
-                </div>
-            </div>
-            <div id="container-text-body-busqueda-de-productos-diferentes">
-                <p><span style="font-weight: 700;">Cuéntale a tus amigos</span><br>y por cada compra de tus referidos,<br>gánate un obsequio</p>
-                <div id="container-img-busqueda-de-productos-diferentes">
-                    <img class="icon_chat" id='icon_chat' src="{{ asset('img/img-megafono.webp') }}" alt="megafono">
-                </div>
-            </div>
-        </div>
-    </footer>
-
     <!-- Logout Modal-->
     <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
@@ -353,7 +361,7 @@
     </div>
 
         <!-- Botón whatsapp -->
-    <!--<a href="https://api.whatsapp.com/send?phone=573249216736&text=%2A%C2%A1Hola%21%2A%20%E2%9C%8B%20Vengo%20de%20la%20p%C3%A1gina%20web%20de%20%2ATu%20Repuesto%20Ya%2A%20Me%20gustar%C3%ADa%20recibir%20cotizaciones%20sobre%20un%20repuesto%20que%20necesito." id="btn_whatsapp_kommo"><i class="fa fa-whatsapp" aria-hidden="true"></i></a>-->
+    <a href="https://api.whatsapp.com/send?phone=573249216736&text=%2A%C2%A1Hola%21%2A%20%E2%9C%8B%20Vengo%20de%20la%20p%C3%A1gina%20web%20de%20%2ATu%20Repuesto%20Ya%2A%20Me%20gustar%C3%ADa%20recibir%20cotizaciones%20sobre%20un%20repuesto%20que%20necesito." id="btn_whatsapp_kommo" target="_blank" aria-label="Enviar mensaje por whatsapp a Tu Repuesto Ya"><i class="fab fa-whatsapp" aria-hidden="true"></i></a>
 
     <!-- Enviar cierre de sesión-->
     <script>

@@ -9,6 +9,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Log;
 
 //Modelos
 use App\Models\Provider;
@@ -17,6 +18,9 @@ use App\Models\Solicitude;
 use App\Models\Answer;
 use App\Models\Country_code;
 use App\Models\Geolocation;
+use App\Models\Category;
+use App\Models\Keyword;
+use App\Models\Activity_log;
 
 //Exportar excel
 use App\Exports\ProveedorExport;
@@ -214,6 +218,11 @@ class AdminController extends Controller
         return view('admin.index', compact('name', 'ft', 'cantidad_proveedores', 'proveedores_activos', 'cantidad_solicitudes', 'cantidad_respuestas', 'departamentos', 'chart1', 'chart2', 'chart3', 'chart4', 'chartSoli', 'chartProv'));
     }
 
+    public function activityLogView(): view
+    {
+        return view('admin.activityLog');
+    }
+
     function profile(): view
     {
         // Nombre del usuario
@@ -236,9 +245,11 @@ class AdminController extends Controller
             $municipios = Geolocation::where('departamento', $departamento)->pluck('municipio');
             $group[$departamento] = $municipios;
         }
+        
+        $categorias = Category::where('nombre_categoria', '!=', 'Prueba')->get();
 
         if ($usuario) {
-            return view('admin.profile', compact('name', 'usuario', 'ft', 'departamentos', 'group', 'codigos'));
+            return view('admin.profile', compact('name', 'usuario', 'ft', 'departamentos', 'group', 'codigos', 'categorias'));
         }
     }
 
@@ -297,7 +308,7 @@ class AdminController extends Controller
                 }
             });
 
-            if($request->has('tel') && $request->filled('tel')){
+            if ($request->has('tel') && $request->filled('tel')) {
                 // Validar si el telefono ya está registrado
                 $validator->after(function ($validator) use ($request) {
                     $tel = $request->input('tel');
@@ -314,35 +325,117 @@ class AdminController extends Controller
                 });
             }
 
-            // Validar si el correo electronico ya está registrado
+            if ($request->has('email') && $request->filled('email')) {
+                // Validar si el correo electronico ya está registrado
+                $validator->after(function ($validator) use ($request) {
+                    $email = $request->input('email');
+
+                    // Verificar si el correo electrónico existe en la tabla de usuarios
+                    $userWithEmail = User::where('email', $email)->first();
+
+                    // Verificar si el correo electrónico existe en la tabla de proveedores
+                    $providerWithEmail = Provider::where('email', $email)->first();
+
+                    if ($userWithEmail || $providerWithEmail) {
+                        $validator->errors()->add('email', 'Este correo electrónico ya está registrado.');
+                    }
+                });
+            }
+
             $validator->after(function ($validator) use ($request) {
-                $email = $request->input('email');
-
-                // Verificar si el correo electrónico existe en la tabla de usuarios
-                $userWithEmail = User::where('email', $email)->first();
-
-                // Verificar si el correo electrónico existe en la tabla de proveedores
-                $providerWithEmail = Provider::where('email', $email)->first();
-
-                if ($userWithEmail || $providerWithEmail) {
-                    $validator->errors()->add('email', 'Este correo electrónico ya está registrado.');
-                }
-            });
-
-            $validator->after(function($validator) use ($request){
                 $pass = bcrypt($request->password);
                 $idUser = auth()->user()->id;
 
                 $userWithPass = User::find($idUser);
 
-                if($pass == $userWithPass->password){
+                if ($pass == $userWithPass->password) {
                     $validator->errors()->add('password', 'Ya tienes en uso esta contraseña');
                 }
             });
         }
 
-        if(auth()->check() && auth()->user()->hasRole('Proveedor')){
+        if (auth()->check() && auth()->user()->hasRole('Proveedor')) {
 
+            if ($request->has('email') && $request->filled('email')) {
+                // Validar si el correo electrónico ya está registrado
+                $validator->after(function ($validator) use ($request) {
+                    $email = $request->input('email');
+
+                    // Verificar si el correo electrónico existe en la tabla de usuarios
+                    $userWithEmail = User::where('email', $email)->first();
+
+                    // Verificar si el correo electrónico existe en la tabla de proveedores
+                    $providerWithEmail = Provider::where('email', $email)->first();
+
+                    if ($userWithEmail || $providerWithEmail) {
+                        $validator->errors()->add('email', 'Este correo electrónico ya está registrado.');
+                    }
+                });
+            }
+
+            // Validar si el NIT ya está registrado
+            $validator->after(function ($validator) use ($request) {
+                $nit = $request->input('nit');
+                $existingProvider = Provider::where('nit_empresa', $nit)->first();
+
+                if ($existingProvider) {
+                    $validator->errors()->add('nit', 'Este NIT ya está registrado.');
+                }
+            });
+
+            // Validar si la razón social ya está registrada
+            $validator->after(function ($validator) use ($request) {
+                $razon = $request->input('razon');
+                $existingProvider = Provider::where('razon_social', $razon)->first();
+
+                if ($existingProvider) {
+                    $validator->errors()->add('razon', 'Esta razón social ya está registrada.');
+                }
+            });
+
+            // Validar si el número de celular ya está registrado
+            $validator->after(function ($validator) use ($request) {
+                $cel = $request->input('cel');
+
+                $existingUser = User::where('cel', $cel)->first();
+                $existingProvider = Provider::where('celular', $cel)->first();
+
+                if ($existingUser || $existingProvider) {
+                    $validator->errors()->add('cel', 'Este número de celular ya está registrado.');
+                }
+            });
+
+            // Validar si el número de telefono ya está registrado
+            $validator->after(function ($validator) use ($request) {
+                $tel = $request->tel;
+
+                $existingUser = User::where('tel', $tel)->where('tel', '!=', "")->first();
+                $existingProvider = Provider::where('telefono', $tel)->where('telefono', '!=', "")->first();
+
+                if ($existingUser || $existingProvider) {
+                    $validator->errors()->add('tel', 'Este número de celular ya está en uso');
+                }
+            });
+
+            // Validar el tamaño del archivo RUT
+            $validator->after(function ($validator) use ($request) {
+                $maxFileSize = 5024 * 1024; // Tamaño máximo en bytes (5 MB)
+                $rutFile = $request->file('rut');
+
+                if ($rutFile && $rutFile->getSize() > $maxFileSize) {
+                    $validator->errors()->add('rut', 'El archivo RUT es demasiado grande. El tamaño máximo permitido es 5 MB.');
+                }
+            });
+
+            // Validar el tamaño del archivo de la Cámara de Comercio
+            $validator->after(function ($validator) use ($request) {
+                $maxFileSize = 5024 * 1024; // Tamaño máximo en bytes (5 MB)
+                $camFile = $request->file('cam');
+
+                if ($camFile && $camFile->getSize() > $maxFileSize) {
+                    $validator->errors()->add('cam', 'El archivo de la Cámara de Comercio es demasiado grande. El tamaño máximo permitido es 5 MB.');
+                }
+            });
         }
 
         if ($validator->fails()) {
@@ -355,33 +448,102 @@ class AdminController extends Controller
 
             $userUpdate = User::findOrFail($id);
 
-            if($request->has('name') && $request->filled('name')){
+            if ($request->has('name') && $request->filled('name')) {
                 $userUpdate->name = $request->input('name');
             }
 
-            if($request->has('cel') && $request->filled('cel')){
+            if ($request->has('cel') && $request->filled('cel')) {
                 $userUpdate->cel = $request->input('cel');
             }
 
-            if($request->has('tel') && $request->filled('tel')){
+            if ($request->has('tel') && $request->filled('tel')) {
                 $userUpdate->tel = $request->codigo_cel . $request->input('tel');
             }
 
-            if($request->has('email') && $request->filled('email')){
+            if ($request->has('email') && $request->filled('email')) {
                 $userUpdate->email = $request->codigo_cel . $request->input('tel');
             }
 
-            if($request->has('password') && $request->filled('password')){
+            if ($request->has('password') && $request->filled('password')) {
                 $userUpdate->password = bcrypt($request->password);
             }
-            try{
+            try {
                 $userUpdate->save();
-            }catch(\exception $e){
-                return redirect()->back()->whithErrors($validator)->with('error', 'Error al guardar. '.$e->getMessage());
+
+                $new_log = new Activity_log();
+                $new_log->fecha = Carbon::now();
+                if(auth()->check()){
+                    $new_log->usuario = auth()->user()->name;
+                }else{
+                    $new_log->usuario = 'Desconocido';
+                }
+                $new_log->actividad = 'Ha iniciado sesión.';
+                $new_log->descripcion = 'Se ha iniciado una sesión';
+                $new_log->navegador = request()->header('user-agent');
+                $new_log->direccion_ip = request()->ip();
+                $new_log->role = 'Admin';
+
+                try{
+                    $new_log->save();
+                }catch(\exception $e){
+                    Log::error('Error al registrar la nueva actividad: ' . $e->getMessage());
+                }
+            } catch (\exception $e) {
+                $token = 'EAAyaksOlpN4BO64MEL1cjlEGMvDQb6liWd3oCOIhvnUZBMeF5tbhAvjZABvBnnaYh9V9waBGZCBJW0LnCFaDcUQMZArNbLSKCUEL1MLmgdoRpQHyvEGdAC0CYOxt3l5N2u2Wi0yAlVFE7mCRtHVkZCSOyZAXyVtbrxxeOjkJqOkFDjloKrVuZBLXJUF4S1KG3u7';
+                $url = 'https://graph.facebook.com/v17.0/196744616845968/messages';
+                $admin = auth()->user()->cel;
+
+                $mensajeData = [
+                    'messaging_product' => 'whatsapp',
+                    'recipient_type' => 'individual',
+                    'to' => $admin,
+                    'type' => 'template',
+                    'template' => [
+                        'name' => 'errors_reports',
+                        'language' => [
+                            'code' => 'es',
+                        ],
+                        'components' => [
+                            [
+                                'type' => 'body',
+                                'parameters' => [
+                                    [
+                                        'type' => 'text',
+                                        'text' => 'https://turepuestoya.co/administrador/perfil',
+                                    ],
+                                    [
+                                        'type' => 'text',
+                                        'text' => 'Error al guardar datos del Administrador. ' . $e->getMessage(),
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ];
+
+                $mensaje = json_encode($mensajeData);
+
+                $header = [
+                    "Authorization: Bearer " . $token,
+                    "Content-Type: application/json",
+                ];
+                $curl = curl_init();
+                curl_setopt($curl, CURLOPT_URL, $url);
+                curl_setopt($curl, CURLOPT_POSTFIELDS, $mensaje);
+                curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
+                curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+
+                $response = json_decode(curl_exec($curl), true);
+
+                $status_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+
+                curl_close($curl);
+
+                return redirect()->back()->whithErrors($validator)->with('error', 'Error al guardar. ' . $e->getMessage());
             }
         }
 
-        if(auth()->check() && auth()->user()->hasRole('Proveedor')){
+        if (auth()->check() && auth()->user()->hasRole('Proveedor')) {
 
             $userUpdate = Provider::findOrFail($id_provider);
 
@@ -389,63 +551,64 @@ class AdminController extends Controller
 
             $account = User::findOrFail($id);
 
-            if($request->has('nit') && $request->filled('nit')){
+            if ($request->has('nit') && $request->filled('nit')) {
                 $userUpdate->nit = $request->input('nit');
             }
 
-            if($request->has('nombre_establecimiento') && $request->filled('nombre_establecimiento')){
+            if ($request->has('nombre_establecimiento') && $request->filled('nombre_establecimiento')) {
                 $userUpdate->nombre_comercial = $request->input('nombre_establecimiento');
             }
 
-            if($request->has('razon_social') && $request->filled('razon_social')){
+            if ($request->has('razon_social') && $request->filled('razon_social')) {
                 $userUpdate->razon_social = $request->input('tel');
             }
 
-            if($request->has('departamento') && $request->filled('departamento')){
+            if ($request->has('departamento') && $request->filled('departamento')) {
                 $userUpdate->departamento = $request->input('departamento');
             }
 
-            if($request->has('municipio') && $request->filled('municipio')){
+            if ($request->has('municipio') && $request->filled('municipio')) {
                 $userUpdate->municipio = $request->input('municipio');
             }
 
-            if($request->has('pais') && $request->filled('pais')){
+            if ($request->has('pais') && $request->filled('pais')) {
                 $userUpdate->pais = $request->input('pais');
             }
 
-            if($request->has('ciudad') && $request->filled('ciudad')){
+            if ($request->has('ciudad') && $request->filled('ciudad')) {
                 $userUpdate->municipio = $request->input('ciudad');
             }
 
-            if($request->has('direccion') && $request->filled('direccion')){
+            if ($request->has('direccion') && $request->filled('direccion')) {
                 $userUpdate->direccion = $request->input('direccion');
             }
 
-            if($request->has('cel') && $request->filled('cel')){
+            if ($request->has('cel') && $request->filled('cel')) {
                 $userUpdate->celular = $request->codigo_cel . $request->input('cel');
                 $account->cel = $request->codigo_cel . $request->input('cel');
             }
 
-            if($request->has('tel') && $request->filled('tel')){
+            if ($request->has('tel') && $request->filled('tel')) {
                 $userUpdate->telefono = $request->codigo_cel . $request->input('tel');
                 $account->tel = $request->codigo_cel . $request->input('tel');
             }
 
-            if($request->has('representante_legal') && $request->filled('representante_legal')){
+            if ($request->has('representante_legal') && $request->filled('representante_legal')) {
                 $userUpdate->representante_legal = $request->input('representante_legal');
             }
 
-            if($request->has('contacto_principal') && $request->filled('contacto_principal')){
+            if ($request->has('contacto_principal') && $request->filled('contacto_principal')) {
                 $userUpdate->contacto_principal = $request->input('contacto_principal');
             }
 
-            if($request->has('email') && $request->filled('email')){
+            if ($request->has('email') && $request->filled('email')) {
                 $userUpdate->email = $request->input('email');
                 $account->email = $request->input('email');
             }
 
-            if($request->has('email2') && $request->filled('email2')){
+            if ($request->has('email2') && $request->filled('email2')) {
                 $userUpdate->email_secundario = $request->input('email2');
+                $account->email_secundario = $request->input('email2');
             }
 
             if ($request->json_marcas) {
@@ -458,7 +621,7 @@ class AdminController extends Controller
                 $userUpdate->especialidad = $cleanedCategorias;
             }
 
-            if($request->has('password') && $request->filled('password')){
+            if ($request->has('password') && $request->filled('password')) {
                 $userUpdate->password = bcrypt($request->password);
                 $account->password = bcrypt($request->password);
             }
@@ -467,19 +630,247 @@ class AdminController extends Controller
             //     $userUpdate->password = bcrypt($request->password);
             // }
 
-            try{
+            try {
                 $userUpdate->save();
                 $account->save();
-            }catch(\exception $e){
-                return redirect()->back()->withErrors($validator)->with('error', 'Error al guardar. '.$e->getMessage());
-            }
+            } catch (\exception $e) {
+                $token = 'EAAyaksOlpN4BO64MEL1cjlEGMvDQb6liWd3oCOIhvnUZBMeF5tbhAvjZABvBnnaYh9V9waBGZCBJW0LnCFaDcUQMZArNbLSKCUEL1MLmgdoRpQHyvEGdAC0CYOxt3l5N2u2Wi0yAlVFE7mCRtHVkZCSOyZAXyVtbrxxeOjkJqOkFDjloKrVuZBLXJUF4S1KG3u7';
+                $url = 'https://graph.facebook.com/v17.0/196744616845968/messages';
+                $admin = auth()->user()->cel;
 
+                $mensajeData = [
+                    'messaging_product' => 'whatsapp',
+                    'recipient_type' => 'individual',
+                    'to' => $admin,
+                    'type' => 'template',
+                    'template' => [
+                        'name' => 'errors_reports',
+                        'language' => [
+                            'code' => 'es',
+                        ],
+                        'components' => [
+                            [
+                                'type' => 'body',
+                                'parameters' => [
+                                    [
+                                        'type' => 'text',
+                                        'text' => 'https://turepuestoya.co/administrador/perfil',
+                                    ],
+                                    [
+                                        'type' => 'text',
+                                        'text' => 'Error al guardar datos del Proveedor. ' . $e->getMessage(),
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ];
+
+                $mensaje = json_encode($mensajeData);
+
+                $header = [
+                    "Authorization: Bearer " . $token,
+                    "Content-Type: application/json",
+                ];
+                $curl = curl_init();
+                curl_setopt($curl, CURLOPT_URL, $url);
+                curl_setopt($curl, CURLOPT_POSTFIELDS, $mensaje);
+                curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
+                curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+
+                $response = json_decode(curl_exec($curl), true);
+
+                $status_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+
+                curl_close($curl);
+
+                return redirect()->back()->withErrors($validator)->with('error', 'Error al guardar. ' . $e->getMessage());
+            }
         }
 
         return redirect()->back()->with('message', 'Los datos se han guardado correctamente');
-
     }
 
+    function categoriesView(): view
+    {
+        $category = Category::with('keyword')->get();
+
+        return view('admin.categorias', compact('category'));
+    }
+
+      function saveCategory(Request $request){
+        $newCategory = new Category();
+        $newCategory->nombre_categoria = $request->category;
+
+        try{
+            $newCategory->save();
+
+            $new_log = new Activity_log();
+            $new_log->fecha = Carbon::now();
+            if(auth()->check()){
+                $new_log->usuario = auth()->user()->name;
+            }else{
+                $new_log->usuario = 'Desconocido';
+            }
+            $new_log->actividad = 'Registró una nueva categoria.';
+            $new_log->descripcion = 'Se registró una nueva categoria llamada: ' . $newCategory->nombre_categoria;
+            $new_log->navegador = request()->header('user-agent');
+            $new_log->direccion_ip = request()->ip();
+            $new_log->role = auth()->user()->role;
+
+            try{
+                $new_log->save();
+            }catch(\exception $e){
+                Log::error('Error al registrar la nueva actividad: ' . $e->getMessage());
+            }
+
+            return redirect()->back()->with('message', 'Categoría creada exitosamente');
+
+        }catch(\exception $e){
+            $token = 'EAAyaksOlpN4BO64MEL1cjlEGMvDQb6liWd3oCOIhvnUZBMeF5tbhAvjZABvBnnaYh9V9waBGZCBJW0LnCFaDcUQMZArNbLSKCUEL1MLmgdoRpQHyvEGdAC0CYOxt3l5N2u2Wi0yAlVFE7mCRtHVkZCSOyZAXyVtbrxxeOjkJqOkFDjloKrVuZBLXJUF4S1KG3u7';
+            $url = 'https://graph.facebook.com/v17.0/196744616845968/messages';
+            $admin = auth()->user()->cel;
+
+            $mensajeData = [
+                'messaging_product' => 'whatsapp',
+                'recipient_type' => 'individual',
+                'to' => $admin,
+                'type' => 'template',
+                'template' => [
+                    'name' => 'errors_reports',
+                    'language' => [
+                        'code' => 'es',
+                    ],
+                    'components' => [
+                        [
+                            'type' => 'body',
+                            'parameters' => [
+                                [
+                                    'type' => 'text',
+                                    'text' => 'https://turepuestoya.co/administrador/proveedores',
+                                ],
+                                [
+                                    'type' => 'text',
+                                    'text' => 'Error al guardar la categoría: ' . $request->category . 'Detalles: ' . $e->getMessage(),
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ];
+
+            $mensaje = json_encode($mensajeData);
+
+            $header = [
+                "Authorization: Bearer " . $token,
+                "Content-Type: application/json",
+            ];
+            $curl = curl_init();
+            curl_setopt($curl, CURLOPT_URL, $url);
+            curl_setopt($curl, CURLOPT_POSTFIELDS, $mensaje);
+            curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+
+            $response = json_decode(curl_exec($curl), true);
+
+            $status_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+
+            curl_close($curl);
+
+            Log::error('Error al guardar la categoría: ' . $e->getMessage());
+
+            return redirect()->back()->with('error', 'No se pudo crear la nueva categoría. Detalles: ' . $e->getMessage());
+        }
+    }
+
+    function saveKeyword(Request $request, $id): RedirectResponse
+    {
+        $keyword = new Keyword();
+        $keyword->palabra_clave = $request->keyword;
+        $keyword->id_categoria = $id;
+
+        $category = Category::where('id', $id)->first();
+
+        try{
+            $keyword->save();
+
+            $new_log = new Activity_log();
+            $new_log->fecha = Carbon::now();
+            if(auth()->check()){
+                $new_log->usuario = auth()->user()->name;
+            }else{
+                $new_log->usuario = 'Desconocido';
+            }
+            $new_log->actividad = 'Registró una nueva palabra clave.';
+            $new_log->descripcion = 'Se registró una nueva palabra clave (' . $keyword->palabra_clave . ') en la categoría ' . "'" . $category->nombre_categoria . "'";
+            $new_log->navegador = request()->header('user-agent');
+            $new_log->direccion_ip = request()->ip();
+            $new_log->role = auth()->user()->role;
+
+            try{
+                $new_log->save();
+            }catch(\exception $e){
+                Log::error('Error al registrar la nueva actividad: ' . $e->getMessage());
+            }
+
+            return redirect()->back()->with('message', 'Palabra clave creada exitosamente');
+
+        }catch(\exception $e){
+            $token = 'EAAyaksOlpN4BO64MEL1cjlEGMvDQb6liWd3oCOIhvnUZBMeF5tbhAvjZABvBnnaYh9V9waBGZCBJW0LnCFaDcUQMZArNbLSKCUEL1MLmgdoRpQHyvEGdAC0CYOxt3l5N2u2Wi0yAlVFE7mCRtHVkZCSOyZAXyVtbrxxeOjkJqOkFDjloKrVuZBLXJUF4S1KG3u7';
+            $url = 'https://graph.facebook.com/v17.0/196744616845968/messages';
+            $admin = auth()->user()->cel;
+
+            $mensajeData = [
+                'messaging_product' => 'whatsapp',
+                'recipient_type' => 'individual',
+                'to' => $admin,
+                'type' => 'template',
+                'template' => [
+                    'name' => 'errors_reports',
+                    'language' => [
+                        'code' => 'es',
+                    ],
+                    'components' => [
+                        [
+                            'type' => 'body',
+                            'parameters' => [
+                                [
+                                    'type' => 'text',
+                                    'text' => 'https://turepuestoya.co/administrador/categorias/' . $category->nombre_categoria,
+                                ],
+                                [
+                                    'type' => 'text',
+                                    'text' => 'Error al guardar la palabra clave: ' . $request->keyword . 'Detalles: ' . $e->getMessage(),
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ];
+
+            $mensaje = json_encode($mensajeData);
+
+            $header = [
+                "Authorization: Bearer " . $token,
+                "Content-Type: application/json",
+            ];
+            $curl = curl_init();
+            curl_setopt($curl, CURLOPT_URL, $url);
+            curl_setopt($curl, CURLOPT_POSTFIELDS, $mensaje);
+            curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+
+            $response = json_decode(curl_exec($curl), true);
+
+            $status_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+
+            curl_close($curl);
+
+            Log::error('Error al guardar la palabra clave: ' . $e->getMessage());
+
+            return redirect()->back()->with('error', 'No se pudo crear la nueva palabra clave. Detalles: ' . $e->getMessage());
+        }
+    }
     function viewSolicitudes(): view
     {
         //Para hacer busquedas y filtrar la tabla, se usa when('name del campo buscar', function($variable){ return $variable->where()->orWhere() })
@@ -500,13 +891,14 @@ class AdminController extends Controller
                 ->orWhere('departamento', 'like', '%' . request('search') . '%')
                 ->orWhere('municipio', 'like', '%' . request('search') . '%');
         })
-        ->latest()->paginate(15)->withQueryString();
+            ->latest()->paginate(15)->withQueryString();
 
         $name = auth()->user()->name;
 
         $id = auth()->user()->id;
         $user = User::find($id);
         $answers = [];
+
 
         if ($user) {
             $idP = $user->proveedor_id;
@@ -521,26 +913,48 @@ class AdminController extends Controller
                 }
             }
         }
+        
+         foreach ($solicitudes as $solicitud) {
+            $answer2 = Answer::with('proveedor')->get();
+        }
 
         $usuario = User::where('name', $name)->first();
 
         $ft = $usuario->ft_perfil;
 
-        return view('admin.solicitudes', compact('name', 'solicitudes', 'ft', 'answers'));
+        return view('admin.solicitudes', compact('name', 'solicitudes', 'ft', 'answers', 'answer2'));
     }
 
     function viewAnswers(): view
     {
-        $respuestas = Answer::query()->when(request('search'), function ($query){
+        $respuestas = Answer::query()->when(request('search'), function ($query) {
             return $query->whereHas('solicitud', function ($subquery) {
-                        $subquery->where('nombre', 'like', '%' . request('search') . '%');
-                    })
-                    ->orWhereHas('proveedor', function ($subquery) {
-                        $subquery->where('razon_social', 'like', '%' . request('search') . '%');
-                    })
-                    ->orWhereJsonContains('repuesto', request('search'))
-                    ->orWhereJsonContains('precio', request('search'));
+                $subquery->where('id', 'like', '%' . request('search') . '%')
+                ->orWhere('nombre', 'like', '%' . request('search') . '%')
+                ->orWhere('marca', 'like', '%' . request('search') . '%')
+                ->orWhere('referencia', 'like', '%' . request('search') . '%')
+                ->orWhere('modelo', 'like', '%' . request('search') . '%')
+                ->orWhere('tipo_de_transmision', 'like', '%' . request('search') . '%')
+                ->orWhere('repuesto', 'like', '%' . request('search') . '%')
+                ->orWhere('nombre', 'like', '%' . request('search') . '%')
+                ->orWhere('comentario', 'like', '%' . request('search') . '%')
+                ->orWhere('numero', 'like', '%' . request('search') . '%')
+                ->orWhere('pais', 'like', '%' . request('search') . '%')
+                ->orWhere('departamento', 'like', '%' . request('search') . '%')
+                ->orWhere('municipio', 'like', '%' . request('search') . '%');
             })
+            ->orWhereHas('proveedor', function ($subquery) {
+                $subquery->where('nit_empresa', 'like', '%' . request('search') . '%')
+                ->orWhere('razon_social', 'like', '%' . request('search') . '%')
+                ->orWhere('celular', 'like', '%' . request('search') . '%')
+                ->orWhere('telefono', 'like', '%' . request('search') . '%')
+                ->orWhere('representante_legal', 'like', '%' . request('search') . '%')
+                ->orWhere('email', 'like', '%' . request('search') . '%')
+                ->orWhere('email_secundario', 'like', '%' . request('search') . '%');
+            })
+            ->orWhereJsonContains('repuesto', request('search'))
+            ->orWhere('precio', 'like', '%' . request('search') . '%');
+        })
             ->with('proveedor', 'solicitud')
             ->latest()->paginate(15)
             ->withQueryString();
@@ -566,8 +980,6 @@ class AdminController extends Controller
 
     public function loadProviders(): view
     {
-        // Lista de codigos celulares
-        $codigos = Country_code::all();
 
         // Nombre del usuario
         $name = auth()->user()->name;
@@ -576,29 +988,30 @@ class AdminController extends Controller
 
         $ft = $usuario->ft_perfil;
 
-        $proveedor = Provider::query()
-            ->when(request('search'), function ($query) {
-                return $query->where('nit_empresa', 'like', '%' . request('search') . '%')
-                    ->orWhere('razon_social', 'like', '%' . request('search') . '%')
-                    ->orWhere('pais', 'like', '%' . request('search') . '%')
-                    ->orWhere('departamento', 'like', '%' . request('search') . '%')
-                    ->orWhere('municipio', 'like', '%' . request('search') . '%')
-                    ->orWhere('direccion', 'like', '%' . request('search') . '%')
-                    ->orWhere('celular', 'like', '%' . request('search') . '%')
-                    ->orWhere('telefono', 'like', '%' . request('search') . '%')
-                    ->orWhere('representante_legal', 'like', '%' . request('search') . '%')
-                    ->orWhere('contacto_principal', 'like', '%' . request('search') . '%')
-                    ->orWhere('email', 'like', '%' . request('search') . '%')
-                    ->orWhere('email_secundario', 'like', '%' . request('search') . '%')
-                    ->orWhere('marcas_preferencias', 'like', '%' . request('search') . '%')
-                    ->orWhere('especialidad', 'like', '%' . request('search') . '%');
-            })
-            ->latest()->paginate(15)->withQueryString();
+        // Lista de codigos celulares
+        $codigos = Country_code::all();
 
-        $proveedores = Provider::all();
+        $proveedor = Provider::query()->when(request('search'), function ($query) {
+            return $query->where('nit_empresa', 'like', '%' . request('search') . '%')
+                ->orWhere('razon_social', 'like', '%' . request('search') . '%')
+                ->orWhere('pais', 'like', '%' . request('search') . '%')
+                ->orWhere('departamento', 'like', '%' . request('search') . '%')
+                ->orWhere('municipio', 'like', '%' . request('search') . '%')
+                ->orWhere('direccion', 'like', '%' . request('search') . '%')
+                ->orWhere('celular', 'like', '%' . request('search') . '%')
+                ->orWhere('telefono', 'like', '%' . request('search') . '%')
+                ->orWhere('representante_legal', 'like', '%' . request('search') . '%')
+                ->orWhere('contacto_principal', 'like', '%' . request('search') . '%')
+                ->orWhere('email', 'like', '%' . request('search') . '%')
+                ->orWhere('email_secundario', 'like', '%' . request('search') . '%')
+                ->orWhereJsonContains('marcas_preferencias', ucfirst(request('search')))
+                ->orWhere('especialidad', 'like', '%' . request('search') . '%');
+        })->latest()->paginate(15)->withQueryString();
+
+        $proveedores_all = Provider::all();
         $preferencias_de_marcas = [];
 
-        foreach ($proveedores as $proveedor_m) {
+        foreach ($proveedores_all as $proveedor_m) {
             if (is_string($proveedor_m->marcas_preferencias)) {
                 // Decodificar la cadena JSON y almacenar las preferencias de marcas en un array asociativo
                 $preferencias_de_marcas[$proveedor_m->id] = json_decode($proveedor_m->marcas_preferencias, true);
@@ -615,9 +1028,11 @@ class AdminController extends Controller
             $municipios = Geolocation::where('departamento', $departamento)->pluck('municipio');
             $group[$departamento] = $municipios;
         }
+        
+                $categorias = Category::where('nombre_categoria', '!=', 'Prueba')->get();
 
         // Retorna la vista de la lista de proveedores, usando compact para enviar los datos a la vista
-        return view('livewire.admin.providers', compact('name', 'ft', 'proveedor', 'proveedor_m', 'preferencias_de_marcas', 'departamentos', 'group', 'codigos'));
+        return view('admin.providers', compact('proveedor', 'proveedor_m', 'proveedores_all', 'preferencias_de_marcas', 'departamentos', 'group', 'codigos', 'categorias'));
     }
 
     public function verProveedor($nit, $notificationId)
@@ -670,7 +1085,9 @@ class AdminController extends Controller
                 return redirect()->route('loadProviders')->with('message', 'Proveedor eliminado exitosamente');
             }
 
-            return view('admin.proveedorRegistrado', compact('name', 'ft', 'proveedores', 'preferencias_de_marcas', 'especialidades', 'departamentos', 'group', 'codigos'));
+            $categorias = Category::where('nombre_categoria', '!=', 'Prueba')->get();
+
+            return view('admin.proveedorRegistrado', compact('name', 'ft', 'proveedores', 'preferencias_de_marcas', 'especialidades', 'departamentos', 'group', 'codigos', 'categorias'));
         } else {
             $notification = auth()->user()->unreadNotifications->find($notificationId);
 
@@ -689,6 +1106,8 @@ class AdminController extends Controller
                 'nit_create' => 'required|numeric|digits_between:8,16',
                 'nombre_comercial_create' => 'required',
                 'razon_create' => 'required',
+                'gerente' => 'required',
+                'administrador' => 'required',
                 'departamento_create' => 'required',
                 'municipio_create' => 'required',
                 'direccion_create' => 'required',
@@ -754,8 +1173,6 @@ class AdminController extends Controller
             }
         });
 
-
-
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput()->with('error', 'Hubo un error, Revise nuevamente los datos');
         }
@@ -765,9 +1182,12 @@ class AdminController extends Controller
         $proveedor->nit_empresa = $request->nit_create;
         $proveedor->nombre_comercial = $request->nombre_comercial_create;
         $proveedor->razon_social = $request->razon_create;
+        $proveedor->gerente = $request->gerente;
+        $proveedor->administrador = $request->administrador;
         $proveedor->departamento = $request->departamento_create;
         $proveedor->municipio = $request->municipio_create;
         $proveedor->direccion = $request->direccion_create;
+
         if ($request->has('representante_legal_create')) {
             $proveedor->representante_legal = $request->representante_legal_create;
         }
@@ -802,7 +1222,7 @@ class AdminController extends Controller
         $proveedor->pais = $paises[$request->codigo_cel_create];
         $proveedor->celular = $request->codigo_cel_create . $request->cel_create;
         if ($request->has('tel_create')) {
-            $proveedor->telefono = $request->tel_create;
+            $proveedor->telefono = $request->codigo_cel_create . $request->tel_create;
         }
 
         $proveedor->email = $request->email_create;
@@ -860,19 +1280,150 @@ class AdminController extends Controller
         $proveedor->password = 'demo12345';
 
         // Guardar el proveedor en la base de datos
-        $proveedor->save();
+        try {
+            $proveedor->save();
+
+            $new_log = new Activity_log();
+            $new_log->fecha = Carbon::now();
+            if(auth()->check()){
+                $new_log->usuario = auth()->user()->name;
+            }else{
+                $new_log->usuario = 'Desconocido';
+            }
+            $new_log->actividad = 'Registró un nuevo proveedor.';
+            $new_log->descripcion = 'Se registró un nuevo proveedor (' . $proveedor->razon_social . ') desde el administrador';
+            $new_log->navegador = request()->header('user-agent');
+            $new_log->direccion_ip = request()->ip();
+            $new_log->role = auth()->user()->role;
+
+            try{
+                $new_log->save();
+            }catch(\exception $e){
+                Log::error('Error al registrar la nueva actividad: ' . $e->getMessage());
+            }
+
+        } catch (\exception $e) {
+            $token = 'EAAyaksOlpN4BO64MEL1cjlEGMvDQb6liWd3oCOIhvnUZBMeF5tbhAvjZABvBnnaYh9V9waBGZCBJW0LnCFaDcUQMZArNbLSKCUEL1MLmgdoRpQHyvEGdAC0CYOxt3l5N2u2Wi0yAlVFE7mCRtHVkZCSOyZAXyVtbrxxeOjkJqOkFDjloKrVuZBLXJUF4S1KG3u7';
+            $url = 'https://graph.facebook.com/v17.0/196744616845968/messages';
+            $admin = auth()->user()->cel;
+
+            $mensajeData = [
+                'messaging_product' => 'whatsapp',
+                'recipient_type' => 'individual',
+                'to' => $admin,
+                'type' => 'template',
+                'template' => [
+                    'name' => 'errors_reports',
+                    'language' => [
+                        'code' => 'es',
+                    ],
+                    'components' => [
+                        [
+                            'type' => 'body',
+                            'parameters' => [
+                                [
+                                    'type' => 'text',
+                                    'text' => 'https://turepuestoya.co/administrador/proveedores',
+                                ],
+                                [
+                                    'type' => 'text',
+                                    'text' => 'Error al crear un nuevo proveedor desde el administrador. ' . $e->getMessage(),
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ];
+
+            $mensaje = json_encode($mensajeData);
+
+            $header = [
+                "Authorization: Bearer " . $token,
+                "Content-Type: application/json",
+            ];
+            $curl = curl_init();
+            curl_setopt($curl, CURLOPT_URL, $url);
+            curl_setopt($curl, CURLOPT_POSTFIELDS, $mensaje);
+            curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+
+            $response = json_decode(curl_exec($curl), true);
+
+            $status_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+
+            curl_close($curl);
+
+            return redirect()->back()->withInput()->with('error', '¡Ha ocurrido un error!' . $e->getMessage());
+        }
 
         $newUser = new User();
         $newUser->name = $proveedor->razon_social;
         $newUser->cel = $proveedor->celular;
         $newUser->tel = $proveedor->telefono;
         $newUser->email = $proveedor->email;
+        if ($request->has('email_2_create')) {
+            $newUser->email_secundario = $proveedor->email_secundario;
+        }
         $newUser->email_verified_at = Carbon::now();
         $newUser->password = 'demo12345';
         $newUser->role = 'Proveedor';
         $newUser->proveedor()->associate($proveedor);
         $newUser->assignRole('Proveedor');
-        $newUser->save();
+        try {
+            $newUser->save();
+        } catch (\exception $e) {
+            $token = 'EAAyaksOlpN4BO64MEL1cjlEGMvDQb6liWd3oCOIhvnUZBMeF5tbhAvjZABvBnnaYh9V9waBGZCBJW0LnCFaDcUQMZArNbLSKCUEL1MLmgdoRpQHyvEGdAC0CYOxt3l5N2u2Wi0yAlVFE7mCRtHVkZCSOyZAXyVtbrxxeOjkJqOkFDjloKrVuZBLXJUF4S1KG3u7';
+            $url = 'https://graph.facebook.com/v17.0/196744616845968/messages';
+            $admin = auth()->user()->cel;
+
+            $mensajeData = [
+                'messaging_product' => 'whatsapp',
+                'recipient_type' => 'individual',
+                'to' => $admin,
+                'type' => 'template',
+                'template' => [
+                    'name' => 'errors_reports',
+                    'language' => [
+                        'code' => 'es',
+                    ],
+                    'components' => [
+                        [
+                            'type' => 'body',
+                            'parameters' => [
+                                [
+                                    'type' => 'text',
+                                    'text' => 'https://turepuestoya.co/administrador/proveedores',
+                                ],
+                                [
+                                    'type' => 'text',
+                                    'text' => 'Error al crear un nuevo proveedor desde el administrador. ' . $e->getMessage(),
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ];
+
+            $mensaje = json_encode($mensajeData);
+
+            $header = [
+                "Authorization: Bearer " . $token,
+                "Content-Type: application/json",
+            ];
+            $curl = curl_init();
+            curl_setopt($curl, CURLOPT_URL, $url);
+            curl_setopt($curl, CURLOPT_POSTFIELDS, $mensaje);
+            curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+
+            $response = json_decode(curl_exec($curl), true);
+
+            $status_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+
+            curl_close($curl);
+
+            return redirect()->back()->wihtErrors()->withInput()->with('error', '¡Ha ocurrido un error!' . $e->getMessage());
+        }
 
         // Redirigir a la página de inicio con un mensaje de éxito
         return redirect()->back()->with('message', '¡Registro exitoso!');
@@ -927,27 +1478,31 @@ class AdminController extends Controller
             }
         });
 
-        $validator->after(function ($validator) use ($request, $id){
-            $tel = $request->tel_edit;
-            $providerId = $id;
+        if ($request->has('tel_edit') && $request->filled('tel_edit')) {
+            $validator->after(function ($validator) use ($request, $id) {
+                $tel = $request->tel_edit;
+                $providerId = $id;
 
-            $existingUser = User::where('tel', $tel)->where('proveedor_id', '!=', $providerId)->where('tel', '!=', "")->first();
-            $existingProvider = Provider::where('telefono', $tel)->where('id', '!=', $providerId)->where('telefono', '!=', "")->first();
+                $existingUser = User::where('tel', $tel)->where('proveedor_id', '!=', $providerId)->where('tel', '!=', "")->first();
+                $existingProvider = Provider::where('telefono', $tel)->where('id', '!=', $providerId)->where('telefono', '!=', "")->first();
 
-            if($existingUser || $existingProvider){
-                $validator->errors()->add('tel_edit', 'Este número de celular ya está en uso');
-            }
-        });
+                if ($existingUser || $existingProvider) {
+                    $validator->errors()->add('tel_edit', 'Este número de celular ya está en uso');
+                }
+            });
+        }
 
-        $validator->after(function ($validator) use ($request, $id) {
-            $nombre_comercial = $request->input('nombre_comercial_edit');
-            $providerId = $id;
-            $existingProvider = Provider::where('nombre_comercial', $nombre_comercial)->where('id', '!=', $providerId)->first();
+        if ($request->has('nombre_comercial_edit' && $request->filled('nombre_comercial_edit'))) {
+            $validator->after(function ($validator) use ($request, $id) {
+                $nombre_comercial = $request->input('nombre_comercial_edit');
+                $providerId = $id;
+                $existingProvider = Provider::where('nombre_comercial', $nombre_comercial)->where('id', '!=', $providerId)->where('nombre_comercial', '!=', '')->first();
 
-            if ($existingProvider) {
-                $validator->errors()->add('nombre_comercial_edit', 'Esta Nombre de Establecimiento ya está en uso.');
-            }
-        });
+                if ($existingProvider) {
+                    $validator->errors()->add('nombre_comercial_edit', 'Esta Nombre de Establecimiento ya está en uso.');
+                }
+            });
+        }
 
         $validator->after(function ($validator) use ($request, $id) {
             $razon = $request->input('razon_social_edit');
@@ -970,14 +1525,14 @@ class AdminController extends Controller
             }
         });
 
-        if($request->has('email_2_edit') && $request->filled('email_2_edit')){
-            $validator->after(function ($validator) use ($request, $id){
+        if ($request->has('email_2_edit') && $request->filled('email_2_edit')) {
+            $validator->after(function ($validator) use ($request, $id) {
                 $email2 = $request->input('email_2_edit');
                 $providerId = $id;
 
                 $existingProvider = Provider::where('email_secundario', $email2)->where('id', '!=', $providerId)->first();
 
-                if($existingProvider){
+                if ($existingProvider) {
                     $validator->errors()->add('email_2_edit', 'El correo electrónico ingresado se encuentra en uso.');
                 }
             });
@@ -1113,8 +1668,80 @@ class AdminController extends Controller
         }
 
         // Guardar el proveedor en la base de datos
-        $proveedor->save();
+        try {
+            $proveedor->save();
 
+            $new_log = new Activity_log();
+            $new_log->fecha = Carbon::now();
+            if(auth()->check()){
+                $new_log->usuario = auth()->user()->name;
+            }else{
+                $new_log->usuario = 'Desconocido';
+            }
+            $new_log->actividad = 'Editó a un proveedor.';
+            $new_log->descripcion = 'Se editó al proveedor ' . $proveedor->razon_social . ' desde el administrador';
+            $new_log->navegador = request()->header('user-agent');
+            $new_log->direccion_ip = request()->ip();
+            $new_log->role = auth()->user()->role;
+
+            try{
+                $new_log->save();
+            }catch(\exception $e){
+                Log::error('Error al registrar la nueva actividad: ' . $e->getMessage());
+            }
+        } catch (\exception $e) {
+            $token = 'EAAyaksOlpN4BO64MEL1cjlEGMvDQb6liWd3oCOIhvnUZBMeF5tbhAvjZABvBnnaYh9V9waBGZCBJW0LnCFaDcUQMZArNbLSKCUEL1MLmgdoRpQHyvEGdAC0CYOxt3l5N2u2Wi0yAlVFE7mCRtHVkZCSOyZAXyVtbrxxeOjkJqOkFDjloKrVuZBLXJUF4S1KG3u7';
+            $url = 'https://graph.facebook.com/v17.0/196744616845968/messages';
+            $admin = auth()->user()->cel;
+
+            $mensajeData = [
+                'messaging_product' => 'whatsapp',
+                'recipient_type' => 'individual',
+                'to' => $admin,
+                'type' => 'template',
+                'template' => [
+                    'name' => 'errors_reports',
+                    'language' => [
+                        'code' => 'es',
+                    ],
+                    'components' => [
+                        [
+                            'type' => 'body',
+                            'parameters' => [
+                                [
+                                    'type' => 'text',
+                                    'text' => 'https://turepuestoya.co/administrador/proveedores',
+                                ],
+                                [
+                                    'type' => 'text',
+                                    'text' => 'Error al editar al proveedor ' . $proveedor->razon_social . ' desde el administrador. ' . $e->getMessage(),
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ];
+
+            $mensaje = json_encode($mensajeData);
+
+            $header = [
+                "Authorization: Bearer " . $token,
+                "Content-Type: application/json",
+            ];
+            $curl = curl_init();
+            curl_setopt($curl, CURLOPT_URL, $url);
+            curl_setopt($curl, CURLOPT_POSTFIELDS, $mensaje);
+            curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+
+            $response = json_decode(curl_exec($curl), true);
+
+            $status_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+
+            curl_close($curl);
+
+            return redirect()->back()->wihtErrors()->withInput()->with('error', '¡Ha ocurrido un error!' . $e->getMessage());
+        }
 
         // Obtiene el usuario por id
         $user = User::where('proveedor_id', $id)->first();
@@ -1137,6 +1764,10 @@ class AdminController extends Controller
                 $user->email = $request->input('email_edit');
             }
 
+            if ($request->has('email_2_edit') && $request->filled('email_2_edit')) {
+                $user->email_secundario = $request->input('email_2_edit');
+            }
+
             // Obtiene la hora actual
             $user->email_verified_at = Carbon::now();
             $user->save();
@@ -1157,7 +1788,7 @@ class AdminController extends Controller
             $newUser->tel = $proveedor->telefono;
             $newUser->email = $proveedor->email;
             $newUser->email_verified_at = Carbon::now();
-            $newUser->password = bcrypt($codigo);
+            $newUser->password = 'demo12345';
             $newUser->role = 'Proveedor';
             $newUser->Proveedor_id = $proveedor->id;
             $newUser->assignRole('Proveedor');
@@ -1170,6 +1801,7 @@ class AdminController extends Controller
     public function delete(int $id): RedirectResponse
     {
         $proveedor = Provider::findOrFail($id);
+        $answers = Answer::where('idProveedor', $id)->get();
 
         if ($proveedor) {
 
@@ -1177,11 +1809,37 @@ class AdminController extends Controller
             $rutaArchivoRut = $proveedor->rut;
             $rutaArchivoCam = $proveedor->camara_comercio;
 
-            $user = $proveedor->user;
+            $users = $proveedor->user;
 
-            if ($user) {
-                // Eliminar el usuario asociado al proveedor
-                $user->delete();
+            if ($users) {
+                foreach ($users as $user) {
+                    $user->delete();
+                }
+            }
+
+            if ($answers) {
+                foreach ($answers as $answer) {
+                    $answer->delete();
+                }
+            }
+
+            $new_log = new Activity_log();
+            $new_log->fecha = Carbon::now();
+            if(auth()->check()){
+                $new_log->usuario = auth()->user()->name;
+            }else{
+                $new_log->usuario = 'Desconocido';
+            }
+            $new_log->actividad = 'Eliminó a un proveedor.';
+            $new_log->descripcion = 'Se eliminó al proveedor ' . $proveedor->razon_social . ' desde el administrador';
+            $new_log->navegador = request()->header('user-agent');
+            $new_log->direccion_ip = request()->ip();
+            $new_log->role = 'Admin';
+
+            try{
+                $new_log->save();
+            }catch(\exception $e){
+                Log::error('Error al registrar la nueva actividad: ' . $e->getMessage());
             }
 
             // Eliminar el proveedor
@@ -1211,6 +1869,25 @@ class AdminController extends Controller
             $answer = Answer::where('idSolicitud', $id);
 
             $answer->delete();
+
+            $new_log = new Activity_log();
+            $new_log->fecha = Carbon::now();
+            if(auth()->check()){
+                $new_log->usuario = auth()->user()->name;
+            }else{
+                $new_log->usuario = 'Desconocido';
+            }
+            $new_log->actividad = 'Eliminó una solicitud.';
+            $new_log->descripcion = 'Se eliminó la solicitud N° ' . $solicitud->id . '(ID) con todas sus respuestas desde el administrador';
+            $new_log->navegador = request()->header('user-agent');
+            $new_log->direccion_ip = request()->ip();
+            $new_log->role = auth()->user()->role;
+
+            try{
+                $new_log->save();
+            }catch(\exception $e){
+                Log::error('Error al registrar la nueva actividad: ' . $e->getMessage());
+            }
 
             // Eliminar solicitud
             $solicitud->delete();
@@ -1269,7 +1946,6 @@ class AdminController extends Controller
     public function logout(Request $request): RedirectResponse
     {
         //Cierra sesión del usuario
-
         auth()->logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();

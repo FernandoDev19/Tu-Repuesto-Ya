@@ -7,7 +7,7 @@
     class="navbar navbar-expand navbar-light bg-white shadow topbar static-top d-flex justify-content-center">
 
     <!-- Topbar Navbar -->
-    <ul class="navbar-nav">
+    <ul class="navbar-nav" style="font-size: 1.3rem;">
 
         <li class="nav-item">
             <a class="nav-link" style="color: var(--gray); padding: 0 .50rem; gap: 3px;" href="{{ route('dashboard') }}">
@@ -75,31 +75,26 @@
                     <div class="card-body" style="padding: 0;">
                         <div class="table-responsive">
                             <table class="table table-borderless table-hover" id="respuestasTable">
-                                <thead>
+                                  <thead>
                                     <tr>
-                                        <th class="text-muted" style="padding:10px 5px; text-align:center;">Id
-                                        </th>
-                                        <th class="text-muted" style="padding:10px 5px; text-align:center;">
-                                            Nº solicitud
-                                        </th>
-                                        <th class="text-muted" style="padding:10px 5px; text-align:center;">
-                                            Proveedor</th>
-                                        <th class="text-muted" style="padding:10px 5px; text-align:center;">
-                                            Repuestos</th>
-                                        {{-- <th class="text-muted" style="padding:10px 5px; text-align:center;">
-                                            Tipo de repuesto</th> --}}
-                                        <th class="text-muted" style="padding:10px 5px; text-align:center;">
-                                            Precios</th>
+                                        <th class="text-muted" style="padding:10px 5px; text-align:center;">Id</th>
+                                        <th class="text-muted" style="padding:10px 5px; text-align:center;">Nº solicitud</th>
+                                        <th class="text-muted" style="padding:10px 5px; text-align:center;">Proveedor</th>
+                                        <th class="text-muted" style="padding:10px 5px; text-align:center;">Marca</th>
+                                        <th class="text-muted" style="padding:10px 5px; text-align:center;">Referencia</th>
+                                        <th class="text-muted" style="padding:10px 5px; text-align:center;">Modelo</th>
+                                        <th class="text-muted" style="padding:10px 5px; text-align:center;">Municipio</th>
+                                        <th class="text-muted" style="padding:10px 5px; text-align:center;">Repuestos</th>
+                                        {{-- <th class="text-muted" style="padding:10px 5px; text-align:center;">Tipo de repuesto</th> --}}
+                                        <th class="text-muted" style="padding:10px 5px; text-align:center;">Precios</th>
                                         {{-- <th class="text-muted" style="padding:10px 5px; text-align:center;">
                                             Garantía</th> --}}
-                                        <th class="text-muted" style="padding:10px 5px; text-align:center;">
-                                            Fecha de creación</th>
-                                        <th class="text-muted" style="padding:10px 5px; text-align:center;">
-                                            Detalles</th>
+                                        <th class="text-muted" style="padding:10px 5px; text-align:center;">Fecha de creación</th>
+                                        <th class="text-muted" style="padding:10px 5px; text-align:center;">Detalles</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @if ($respuestas->isEmpty())
+                                   @if ($respuestas->isEmpty())
                                         <tr>
                                             <td style="padding:10px 10px; margin:0; text-align:center; line-height: 1;">
                                                 No hay registros
@@ -119,12 +114,21 @@
                                             <td style="padding:10px 10px; margin:0; text-align:center; line-height: 1;">
                                                 No hay registros
                                             </td>
-                                            {{-- <td style="padding:10px 10px; margin:0; text-align:center; line-height: 1;">
+                                            <td style="padding:10px 10px; margin:0; text-align:center; line-height: 1;">
                                                 No hay registros
                                             </td>
                                             <td style="padding:10px 10px; margin:0; text-align:center; line-height: 1;">
                                                 No hay registros
-                                            </td> --}}
+                                            </td>
+                                            <td style="padding:10px 10px; margin:0; text-align:center; line-height: 1;">
+                                                No hay registros
+                                            </td>
+                                            <td style="padding:10px 10px; margin:0; text-align:center; line-height: 1;">
+                                                No hay registros
+                                            </td>
+                                            <td style="padding:10px 10px; margin:0; text-align:center; line-height: 1;">
+                                                No hay registros
+                                            </td>
                                         </tr>
                                     @else
                                         @foreach ($respuestas as $respuesta)
@@ -141,7 +145,7 @@
                                                 $array_de_repuestos_soli = json_decode($respuesta->solicitud->repuesto, true);
                                                 $repuesto_for_soli = is_array($array_de_repuestos_soli) ? implode(', ', $array_de_repuestos_soli) : $array_de_repuestos_soli;
                                             @endphp
-                                            <tr>
+                                                <tr>
                                                 <td style="padding:10px 10px; margin:0; text-align:center;" data-campo="id"
                                                     data-valor="{{ $respuesta->id }}">
                                                     <span style="font-size: 14;"
@@ -162,6 +166,30 @@
                                                         data-target="#providerModal{{ $respuesta->id }}"
                                                         style="font-size: 14; color: #858796; text-decoration: underline; cursor: pointer;"
                                                         id="razon_social_{{ $respuesta->proveedor->razon_social }}">{{ $respuesta->proveedor->razon_social }}</a>
+                                                </td>
+
+                                                <td style="padding:10px 10px; margin:0; text-align:center;"
+                                                    data-campo="marca_solicitud"
+                                                    data-valor="{{ $respuesta->solicitud->marca }}">
+                                                    <span style="font-size: 14;" id="marca_{{ $respuesta->solicitud->marca }}">{{ $respuesta->solicitud->marca }}</span>
+                                                </td>
+
+                                                <td style="padding:10px 10px; margin:0; text-align:center;"
+                                                    data-campo="referencia_solicitud"
+                                                    data-valor="{{ $respuesta->solicitud->referencia }}">
+                                                    <span style="font-size: 14;" id="referencia_{{ $respuesta->solicitud->referencia }}">{{ $respuesta->solicitud->referencia }}</span>
+                                                </td>
+
+                                                <td style="padding:10px 10px; margin:0; text-align:center;"
+                                                    data-campo="modelo_solicitud"
+                                                    data-valor="{{ $respuesta->solicitud->modelo }}">
+                                                    <span style="font-size: 14;" id="modelo_{{ $respuesta->solicitud->modelo }}">{{ $respuesta->solicitud->modelo }}</span>
+                                                </td>
+
+                                                <td style="padding:10px 10px; margin:0; text-align:center;"
+                                                    data-campo="municipio_solicitud"
+                                                    data-valor="{{ $respuesta->solicitud->municipio }}">
+                                                    <span style="font-size: 14;" id="municipio_{{ $respuesta->solicitud->municipio }}">{{ $respuesta->solicitud->municipio }}</span>
                                                 </td>
 
                                                 <td style="padding:10px 10px; margin:0; text-align:center;"

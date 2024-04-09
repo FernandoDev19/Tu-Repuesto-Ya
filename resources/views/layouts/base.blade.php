@@ -7,6 +7,7 @@
 
 <body style="display: flex; align-items: center;">
     @include('components.alert')
+
     <nav id="nav" class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid" style="max-width: 2080px;">
             <a title="Inicio" class="navbar-brand" href="{{ asset(route('servicios')) }}"><img decoding="async"
@@ -14,32 +15,30 @@
             <button class="navbar-toggler btn" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
                 aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon ico-btn"></span>
+                <span class="navbar-toggler-icon ico-btn" style="width: 1.3rem;"></span>
             </button>
-            <div class="collapse navbar-collapse container-op" id="navbarNavDropdown">
-                <ul class="navbar-nav ml-auto flex-end-cel"
-                    style="align-items: center;box-sizing: border-box; font-size: 120%;">
+            <div class="collapse navbar-collapse container-op navbar-pc" id="navbarNavDropdown">
+                <ul class="navbar-nav ml-auto flex-end-cel" style="box-sizing: border-box; font-size: 100%; gap: 1.5rem;">
 
                     <li class="nav-item">
                         <div class="container_nav" id="Cnav1">
-                            <a class="nav-link active" href="{{ route('servicios') }}" id="nav_e"
-                                aria-current="page">Inicio</a>
-                            <div
-                                class="animate__animated animate__fadeInUp animate__delay-0s animate__faster nav_active">
-                            </div>
+                            <a class="nav-link nav_e1" href="{{ route('vistaFormulario') }}" aria-current="page" style="font-weight: bold !important;">Cotizar</a>
+                            {{-- <div
+                                        class="animate__animated animate__fadeInUp animate__delay-0s animate__faster nav_active">
+                                    </div> --}}
                         </div>
                     </li>
 
                     <li class="nav-item">
                         <div class="container_nav" id="Cnav2">
-                            <a class="nav-link nav_e1" href="#solicitud-de-repuestos">¿Cómo
+                            <a class="nav-link nav_e1" href="#solicitud-de-repuestos" style="font-weight: bold !important;">¿Cómo
                                 funciona?</a>
                         </div>
                     </li>
 
                     <li class="nav-item">
                         <div class="container_nav" id="Cnav3">
-                            <a class="nav-link nav_e1" href="#contacto">Contacto</a>
+                            <a class="nav-link nav_e1" href="#contacto" style="font-weight: bold !important;">Contacto</a>
                         </div>
                     </li>
 
@@ -47,7 +46,7 @@
                         <li id="container_user" class="nav-item dropdown no-arrow">
                             <div class="container_nav container_flex container_flex_user">
                                 <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
-                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: white;">
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: white; font-weight: bold !important;">
                                     <span class="nav_e1" class="mr-2 d-none d-lg-inline text-gray-600 small">¿Eres
                                         proveedor?</span>
                                 </a>
@@ -72,36 +71,38 @@
                         </li>
                     @else
                         <li id="container_user" class="nav-item dropdown no-arrow">
-                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: white;">
-                                <i class="fas fa-user" style="color: #b3b3b3 !important;"></i>
-                                <span class="nav_e1"
-                                    class="mr-2 d-none d-lg-inline text-gray-600 small">{{ $name }}</span>
-                            </a>
-                            <!-- Dropdown - User Information -->
-                            <div class="dropdown-menu end-0 dropdown-menu-right shadow animated--grow-in"
-                                aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="{{ route('dashboard') }}">
-                                    <i class="fas fa-home fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Administrador
+                            <div class="container_nav container_flex container_flex_user">
+                                <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: white; font-weight: bold !important;">
+                                    <i class="fas fa-user" style="color: #b3b3b3 !important;"></i>
+                                    <span class="nav_e1"
+                                        class="mr-2 d-none d-lg-inline text-gray-600 small">{{ $name }}</span>
                                 </a>
-                                <a class="dropdown-item" href="{{ route('profile') }}">
-                                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Perfil
-                                </a>
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Configuraciones
-                                </a>
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Activity Log
-                                </a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
-                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Cerrar sesión
-                                </a>
+                                <!-- Dropdown - User Information -->
+                                <div class="dropdown-menu end-0 dropdown-menu-right shadow animated--grow-in"
+                                    aria-labelledby="userDropdown">
+                                    <a class="dropdown-item" href="{{ route('dashboard') }}">
+                                        <i class="fas fa-home fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Panel
+                                    </a>
+                                    <a class="dropdown-item" href="{{ route('profile') }}">
+                                        <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Perfil
+                                    </a>
+                                    <a class="dropdown-item" href="#">
+                                        <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Configuraciones
+                                    </a>
+                                    <a class="dropdown-item" href="#">
+                                        <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Activity Log
+                                    </a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                        <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Cerrar sesión
+                                    </a>
+                                </div>
                             </div>
                         </li>
                     @endguest
@@ -109,11 +110,105 @@
             </div>
         </div>
     </nav>
+    <div class="collapse navbar-collapse container-op navbar-celular" id="navbarNavDropdown">
+        <ul class="navbar-nav ml-auto flex-end-cel" style="box-sizing: border-box; font-size: 100%; gap: 1.5rem;">
+
+            <li class="nav-item">
+                <div class="container_nav" id="Cnav1">
+                    <a class="nav-link nav_e1" href="{{ route('vistaFormulario') }}" aria-current="page">Cotizar</a>
+                    {{-- <div
+                                class="animate__animated animate__fadeInUp animate__delay-0s animate__faster nav_active">
+                            </div> --}}
+                </div>
+            </li>
+
+            <li class="nav-item">
+                <div class="container_nav" id="Cnav2">
+                    <a class="nav-link nav_e1" href="#solicitud-de-repuestos">¿Cómo
+                        funciona?</a>
+                </div>
+            </li>
+
+            <li class="nav-item">
+                <div class="container_nav" id="Cnav3">
+                    <a class="nav-link nav_e1" href="#contacto">Contacto</a>
+                </div>
+            </li>
+
+            @guest
+                <li id="container_user" class="nav-item dropdown no-arrow" style="border-top: 1px solid;">
+                    <div class="container_nav container_flex container_flex_user">
+                        <a class="nav-link dropdown-toggle" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarNav2Dropdown" aria-controls="navbarNav2Dropdown" aria-expanded="false"
+                        aria-label="Toggle navigation" style="color: var(--color-primary)">
+                            <span class="nav_e1" class="mr-2 d-none d-lg-inline text-gray-600 small"  style="color: var(--color-primary) !important;">¿Eres
+                                proveedor?</span>
+                        </a>
+                        <!-- Dropdown - User Information -->
+                        <div class="collapse navbar-collapse" style="color: white;"
+                            aria-labelledby="userDropdown" id="navbarNav2Dropdown">
+                            <a class="dropdown-item" href="{{ route('login') }}">
+                                <span class="fas fa-sign-in-alt fa-sm fa-fw mr-2 text-gray-400"></span>
+                                Iniciar sesión
+                            </a>
+                            <a class="dropdown-item" href="{{ route('register') }}">
+                                <span class="fas fa-user-plus fa-sm fa-fw mr-2 text-gray-400"></span>
+                                Registrarse
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#">
+                                <span class="fas fa-info-circle fa-sm fa-fw mr-2 text-gray-400"></span>
+                                Saber cómo funciona
+                            </a>
+                        </div>
+                    </div>
+                </li>
+            @else
+                <li id="container_user" class="nav-item dropdown no-arrow" style="border-top: 1px solid;">
+                    <div class="container_nav container_flex container_flex_user">
+                        <a class="nav-link dropdown-toggle" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarNav2Dropdown" aria-controls="navbarNav2Dropdown" aria-expanded="false"
+                        aria-label="Toggle navigation" style="color: var(--color-primary)">
+                            <i class="fas fa-user"></i>
+                            <span class="nav_e1"
+                                class="mr-2 d-none d-lg-inline text-gray-600 small" style="color: var(--color-primary) !important;">{{ $name }}</span>
+                        </a>
+                        <!-- Dropdown - User Information -->
+                        <div class="collapse navbar-collapse" style="color: white;"
+                            aria-labelledby="userDropdown" id="navbarNav2Dropdown">
+                            <a class="dropdown-item" href="{{ route('dashboard') }}">
+                                <i class="fas fa-home fa-sm fa-fw mr-2 text-gray-400"></i>
+                                Panel
+                            </a>
+                            <a class="dropdown-item" href="{{ route('profile') }}">
+                                <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                Perfil
+                            </a>
+                            <a class="dropdown-item" href="#">
+                                <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                                Configuraciones
+                            </a>
+                            <a class="dropdown-item" href="#">
+                                <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
+                                Activity Log
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                Cerrar sesión
+                            </a>
+                        </div>
+                    </div>
+                </li>
+            @endguest
+        </ul>
+    </div>
+
     <div class="container-body">
         @yield('content')
 
         <div class="container-footer">
-            <div class="footer w-100">
+            <div class="footer w-100" style="background-color: white;">
                 <div class="container-flex container-flex-col-cel">
                     <div class="container-items">
                         <a class="item" href="#">Términos y Condiciones</a>
@@ -141,10 +236,11 @@
             style="max-height: 100vh; max-width: 100vw;">
             <div class="modal-dialog" role="document" style="max-width: 800px !important;">
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" style="font-weight: 700;">Crea tu solicitud</h5>
+                    <div class="modal-header" style="padding: 0; !important">
+                        <h5 class="modal-title" style="font-weight: 700; margin: 1rem 0 1rem 1rem;">Crea tu solicitud
+                        </h5>
                         <button type="button" id="btn-close-cliente-modal" class="btn btn-close close"
-                            data-dismiss="modal" aria-label="Close">
+                            style="margin-right: 1rem;" data-dismiss="modal" aria-label="Close">
                         </button>
                     </div>
                     <div class="modal-body">
@@ -235,6 +331,7 @@
                                                     <option value="Hummer">Hummer</option>
                                                     <option value="Hennessey">Hennessey</option>
                                                     <option value="Hyundai">Hyundai</option>
+                                                    <option value="Isuzu">Isuzu</option>
                                                     <option value="Infiniti">Infiniti</option>
                                                     <!--<option value="Husqvarna">Husqvarna</option>-->
                                                     <option value="JAC">JAC</option>
@@ -328,7 +425,7 @@
                                                     </option>
                                                     <?php
                                                     $anioActual = date('Y');
-                                                    for ($modelo = $anioActual + 1; $modelo >= 1950; $modelo--) {
+                                                    for ($modelo = $anioActual + 1; $modelo >= 2005; $modelo--) {
                                                         echo "<option value=\"$modelo\">$modelo</option>";
                                                     }
                                                     ?>
@@ -406,8 +503,8 @@
 
                                         <div style="display: flex; justify-content: flex-end; width: 100%;">
                                             <button type="button" name="agregar_repuesto" id="agregar_repuesto"
-                                                class="btn btn-primary mb-3"
-                                                style="transform: translate(-1.5%, 0); transition: all 300ms ease; border-radius: 0 0 .50rem .50rem !important;">
+                                                class="btn"
+                                                style="transform: translate(-1.5%, 0); transition: all 300ms ease; border-radius: 0 0 .50rem .50rem !important; color: white; background-color: #25D366; padding: 0.3rem 0.8rem; font-size: 0.8rem; border: none;">
                                                 Agregar
                                             </button>
                                         </div>
@@ -472,7 +569,7 @@
 
                                         <div class="flex flex-col mb-3 text-center">
                                             <label id="btn" class="button form-control" for="img_repuesto"
-                                                style="margin: 0; cursor: pointer; color: var(--bs-secondary-color); border-color: var(--bs-dark-border-subtle);">
+                                                style="margin: 0; margin-bottom: 0.5rem; cursor: pointer; color: var(--bs-secondary-color); border-color: var(--bs-dark-border-subtle);">
                                                 Sube imágen(es) de repuesto(s) (Opcional)
                                             </label>
                                             <input type="file" accept="image/*" name="img_repuesto[]"
@@ -489,7 +586,7 @@
                                     </fieldset>
 
                                     <div
-                                        style="width:100%; height: max-content; display: flex; justify-content: flex-end;">
+                                        style="width:100%; height: max-content; display: flex; justify-content: center;">
                                         <button id="btn_siguiente" type="button" class="btn btn-primary"
                                             onclick="validateForm1()">Siguiente</button>
                                     </div>
@@ -551,7 +648,7 @@
                                                     <p class='text-danger text-xs pt-1'>{{ $message }}</p>
                                                 @else
                                                     <small class="text-xs text-color-secondary">¡Debe tener Whatsapp! <i
-                                                            class="fa fa-whatsapp" aria-hidden="true"
+                                                            class="fab fa-whatsapp" aria-hidden="true"
                                                             style="color: #25D366; font-size: 15px; transform: translate(0px, 2.4px);">
                                                         </i></small>
                                                 @enderror
@@ -633,7 +730,7 @@
                                     </div> --}}
 
                                     <div
-                                        style="width:100%; height: max-content; display: flex; justify-content: flex-end; gap: 5px;">
+                                        style="width:100%; height: max-content; display: flex; justify-content: center; gap: 5px;">
                                         <button type="button" class="btn btn-secondary"
                                             onclick="changeTab2()">Anterior</button>
                                         <button id="btn_submit" type="submit" class="btn btn-primary"
@@ -798,116 +895,6 @@
 
             });
         </script>
-        {{--
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                let categoria = document.getElementById('categoria_repuesto');
-                let container = document.getElementById('items_container_categorias');
-                let categorias_preferencias = document.getElementById('categorias_preferencias');
-                let btnSig = document.getElementById('btn_siguiente');
-                categorias_preferencias.classList.add('hide');
-
-                // Intentar recuperar las categorias seleccionadas del localStorage
-                let categoriaSeleccionados = JSON.parse(localStorage.getItem('categoriaSeleccionados')) || {};
-
-                // Función para agregar un botón
-                function agregarBoton(item_category) {
-                    let button = document.createElement('button');
-                    button.classList.add('item_selected');
-                    button.setAttribute('name', 'item_category');
-                    button.textContent = item_category;
-
-                    // Agregar un evento de escucha de clics al botón
-                    button.addEventListener('click', function() {
-                        // Eliminar el botón del contenedor
-                        container.removeChild(button);
-
-                        // Eliminar la opción del objeto seleccionados
-                        delete categoriaSeleccionados[item_category];
-
-                        // Guardar las categorias seleccionadas en el localStorage
-                        localStorage.setItem('categoriaSeleccionados', JSON.stringify(categoriaSeleccionados));
-
-                        if (container.children.length > 0 && container.children.length > 0) {
-                            btnSig.removeAttribute('disabled');
-                        } else {
-                            btnSig.setAttribute('disabled', true);
-                        }
-
-                        if (Object.keys(categoriaSeleccionados).length === 0) {
-                            categoria.setAttribute('required', true);
-                        }
-
-                        if (container.children.length === 0) {
-                            categorias_preferencias.classList.add('hide');
-                            categoria.setAttribute('required', true);
-                        }
-                    });
-
-                    container.appendChild(button);
-
-                    // Marcar la opción como seleccionada
-                    categoriaSeleccionados[item_category] = true;
-
-                    // Guardar las categorias seleccionadas en el localStorage
-                    localStorage.setItem('categoriaSeleccionados', JSON.stringify(categoriaSeleccionados));
-                }
-
-                // Si hay categorias seleccionadas, recrear los botones
-                if (Object.keys(categoriaSeleccionados).length > 0) {
-                    categorias_preferencias.classList.remove('hide');
-                    categoria.removeAttribute('required');
-                    for (let item_category in categoriaSeleccionados) {
-                        agregarBoton(item_category);
-                    }
-                }
-
-                categoria.addEventListener('change', function() {
-                    let item_category = categoria.value;
-                    if (item_category !== "") {
-                        if (!categoriaSeleccionados[item_category]) {
-                            agregarBoton(item_category);
-                            categorias_preferencias.classList.remove('hide');
-                            categoria.removeAttribute('required');
-                        }
-                    }
-                    if (container.children.length > 0 && container.children.length > 0) {
-                        btnSig.removeAttribute('disabled');
-                    } else {
-                        btnSig.setAttribute('disabled', true);
-                    }
-                });
-
-                if (Object.keys(categoriaSeleccionados).length === 0) {
-                    categoria.setAttribute('required', true);
-                } else {
-                    categoria.removeAttribute('required');
-                }
-
-                document.getElementById('form_client').addEventListener('submit', function(event) {
-                    event.preventDefault(); // Evitar el envío del formulario para manejarlo manualmente
-
-                    // Obtener los textos de los botones en un arreglo
-                    let textosSeleccionados = Object.keys(categoriaSeleccionados);
-
-                    // Convertir el arreglo a una cadena JSON
-                    let jsonTextosSeleccionados = JSON.stringify(textosSeleccionados);
-
-                    // Agregar un campo oculto al formulario y asignarle la cadena JSON
-                    let inputJson = document.createElement('input');
-                    inputJson.type = 'hidden';
-                    inputJson.name = 'json_categorias';
-                    inputJson.value = jsonTextosSeleccionados.replace(/×/g, '').replace(/\n/g, '');
-                    this.appendChild(inputJson);
-
-                    // Limpiar los datos en localStorage después de enviar el formulario
-                    localStorage.removeItem('categoriaSeleccionados');
-
-                    // Ahora, puedes enviar el formulario
-                    this.submit();
-                });
-            });
-        </script> --}}
 
         <script>
             //Tabs

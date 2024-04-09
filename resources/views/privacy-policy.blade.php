@@ -28,28 +28,28 @@
             </button>
             <div class="collapse navbar-collapse container-op" id="navbarNavDropdown">
                 <ul class="navbar-nav ml-auto flex-end-cel"
-                    style="align-items: center;box-sizing: border-box; font-size: 120%;">
+                    style="align-items: center;box-sizing: border-box; font-size: 120%; gap: 1.5rem;">
 
                     <li class="nav-item">
                         <div class="container_nav" id="Cnav1">
-                            <a class="nav-link active" href="{{ route('servicios') }}" id="nav_e"
-                                aria-current="page">Inicio</a>
-                            <div
+                            <a class="nav-link nav_e1" href="{{ route('vistaFormulario') }}"
+                                aria-current="page">Cotizar</a>
+                            {{-- <div
                                 class="animate__animated animate__fadeInUp animate__delay-0s animate__faster nav_active">
-                            </div>
+                            </div> --}}
                         </div>
                     </li>
 
                     <li class="nav-item">
                         <div class="container_nav" id="Cnav2">
-                            <a class="nav-link nav_e1" href="{{route('servicios')}}#solicitud-de-repuestos">¿Cómo
+                            <a class="nav-link nav_e1" href="#solicitud-de-repuestos">¿Cómo
                                 funciona?</a>
                         </div>
                     </li>
 
                     <li class="nav-item">
                         <div class="container_nav" id="Cnav3">
-                            <a class="nav-link nav_e1" href="{{route('servicios')}}#contacto">Contacto</a>
+                            <a class="nav-link nav_e1" href="#contacto">Contacto</a>
                         </div>
                     </li>
 
@@ -82,36 +82,38 @@
                         </li>
                     @else
                         <li id="container_user" class="nav-item dropdown no-arrow">
-                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: white;">
-                                <i class="fas fa-user" style="color: #b3b3b3 !important;"></i>
-                                <span class="nav_e1"
-                                    class="mr-2 d-none d-lg-inline text-gray-600 small">{{ $name }}</span>
-                            </a>
-                            <!-- Dropdown - User Information -->
-                            <div class="dropdown-menu end-0 dropdown-menu-right shadow animated--grow-in"
-                                aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="{{ route('dashboard') }}">
-                                    <i class="fas fa-home fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Administrador
+                            <div class="container_nav container_flex container_flex_user">
+                                <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: white;">
+                                    <i class="fas fa-user" style="color: #b3b3b3 !important;"></i>
+                                    <span class="nav_e1"
+                                        class="mr-2 d-none d-lg-inline text-gray-600 small">{{ $name }}</span>
                                 </a>
-                                <a class="dropdown-item" href="{{ route('profile') }}">
-                                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Perfil
-                                </a>
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Configuraciones
-                                </a>
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Activity Log
-                                </a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
-                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Cerrar sesión
-                                </a>
+                                <!-- Dropdown - User Information -->
+                                <div class="dropdown-menu end-0 dropdown-menu-right shadow animated--grow-in"
+                                    aria-labelledby="userDropdown">
+                                    <a class="dropdown-item" href="{{ route('dashboard') }}">
+                                        <i class="fas fa-home fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Administrador
+                                    </a>
+                                    <a class="dropdown-item" href="{{ route('profile') }}">
+                                        <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Perfil
+                                    </a>
+                                    <a class="dropdown-item" href="#">
+                                        <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Configuraciones
+                                    </a>
+                                    <a class="dropdown-item" href="#">
+                                        <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Activity Log
+                                    </a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                        <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Cerrar sesión
+                                    </a>
+                                </div>
                             </div>
                         </li>
                     @endguest
@@ -119,6 +121,7 @@
             </div>
         </div>
     </nav>
+
 
     <div class="container-body">
         <div class="container-flex-col">

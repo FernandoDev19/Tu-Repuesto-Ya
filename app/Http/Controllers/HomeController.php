@@ -21,6 +21,7 @@ use App\Models\User;
 use App\Models\Answer;
 use App\Models\Geolocation;
 use App\Models\Country_code;
+use App\Models\Category;
 
 use App\Mail\SolicitudClienteMail;
 use App\Mail\SolicitudRepuestoMail;
@@ -57,7 +58,7 @@ class HomeController extends Controller
         return view("home.index", compact('name', 'departamentos', 'group', 'codigos'));
     }
 
-    public function modalUrlView():view
+    public function modalUrlView(): view
     {
         // Lista de codigos
         $codigos = Country_code::all();
@@ -124,18 +125,7 @@ class HomeController extends Controller
 
         $solicitud = new Solicitude();
 
-        $palabrasClave = [
-            'Llantas' => ['Rin', 'Rines', 'Llanta', 'yanta', 'yantas', 'Llantas', 'Neumático', 'Neumáticos', 'Neumaticos', 'Neumatico'],
-            'Frenos' => ['Pastillas', 'Pastilla', 'Freno', 'Frenos', 'Discos', 'Disco', 'Tambor', 'Tambores', 'Bombas', 'Bomba', 'Servofreno', 'Bandas', 'Banda', 'Cilindro maestro', 'Linea de freno', 'Manguera de freno', 'Manguera de frenos', 'Mangueras de freno', 'Mangueras de frenos'],
-            'Suspensión' => ['Rodamiento', 'Suspensiones', 'Suspension', 'Suspensión', 'Rodamientos', 'Amortiguadores', 'Amortiguador', 'Casquillo', 'Casquillos', 'Resortes', 'Resorte', 'Barra', 'Barras', 'estabilizadora', 'estabilizadoras', 'estabilizador', 'estabilizadores', 'Bieletas', 'Rotula', 'Rotula de suspensión'],
-            'Dirección' => ['Cremallera', 'dirección', 'direccion', 'Manguera', 'Mangueras', 'Bomba de dirección', 'Terminales de dirección', 'Terminales', 'Juntas homocinéticas', 'Juntas', 'homocinéticas'],
-            'Motor' => ['Pistón', 'piston', 'pistones', 'Motores', 'motor', 'Filtro', 'Filtros', 'transmisión', 'Filtro de transmisión', 'Filtro de transmision', 'Filtro', 'Aceite', 'Filtros de aceite', 'Aceite de transmisión', 'aire', 'Filtros de aire', 'combustible', 'Filtros de combustible', 'bujias', 'bujia', 'bujía', 'Bujías', 'Bobina', 'Bobinas', 'Bobinas de encendido', 'Embobinado', 'Embobinados', 'Emvovinados', 'Emvovinado', 'Enbobinados', 'Enbobinado', 'Envovinados', 'Envovinado', 'encendido', 'Correa', 'Correas', 'Correas de distribución', 'distribución', 'Inyección', 'Inyeccion', 'Bombas', 'Bomba', 'Bomba de agua', 'Bomba de gasolina', 'Gasolina', 'Bomba de aceite', 'Turbocompresor', 'Alternador', 'Arrancador', 'Carburador', 'Carburadores', 'Cárter', 'Carter', 'Válvula de escape', 'Valvula de escape', 'Válvulas de escape', 'Valvulas de escape', 'Escape', 'Válvula', 'Válvulas', 'Valvula', 'Valvulas', 'Balvula', 'Balvulas', 'cámara de combustión', 'cámaras de combustion', 'cámara', 'cámaras', 'Varilla de empuje', 'varillas', 'Varillas de empuje', 'Árbol de levas', 'Árbol', 'Levas', 'Aros', 'Aro', 'Bielas', 'Vielas', 'Biela', 'Viela', 'Bulon', 'Bulón', 'Bulones', 'Cigüeñal', 'Cigueñal', 'Tobera', 'Toberas', 'Inyectores', 'Inyector', 'Eje', 'Ejes', 'Balancin', 'Balancines', 'Balancín', 'Embrague', 'Caja', 'cambios', 'manual', 'Caja de cambios manual', 'Caja de cambios automática', 'automatica', 'automática'],
-            'Refrigeración' => ['Radiador', 'Termostato', 'Ventilador', 'Ventiladores', 'Deposito', 'Depositos', 'Depósito', 'Depósitos', 'Bomba de Agua', 'Bombas', 'Bomba', 'Agua', 'Refrigeración', 'Refrigerante', 'Manguera de refrigerante', 'Tapa del radiador', 'Sensores', 'Sensor', 'Oxigenos', 'Sensor de oxigeno', 'Sensor de temperatura', 'Temperatura', 'Radiador de aceite'],
-            'Latas' => ['Puertas', 'Puerta', 'Ventana', 'Ventanas', 'Espejo', 'Espejos', 'retrovisor', 'retrovisores', 'Espejos retrovisores', 'Parachoques', 'Paral', 'Cajeta', 'Cajetas', 'Baul', 'Baúl', 'Baules', 'Baúles', 'Techo', 'Techos', 'Bomper', 'Bompers', 'Bonper', 'Persiana', 'Persianas', 'Frontal', 'Capó', 'Capot', 'Capo', 'Maletero', 'Guardabarros', 'Guardabarro', 'Guarda barros', 'Guarda Barro', 'Guardachoque', 'Guardachoques', 'Guarda choques', 'Guarda', 'Choque', 'Choques', 'Defensa', 'Placa', 'matrícula', 'Placa de matrícula', 'Compuerta', 'Compuertas', 'Conpuertas', 'Conpuerta', 'Guardafangos', 'Guarda fangos', 'Guardafango', 'Guarda fango', 'Fango', 'Estribos', 'Estrivos', 'Estribo', 'Estrivo', 'Silla', 'Sillas', 'costado', 'Stop', 'Tapa', 'Paragolpes', 'Para golpes', 'Panel', 'Capota', 'Capotas', 'Consola central', 'Consola', 'Timón', 'Timon', 'Vidrio', 'Vidrios'],
-            'Eléctricos' => ['Eléctrico', 'Eléctricos', 'Electrico', 'Electricos', 'Baterías', 'Baterias', 'Batería', 'Bateria', 'Faro', 'Faros', 'Farola', 'Farolas', 'Luz', 'Luz antiniebla', 'Luces', 'Luces traseras', 'Señales', 'giro', 'Señales de giro', 'Limpiaparabrisas', 'parabrisas', 'limpia parabrisas', 'limpia para brisas', 'Limpiaparabrisas traseros', 'A/C', 'Calefacción', 'Radio', 'Altavoces', 'navegación', 'arranque', 'Motor de arranque', 'Motores de arranque', 'Interruptor', 'Interruptores', 'Interruptor de encendido', 'Fusibles', 'Fusible', 'cables', 'cable', 'cableado', 'Cableados', 'Conexion', 'Conexión', 'Conexiones', 'Coneccion', 'Conección', 'Conecciones', 'Conector', 'Conectores', 'Interructor', 'Interructores', 'Interuptor', 'Interuptores', 'Inteructor', 'Inteructores', 'Interruptores de encendido', 'Encendido', 'Alternador', 'Alternadores', 'Sistema de navegación', 'Condensador', 'Condensadores', 'Volante', 'Volantes'],
-            'otros' => ['Mofles', 'Sujetador', 'Multimedia', 'Sonido', 'Sonidos', 'Tablero', 'Tableros', 'Tapizado', 'Tapizados', 'Sujetadores', 'Catalizador', 'Catalizadores', 'Silenciador', 'Silenciadores', 'Faros', 'Conducto', 'Conductos', 'Combustible', 'Líquidos', 'Gasolina', 'Líquido', 'refrigerante', 'dirección', 'asistida', 'transmisión', 'Líquido de transmisión', 'Limpiador', 'parabrisas', 'Limpiador de parabrisas', 'Anticongelante', 'Anti congelante', 'Aceite', 'Aceites', 'motor', 'Aceite de motor', 'Aditivos', 'Manometro', 'Manometros'],
-        ];
-
+        $categories = Category::with('keyword')->get();
         $repuestos_array = json_decode($request->json_repuestos);
 
         // Función para quitar tildes y caracteres especiales
@@ -145,6 +135,14 @@ class HomeController extends Controller
             $string = iconv('UTF-8', 'ASCII//TRANSLIT', $string);
             return $string;
         };
+
+        foreach ($categories as $categoria) {
+            $palabras = $categoria->keyword->pluck('palabra_clave');
+
+            // Reemplazar las palabras clave en el array
+            $palabrasClave[$categoria->nombre_categoria] = array_map($quitarTildes, array_map('strtolower', $palabras->toArray()));
+        }
+
         // Inicializar un array para almacenar categorías
         $categoriasEncontradas = [];
 
@@ -279,9 +277,60 @@ class HomeController extends Controller
 
         $solicitud->codigo = $codigo;
 
-        try {
+          try {
             $solicitud->save();
         } catch (\Exception $e) {
+            $token = 'EAAyaksOlpN4BO64MEL1cjlEGMvDQb6liWd3oCOIhvnUZBMeF5tbhAvjZABvBnnaYh9V9waBGZCBJW0LnCFaDcUQMZArNbLSKCUEL1MLmgdoRpQHyvEGdAC0CYOxt3l5N2u2Wi0yAlVFE7mCRtHVkZCSOyZAXyVtbrxxeOjkJqOkFDjloKrVuZBLXJUF4S1KG3u7';
+            $url = 'https://graph.facebook.com/v17.0/196744616845968/messages';
+            $admin = User::where('role', 'Admin')->first();
+            $celular = $admin->cel;
+
+            $mensajeData = [
+                'messaging_product' => 'whatsapp',
+                'recipient_type' => 'individual',
+                'to' => $celular,
+                'type' => 'template',
+                'template' => [
+                    'name' => 'errors_reports',
+                    'language' => [
+                        'code' => 'es',
+                    ],
+                    'components' => [
+                        [
+                            'type' => 'body',
+                            'parameters' => [
+                                [
+                                    'type' => 'text',
+                                    'text' => 'https://turepuestoya.co/formulario-cliente',
+                                ],
+                                [
+                                    'type' => 'text',
+                                    'text' => 'Error al enviar una solicitud. ' . $e->getMessage(),
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ];
+
+            $mensaje = json_encode($mensajeData);
+
+            $header = [
+                "Authorization: Bearer " . $token,
+                "Content-Type: application/json",
+            ];
+            $curl = curl_init();
+            curl_setopt($curl, CURLOPT_URL, $url);
+            curl_setopt($curl, CURLOPT_POSTFIELDS, $mensaje);
+            curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+
+            $response = json_decode(curl_exec($curl), true);
+
+            $status_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+
+            curl_close($curl);
+
             return redirect()->back()->withErrors($validator)
                 ->withInput()->with('error', 'Error al guardar los datos: ' . $e->getMessage());
         }
@@ -290,81 +339,6 @@ class HomeController extends Controller
         try {
             $token = 'EAAyaksOlpN4BO64MEL1cjlEGMvDQb6liWd3oCOIhvnUZBMeF5tbhAvjZABvBnnaYh9V9waBGZCBJW0LnCFaDcUQMZArNbLSKCUEL1MLmgdoRpQHyvEGdAC0CYOxt3l5N2u2Wi0yAlVFE7mCRtHVkZCSOyZAXyVtbrxxeOjkJqOkFDjloKrVuZBLXJUF4S1KG3u7';
             $url = 'https://graph.facebook.com/v17.0/196744616845968/messages';
-
-            $proveedores = Provider::all()->where('estado', 1);
-
-            foreach ($proveedores as $proveedor) {
-                $jsonMarcasGuardadas = $proveedor->marcas_preferencias;
-                $jsonCategoriasGuardadas = $proveedor->especialidad;
-
-                // Decodificar el JSON a un array asociativo
-                $marcasGuardadasArray = json_decode($jsonMarcasGuardadas, true);
-                $categoriasGuardadasArray = json_decode($jsonCategoriasGuardadas, true);
-
-                // Obtener la marca del carro del cliente (ajusta según tu lógica, por ejemplo, mediante un formulario)
-                $marcaCliente = $request->marca;
-                $categoriaRepuesto = json_decode($request->json_categorias, true);
-
-                if ((is_array($marcasGuardadasArray) && in_array('Todas las marcas', $marcasGuardadasArray) || in_array($marcaCliente, $marcasGuardadasArray) || in_array($request->marca_otro, $marcasGuardadasArray)) && (is_array($categoriasGuardadasArray) && in_array('Todas las especialidades', $categoriasGuardadasArray) || array_intersect($categoriaRepuesto, $categoriasGuardadasArray)) || $request->categoria_repuesto == 'No sé') {
-                    $celular = $proveedor->celular;
-                    $telefono = $proveedor->telefono;
-
-                    // Despachar un trabajo para enviar el mensaje de WhatsApp a los proveedores
-                    if ($celular) {
-                        WhatsAppMessageJob::dispatchAfterResponse(
-                            $proveedor,
-                            $celular,
-                            $request->json_repuestos,
-                            $request->marca,
-                            $request->referencia,
-                            $request->modelo,
-                            $request->comentario,
-                            $request->nombre,
-                            $request->departamento,
-                            $request->municipio,
-                            $solicitud,
-                            $token,
-                            $url
-                        );
-                    }
-
-                    if ($telefono) {
-                        WhatsAppMessageJob::dispatchAfterResponse(
-                            $proveedor,
-                            $telefono,
-                            $request->json_repuestos,
-                            $request->marca,
-                            $request->referencia,
-                            $request->modelo,
-                            $request->comentario,
-                            $request->nombre,
-                            $request->departamento,
-                            $request->municipio,
-                            $solicitud,
-                            $token,
-                            $url
-                        );
-                    }
-
-                    $data = [
-                        'repuesto' => $request->json_repuestos,
-                        'marca' => $request->marca,
-                        'referencia' => $request->referencia,
-                        'modelo' => $request->modelo,
-                        'comentarios' => $request->comentario,
-                        'nombre' => $request->nombre,
-                        'pais' => $solicitud->pais,
-                        'departamento' => $request->departamento,
-                        'municipio' => $request->municipio,
-                        'codigo' => $solicitud->codigo
-                    ];
-
-                    if ($proveedor->email || $proveedor->email_secundario) {
-                        Mail::to($proveedor->email)->cc($proveedor->email_secundario)->send(new SolicitudRepuestoMail($data));
-                        Log::info('Correo 1 enviado:');
-                    }
-                }
-            }
 
             $numeroC = $request->codigo_cel . $request->cel;
             $nombre_cliente = $request->nombre;
@@ -425,25 +399,255 @@ class HomeController extends Controller
             curl_close($curl);
 
             Log::info('Mensaje enviado:', $mensajeData);
+
+            $proveedores = Provider::all()->where('estado', 1);
+
+            if (is_array($categoriasEncontradas) && in_array('No sé', $categoriasEncontradas)) {
+                $message = 'No se encuentran todas las categorias para los repuestos';
+                $user = User::where('role', 'Admin')->first();
+                $celular = $user->cel;
+
+                $repuesto = is_array($request->json_repuestos) ? implode(',', $request->json_repuestos) : $request->json_repuestos;
+                $repuesto = str_replace(array("[", "]", "\"", ","), array("", "", "", ", "), $repuesto);
+
+                $mensajeData = [
+                    'messaging_product' => 'whatsapp',
+                    'recipient_type' => 'individual',
+                    'to' => $celular,
+                    'type' => 'template',
+                    'template' => [
+                        'name' => 'solicitud',
+                        'language' => [
+                            'code' => 'es',
+                        ],
+                        'components' => [
+                            [
+                                'type' => 'body',
+                                'parameters' => [
+                                    [
+                                        'type' => 'text',
+                                        'text' => $message,
+                                    ],
+                                    [
+                                        'type' => 'text',
+                                        'text' => $repuesto,
+                                    ],
+                                    [
+                                        'type' => 'text',
+                                        'text' => $request->marca,
+                                    ],
+                                    [
+                                        'type' => 'text',
+                                        'text' => $request->referencia,
+                                    ],
+                                    [
+                                        'type' => 'text',
+                                        'text' => $request->modelo,
+                                    ],
+                                    [
+                                        'type' => 'text',
+                                        'text' => $request->comentario,
+                                    ],
+                                    [
+                                        'type' => 'text',
+                                        'text' => $request->nombre,
+                                    ],
+                                    [
+                                        'type' => 'text',
+                                        'text' => $solicitud->pais,
+                                    ],
+                                    [
+                                        'type' => 'text',
+                                        'text' => $request->departamento,
+                                    ],
+                                    [
+                                        'type' => 'text',
+                                        'text' => $request->municipio,
+                                    ],
+                                ],
+                            ],
+                            [
+                                'type' => 'button',
+                                'sub_type' => 'url',
+                                'index' => '0',
+                                'parameters' => [
+                                    [
+                                        'type' => 'text',
+                                        'text' => $solicitud->codigo,
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ];
+
+                $mensaje = json_encode($mensajeData);
+
+                $header = [
+                    "Authorization: Bearer " . $token,
+                    "Content-Type: application/json",
+                ];
+                
+                $curl = curl_init();
+                curl_setopt($curl, CURLOPT_URL, $url);
+                curl_setopt($curl, CURLOPT_POSTFIELDS, $mensaje);
+                curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
+                curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+
+                $response = json_decode(curl_exec($curl), true);
+
+                $status_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+
+                curl_close($curl);
+
+                Log::info('Mensaje no se encuentran categorias (Enviado):', $mensajeData);
+            } else {
+                foreach ($proveedores as $proveedor) {
+                    $jsonMarcasGuardadas = $proveedor->marcas_preferencias;
+                    $jsonCategoriasGuardadas = $proveedor->especialidad;
+
+                    // Decodificar el JSON a un array asociativo
+                    $marcasGuardadasArray = json_decode($jsonMarcasGuardadas, true);
+                    $categoriasGuardadasArray = json_decode($jsonCategoriasGuardadas, true);
+
+                    // Obtener la marca del carro del cliente (ajusta según tu lógica, por ejemplo, mediante un formulario)
+                    $marcaCliente = $solicitud->marca;
+                    $categoriaRepuesto = $categoriasEncontradas;
+
+                    if (is_array($marcasGuardadasArray) && is_array($categoriasGuardadasArray)) {
+                        if ((in_array($marcaCliente, $marcasGuardadasArray) || in_array('Todas las marcas', $marcasGuardadasArray) || in_array($request['marca_otro'], $marcasGuardadasArray)) && (array_intersect($categoriaRepuesto, $categoriasGuardadasArray) || in_array('Todas las especialidades', $categoriasGuardadasArray))) {
+                            $celular = $proveedor->celular;
+                            $telefono = $proveedor->telefono;
+
+                            // Despachar un trabajo para enviar el mensaje de WhatsApp a los proveedores
+                            if ($celular) {
+                                WhatsAppMessageJob::dispatch(
+                                    $proveedor,
+                                    $celular,
+                                    $request->json_repuestos,
+                                    $request->marca,
+                                    $request->referencia,
+                                    $request->modelo,
+                                    $request->comentario,
+                                    $request->nombre,
+                                    $request->departamento,
+                                    $request->municipio,
+                                    $solicitud,
+                                    $token,
+                                    $url
+                                );
+                            }
+
+                            if ($telefono) {
+                                WhatsAppMessageJob::dispatch(
+                                    $proveedor,
+                                    $telefono,
+                                    $request->json_repuestos,
+                                    $request->marca,
+                                    $request->referencia,
+                                    $request->modelo,
+                                    $request->comentario,
+                                    $request->nombre,
+                                    $request->departamento,
+                                    $request->municipio,
+                                    $solicitud,
+                                    $token,
+                                    $url
+                                );
+                            }
+
+                            $data = [
+                                'repuesto' => $request->json_repuestos,
+                                'marca' => $request->marca,
+                                'referencia' => $request->referencia,
+                                'modelo' => $request->modelo,
+                                'comentarios' => $request->comentario,
+                                'nombre' => $request->nombre,
+                                'pais' => $solicitud->pais,
+                                'departamento' => $request->departamento,
+                                'municipio' => $request->municipio,
+                                'codigo' => $solicitud->codigo
+                            ];
+
+                            if ($proveedor->email || $proveedor->email_secundario) {
+                                Mail::to($proveedor->email)->cc($proveedor->email_secundario)->queue(new SolicitudRepuestoMail($data));
+                                $i = 1;
+                                Log::info('Correo ' . $i++ . ' enviado a ' . $proveedor->razon_social);
+                            }
+                        }
+                    }
+                }
+            }
         } catch (\Exception $e) {
+            $token = 'EAAyaksOlpN4BO64MEL1cjlEGMvDQb6liWd3oCOIhvnUZBMeF5tbhAvjZABvBnnaYh9V9waBGZCBJW0LnCFaDcUQMZArNbLSKCUEL1MLmgdoRpQHyvEGdAC0CYOxt3l5N2u2Wi0yAlVFE7mCRtHVkZCSOyZAXyVtbrxxeOjkJqOkFDjloKrVuZBLXJUF4S1KG3u7';
+            $url = 'https://graph.facebook.com/v17.0/196744616845968/messages';
+            $admin = User::where('role', 'Admin')->first();
+            $celular = $admin->cel;
+
+            $mensajeData = [
+                'messaging_product' => 'whatsapp',
+                'recipient_type' => 'individual',
+                'to' => $celular,
+                'type' => 'template',
+                'template' => [
+                    'name' => 'errors_reports',
+                    'language' => [
+                        'code' => 'es',
+                    ],
+                    'components' => [
+                        [
+                            'type' => 'body',
+                            'parameters' => [
+                                [
+                                    'type' => 'text',
+                                    'text' => 'https://turepuestoya.co/formulario-cliente',
+                                ],
+                                [
+                                    'type' => 'text',
+                                    'text' => 'Error al enviar una solicitud. ' . $e->getMessage(),
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ];
+
+            $mensaje = json_encode($mensajeData);
+
+            $header = [
+                "Authorization: Bearer " . $token,
+                "Content-Type: application/json",
+            ];
+            $curl = curl_init();
+            curl_setopt($curl, CURLOPT_URL, $url);
+            curl_setopt($curl, CURLOPT_POSTFIELDS, $mensaje);
+            curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+
+            $response = json_decode(curl_exec($curl), true);
+
+            $status_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+
+            curl_close($curl);
+
             // Manejo de errores aquí
             Log::error('Error al enviar mensaje de WhatsApp: ' . $e->getMessage());
         }
         // Notificar al administrador
         $admin = User::where('role', 'Proveedor')->get();
 
-        if ($admin) {
+          if ($admin) {
             Notification::send($admin, new NuevaSolicitudRepuesto($solicitud));
         }
 
         if ($solicitud->correo) {
-            Mail::to($solicitud->correo)->send(new SolicitudClienteMail($solicitud->nombre));
+            Mail::to($solicitud->correo)->queue(new SolicitudClienteMail($solicitud->nombre));
         }
 
         return redirect()->route('graciasView');
     }
 
-    public function graciasView():view
+    public function graciasView(): view
     {
         // Lista de codigos
         $codigos = Country_code::all();
@@ -538,7 +742,7 @@ class HomeController extends Controller
         $solicitud = Solicitude::where('codigo', $codigo)->first();
 
         if (!$solicitud) {
-            return redirect()->route('servicios')->with('error', '!Código de solicitud inválido!');
+            return redirect()->route('servicios')->with('error', '¡UPS! ¡Lo siento, has llegado tarde!<br/> El sistema toma las 5 primeras cotizaciones. Te esperamos en una próxima.');
         }
 
         // Verificar si el proveedor ya ha respondido a esta solicitud
@@ -572,26 +776,41 @@ class HomeController extends Controller
         }
         $answer->save();
 
-        // Verificar el estado de la solicitud
-        if (!$solicitud->estado || $solicitud->respuestas >= 5) {
+        // Verificar si la solicitud está cerrada o si ya ha alcanzado el límite de respuestas
+        // if (!$solicitud->estado || $solicitud->respuestas >= 5) {
+        //     $solicitud->codigo = null;
+        //     $solicitud->estado = false;
+        //     $solicitud->save();
+        //     return redirect()->route('servicios')->with('error', '¡UPS! ¡Lo siento, has llegado tarde!<br/> El sistema toma las 5 primeras cotizaciones. Te esperamos en una próxima.');
+        // } else {
+        //     // Guardar la respuesta y verificar si se ha guardado correctamente
+        //     if ($answer->save()) {
+        //         // Incrementar el contador de respuestas de la solicitud
+        //         $solicitud->respuestas += 1;
+        //         $solicitud->save();
+        //     } else {
+        //         // Manejar el caso en que la respuesta no se haya guardado correctamente
+        //         return redirect()->back()->with('error', 'Hubo un error al guardar la respuesta.');
+        //     }
+        // }
 
-            $solicitud->codigo = null;
-            $solicitud->estado = false;
-            $solicitud->save();
-            return redirect()->route('servicios')->with('error', 'Esta solicitud ya no acepta más respuestas.');
-        } else if ($answer->save()) {
+        // Verificar el estado de la solicitud
+        if ($answer->save()) {
             $solicitud->respuestas = $solicitud->respuestas + 1;
             $solicitud->save();
         }
 
         // Enviar datos al cliente
-
         $nombre_cliente = $solicitud->nombre;
         $almacen = $proveedor->razon_social;
         $pais = $proveedor->pais;
         $ciudad = $proveedor->municipio;
         $comentarios = $answer->comentarios;
         $numero_celular = $proveedor->celular;
+                $numero_celular2 = 'No tiene';
+        if($proveedor->telefono){
+            $numero_celular2 = $proveedor->telefono;
+        }
 
         $repuesto = json_decode($answer->repuesto, true);
         $precio = json_decode($answer->precio, true);
@@ -602,65 +821,6 @@ class HomeController extends Controller
         $url = 'https://graph.facebook.com/v17.0/196744616845968/messages';
         $telefono = $solicitud->numero;
 
-        // $mensajeData = [
-        //     'messaging_product' => 'whatsapp',
-        //     'recipient_type' => 'individual',
-        //     'to' => $telefono,
-        //     'type' => 'template',
-        //     'template' => [
-        //         'name' => 'respuesta_proveedor',
-        //         'language' => [
-        //             'code' => 'es',
-        //         ],
-        //         'components' => [
-        //             [
-        //                 'type' => 'body',
-        //                 'parameters' => [
-        //                     [
-        //                         'type' => 'text',
-        //                         'text' => $nombre_cliente,
-        //                     ],
-        //                     [
-        //                         'type' => 'text',
-        //                         'text' => $repuesto,
-        //                     ],
-        //                     [
-        //                         'type' => 'text',
-        //                         'text' => $tipo_repuesto,
-        //                     ],
-        //                     [
-        //                         'type' => 'text',
-        //                         'text' => $precio,
-        //                     ],
-        //                     [
-        //                         'type' => 'text',
-        //                         'text' => $garantia,
-        //                     ],
-        //                     [
-        //                         'type' => 'text',
-        //                         'text' => $almacen,
-        //                     ],
-        //                     [
-        //                         'type' => 'text',
-        //                         'text' => $pais,
-        //                     ],
-        //                     [
-        //                         'type' => 'text',
-        //                         'text' => $ciudad,
-        //                     ],
-        //                     [
-        //                         'type' => 'text',
-        //                         'text' => $numero_celular,
-        //                     ],
-        //                     [
-        //                         'type' => 'text',
-        //                         'text' => $comentarios,
-        //                     ],
-        //                 ],
-        //             ],
-        //         ],
-        //     ],
-        // ];
         if (count(json_decode($answer->repuesto)) == 1) {
             $mensajeData = [
                 'messaging_product' => 'whatsapp',
@@ -703,6 +863,10 @@ class HomeController extends Controller
                                 [
                                     'type' => 'text',
                                     'text' => $numero_celular,
+                                ],
+                                [
+                                    'type' => 'text',
+                                    'text' => $numero_celular2,
                                 ],
                                 [
                                     'type' => 'text',
@@ -763,6 +927,10 @@ class HomeController extends Controller
                                 [
                                     'type' => 'text',
                                     'text' => $numero_celular,
+                                ],
+                                [
+                                    'type' => 'text',
+                                    'text' => $numero_celular2,
                                 ],
                                 [
                                     'type' => 'text',
@@ -831,6 +999,10 @@ class HomeController extends Controller
                                 [
                                     'type' => 'text',
                                     'text' => $numero_celular,
+                                ],
+                                [
+                                    'type' => 'text',
+                                    'text' => $numero_celular2,
                                 ],
                                 [
                                     'type' => 'text',
@@ -907,6 +1079,10 @@ class HomeController extends Controller
                                 [
                                     'type' => 'text',
                                     'text' => $numero_celular,
+                                ],
+                                [
+                                    'type' => 'text',
+                                    'text' => $numero_celular2,
                                 ],
                                 [
                                     'type' => 'text',
@@ -994,6 +1170,10 @@ class HomeController extends Controller
                                 ],
                                 [
                                     'type' => 'text',
+                                    'text' => $numero_celular2,
+                                ],
+                                [
+                                    'type' => 'text',
                                     'text' => $comentarios,
                                 ],
                             ],
@@ -1022,7 +1202,7 @@ class HomeController extends Controller
         curl_close($curl);
 
         Log::info('Mensaje enviado:', $mensajeData);
-        Log::info('Mensaje enviado:', $response);
+        Log::info('Detalles del mensaje:', $response);
 
         if (auth()->check()) {
             return redirect()->route('viewSolicitudes')->with('message', 'La respuesta se ha enviado exitosamente');
@@ -1030,7 +1210,7 @@ class HomeController extends Controller
         return redirect()->route('servicios')->with('message', 'La respuesta se ha enviado exitosamente');
     }
 
-    private function eliminarImagenes(int $solicitudId)
+    public function eliminarImagenes(int $solicitudId)
     {
         // Obtener las imágenes de la solicitud
         $solicitudes = Solicitude::find($solicitudId);
@@ -1039,7 +1219,8 @@ class HomeController extends Controller
 
         // Eliminar las imágenes del servidor
         foreach ($imagenes as $imagen) {
-            Storage::delete('public/'.$imagen);
+            Storage::delete('public/' . $imagen);
+            Log::info('Se eliminó la imagen: ' . $imagen);
         }
     }
 }

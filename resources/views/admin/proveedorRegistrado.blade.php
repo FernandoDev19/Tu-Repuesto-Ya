@@ -51,7 +51,7 @@
     class="navbar navbar-expand navbar-light bg-white shadow topbar static-top d-flex justify-content-center">
 
     <!-- Topbar Navbar -->
-    <ul class="navbar-nav">
+    <ul class="navbar-nav" style="font-size: 1.3rem; gap: 0.6rem;">
 
         <li class="nav-item">
             <a class="nav-link" style="color: var(--gray); padding: 0 .50rem; gap: 3px;" href="{{ route('dashboard') }}">
@@ -639,26 +639,11 @@
                                                                             <input title="Especialidad: ¿En que repuestos se especializa?" id="categoria_otro{{$proveedores->id}}" class="form-control hide" value="{{old('categoria_repuesto')}}" placeholder="*Cual?" autofocus>
                                                                             <select title="Especialidad: ¿En que repuestos se especializa?" class="form-control" name="categoria_repuesto" id="categoria_repuesto{{$proveedores->id}}" name="categoria_repuesto"
                                                                                 style="color: var(--bs-secondary-color);">
-                                                                                    <option value="" disabled selected>*Especialidad</option>
-                                                                                    <option value="Frenos">Frenos</option>
-                                                                                    <option value="Eléctricos">Eléctricos</option>
-                                                                                    <option value="Batería">Batería</option>
-                                                                                    <option value="Luces">Luces</option>
-                                                                                    <option value="Filtros">Filtros</option>
-                                                                                    <option value="Correas">Correas</option>
-                                                                                    <option value="Suspensión">Suspensión</option>
-                                                                                    <option value="Transmisión">Transmisión</option>
-                                                                                    <option value="Motor">Motor</option>
-                                                                                    <option value="Accesorios">Accesorios</option>
-                                                                                    <option value="Llantas">Llantas</option>
-                                                                                    <option value="Vidrios">Vidrios</option>
-                                                                                    <option value="Mangueras">Mangueras</option>
-                                                                                    <option value="Refrigeración">Refrigeración</option>
-                                                                                    <option value="Liquidos">Liquidos</option>
-                                                                                    <option value="Frenos">Frenos</option>
-                                                                                    <option value="Mofles">Mofles</option>
-                                                                                    <option value="No Se">No Sé</option>
-                                                                                    <option value="otros">Otros</option>
+                                                                                    <option value="" disabled selected>*Seleccionar Especialidad</option>
+                                                                                    <option value="Todas las especialidades">Todas las especialidades</option>
+                                                                                    @foreach ($categorias as $categoria)
+                                                                                        <option value="{{$categoria->nombre_categoria}}">{{$categoria->nombre_categoria}}</option>
+                                                                                    @endforeach
                                                                             </select>
                                                                             @error('categoria_repuesto')
                                                                                 <div class="text-danger text-xs pt-1">{{ $message }}</div>

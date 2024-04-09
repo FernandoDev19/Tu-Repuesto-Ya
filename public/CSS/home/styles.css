@@ -9,6 +9,7 @@
     --color-letter: #F2B705;
     --color-fondo-footer: #96d3f2;
     --height-sessions: 170px;
+    --prefers-color-scheme: dark;
 }
 
 .hide {
@@ -35,6 +36,7 @@
     display: flex;
     justify-content: flex-start;
     flex-wrap: wrap;
+    font-size: .8rem;
     gap: 2%;
 }
 
@@ -44,8 +46,12 @@
     border-radius: .25rem;
     border: 1px solid lightgray;
     margin: 3px;
+    display: flex;
+    justify-content: space-between;
+    gap: .7rem;
+    border: 1px solid black;
     font-weight: 600;
-    padding: 1.5% 5%;
+    padding: 1% 2%;
     background-color: lightgray;
     text-align: center;
     transition: all 0.3s ease;
@@ -53,7 +59,7 @@
 
 .btn_borrar_item {
     color: lightgray;
-    transform: translate(20px, 0);
+    /* transform: translate(12px, 0); */
     transition: all 300ms ease;
     display: inline-block;
 }
@@ -92,10 +98,11 @@ section {
 
 a.navbar-brand {
     padding: 0;
+    margin: 0;
 }
 
 .container-fluid {
-    padding: 0 3%;
+    padding: 0;
     height: 100%;
 }
 
@@ -131,7 +138,7 @@ body {
     justify-content: center;
     align-items: stretch;
     align-content: center;
-    color: var('--color-tertiary');
+    color: var(--color-tertiary);
 }
 
 /*
@@ -145,23 +152,33 @@ header y navegador */
     position: sticky;
     background-color: black !important;
     top: 0px;
-    z-index: 1;
+    z-index: 2;
+}
+
+.navbar-celular{
+    display: none;
+}
+
+.navbar-pc{
+    display: block;
 }
 
 #Cnav1 {
-    margin-right: 50px;
+    /* margin-right: 50px; */
+    display: flex;
+    padding: 0;
 }
 
 #Cnav2 {
     display: flex;
     padding: 0;
-    margin-right: 50px;
+    /* margin-right: 50px; */
 }
 
 #Cnav3 {
     display: flex;
     padding: 0;
-    margin-right: 50px;
+    /* margin-right: 50px; */
 }
 
 .user {
@@ -184,15 +201,14 @@ header y navegador */
 
 #nav_e {
     margin: 0;
-    cursor: default;
-    font-weight: 900;
+    /* cursor: default; */
+    font-weight: 700;
     color: white;
 }
 
 .container-op {
     justify-content: flex-end;
     align-items: flex-end;
-    height: 100% !important;
 }
 
 .nav_active {
@@ -206,7 +222,6 @@ header y navegador */
 .nav_e1 {
     text-decoration: none;
     color: #b3b3b3 !important;
-    font-weight: bold !important;
     height: auto;
     text-wrap: nowrap;
     color: white !important;
@@ -218,8 +233,8 @@ header y navegador */
 }
 
 #logo {
-    height: 6rem;
-    width: 95%;
+    height: 8rem;
+    max-width: 100%;
     transition-property: transform;
     transition-duration: 300ms;
 }
@@ -238,7 +253,7 @@ header y navegador */
     width: 100%;
     display: flex;
     padding: 0;
-    margin-right: 20px;
+    /* margin-right: 20px; */
 }
 
 .container-sections {
@@ -273,7 +288,7 @@ header y navegador */
 #btn_whatsapp_kommo {
     /* display: none; */
     position: fixed;
-    bottom: 20px;
+    bottom: 10px;
     right: 20px;
     background-color: #25D366;
     color: white;
@@ -331,7 +346,7 @@ header y navegador */
 /* start sesión de contacto por whatsapp */
 
 #sesion-de-contacto-por-whatsapp {
-    height: 18.5%;
+    height: 38rem;
     box-sizing: border-box;
     display: flex;
     align-items: center;
@@ -347,7 +362,7 @@ header y navegador */
 
 #container-img {
     width: 45%;
-    padding-bottom: 5%;
+    /* padding-bottom: 5%; */
     display: flex;
     align-items: center;
 }
@@ -399,7 +414,7 @@ header y navegador */
 }
 
 #parrafo-3-sesion-de-contacto-por-whatsapp {
-    font-size: 170%;
+    font-size: 1.5rem;
     font-weight: bold;
     letter-spacing: 1.4px;
     line-height: 1.2;
@@ -412,7 +427,7 @@ header y navegador */
 
 .text-color-primary {
     color: var(--color-primary);
-    font-size: 320%;
+    font-size: 2.5rem;
     font-weight: 900;
     letter-spacing: 1px;
     line-height: 1.1;
@@ -450,7 +465,7 @@ header y navegador */
 #sesion-de-marcas-y-cotizaciones.visible {
     opacity: 1;
     transform: scale(1);
-    padding: 1rem;
+    padding: .5rem 0;
 }
 
 #sesion-de-marcas-y-cotizaciones #text {
@@ -479,8 +494,10 @@ header y navegador */
 }
 
 #sesion-de-marcas-y-cotizaciones #article_marcas p span {
+    padding-left: 1rem;
+    padding-right: 1rem;
     letter-spacing: 2px;
-    font-size: 330%;
+    font-size: 1.5rem;
     color: var(--color-tertiary);
     font-weight: bold;
     width: 100%;
@@ -712,11 +729,13 @@ header y navegador */
 /* Start sesion de informacion de solicitud de repuestos*/
 
 #solicitud-de-repuestos {
-    height: 18.5%;
+    height: max-content;
+    padding-top: 3rem;
+    padding-bottom: 3rem;
 }
 
 #container-text-cuentanos {
-    padding: 0 0 0 6%;
+    padding: 0 0 0 4%;
 }
 
 #container-list-cuentanos{
@@ -725,7 +744,7 @@ header y navegador */
 
 #list-cuentanos {
     list-style: none;
-    font-size: 200%;
+    font-size: 1.5rem;
     line-height: 1.6;
     padding: 0;
 }
@@ -735,7 +754,7 @@ header y navegador */
 }
 
 #container-text-cuentanos h2 {
-    font-size: 350%;
+    font-size: 2.5rem;
     font-weight: 700;
     margin-bottom: 2%;
 }
@@ -748,13 +767,13 @@ header y navegador */
 }
 
 #container-text-envia-tu-requerimiento h3 {
-    font-size: 350%;
+    font-size: 2.5rem;
     font-weight: 700;
     margin-bottom: 2%;
 }
 
 #container-text-envia-tu-requerimiento p {
-    font-size: 200%;
+    font-size: 1.5rem;
     line-height: 1.7;
 }
 
@@ -770,12 +789,12 @@ header y navegador */
 }
 
 #container-text-elige-tu-mejor-opcion h4 {
-    font-size: 350%;
+    font-size: 2.5rem;
     font-weight: 700;
 }
 
 #container-text-elige-tu-mejor-opcion p {
-    font-size: 200%;
+    font-size: 1.5rem;
     line-height: 1.7;
     letter-spacing: 2px;
 }
@@ -791,12 +810,12 @@ footer {
 }
 
 #container-text-header-busqueda-de-productos-diferentes h1 {
-    font-size: 350%;
+    font-size: 2.5rem;
     font-weight: 900;
 }
 
 #container-text-body-busqueda-de-productos-diferentes p {
-    font-size: 250%;
+    font-size: 1.8rem;
     line-height: 1.3;
     letter-spacing: 2px;
     text-align: center;
@@ -805,7 +824,7 @@ footer {
 
 .icon_chat {
     height: 50%;
-    width: 50%;
+    width: 30%;
 }
 
 #container-img-busqueda-de-productos-diferentes {
@@ -814,14 +833,17 @@ footer {
 }
 
 .container-footer{
-    height: 4%;
+    height: 20%;
     border-top: 1px solid #bfbfbf73;
+    background-color: white;
+    position: relative;
+    z-index: 2;
     margin-top: 1%;
 }
 
 .container-items{
     width: 100%;
-    padding: 3rem;
+    padding: 4.5rem 3rem;
 }
 
 .container-icons-footer{
@@ -870,21 +892,31 @@ footer {
 /* *************************************************************************************************************************** */
 
 @media (max-width: 991px) {
+
     .nav_active {
+        display: none;
+    }
+
+    .navbar-celular{
+        display: block;
+    }
+
+    .navbar-pc{
         display: none;
     }
 
     #nav {
     height: auto;
-    padding: 2% 0;
+    /* padding: 2% 0; */
     }
 
     .btn:hover{
         background-color: #71a3e8 !important;
+        margin: 0 3% 0 0;
     }
 
     .btn:active{
-        background-color: #71a3e8 !important
+    background-color: #25D366 !important;
     }
 
     .container_nav{
@@ -892,28 +924,43 @@ footer {
     }
 
     img#logo {
-        height: 50px;
+        height: 6rem;
     }
 
     .navbar-toggler {
         background-color: var(--color-primary);
+        margin: 0 3% 0 0;
     }
 
     .flex-end-cel{
         align-items: flex-end !important;
-    gap: 5px !important;
+        gap: 5px !important;
+        align-items: start !important;
     }
 
     .container_flex{
         justify-content: flex-end;
+        flex-direction: column;
         line-height: 2;
+    }
+
+    .container-op{
+        height: max-content !important;
+        width: max-content !important;
+        transition: 0.3s;
+        padding: 3%;
+        background: #000000;
+        border-radius: .375rem;
+        margin-left: auto;
+        position: fixed;
+        z-index: 3;
     }
 
 }
 
 @media (min-width: 1200px) and (max-width: 1422px){
     .text-color-primary{
-        font-size: 285%;
+        font-size: 2.5rem;
     }
 }
 
@@ -921,9 +968,14 @@ footer {
 @media (max-width: 280px) {
     /* ********************************************************************************************************************************** */
 
+    .container-op{
+        top: 6rem;
+        right: 3rem;
+    }
+
     .btn_borrar_item {
         color: gray;
-        transform: translate(8px, 0);
+        /* transform: translate(8px, 0); */
         transition: all 300ms ease;
         display: inline-block;
     }
@@ -939,8 +991,8 @@ footer {
     }
 
     #logo {
-        height: 30px !important;
-        width: 110px !important;
+        height: 3.3rem !important;
+        width: 100% !important;
     }
 
     #sesion-de-marcas-y-cotizaciones{
@@ -1073,11 +1125,14 @@ footer {
     /* ********************************************************************************************************************************** */
 
     #solicitud-de-repuestos{
-        height: 200px;
+        height: max-content;
+        padding-top: 0.3rem;
+        padding-bottom: 0.3rem;
     }
 
     #container-text-cuentanos {
-        padding-left: 0%;
+        padding: 0 1rem;
+        width: 100% !important;
     }
 
     #container-text-cuentanos h2 {
@@ -1092,8 +1147,19 @@ footer {
     }
 
     #container-img-cuentanos {
-        height: 80%;
+        width: 100% !important;
+        padding: 0 0.3rem;
     }
+
+    div#container-img-cuentanos iframe {
+        height: 8rem !important;
+    }
+
+    div#cuentanos-flex-container {
+        flex-direction: column-reverse !important;
+        gap: 2rem;
+    }
+
 
     /* ********************************************************************************************************************************** */
 
@@ -1102,11 +1168,11 @@ footer {
     }
 
     #container-text-envia-tu-requerimiento h3 {
-        font-size: 120%;
+        font-size: 0.8rem;
     }
 
     #container-text-envia-tu-requerimiento p {
-        font-size: 80%;
+        font-size: 0.7rem;
         line-height: 1.3;
     }
 
@@ -1121,11 +1187,11 @@ footer {
     }
 
     #container-text-elige-tu-mejor-opcion h4 {
-        font-size: 120%;
+        font-size: 0.8rem;
     }
 
     #container-text-elige-tu-mejor-opcion p {
-        font-size: 80%;
+        font-size: 0.7rem;
         line-height: 1.3;
         letter-spacing: 0;
     }
@@ -1137,12 +1203,12 @@ footer {
     }
 
     #container-text-header-busqueda-de-productos-diferentes h1 {
-        font-size: 160%;
+        font-size: 1rem;
         text-align: center;
     }
 
     #container-text-body-busqueda-de-productos-diferentes p {
-        font-size: 100%;
+        font-size: 0.7rem;
         letter-spacing: 1;
     }
 
@@ -1158,21 +1224,26 @@ footer {
         display: none !important;
     }
 
-.container-items{
-    padding: 0.3rem;
-}
+    .container-items{
+        padding: 0.3rem;
+    }
 
-.item {
-    font-size: 60%;
-}
+    .item {
+        font-size: 60%;
+    }
 
 }
 
 @media (max-width: 450px) {
 
+    .container-op{
+        top: 3rem;
+        right: 1rem;
+    }
+
     .btn_borrar_item {
         color: gray;
-        transform: translate(8px, 0);
+        /* transform: translate(.4rem, 0); */
         transition: all 300ms ease;
         display: inline-block;
     }
@@ -1196,13 +1267,13 @@ footer {
     }
 
     img#logo{
-        height: 40px;
+        height: 55px;
     }
 
     .flex-j-center-cel {
         display: flex;
         justify-content: center;
-       transform: translate(0, 30%);
+        /* transform: translate(0, 30%); */
     }
 
     .none{
@@ -1215,7 +1286,7 @@ footer {
 
     .container-btn-solicitud-cel a {
         width: 80% !important;
-        font-size: 85% !important;
+        font-size: 75% !important;
         padding: 3% 0 !important;
         margin-top: 0 !important;
     }
@@ -1232,7 +1303,7 @@ footer {
 
     #container-img {
         width: 100%;
-        transform: translate(0, 7.5%);
+        /* transform: translate(0, 7.5%); */
         padding-bottom: 0 !important;
     }
 
@@ -1249,14 +1320,15 @@ footer {
         font-size: 160%;
         position: relative;
         z-index: 1;
-        margin: 1%;
+        margin: 1rem 0;
         letter-spacing: 0.8px;
     }
 
     #parrafo-3-sesion-de-contacto-por-whatsapp {
         font-size: 90% !important;
+        margin: 1rem 0 0;
         letter-spacing: 0.5px;
-        transform: translate(0, 75%);
+        /* transform: translate(0, 65%); */
     }
 
     .wsp {
@@ -1275,6 +1347,10 @@ footer {
         font-size: 60% !important;
     }
 
+    div#container-img-cuentanos iframe {
+        height: 11rem !important;
+    }
+
 }
 
 @media (min-width: 281px) and (max-width: 560px) {
@@ -1282,7 +1358,7 @@ footer {
 
     #btn_whatsapp_kommo{
         padding: 0.8rem 1rem;
-        bottom: 33px;
+        bottom: 10px;
         right: 10px;
         font-size: 2.5rem;
     }
@@ -1413,40 +1489,48 @@ footer {
     /* ********************************************************************************************************************************** */
 
     #solicitud-de-repuestos{
-        height: 230px;
+        height: max-content;
+        padding-top: 0.3rem;
+        padding-bottom: 0.3rem;
     }
 
     #container-text-cuentanos {
-        padding-left: 0%;
+        padding: 0% 1rem;
+        width: 100% !important;
     }
 
     #container-text-cuentanos h2 {
-        font-size: 120%;
+        font-size: 100%;
     }
 
     #list-cuentanos {
-        font-size: 75%;
+        font-size: 65%;
         line-height: 1.3;
         margin: 0;
         padding: 0%;
     }
 
     #container-img-cuentanos {
-        height: 80%;
+        /* height: auto; */
+        width: 100% !important;
     }
 
+    div#cuentanos-flex-container {
+        flex-direction: column-reverse !important;
+        gap: 2rem;
+    }
     /* ********************************************************************************************************************************** */
 
     #sesion-de-envio-de-requerimientos{
-        height: 250px;
+        height: 11.5rem;
     }
 
     #container-text-envia-tu-requerimiento h3 {
-        font-size: 120%;
+        font-size: 100%;
     }
 
     #container-text-envia-tu-requerimiento p {
-        font-size: 80%;
+        font-size: 65%;
         line-height: 1.3;
     }
 
@@ -1457,15 +1541,15 @@ footer {
     /* ********************************************************************************************************************************** */
 
     #sesion-de-eleccion-de-opciones{
-        height: 180px;
+        height: 10.5rem;
     }
 
     #container-text-elige-tu-mejor-opcion h4 {
-        font-size: 120%;
+        font-size: 100%;
     }
 
     #container-text-elige-tu-mejor-opcion p {
-        font-size: 80%;
+        font-size: 65%;
         line-height: 1.3;
         letter-spacing: 0;
     }
@@ -1473,17 +1557,17 @@ footer {
     /* ********************************************************************************************************************************** */
 
     footer{
-        height: 550px;
+        height: 27rem;
     }
 
     #container-text-header-busqueda-de-productos-diferentes h1 {
-        font-size: 160%;
+        font-size: 115%;
         text-align: center;
     }
 
     #container-text-body-busqueda-de-productos-diferentes p {
-        font-size: 100%;
-        letter-spacing: 1;
+        font-size: 95%;
+        letter-spacing: 1px;
     }
 
     .footer-sesion-de-contacto-por-whatsapp a {
@@ -1492,7 +1576,7 @@ footer {
     height: auto !important;
     margin-top: 2% !important;
     margin-bottom: 0rem !important;
-    font-size: 110% !important
+    font-size: 95% !important;
     }
 
     #scrollButton {
@@ -1568,9 +1652,14 @@ height: 10%;
 
 @media (min-width: 451px) and (max-width: 560px) {
 
+    .container-op{
+        top: 5rem;
+        right: 1rem;
+    }
+
     .btn_borrar_item {
         color: gray;
-        transform: translate(8px, 0);
+        /* transform: translate(8px, 0); */
         transition: all 300ms ease;
         display: inline-block;
     }
@@ -1655,13 +1744,26 @@ height: 10%;
   #sesion-de-marcas-y-cotizaciones #article_marcas p span {
         font-size: 80% !important;
     }
+
+    div#container-img-cuentanos iframe {
+        height: 15rem !important;
+    }
+
+    div#cuentanos-flex-container{
+        gap: 3rem !important;
+    }
 }
 
 @media (min-width: 561px) and (max-width: 750px) {
 
+    .container-op{
+        top: 6rem;
+        right: 2rem;
+    }
+
     .btn_borrar_item {
         color: gray;
-        transform: translate(8px, 0);
+        /* transform: translate(8px, 0); */
     }
     .item_selected:hover .btn_borrar_item {
         color: gray;
@@ -1707,10 +1809,10 @@ height: 10%;
     }
 
     .WSP {
-height: 10% !important;
-    font-size: 90%;
-    padding: 3% 0;
-    width: 65% !important;
+        height: 10% !important;
+        font-size: 90%;
+        padding: 3% 0;
+        width: 65% !important;
     }
 
     .WSP i {
@@ -1718,7 +1820,7 @@ height: 10% !important;
     }
 
     #sesion-de-marcas-y-cotizaciones #article_marcas p span{
-        font-size: 140%;
+        font-size: 120%;
     }
 
     #logo_marca_bmw {
@@ -1841,7 +1943,7 @@ height: 10% !important;
     }
 
     #solicitud-de-repuestos{
-        height: 14.3%;
+        height: max-content;
     }
 
     #container-text-cuentanos h2{
@@ -1849,16 +1951,30 @@ height: 10% !important;
     }
 
     #list-cuentanos{
-        font-size: 90%;
+        font-size: 85%;
         line-height: 1.8;
     }
 
     #container-text-cuentanos{
-        padding: 0;
+        padding: 0 2rem;
+        width: 100% !important;
+    }
+
+    div#container-img-cuentanos {
+        width: 100% !important;
+    }
+
+    div#container-img-cuentanos iframe {
+        height: 18rem !important;
+    }
+
+    div#cuentanos-flex-container{
+        flex-direction: column-reverse !important;
+        gap: 2rem !important;
     }
 
     #sesion-de-envio-de-requerimientos{
-        height: 14.4%;
+        height: 22rem;
     }
 
     #container-text-envia-tu-requerimiento h3{
@@ -1871,7 +1987,7 @@ height: 10% !important;
     }
 
     #sesion-de-eleccion-de-opciones{
-        height: 13.5%;
+        height: 20rem;
     }
 
     #container-text-elige-tu-mejor-opcion h4{
@@ -1899,6 +2015,11 @@ height: 10% !important;
 
 @media (min-width: 751px) and (max-width: 1150px) {
 
+    .container-op{
+        top: 6rem;
+        right: 2rem;
+    }
+
     #sesion-de-contacto-por-whatsapp {
    height: 18.2%;
     padding: 3% 3%;
@@ -1913,7 +2034,7 @@ height: 10% !important;
     }
 
     #container-text .text-center h1 {
-        font-size: 130% !important;
+        font-size: 170% !important;
         margin-bottom: 0;
     }
 
@@ -1924,13 +2045,13 @@ height: 10% !important;
     }
 
     .text-color-primary{
-            font-size: 200% !important;
-    margin: 1% 0 2% 0;
-    letter-spacing: 0;
+            font-size: 2rem !important;
+            margin: 1% 0 2% 0;
+            letter-spacing: 0;
     }
 
     #parrafo-3-sesion-de-contacto-por-whatsapp {
-        font-size: 120% !important;
+        font-size: 145% !important;
         letter-spacing: 0.5px;
     }
 
@@ -1938,19 +2059,14 @@ height: 10% !important;
         width: 45% !important;
     }
 
-    .WSP {
-height: 10% !important;
-    font-size: 140%;
-    padding: 3% 0;
-    width: 65% !important;
-    }
+    .WSP {height: 10% !important;font-size: 160%;padding: 3% 0;width: 65% !important;}
 
     .WSP i {
         font-size: 110% !important;
     }
 
     #sesion-de-marcas-y-cotizaciones #article_marcas p span{
-        font-size: 170%;
+        font-size: 1.2rem;
         letter-spacing: 1;
     }
 
@@ -2074,46 +2190,52 @@ height: 10% !important;
     }
 
     #solicitud-de-repuestos{
-        height: 15.3%;
-    }
-
-    #container-text-cuentanos h2{
-        font-size: 155%;
+        height: max-content;
+        padding-top: 1rem;
+        padding-bottom: 1rem;
     }
 
     #list-cuentanos{
-        font-size: 100%;
+        font-size: 1.2rem;
         line-height: 1.8;
+        margin-bottom: 2rem;
     }
 
     #container-text-cuentanos{
         padding: 0;
     }
 
-    #sesion-de-envio-de-requerimientos{
-        height: 14.4%;
+    div#container-img-cuentanos {
+        width: 50% !important;
     }
 
-    #container-text-envia-tu-requerimiento h3{
-        font-size: 155%;
+    div#container-img-cuentanos iframe {
+        height: 15rem !important;
+    }
+
+    div#cuentanos-flex-container{
+        flex-direction: row !important;
+        gap: 1rem !important;
+    }
+
+    #sesion-de-envio-de-requerimientos{
+        height: 40rem;
     }
 
      #container-text-envia-tu-requerimiento p{
-        font-size: 100%;
+        font-size: 1.5rem;
         line-height: 1.5;
+        margin-bottom: 2rem;
     }
 
     #sesion-de-eleccion-de-opciones{
-        height: 14.5%;
-    }
-
-    #container-text-elige-tu-mejor-opcion h4{
-        font-size: 155%;
+        height: 40rem;
     }
 
     #container-text-elige-tu-mejor-opcion p{
-        font-size: 100%;
+        font-size: 1.5rem;
         line-height: 1.5;
+        margin-bottom: 2rem;
     }
 
     footer{
@@ -2121,7 +2243,7 @@ height: 10% !important;
     }
 
     #container-text-header-busqueda-de-productos-diferentes h1{
-        font-size: 215%;
+        font-size: 2rem;
     }
 
     #container-text-body-busqueda-de-productos-diferentes p{
@@ -2133,13 +2255,13 @@ height: 10% !important;
 @media screen and (min-width: 1150px) and (max-width: 1310px){
 
     .text-color-primary{
-            font-size: 290% !important;
-    margin: 1% 0 2% 0;
-    letter-spacing: 0;
+            font-size: 2.5rem;
+            margin: 1% 0 2% 0;
+            letter-spacing: 0;
     }
 
     #sesion-de-marcas-y-cotizaciones #article_marcas p span{
-        font-size: 290%;
+        font-size: 1.3rem;
         letter-spacing: 1;
     }
 
@@ -2253,21 +2375,39 @@ height: 10% !important;
         height: 60px !important;
         width: 80px !important;
     }
+    #solicitud-de-repuestos{
+        height: max-content !important;
+        padding-top: 2.5rem;
+        padding-bottom: 2.5rem;
+    }
 
     #container-text-cuentanos h2{
-        font-size: 300%;
+        font-size: 2.5rem;
+    }
+
+    #container-text-cuentanos{
+        padding: 0;
+    }
+
+    div#container-img-cuentanos iframe {
+        height: 20rem !important;
+    }
+
+    div#cuentanos-flex-container{
+        flex-direction: row !important;
+        gap: 1rem !important;
     }
 
     #container-text-envia-tu-requerimiento h3{
-        font-size: 300%;
+        font-size: 2.5rem;
     }
 
     #container-text-elige-tu-mejor-opcion h4{
-        font-size: 300%;
+        font-size: 2.5rem;
     }
 
     #container-text-header-busqueda-de-productos-diferentes h1{
-        font-size: 300%;
+        font-size: 2.5rem;
     }
 
 }
@@ -2290,8 +2430,81 @@ height: 10% !important;
     }
 }
 
-
 @media screen and (min-width: 2080px) {
+
+    #sesion-de-contacto-por-whatsapp{
+        padding-top: 1rem !important;
+        padding-bottom: 1rem !important;
+        height: max-content !important;
+    }
+
+    .text-center{
+        font-size: 1.3rem !important;
+    }
+
+    .text-color-primary{
+        font-size: 4rem;
+    }
+
+    .WSP{
+        font-size: 2.4rem;
+        width: max-content;
+        padding: 1rem 3rem;
+    }
+
+    #parrafo-3-sesion-de-contacto-por-whatsapp{
+        font-size: 2rem;
+    }
+
+    #container-text-cuentanos{
+        padding: 0;
+    }
+
+    #container-text-cuentanos h2{
+        font-size: 4rem;
+    }
+
+    #list-cuentanos{
+        font-size: 2rem;
+    }
+
+    #container-text-envia-tu-requerimiento h3{
+        font-size: 4rem;
+    }
+
+    #container-text-envia-tu-requerimiento p{
+        font-size: 2rem;
+    }
+
+    #container-text-elige-tu-mejor-opcion h4{
+        font-size: 4rem;
+    }
+
+    #container-text-elige-tu-mejor-opcion p{
+        font-size: 2rem;
+    }
+
+    #container-text-header-busqueda-de-productos-diferentes h1{
+        font-size: 4rem;
+    }
+
+    .footer-sesion-de-contacto-por-whatsapp a{
+        width: max-content !important;
+        padding: 2.5rem 4rem;
+    }
+
+    #container-text-body-busqueda-de-productos-diferentes p{
+        font-size: 2rem;
+    }
+
+    .font_size_article_marcas2{
+        font-size: 2rem !important;
+    }
+
+    .container-items{
+        font-size: 1.5rem;
+    }
+
     .container-body {
         max-width: 2080px;
     }
@@ -2305,4 +2518,27 @@ height: 10% !important;
         padding: 10px 25px;
         font-size: 162%;
     }
+
+    div#container-img-cuentanos iframe {
+        height: 30rem !important;
+    }
+
+    div#cuentanos-flex-container{
+        flex-direction: row !important;
+        gap: 1rem !important;
+    }
+}
+
+
+input#repuesto {
+    font-weight: 800;
+}
+
+
+div#container-img-cuentanos {
+    width: 50%;
+}
+
+div#cuentanos-flex-container {
+    gap: 2rem;
 }

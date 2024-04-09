@@ -12,16 +12,16 @@ class Provider extends Model
     use HasFactory;
 
     public function user()
-{
-    return $this->hasMany(User::class, 'proveedor_id');
-}
+    {
+        return $this->hasMany(User::class, 'proveedor_id');
+    }
 
     protected static function booted()
     {
         static::updated(function ($provider) {
             if ($provider->isDirty('estado') && $provider->estado == 1) {
                 $email = $provider->email;
-                $password = '(Contraseña con la que se registró).'; // Reemplaza esto por la contraseña real del proveedor
+                $password = "(Contraseña con la que se registró o pruebe con demo12345)."; // Reemplaza esto por la contraseña real del proveedor
 
                 Mail::to($email)->send(new ProveedorActivo($email, $password));
             }

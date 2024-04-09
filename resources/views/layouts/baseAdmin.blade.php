@@ -3,6 +3,7 @@
 
 <head>
     @include('includes.admin.adminHead')
+    @livewireStyles
 </head>
 
 <body id="page-top">
@@ -22,11 +23,14 @@
             <!-- Topbar Navbar -->
             <ul class="navbar-nav ml-auto">
 
-                <li class="nav-item dropdown no-arrow mx-1">
-                    <a class="nav-link" href="#">
-                        <i class="fas fa-key fa-fw"></i>
-                    </a>
-                </li>
+                @can('estadisticasAdmin')
+                    <li class="nav-item dropdown no-arrow mx-1">
+                        <a class="nav-link" href="{{route('keywords')}}">
+                            <i class="fas fa-key fa-fw"></i>
+                        </a>
+                    </li>
+                @endcan
+
 
                 <!-- Dropdown - Messages -->
                 <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
@@ -189,8 +193,8 @@
                 <li class="nav-item dropdown no-arrow">
                     <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ $name }}</span>
-                        <img class="img-profile rounded-circle" src='{{ asset("$ft") }}' height="30"
+                        <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ auth()->user()->name }}</span>
+                        <img class="img-profile rounded-circle" src='{{asset('img/undraw_profile.svg')}}' height="30"
                             width="30">
                     </a>
                     <!-- Dropdown - User Information -->
@@ -204,7 +208,7 @@
                             <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                             Configuraciones
                         </a>
-                        <a class="dropdown-item" href="{{ route('profile') }}">
+                        <a class="dropdown-item" href="{{ route('activityLog') }}">
                             <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
                             Activity Log
                         </a>
@@ -230,7 +234,7 @@
         <div id="content-wrapper" class="d-flex flex-column" style="overflow: hidden">
             <!-- Main Content -->
             <div id="content" class="mt-4">
-                @yield('content')
+                 @yield('content')
             </div>
             <!-- End of Main Content -->
             <!-- Footer -->
@@ -274,16 +278,7 @@
             </div>
         </div>
 
-        <!-- Enviar cierre de sesión-->
-        <script>
-            document.getElementById('logoutForm').addEventListener('submit', function(event) {
-                event.preventDefault(); // Prevent the default form submission
-
-                // You can add any additional logic here if needed
-
-                this.submit(); // Submit the form
-            });
-        </script>
+        @livewireScripts
     </div>
 
 </body>

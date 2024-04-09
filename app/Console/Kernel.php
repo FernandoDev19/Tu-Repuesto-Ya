@@ -16,19 +16,6 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule): void
     {
         // $schedule->command('inspire')->hourly();
-        $schedule->call(function () {
-            // Obtener todas las solicitudes
-            $solicitudes = Solicitude::all();
-
-            // Eliminar las imágenes de las solicitudes que tengan más de 25 días
-            foreach ($solicitudes as $solicitud) {
-                if ($solicitud->created_at < Carbon::now()->subDays(25)) {
-                    $HomeController1 = new HomeController();
-                    // Llamar a la función eliminarImagenes()
-                    $HomeController1->eliminarImagenes($solicitud->id);
-                }
-            }
-        })->daily();
     }
 
     /**
@@ -36,8 +23,6 @@ class Kernel extends ConsoleKernel
      */
     protected function commands(): void
     {
-        $this->load(__DIR__.'/Commands');
-
-        require base_path('routes/console.php');
+        
     }
 }

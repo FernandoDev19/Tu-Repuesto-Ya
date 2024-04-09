@@ -6,7 +6,7 @@
     <nav class="navbar navbar-expand navbar-light shadow bg-white topbar static-top d-flex justify-content-center">
 
         <!-- Topbar Navbar -->
-        <ul class="navbar-nav">
+        <ul class="navbar-nav" style="font-size: 1.3rem;">
 
             <li class="nav-item">
                 <a class="nav-link" style="padding: 0 .50rem; gap: 3px;" href="{{ route('dashboard') }}">

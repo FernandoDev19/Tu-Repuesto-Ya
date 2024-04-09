@@ -63,9 +63,17 @@ function slider() {
                 slidesPerView: 11,
                 spaceBetween: 20
             },
+            1100:{
+                slidesPerView: 12,
+                spaceBetween: 20
+            },
+            1200:{
+                slidesPerView: 12.2,
+                spaceBetween: 30
+            },
             1280:{
                 slidesPerView: 11.3,
-                spaceBetween: 20
+                spaceBetween: 30
             },
             1300: {
                 slidesPerView: 11,

@@ -13,7 +13,7 @@ class SolicitudesExport implements FromCollection, WithHeadings, WithMapping
 
     public function collection()
     {
-        return Solicitude::select('id', 'respuestas', 'marca', 'referencia', 'modelo', 'tipo_de_transmision', 'repuesto', 'img_repuesto', 'categoria', 'comentario', 'nombre', 'correo', 'numero', 'pais', 'departamento', 'municipio', 'estado')->get();
+        return Solicitude::select('id', 'respuestas', 'marca', 'referencia', 'modelo', 'tipo_de_transmision', 'repuesto', 'img_repuesto', 'categoria', 'comentario', 'nombre', 'correo', 'numero', 'pais', 'departamento', 'municipio', 'created_at', 'estado')->get();
     }
 
     public function headings(): array
@@ -35,6 +35,7 @@ class SolicitudesExport implements FromCollection, WithHeadings, WithMapping
             'Pais',
             'Departamento',
             'Municipio',
+            'Fecha',
             'Estado'
         ];
     }
@@ -58,6 +59,7 @@ class SolicitudesExport implements FromCollection, WithHeadings, WithMapping
             $solicitud->pais,
             $solicitud->departamento,
             $solicitud->municipio,
+            $solicitud->created_at,
             $solicitud->estado ? 'Activa' : 'Inactiva'
         ];
     }

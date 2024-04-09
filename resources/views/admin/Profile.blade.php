@@ -9,7 +9,7 @@
     class="navbar navbar-expand navbar-light bg-white shadow topbar static-top d-flex justify-content-center">
 
     <!-- Topbar Navbar -->
-    <ul class="navbar-nav">
+    <ul class="navbar-nav" style="font-size: 1.3rem;">
 
         <li class="nav-item">
             <a class="nav-link" style="color: var(--gray); padding: 0 .50rem; gap: 3px;" href="{{ route('dashboard') }}">
@@ -626,19 +626,13 @@
                                                                 class="form-control form-control-lg"
                                                                 name="categoria_repuesto" id="categoria_repuesto"
                                                                 style="color: var(--bs-secondary-color);" required>
-                                                                <option value="Todas las especialidades">Todas las especialidades</option>
-                                                                <option value="LLantas">LLantas</option>
-                                                                <option value="Frenos">Frenos</option>
-                                                                <option value="Suspensión">Suspensión</option>
-                                                                <option value="Dirección">Sistema de Dirección</option>
-                                                                <option value="Motor">Motor</option>
-                                                                <option value="Transmisión">Transmisión</option>
-                                                                <option value="Tren motriz">Tren motriz</option>
-                                                                <option value="Latas">Latas</option>
-                                                                <option value="Refrigeración">Refrigeración</option>
-                                                                <option value="Eléctricos">Eléctricos
+                                                                <option value="" disabled selected>*Seleccionar Especialidad
                                                                 </option>
-                                                                <option value="otros">Otros</option>
+                                                                <option value="Todas las especialidades">Todas las especialidades
+                                                                </option>
+                                                                @foreach ($categorias as $categoria)
+                                                                    <option value="{{$categoria->nombre_categoria}}">{{$categoria->nombre_categoria}}</option>
+                                                                @endforeach
                                                             </select>
                                                             <div id="categorias_preferencias"
                                                                 class="categorias_preferencias flex flex-col mb-3">

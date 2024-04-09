@@ -27,14 +27,15 @@ background-size: 200% 100%; min-height: 100%; min-width: 100%;
                         <img decoding="async" class="logo" src="{{ asset('img/logo tu repuesto ya/icono_pagina.webp') }}"
                             alt="logo" style="height: 6vh; width: auto;">
                     </a>
-                    <div style="position: absolute; bottom: 3%; right: 3%; z-index: 2;color: white; background: transparent; border: none;"><img id="muteButton" height="20" style="height: 25px; width: auto;" src="{{asset('icon/mute.png')}}"></div>
+                    <div id="btn-muted" style="position: absolute; bottom: 3%; right: 3%; z-index: 2;color: white; background: transparent; border: none;"><img id="muteButton" height="20" style="height: 25px; width: auto;" src="{{asset('icon/mute.png')}}"></div>
                     <div class="container contenedor-login">
                         <div class="row">
                             <div class="animate__animated animate__fadeIn col-xl-6 col-lg-6 d-flex flex-column mx-lg-0 mx-auto">
                                 <div class="card card-plain">
                                     <div class="text-cel-center bg-transparent-cel card-header pb-0 text-start">
                                         <h4 class="font-weight-bolder">Iniciar sesión</h4>
-                                        <p class="mb-0">Ingresa tu correo y tu contraseña para iniciar sesión</p>
+                                        <p style="margin: 0; padding: 0;">Si ya eres aliado de <span style="display: inline-block; font-weight: 700;">Tu Repuesto Ya</span></p>
+                                        <p class="mb-0">Ingresa tu correo y contraseña</p>
                                     </div>
                                     <div class="card-body">
                                         <form role="form" method="POST" action="{{ route('verification') }}">
@@ -76,11 +77,16 @@ background-size: 200% 100%; min-height: 100%; min-width: 100%;
                                     </div>
                                     <div class="card-footer text-center pt-0 px-lg-2 px-1">
                                         <p class="mb-4 text-sm mx-auto">
-                                            No tienes una cuenta?
+                                            <span style="font-weight: 700;">
+                                                Si no eres aliado de Tu Repuesto Ya y deseas continuar recibiendo solicitudes de cotizaciones, REGISTRATE SIN COSTO por un periodo de prueba de 60 días.
+                                            </span>
                                             <a href="{{ route('register') }}"
                                                 class="text-primary font-weight-bold"
-                                                style="font-weight: 900 !important; font-size: 15px;">Registrarse</a>
+                                                style="font-weight: 900 !important; font-size: 15px;">Registrate</a>
                                         </p>
+                                        <div style="width:100%; display: flex; justify-content: center;">
+                                            <a class="btn mb-4" target="_blanck" href="https://wa.me/573249216736?text=Hola%2C%20Soy%20almacen%20de%20repuestos%20deseo%20soporte%20para%20ingresar%20a%20mi%20cuenta." style="width: max-content; display: flex; align-items: center; background-color: #25d366; font-size: 1.4rem; color: white !important;">Soporte<i class="fab fa-whatsapp" style="font-size: 2rem; margin-left: 1rem;"></i></a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

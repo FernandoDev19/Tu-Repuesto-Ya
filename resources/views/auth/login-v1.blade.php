@@ -29,7 +29,7 @@
                         <img decoding="async" class="logo" src="{{ asset('img/logo tu repuesto ya/icono_pagina.webp') }}"
                             alt="logo" style="height: 6vh; width: auto;" height="30" width="30">
                     </a>
-                    <div style="position: absolute; bottom: 3%; right: 3%; z-index: 2;color: white; background: transparent; border: none;"><img id="muteButton" height="20" style="height: 25px; width: auto;" src="{{asset('icon/mute.png')}}"></div>
+                    <div id="btn-muted" style="position: absolute; bottom: 3%; right: 3%; z-index: 2;color: white; background: transparent; border: none;"><img id="muteButton" height="20" style="height: 25px; width: auto;" src="{{asset('icon/mute.png')}}"></div>
                     <div class="container contenedor-login">
                         <div class="row">
                             <div
@@ -38,7 +38,8 @@
                                     <div class="text-cel-center card-header pb-0 text-start"
                                         style="background-color: transparent;">
                                         <h4 class="font-weight-bolder">Iniciar sesión</h4>
-                                        <p class="mb-0">Ingresa tu correo y tu contraseña para iniciar sesión</p>
+                                        <p style="margin: 0; padding: 0;">Si ya eres aliado de <span style="display: inline-block; font-weight: 700;">Tu Repuesto Ya</span></p>
+                                        <p class="mb-0">Ingresa tu correo y contraseña</p>
                                     </div>
                                     <div class="card-body">
                                         <form role="form" method="POST" action="{{ route('verification') }}">
@@ -47,7 +48,7 @@
                                             <div class="flex flex-col mb-3">
                                                 <input id="email" type="email" name="email"
                                                     class="form-control form-control-lg" value="{{ old('email') }}"
-                                                    aria-label="Email" placeholder="Correo electronico" autofocus>
+                                                    aria-label="Email" placeholder="Correo electrónico" autofocus>
                                                 @error('email')
                                                     <p class="text-danger text-xs pt-1"> {{ $message }} </p>
                                                 @enderror
@@ -78,19 +79,25 @@
                                     </div>
                                     <div class="card-footer text-center pt-0 px-lg-2 px-1">
                                         <p class="mb-1 text-sm mx-auto">
-                                            Olvidaste tu contraseña? Restablece tu contraseña
+                                            ¿Olvidaste tu contraseña? Restablece tu contraseña
                                             <a href="{{ route('reset-password') }}"
                                                 class="text-primary font-weight-bold"
                                                 style="font-weight: 900 !important; font-size: 15px;">Aquí</a>
                                         </p>
                                     </div>
+
                                     <div class="card-footer text-center pt-0 px-lg-2 px-1">
                                         <p class="mb-4 text-sm mx-auto">
-                                            No tienes una cuenta?
+                                            <span style="font-weight: 700;">
+                                                Si no eres aliado de Tu Repuesto Ya y deseas continuar recibiendo solicitudes de cotizaciones, REGÍSTRATE SIN COSTO por un periodo de prueba de 60 días.
+                                            </span>
                                             <a href="{{ route('register') }}"
                                                 class="text-primary font-weight-bold"
-                                                style="font-weight: 900 !important; font-size: 15px;">Registrarse</a>
+                                                style="font-weight: 900 !important; font-size: 15px;">Regístrate</a>
                                         </p>
+                                        <div style="width:100%; display: flex; justify-content: center;">
+                                            <a class="btn mb-4" target="_blanck" href="https://wa.me/573249216736?text=Hola%2C%20Soy%20almacen%20de%20repuestos%20deseo%20soporte%20para%20ingresar%20a%20mi%20cuenta." style="width: max-content; display: flex; align-items: center; background-color: #25d366; font-size: 1.4rem; color: white !important;">Soporte<i class="fab fa-whatsapp" style="font-size: 2rem; margin-left: 1rem;"></i></a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

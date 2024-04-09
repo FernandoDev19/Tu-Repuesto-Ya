@@ -13,7 +13,7 @@
     class="navbar navbar-expand navbar-light bg-white shadow topbar static-top d-flex justify-content-center">
 
     <!-- Topbar Navbar -->
-    <ul class="navbar-nav">
+    <ul class="navbar-nav" style="font-size: 1.3rem;">
 
         <li class="nav-item">
             <a class="nav-link" style="color: var(--gray); padding: 0 .50rem; gap: 3px;" href="{{ route('dashboard') }}">
@@ -84,9 +84,11 @@
                                     <tr>
                                         <th class="text-muted" style="padding:10px 5px; text-align:center;">Id
                                         </th>
-                                        <th class="text-muted" style="padding:10px 5px; text-align:center;">
-                                            Respuestas
-                                        </th>
+                                         @if (auth()->user()->hasRole('Admin'))
+                                            <th class="text-muted" style="padding:10px 5px; text-align:center;">
+                                                Respuestas
+                                            </th>
+                                        @endif
                                         <th class="text-muted" style="padding:10px 5px; text-align:center;">
                                             Marca</th>
                                         <th class="text-muted" style="padding:10px 5px; text-align:center;">
@@ -143,8 +145,8 @@
                                                     </td>
                                                     <td style="padding:10px 10px; margin:0; text-align:center;"
                                                         data-campo="respuestas" data-valor="{{ $solicitud->respuestas }}">
-                                                        <span style="font-size: 14;"
-                                                            id="respuestas_{{ $solicitud->respuestas }}">{{ $solicitud->respuestas }}</span>
+                                                        <a style="font-size: 14;" data-toggle="modal" data-target="#respuestasModal{{ $solicitud->id }}" href="#"
+                                                            id="respuestas_{{ $solicitud->respuestas }}">{{ $solicitud->respuestas }}</a>
                                                     </td>
                                                     <td style="padding:10px 10px; margin:0; text-align:center;"
                                                         data-campo="marca" data-valor="{{ $solicitud->marca }}">
@@ -199,6 +201,43 @@
                                                         </a>
 
                                                     </td>
+                                                    
+                                                      <!-- Modal de respuestas -->
+                                                        <div class="modal fade" id="respuestasModal{{ $solicitud->id }}"
+                                                            tabindex="-1" role="dialog" aria-labelledby="respuestasModalLabel"
+                                                            aria-hidden="true">
+                                                            <div class="modal-dialog" role="document">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title" id="infoModalLabel">
+                                                                            <strong>Respuestas (Nombres)</strong>
+                                                                        </h5>
+                                                                        <button class="close" type="button"
+                                                                            data-dismiss="modal" aria-label="Close">
+                                                                            <span aria-hidden="true">×</span>
+                                                                        </button>
+                                                                    </div>
+                    
+                                                                    <div class="modal-body d-flex justify-content-between">
+                                                                        <div class="text-wrap w-100">
+                                                                            <ul style="padding-left: 2rem;">
+                                                                                @foreach ($answer2 as $answer)
+                                                                                    @if ($answer->idSolicitud == $solicitud->id)
+                                                                                        <li>{{$answer->proveedor->razon_social}}</li>
+                                                                                    @endif
+                                                                                @endforeach
+                                                                            </ul>
+                                                                        </div>
+                                                                    </div>
+                    
+                                                                    <div class="modal-footer">
+                                                                        <button class="btn btn-secondary" type="button"
+                                                                            data-dismiss="modal">Cerrar</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
 
                                                     <!-- Modal de Información -->
                                                     <div class="modal fade" id="infoModal{{ $solicitud->id }}"
@@ -295,7 +334,11 @@
                                                                                     {{ $solicitud->correo }} </li>
 
                                                                                 <li><strong>Celular:</strong>
-                                                                                    {{ $solicitud->numero }} </li>
+                                                                                    <a title="Contactar"
+                                                                                        data-toggle="modal" class="text-primary"
+                                                                                        data-target="#contactarClienteModal{{$solicitud->id}}"
+                                                                                        style="cursor: pointer;">{{ $solicitud->numero }}</a>
+                                                                                </li>
                                                                             </fieldset>
 
                                                                             <hr>
@@ -327,6 +370,28 @@
                                                                     @endcan
                                                                     <button class="btn btn-secondary" type="button"
                                                                         data-dismiss="modal">Cerrar</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="modal" id="contactarClienteModal{{$solicitud->id}}" tabindex="-1"
+                                                        role="dialog">
+                                                        <div class="modal-dialog" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title">Contactar cliente</h5>
+                                                                    <button type="button" class="close"
+                                                                        data-dismiss="modal" aria-label="Close">
+                                                                        <span aria-hidden="true">×</span>
+                                                                    </button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <div class="d-flex justify-content-between" style="flex-direction: column; gap: 1rem;">
+                                                                        <a class="btn btn-success" target="_blank" href="https://api.whatsapp.com/send?phone={{ substr($solicitud->numero, 1) }}">Enviar mensaje</a>
+                                                                        <a class="btn btn-primary" target="_blank" href="tel:{{ $solicitud->numero }}">Llamar</a>
+                                                                    </div>
+
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -451,12 +516,6 @@
                                                             id="id_{{ $solicitud->id }}">{{ $solicitud->id }}</span>
                                                     </td>
                                                     <td style="padding:10px 10px; margin:0; text-align:center;"
-                                                        data-campo="respuestas"
-                                                        data-valor="{{ $solicitud->respuestas }}">
-                                                        <span style="font-size: 14;"
-                                                            id="respuestas_{{ $solicitud->respuestas }}">{{ $solicitud->respuestas }}</span>
-                                                    </td>
-                                                    <td style="padding:10px 10px; margin:0; text-align:center;"
                                                         data-campo="marca" data-valor="{{ $solicitud->marca }}">
                                                         <span style="font-size: 14;"
                                                             id="marca_{{ $solicitud->marca }}">{{ $solicitud->marca }}</span>
@@ -518,7 +577,7 @@
                                                                     <i class="fas fa-info-circle"></i>
                                                                 </a>
                                                             @else
-                                                                <a title="Ver detalles"
+                                                                <a title="Cotizar"
                                                                     href="{{ route('solicitud', [$solicitud->codigo, $proveedor]) }}"
                                                                     class="btn btn-primary">
                                                                     Cotizar
@@ -616,7 +675,11 @@
                                                                                     {{ $solicitud->nombre }} </li>
 
                                                                                 <li><strong>Celular:</strong>
-                                                                                    {{ $solicitud->numero }} </li>
+                                                                                    <a title="Contactar"
+                                                                                        data-toggle="modal" class="text-primary"
+                                                                                        data-target="#contactarClienteModal{{$solicitud->id}}"
+                                                                                        style="cursor: pointer;">{{ $solicitud->numero }}</a>
+                                                                                </li>
                                                                             </fieldset>
                                                                         </ul>
                                                                     </div>
@@ -634,6 +697,28 @@
                                                                     @endcan
                                                                     <button class="btn btn-secondary" type="button"
                                                                         data-dismiss="modal">Cerrar</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="modal" id="contactarClienteModal{{$solicitud->id}}" tabindex="-1"
+                                                        role="dialog">
+                                                        <div class="modal-dialog" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title">Contactar cliente</h5>
+                                                                    <button type="button" class="close"
+                                                                        data-dismiss="modal" aria-label="Close">
+                                                                        <span aria-hidden="true">×</span>
+                                                                    </button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <div class="d-flex justify-content-between" style="flex-direction: column; gap: 1rem;">
+                                                                        <a class="btn btn-success" target="_blank" href="https://api.whatsapp.com/send?phone={{ substr($solicitud->numero, 1) }}">Enviar mensaje</a>
+                                                                        <a class="btn btn-primary" target="_blank" href="tel:{{ $solicitud->numero }}">Llamar</a>
+                                                                    </div>
+
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -695,7 +780,6 @@
                                                             </div>
                                                         </div>
                                                     </div>
-
 
                                                     <!-- Modal para eliminar -->
                                                     <div class="modal fade" id="eraseModal{{ $solicitud->id }}"

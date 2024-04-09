@@ -81,6 +81,24 @@
                                                 @enderror
                                             </div>
 
+                                            <div class="flex flex-col mb-3">
+                                                <input type="text" name="gerente" id="gerente" class="form-control"
+                                                    placeholder="*Gerente" aria-label="Gerente"
+                                                    value="{{ old('gerente') }}" maxlength="120" required>
+                                                @error('gerente')
+                                                    <div class="text-danger text-xs pt-1">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+
+                                            <div class="flex flex-col mb-3">
+                                                <input type="text" name="administrador" id="administrador" class="form-control"
+                                                    placeholder="*Administrador" aria-label="Administrador"
+                                                    value="{{ old('administrador') }}" maxlength="120" required>
+                                                @error('administrador')
+                                                    <div class="text-danger text-xs pt-1">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+
                                             <div class="group" style="display: flex; flex-direction: column;">
                                                 <div class="flex flex-col mb-3 text-center">
                                                     <div class="form-control"
@@ -102,24 +120,12 @@
                                                     @error('cel')
                                                         <p class='text-danger text-xs pt-1'>{{ $message }}</p>
                                                     @else
-                                                        <small class="text-xs text-color-secondary">¡Debe tener Whatsapp! <i
+                                                        <small id="errorCel" class="text-xs text-color-secondary">¡Debe tener Whatsapp! <i
                                                                 class="fa fa-whatsapp" aria-hidden="true"
                                                                 style="color: #25D366; font-size: 15px; transform: translate(0px, 2.4px);">
                                                             </i></small>
                                                     @enderror
                                                 </div>
-
-                                                <!--<div class="container-inputs-contact"
-                                                        style="display:flex; justify-content: space-between;">
-                                                        <div class="flex flex-col mb-3" style="width: 49%;">
-                                                            <input type="text" class="text-center form-control" id="cel"
-                                                                name="cel" placeholder="*Número de celular" aria-label='Cel'
-                                                                value="{{ old('cel') }}" style="width: 100%;">
-                                                            </div>
-                                                            @error('cel')
-        <div class="text-danger text-xs pt-1">{{ $message }}</div>
-    @enderror
-                                                        </div>-->
 
                                                 <div class="flex flex-col mb-3">
                                                     <input type="text" name="tel" id="numeroTel" class="form-control"
@@ -171,8 +177,8 @@
 
                                             <div class="flex flex-col mb-3">
                                                 <input type="text" name="direccion" id="direccion"
-                                                    class="form-control" placeholder="Dirección" aria-label="Direccion"
-                                                    value="{{ old('direccion') }}" maxlength="50">
+                                                    class="form-control" placeholder="*Dirección" aria-label="Direccion"
+                                                    value="{{ old('direccion') }}" maxlength="50" required>
                                                 @error('direccion')
                                                     <div class="text-danger text-xs pt-1">{{ $message }}</div>
                                                 @enderror
@@ -204,12 +210,10 @@
                                                                     style="cursor: pointer;"></i></span>
                                                         </div>
                                                     </div>
-
                                                     @error('password')
                                                         <p class='text-danger text-xs pt-1'>{{ $message }}</p>
                                                     @else
-                                                        <small class="text-xs text-secondary">Incluir al menos 8 caracteres, 1
-                                                            número, una mayúscula y una minúscula.</small>
+                                                        <small id="pass-error" class="text-xs text-danger"></small>
                                                     @enderror
 
                                                 </div>
@@ -229,6 +233,8 @@
                                                     </div>
                                                     @error('confirm_password')
                                                         <p class='text-danger text-xs pt-1'>{{ $message }}</p>
+                                                    @else
+                                                        <p id="passC-error" class="text-danger text-xs pt-1"></p>
                                                     @enderror
                                                 </div>
                                             </div>
@@ -283,6 +289,7 @@
                                                         <option value="Hummer">Hummer</option>
                                                         <option value="Hennessey">Hennessey</option>
                                                         <option value="Hyundai">Hyundai</option>
+                                                        <option value="Isuzu">Isuzu</option>
                                                         <option value="Infiniti">Infiniti</option>
                                                         <!--<option value="Husqvarna">Husqvarna</option>-->
                                                         <option value="JAC">JAC</option>
@@ -364,18 +371,10 @@
                                                     id="categoria_repuesto" style="color: var(--bs-secondary-color);"
                                                     required>
                                                     <option value="" disabled selected>*Especialidad</option>
-                                                    <option value="Todas las especialidades">Todas
-                                                        las especialidades</option>
-                                                    <option value="LLantas">LLantas</option>
-                                                    <option value="Frenos">Frenos</option>
-                                                    <option value="Suspensión">Suspensión</option>
-                                                    <option value="Dirección">Sistema de Dirección</option>
-                                                    <option value="Motor">Motor</option>
-                                                    <option value="Latas">Latas</option>
-                                                    <option value="Refrigeración">Refrigeración</option>
-                                                    <option value="Eléctricos">Eléctricos
-                                                    </option>
-                                                    <option value="otros">Otros</option>
+                                                    <option value="Todas las especialidades">Todas las especialidades</option>
+                                                    @foreach ($categorias as $categoria)
+                                                        <option value="{{$categoria->nombre_categoria}}">{{$categoria->nombre_categoria}}</option>
+                                                    @endforeach
                                                 </select>
                                                 <div id="categorias_preferencias" class="flex flex-col mb-3">
                                                     <div id="items_container_categorias" class="form-control"></div>
@@ -389,40 +388,46 @@
                                                 @enderror
                                             </div>
 
-                                            <div class="container-inputs-files mb-3"
-                                                style="display:flex; justify-content: space-between;">
-                                                <div class="flex flex-col" style="width: 49%;">
-                                                    <label id="btn1" class="button form-control" for="rut"
-                                                        style="margin: 0; cursor: pointer; display: flex; justify-content: space-between;">
-                                                        <div>*RUT
-                                                        </div>
-                                                        <div><i id="check1" class="fa fa-check"
-                                                                aria-hidden="true"></i>
-                                                        </div>
-                                                    </label>
-                                                    <input type="file" accept=".pdf" name="rut" id="rut"
-                                                        class="form-control" aria-label="Rut" style="display: none;">
-                                                    @error('rut')
-                                                        <div class="text-danger text-xs pt-1">{{ $message }}</div>
-                                                    @else
-                                                        <div class="text-danger text-xs pt-1">*El RUT es obligatorio</div>
-                                                    @enderror
+                                            <div class="container-inputs-files mb-3">
+                                                <div class="title">
+                                                    <h5>Anexar documentos</h5>
                                                 </div>
-                                                <div class="flex flex-col" style="width: 49%;">
-                                                    <label id="btn2" class="button form-control" for="cam"
-                                                        style="margin: 0; cursor: pointer; display: flex; justify-content: space-between;">
-                                                        <div>*Camara de comercio</div>
-                                                        <div><i id="check2" class="fa fa-check"
-                                                                aria-hidden="true"></i></div>
-                                                    </label>
-                                                    <input type="file" accept=".pdf" name="cam" id="cam"
-                                                        class="form-control" aria-label="Cam" style="display: none;">
-                                                    @error('cam')
-                                                        <div class="text-danger text-xs pt-1">{{ $message }}</div>
-                                                    @else
-                                                        <div class="text-danger text-xs pt-1">*La cámara de comercio es obligatoria</div>
-                                                    @enderror
+                                                <div class="files-container"
+                                                    style="display:flex; justify-content: space-between;">
+                                                    <div class="flex flex-col" style="width: 49%;">
+                                                        <label id="btn1" class="button form-control" for="rut"
+                                                            style="margin: 0; cursor: pointer; display: flex; justify-content: space-between;">
+                                                            <div>*RUT
+                                                            </div>
+                                                            <div><i id="check1" class="fa fa-check"
+                                                                    aria-hidden="true"></i>
+                                                            </div>
+                                                        </label>
+                                                        <input type="file" accept=".pdf" name="rut"
+                                                            id="rut" class="form-control" aria-label="Rut"
+                                                            style="display: none;">
+                                                        @error('rut')
+                                                            <div class="text-danger text-xs pt-1">{{ $message }}</div>
+                                                        @else
+                                                            <div class="text-danger text-xs pt-1">*El RUT es obligatorio</div>
+                                                        @enderror
+                                                    </div>
+                                                    <div class="flex flex-col" style="width: 49%;">
+                                                        <label id="btn2" class="button form-control" for="cam"
+                                                            style="margin: 0; cursor: pointer; display: flex; justify-content: space-between;">
+                                                            <div>Cámara de comercio</div>
+                                                            <div><i id="check2" class="fa fa-check"
+                                                                    aria-hidden="true"></i></div>
+                                                        </label>
+                                                        <input type="file" accept=".pdf" name="cam"
+                                                            id="cam" class="form-control" aria-label="Cam"
+                                                            style="display: none;">
+                                                        @error('cam')
+                                                            <div class="text-danger text-xs pt-1">{{ $message }}</div>
+                                                        @enderror
+                                                    </div>
                                                 </div>
+
                                             </div>
 
                                             <div class="form-check form-check-info text-start">
@@ -439,8 +444,7 @@
                                             </div>
 
                                             <div class="text-center">
-                                                <button type="submit"
-                                                    class="btn bg-gradient-primary w-100 my-4 mb-2">Registrarse</button>
+                                                @livewire('create-provider')
                                             </div>
 
                                             <p class="text-sm mt-3 mb-0">Ya tienes una cuenta? <a
@@ -527,6 +531,7 @@
             let proveedores = @json($proveedores);
 
             let errorTel = document.getElementById('errorTel');
+            let errorCel = document.getElementById('errorCel');
 
             let pais = document.getElementById('pais');
             let textPais = document.getElementById('text-pais');
@@ -621,23 +626,43 @@
                     municipio.classList.add('hide');
                     pais.classList.remove('hide');
 
-                    if (isNaN(cel.value) || cel.value.length != 10) {
-                        cel.setCustomValidity("El número de celular debe tener 10 dígitos");
-                    } else {
-                        for (let i = 0; i < proveedores.length; i++) {
-                            if (proveedores[i].celular == celValue) {
-                                cel.setCustomValidity('El número de celular ya está registrado');
-                                return;
-                            }else{
-                                cel.setCustomValidity('');
+                    if(cel.value != ""){
+                        if (isNaN(cel.value) || cel.value.length != 10) {
+                            cel.setCustomValidity("El número de celular debe tener 10 dígitos");
+                            errorCel.classList.add('text-danger');
+                            errorCel.classList.remove('text-secondary');
+                            errorCel.textContent = 'El número de celular debe tener 10 dígitos';
+                        } else {
+                            for (let i = 0; i < proveedores.length; i++) {
+                                if (proveedores[i].celular == celValue) {
+                                    cel.setCustomValidity('El número de celular ya está registrado');
+                                    errorCel.classList.add('text-danger');
+                                    errorCel.classList.remove('text-secondary');
+                                    errorCel.textContent = 'El número de celular ya está registrado';
+                                    return;
+                                }else{
+                                    cel.setCustomValidity('');
+                                    errorCel.classList.remove('text-danger');
+                                    errorCel.classList.add('text-secondary');
+                                    errorCel.innerHTML = '¡Debe tener Whatsapp! <i class="fa fa-whatsapp" aria-hidden="true" style="color: #25D366; font-size: 15px; transform: translate(0px, 2.4px);"></i>';
+                                }
                             }
                         }
+                    }else{
+                        tel.setCustomValidity("El número de celular es obligatorio");
+                        errorCel.classList.remove('text-danger');
+                        errorCel.classList.add('text-secondary');
+                        errorCel.innerHTML = '¡Debe tener Whatsapp! <i class="fa fa-whatsapp" aria-hidden="true" style="color: #25D366; font-size: 15px; transform: translate(0px, 2.4px);"></i>';
                     }
+
 
                     if (tel.value == "") {
                         tel.setCustomValidity("");
+                        errorTel.classList.add('hide');
                     } else if (isNaN(tel.value) || tel.value.length != 10) {
+                        errorTel.classList.remove('hide');
                         tel.setCustomValidity("El número de celular debe tener 10 dígitos");
+                        errorTel.textContent = 'El número de celular debe tener 10 dígitos';
                     } else {
                         for (let i = 0; i < proveedores.length; i++) {
                             if(proveedores[i].telefono == telValue && telValue != ''){
@@ -662,23 +687,43 @@
                     municipio.classList.add('hide');
                     pais.classList.remove('hide');
 
-                    if (isNaN(cel.value) || cel.value.length != 8) {
-                        cel.setCustomValidity("El número de celular debe tener 8 dígitos");
-                    } else {
-                        for (let i = 0; i < proveedores.length; i++) {
-                            if (proveedores[i].celular == celValue) {
-                                cel.setCustomValidity('El número de celular ya está registrado');
-                                return;
-                            }else{
-                                cel.setCustomValidity('');
+                    if(cel.value != ""){
+                        if (isNaN(cel.value) || cel.value.length != 8) {
+                            cel.setCustomValidity("El número de celular debe tener 8 dígitos");
+                            errorCel.classList.add('text-danger');
+                            errorCel.classList.remove('text-secondary');
+                            errorCel.textContent = 'El número de celular debe tener 8 dígitos';
+                        } else {
+                            for (let i = 0; i < proveedores.length; i++) {
+                                if (proveedores[i].celular == celValue) {
+                                    cel.setCustomValidity('El número de celular ya está registrado');
+                                    errorCel.classList.add('text-danger');
+                                    errorCel.classList.remove('text-secondary');
+                                    errorCel.textContent = 'El número de celular ya está registrado';
+                                    return;
+                                }else{
+                                    cel.setCustomValidity('');
+                                    errorCel.classList.remove('text-danger');
+                                    errorCel.classList.add('text-secondary');
+                                    errorCel.innerHTML = '¡Debe tener Whatsapp! <i class="fa fa-whatsapp" aria-hidden="true" style="color: #25D366; font-size: 15px; transform: translate(0px, 2.4px);"></i>';
+                                }
                             }
                         }
+                    }else{
+                        tel.setCustomValidity("El número de celular es obligatorio");
+                        errorCel.classList.remove('text-danger');
+                        errorCel.classList.add('text-secondary');
+                        errorCel.innerHTML = '¡Debe tener Whatsapp! <i class="fa fa-whatsapp" aria-hidden="true" style="color: #25D366; font-size: 15px; transform: translate(0px, 2.4px);"></i>';
                     }
+
 
                     if (tel.value == "") {
                         tel.setCustomValidity("");
+                        errorTel.classList.add('hide');
                     } else if (isNaN(tel.value) || tel.value.length != 8) {
+                        errorTel.classList.remove('hide');
                         tel.setCustomValidity("El número de celular debe tener 8 dígitos");
+                        errorTel.textContent = 'El número de celular debe tener 8 dígitos';
                     } else {
                         for (let i = 0; i < proveedores.length; i++) {
                             if(proveedores[i].telefono == telValue && telValue != ''){
@@ -702,23 +747,44 @@
                     departamento.classList.add('hide');
                     municipio.classList.add('hide');
                     pais.classList.remove('hide');
-                    if (isNaN(cel.value) || cel.value.length != 11) {
-                        cel.setCustomValidity("El número de celular debe tener 11 dígitos");
-                    } else {
-                        for (let i = 0; i < proveedores.length; i++) {
-                            if (proveedores[i].celular == celValue) {
-                                cel.setCustomValidity('El número de celular ya está registrado');
-                                return;
-                            }else{
-                                cel.setCustomValidity('');
+
+                    if(cel.value != ""){
+                        if (isNaN(cel.value) || cel.value.length != 11) {
+                            cel.setCustomValidity("El número de celular debe tener 11 dígitos");
+                            errorCel.classList.add('text-danger');
+                            errorCel.classList.remove('text-secondary');
+                            errorCel.textContent = 'El número de celular debe tener 11 dígitos';
+                        } else {
+                            for (let i = 0; i < proveedores.length; i++) {
+                                if (proveedores[i].celular == celValue) {
+                                    cel.setCustomValidity('El número de celular ya está registrado');
+                                    errorCel.classList.add('text-danger');
+                                    errorCel.classList.remove('text-secondary');
+                                    errorCel.textContent = 'El número de celular ya está registrado';
+                                    return;
+                                }else{
+                                    cel.setCustomValidity('');
+                                    errorCel.classList.remove('text-danger');
+                                    errorCel.classList.add('text-secondary');
+                                    errorCel.innerHTML = '¡Debe tener Whatsapp! <i class="fa fa-whatsapp" aria-hidden="true" style="color: #25D366; font-size: 15px; transform: translate(0px, 2.4px);"></i>';
+                                }
                             }
                         }
+                    }else{
+                        tel.setCustomValidity("El número de celular es obligatorio");
+                        errorCel.classList.remove('text-danger');
+                        errorCel.classList.add('text-secondary');
+                        errorCel.innerHTML = '¡Debe tener Whatsapp! <i class="fa fa-whatsapp" aria-hidden="true" style="color: #25D366; font-size: 15px; transform: translate(0px, 2.4px);"></i>';
                     }
+
 
                     if (tel.value == "") {
                         tel.setCustomValidity("");
+                        errorTel.classList.add('hide');
                     } else if (isNaN(tel.value) || tel.value.length != 11) {
+                        errorTel.classList.remove('hide');
                         tel.setCustomValidity("El número de celular debe tener 11 dígitos");
+                        errorTel.textContent = 'El número de celular debe tener 11 dígitos';
                     } else {
                         for (let i = 0; i < proveedores.length; i++) {
                             if(proveedores[i].telefono == telValue && telValue != ''){
@@ -744,23 +810,43 @@
                     municipio.classList.add('hide');
                     pais.classList.remove('hide');
 
-                    if (isNaN(cel.value) || cel.value.length != 9) {
-                        cel.setCustomValidity("El número de celular debe tener 9 dígitos");
-                    } else {
-                        for (let i = 0; i < proveedores.length; i++) {
-                            if (proveedores[i].celular == celValue) {
-                                cel.setCustomValidity('El número de celular ya está registrado');
-                                return;
-                            }else{
-                                cel.setCustomValidity('');
+                    if(cel.value != ""){
+                        if (isNaN(cel.value) || cel.value.length != 9) {
+                            cel.setCustomValidity("El número de celular debe tener 9 dígitos");
+                            errorCel.classList.add('text-danger');
+                            errorCel.classList.remove('text-secondary');
+                            errorCel.textContent = 'El número de celular debe tener 9 dígitos';
+                        } else {
+                            for (let i = 0; i < proveedores.length; i++) {
+                                if (proveedores[i].celular == celValue) {
+                                    cel.setCustomValidity('El número de celular ya está registrado');
+                                    errorCel.classList.add('text-danger');
+                                    errorCel.classList.remove('text-secondary');
+                                    errorCel.textContent = 'El número de celular ya está registrado';
+                                    return;
+                                }else{
+                                    cel.setCustomValidity('');
+                                    errorCel.classList.remove('text-danger');
+                                    errorCel.classList.add('text-secondary');
+                                    errorCel.innerHTML = '¡Debe tener Whatsapp! <i class="fa fa-whatsapp" aria-hidden="true" style="color: #25D366; font-size: 15px; transform: translate(0px, 2.4px);"></i>';
+                                }
                             }
                         }
+                    }else{
+                        tel.setCustomValidity("El número de celular es obligatorio");
+                        errorCel.classList.remove('text-danger');
+                        errorCel.classList.add('text-secondary');
+                        errorCel.innerHTML = '¡Debe tener Whatsapp! <i class="fa fa-whatsapp" aria-hidden="true" style="color: #25D366; font-size: 15px; transform: translate(0px, 2.4px);"></i>';
                     }
+
 
                     if (tel.value == "") {
                         tel.setCustomValidity("");
+                        errorTel.classList.add('hide');
                     } else if (isNaN(tel.value) || tel.value.length != 9) {
+                        errorTel.classList.remove('hide');
                         tel.setCustomValidity("El número de celular debe tener 9 dígitos");
+                        errorTel.textContent = 'El número de celular debe tener 9 dígitos';
                     } else {
                         for (let i = 0; i < proveedores.length; i++) {
                             if(proveedores[i].telefono == telValue && telValue != ''){
@@ -785,23 +871,44 @@
                     departamento.classList.add('hide');
                     municipio.classList.add('hide');
                     pais.classList.remove('hide');
-                    if (isNaN(cel.value) || cel.value.length != 10) {
-                        cel.setCustomValidity("El número de celular debe tener 10 dígitos");
-                    } else {
-                        for (let i = 0; i < proveedores.length; i++) {
-                            if (proveedores[i].celular == celValue) {
-                                cel.setCustomValidity('El número de celular ya está registrado');
-                                return;
-                            }else{
-                                cel.setCustomValidity('');
+
+                    if(cel.value != ""){
+                        if (isNaN(cel.value) || cel.value.length != 10) {
+                            cel.setCustomValidity("El número de celular debe tener 10 dígitos");
+                            errorCel.classList.add('text-danger');
+                            errorCel.classList.remove('text-secondary');
+                            errorCel.textContent = 'El número de celular debe tener 10 dígitos';
+                        } else {
+                            for (let i = 0; i < proveedores.length; i++) {
+                                if (proveedores[i].celular == celValue) {
+                                    cel.setCustomValidity('El número de celular ya está registrado');
+                                    errorCel.classList.add('text-danger');
+                                    errorCel.classList.remove('text-secondary');
+                                    errorCel.textContent = 'El número de celular ya está registrado';
+                                    return;
+                                }else{
+                                    cel.setCustomValidity('');
+                                    errorCel.classList.remove('text-danger');
+                                    errorCel.classList.add('text-secondary');
+                                    errorCel.innerHTML = '¡Debe tener Whatsapp! <i class="fa fa-whatsapp" aria-hidden="true" style="color: #25D366; font-size: 15px; transform: translate(0px, 2.4px);"></i>';
+                                }
                             }
                         }
+                    }else{
+                        tel.setCustomValidity("El número de celular es obligatorio");
+                        errorCel.classList.remove('text-danger');
+                        errorCel.classList.add('text-secondary');
+                        errorCel.innerHTML = '¡Debe tener Whatsapp! <i class="fa fa-whatsapp" aria-hidden="true" style="color: #25D366; font-size: 15px; transform: translate(0px, 2.4px);"></i>';
                     }
+
 
                     if (tel.value == "") {
                         tel.setCustomValidity("");
+                        errorTel.classList.add('hide');
                     } else if (isNaN(tel.value) || tel.value.length != 10) {
+                        errorTel.classList.remove('hide');
                         tel.setCustomValidity("El número de celular debe tener 10 dígitos");
+                        errorTel.textContent = 'El número de celular debe tener 10 dígitos';
                     } else {
                         for (let i = 0; i < proveedores.length; i++) {
                             if(proveedores[i].telefono == telValue && telValue != ''){
@@ -826,23 +933,44 @@
                     departamento.classList.add('hide');
                     municipio.classList.add('hide');
                     pais.classList.remove('hide');
-                    if (isNaN(cel.value) || cel.value.length != 9) {
-                        cel.setCustomValidity("El número de celular debe tener 9 dígitos");
-                    } else {
-                        for (let i = 0; i < proveedores.length; i++) {
-                            if (proveedores[i].celular == celValue) {
-                                cel.setCustomValidity('El número de celular ya está registrado');
-                                return;
-                            }else{
-                                cel.setCustomValidity('');
+
+                    if(cel.value != ""){
+                        if (isNaN(cel.value) || cel.value.length != 9) {
+                            cel.setCustomValidity("El número de celular debe tener 9 dígitos");
+                            errorCel.classList.add('text-danger');
+                            errorCel.classList.remove('text-secondary');
+                            errorCel.textContent = 'El número de celular debe tener 9 dígitos';
+                        } else {
+                            for (let i = 0; i < proveedores.length; i++) {
+                                if (proveedores[i].celular == celValue) {
+                                    cel.setCustomValidity('El número de celular ya está registrado');
+                                    errorCel.classList.add('text-danger');
+                                    errorCel.classList.remove('text-secondary');
+                                    errorCel.textContent = 'El número de celular ya está registrado';
+                                    return;
+                                }else{
+                                    cel.setCustomValidity('');
+                                    errorCel.classList.remove('text-danger');
+                                    errorCel.classList.add('text-secondary');
+                                    errorCel.innerHTML = '¡Debe tener Whatsapp! <i class="fa fa-whatsapp" aria-hidden="true" style="color: #25D366; font-size: 15px; transform: translate(0px, 2.4px);"></i>';
+                                }
                             }
                         }
+                    }else{
+                        tel.setCustomValidity("El número de celular es obligatorio");
+                        errorCel.classList.remove('text-danger');
+                        errorCel.classList.add('text-secondary');
+                        errorCel.innerHTML = '¡Debe tener Whatsapp! <i class="fa fa-whatsapp" aria-hidden="true" style="color: #25D366; font-size: 15px; transform: translate(0px, 2.4px);"></i>';
                     }
+
 
                     if (tel.value == "") {
                         tel.setCustomValidity("");
+                        errorTel.classList.add('hide');
                     } else if (isNaN(tel.value) || tel.value.length != 9) {
+                        errorTel.classList.remove('hide');
                         tel.setCustomValidity("El número de celular debe tener 9 dígitos");
+                        errorTel.textContent = 'El número de celular debe tener 9 dígitos';
                     } else {
                         for (let i = 0; i < proveedores.length; i++) {
                             if(proveedores[i].telefono == telValue && telValue != ''){
@@ -867,23 +995,44 @@
                     departamento.classList.add('hide');
                     municipio.classList.add('hide');
                     pais.classList.remove('hide');
-                    if (isNaN(cel.value) || cel.value.length != 7) {
-                        cel.setCustomValidity("El número de celular debe tener 7 dígitos");
-                    } else {
-                        for (let i = 0; i < proveedores.length; i++) {
-                            if (proveedores[i].celular == celValue) {
-                                cel.setCustomValidity('El número de celular ya está registrado');
-                                return;
-                            }else{
-                                cel.setCustomValidity('');
+
+                    if(cel.value != ""){
+                        if (isNaN(cel.value) || cel.value.length != 7) {
+                            cel.setCustomValidity("El número de celular debe tener 7 dígitos");
+                            errorCel.classList.add('text-danger');
+                            errorCel.classList.remove('text-secondary');
+                            errorCel.textContent = 'El número de celular debe tener 7 dígitos';
+                        } else {
+                            for (let i = 0; i < proveedores.length; i++) {
+                                if (proveedores[i].celular == celValue) {
+                                    cel.setCustomValidity('El número de celular ya está registrado');
+                                    errorCel.classList.add('text-danger');
+                                    errorCel.classList.remove('text-secondary');
+                                    errorCel.textContent = 'El número de celular ya está registrado';
+                                    return;
+                                }else{
+                                    cel.setCustomValidity('');
+                                    errorCel.classList.remove('text-danger');
+                                    errorCel.classList.add('text-secondary');
+                                    errorCel.innerHTML = '¡Debe tener Whatsapp! <i class="fa fa-whatsapp" aria-hidden="true" style="color: #25D366; font-size: 15px; transform: translate(0px, 2.4px);"></i>';
+                                }
                             }
                         }
+                    }else{
+                        tel.setCustomValidity("El número de celular es obligatorio");
+                        errorCel.classList.remove('text-danger');
+                        errorCel.classList.add('text-secondary');
+                        errorCel.innerHTML = '¡Debe tener Whatsapp! <i class="fa fa-whatsapp" aria-hidden="true" style="color: #25D366; font-size: 15px; transform: translate(0px, 2.4px);"></i>';
                     }
+
 
                     if (tel.value == "") {
                         tel.setCustomValidity("");
+                        errorTel.classList.add('hide');
                     } else if (isNaN(tel.value) || tel.value.length != 7) {
+                        errorTel.classList.remove('hide');
                         tel.setCustomValidity("El número de celular debe tener 7 dígitos");
+                        errorTel.textContent = 'El número de celular debe tener 7 dígitos';
                     } else {
                         for (let i = 0; i < proveedores.length; i++) {
                             if(proveedores[i].telefono == telValue && telValue != ''){
@@ -908,23 +1057,44 @@
                     departamento.classList.add('hide');
                     municipio.classList.add('hide');
                     pais.classList.remove('hide');
-                    if (isNaN(cel.value) || cel.value.length != 9) {
-                        cel.setCustomValidity("El número de celular debe tener 9 dígitos");
-                    } else {
-                        for (let i = 0; i < proveedores.length; i++) {
-                            if (proveedores[i].celular == celValue) {
-                                cel.setCustomValidity('El número de celular ya está registrado');
-                                return;
-                            }else{
-                                cel.setCustomValidity('');
+
+                   if(cel.value != ""){
+                        if (isNaN(cel.value) || cel.value.length != 9) {
+                            cel.setCustomValidity("El número de celular debe tener 9 dígitos");
+                            errorCel.classList.add('text-danger');
+                            errorCel.classList.remove('text-secondary');
+                            errorCel.textContent = 'El número de celular debe tener 9 dígitos';
+                        } else {
+                            for (let i = 0; i < proveedores.length; i++) {
+                                if (proveedores[i].celular == celValue) {
+                                    cel.setCustomValidity('El número de celular ya está registrado');
+                                    errorCel.classList.add('text-danger');
+                                    errorCel.classList.remove('text-secondary');
+                                    errorCel.textContent = 'El número de celular ya está registrado';
+                                    return;
+                                }else{
+                                    cel.setCustomValidity('');
+                                    errorCel.classList.remove('text-danger');
+                                    errorCel.classList.add('text-secondary');
+                                    errorCel.innerHTML = '¡Debe tener Whatsapp! <i class="fa fa-whatsapp" aria-hidden="true" style="color: #25D366; font-size: 15px; transform: translate(0px, 2.4px);"></i>';
+                                }
                             }
                         }
+                    }else{
+                        tel.setCustomValidity("El número de celular es obligatorio");
+                        errorCel.classList.remove('text-danger');
+                        errorCel.classList.add('text-secondary');
+                        errorCel.innerHTML = '¡Debe tener Whatsapp! <i class="fa fa-whatsapp" aria-hidden="true" style="color: #25D366; font-size: 15px; transform: translate(0px, 2.4px);"></i>';
                     }
+
 
                     if (tel.value == "") {
                         tel.setCustomValidity("");
+                        errorTel.classList.add('hide');
                     } else if (isNaN(tel.value) || tel.value.length != 9) {
+                        errorTel.classList.remove('hide');
                         tel.setCustomValidity("El número de celular debe tener 9 dígitos");
+                        errorTel.textContent = 'El número de celular debe tener 9 dígitos';
                     } else {
                         for (let i = 0; i < proveedores.length; i++) {
                             if(proveedores[i].telefono == telValue && telValue != ''){
@@ -949,23 +1119,44 @@
                     departamento.classList.add('hide');
                     municipio.classList.add('hide');
                     pais.classList.remove('hide');
-                    if (isNaN(cel.value) || cel.value.length != 9) {
-                        cel.setCustomValidity("El número de celular debe tener 9 dígitos");
-                    } else {
-                        for (let i = 0; i < proveedores.length; i++) {
-                            if (proveedores[i].celular == celValue) {
-                                cel.setCustomValidity('El número de celular ya está registrado');
-                                return;
-                            }else{
-                                cel.setCustomValidity('');
+
+                    if(cel.value != ""){
+                        if (isNaN(cel.value) || cel.value.length != 9) {
+                            cel.setCustomValidity("El número de celular debe tener 9 dígitos");
+                            errorCel.classList.add('text-danger');
+                            errorCel.classList.remove('text-secondary');
+                            errorCel.textContent = 'El número de celular debe tener 9 dígitos';
+                        } else {
+                            for (let i = 0; i < proveedores.length; i++) {
+                                if (proveedores[i].celular == celValue) {
+                                    cel.setCustomValidity('El número de celular ya está registrado');
+                                    errorCel.classList.add('text-danger');
+                                    errorCel.classList.remove('text-secondary');
+                                    errorCel.textContent = 'El número de celular ya está registrado';
+                                    return;
+                                }else{
+                                    cel.setCustomValidity('');
+                                    errorCel.classList.remove('text-danger');
+                                    errorCel.classList.add('text-secondary');
+                                    errorCel.innerHTML = '¡Debe tener Whatsapp! <i class="fa fa-whatsapp" aria-hidden="true" style="color: #25D366; font-size: 15px; transform: translate(0px, 2.4px);"></i>';
+                                }
                             }
                         }
+                    }else{
+                        tel.setCustomValidity("El número de celular es obligatorio");
+                        errorCel.classList.remove('text-danger');
+                        errorCel.classList.add('text-secondary');
+                        errorCel.innerHTML = '¡Debe tener Whatsapp! <i class="fa fa-whatsapp" aria-hidden="true" style="color: #25D366; font-size: 15px; transform: translate(0px, 2.4px);"></i>';
                     }
+
 
                     if (tel.value == "") {
                         tel.setCustomValidity("");
+                        errorTel.classList.add('hide');
                     } else if (isNaN(tel.value) || tel.value.length != 9) {
+                        errorTel.classList.remove('hide');
                         tel.setCustomValidity("El número de celular debe tener 9 dígitos");
+                        errorTel.textContent = 'El número de celular debe tener 9 dígitos';
                     } else {
                         for (let i = 0; i < proveedores.length; i++) {
                             if(proveedores[i].telefono == telValue && telValue != ''){
@@ -990,23 +1181,44 @@
                     departamento.classList.add('hide');
                     municipio.classList.add('hide');
                     pais.classList.remove('hide');
-                    if (isNaN(cel.value) || cel.value.length != 7) {
-                        cel.setCustomValidity("El número de celular debe tener 7 dígitos");
-                    } else {
-                        for (let i = 0; i < proveedores.length; i++) {
-                            if (proveedores[i].celular == celValue) {
-                                cel.setCustomValidity('El número de celular ya está registrado');
-                                return;
-                            }else{
-                                cel.setCustomValidity('');
+
+                    if(cel.value != ""){
+                        if (isNaN(cel.value) || cel.value.length != 7) {
+                            cel.setCustomValidity("El número de celular debe tener 7 dígitos");
+                            errorCel.classList.add('text-danger');
+                            errorCel.classList.remove('text-secondary');
+                            errorCel.textContent = 'El número de celular debe tener 7 dígitos';
+                        } else {
+                            for (let i = 0; i < proveedores.length; i++) {
+                                if (proveedores[i].celular == celValue) {
+                                    cel.setCustomValidity('El número de celular ya está registrado');
+                                    errorCel.classList.add('text-danger');
+                                    errorCel.classList.remove('text-secondary');
+                                    errorCel.textContent = 'El número de celular ya está registrado';
+                                    return;
+                                }else{
+                                    cel.setCustomValidity('');
+                                    errorCel.classList.remove('text-danger');
+                                    errorCel.classList.add('text-secondary');
+                                    errorCel.innerHTML = '¡Debe tener Whatsapp! <i class="fa fa-whatsapp" aria-hidden="true" style="color: #25D366; font-size: 15px; transform: translate(0px, 2.4px);"></i>';
+                                }
                             }
                         }
+                    }else{
+                        tel.setCustomValidity("El número de celular es obligatorio");
+                        errorCel.classList.remove('text-danger');
+                        errorCel.classList.add('text-secondary');
+                        errorCel.innerHTML = '¡Debe tener Whatsapp! <i class="fa fa-whatsapp" aria-hidden="true" style="color: #25D366; font-size: 15px; transform: translate(0px, 2.4px);"></i>';
                     }
+
 
                     if (tel.value == "") {
                         tel.setCustomValidity("");
+                        errorTel.classList.add('hide');
                     } else if (isNaN(tel.value) || tel.value.length != 7) {
+                        errorTel.classList.remove('hide');
                         tel.setCustomValidity("El número de celular debe tener 7 dígitos");
+                        errorTel.textContent = 'El número de celular debe tener 7 dígitos';
                     } else {
                         for (let i = 0; i < proveedores.length; i++) {
                             if(proveedores[i].telefono == telValue && telValue != ''){
@@ -1031,23 +1243,44 @@
                     departamento.classList.add('hide');
                     municipio.classList.add('hide');
                     pais.classList.remove('hide');
-                    if (isNaN(cel.value) || cel.value.length != 8) {
-                        cel.setCustomValidity("El número de celular debe tener 8 dígitos");
-                    } else {
-                        for (let i = 0; i < proveedores.length; i++) {
-                            if (proveedores[i].celular == celValue) {
-                                cel.setCustomValidity('El número de celular ya está registrado');
-                                return;
-                            }else{
-                                cel.setCustomValidity('');
+
+                    if(cel.value != ""){
+                        if (isNaN(cel.value) || cel.value.length != 8) {
+                            cel.setCustomValidity("El número de celular debe tener 8 dígitos");
+                            errorCel.classList.add('text-danger');
+                            errorCel.classList.remove('text-secondary');
+                            errorCel.textContent = 'El número de celular debe tener 8 dígitos';
+                        } else {
+                            for (let i = 0; i < proveedores.length; i++) {
+                                if (proveedores[i].celular == celValue) {
+                                    cel.setCustomValidity('El número de celular ya está registrado');
+                                    errorCel.classList.add('text-danger');
+                                    errorCel.classList.remove('text-secondary');
+                                    errorCel.textContent = 'El número de celular ya está registrado';
+                                    return;
+                                }else{
+                                    cel.setCustomValidity('');
+                                    errorCel.classList.remove('text-danger');
+                                    errorCel.classList.add('text-secondary');
+                                    errorCel.innerHTML = '¡Debe tener Whatsapp! <i class="fa fa-whatsapp" aria-hidden="true" style="color: #25D366; font-size: 15px; transform: translate(0px, 2.4px);"></i>';
+                                }
                             }
                         }
+                    }else{
+                        tel.setCustomValidity("El número de celular es obligatorio");
+                        errorCel.classList.remove('text-danger');
+                        errorCel.classList.add('text-secondary');
+                        errorCel.innerHTML = '¡Debe tener Whatsapp! <i class="fa fa-whatsapp" aria-hidden="true" style="color: #25D366; font-size: 15px; transform: translate(0px, 2.4px);"></i>';
                     }
+
 
                     if (tel.value == "") {
                         tel.setCustomValidity("");
+                        errorTel.classList.add('hide');
                     } else if (isNaN(tel.value) || tel.value.length != 8) {
+                        errorTel.classList.remove('hide');
                         tel.setCustomValidity("El número de celular debe tener 8 dígitos");
+                        errorTel.textContent = 'El número de celular debe tener 8 dígitos';
                     } else {
                         for (let i = 0; i < proveedores.length; i++) {
                             if(proveedores[i].telefono == telValue && telValue != ''){
@@ -1072,23 +1305,44 @@
                     departamento.classList.add('hide');
                     municipio.classList.add('hide');
                     pais.classList.remove('hide');
-                    if (isNaN(cel.value) || cel.value.length != 10) {
-                        cel.setCustomValidity("El número de celular debe tener 10 dígitos");
-                    } else {
-                        for (let i = 0; i < proveedores.length; i++) {
-                            if (proveedores[i].celular == celValue) {
-                                cel.setCustomValidity('El número de celular ya está registrado');
-                                return;
-                            }else{
-                                cel.setCustomValidity('');
+
+                    if(cel.value != ""){
+                        if (isNaN(cel.value) || cel.value.length != 10) {
+                            cel.setCustomValidity("El número de celular debe tener 10 dígitos");
+                            errorCel.classList.add('text-danger');
+                            errorCel.classList.remove('text-secondary');
+                            errorCel.textContent = 'El número de celular debe tener 10 dígitos';
+                        } else {
+                            for (let i = 0; i < proveedores.length; i++) {
+                                if (proveedores[i].celular == celValue) {
+                                    cel.setCustomValidity('El número de celular ya está registrado');
+                                    errorCel.classList.add('text-danger');
+                                    errorCel.classList.remove('text-secondary');
+                                    errorCel.textContent = 'El número de celular ya está registrado';
+                                    return;
+                                }else{
+                                    cel.setCustomValidity('');
+                                    errorCel.classList.remove('text-danger');
+                                    errorCel.classList.add('text-secondary');
+                                    errorCel.innerHTML = '¡Debe tener Whatsapp! <i class="fa fa-whatsapp" aria-hidden="true" style="color: #25D366; font-size: 15px; transform: translate(0px, 2.4px);"></i>';
+                                }
                             }
                         }
+                    }else{
+                        tel.setCustomValidity("El número de celular es obligatorio");
+                        errorCel.classList.remove('text-danger');
+                        errorCel.classList.add('text-secondary');
+                        errorCel.innerHTML = '¡Debe tener Whatsapp! <i class="fa fa-whatsapp" aria-hidden="true" style="color: #25D366; font-size: 15px; transform: translate(0px, 2.4px);"></i>';
                     }
+
 
                     if (tel.value == "") {
                         tel.setCustomValidity("");
+                        errorTel.classList.add('hide');
                     } else if (isNaN(tel.value) || tel.value.length != 10) {
+                        errorTel.classList.remove('hide');
                         tel.setCustomValidity("El número de celular debe tener 10 dígitos");
+                        errorTel.textContent = 'El número de celular debe tener 10 dígitos';
                     } else {
                         for (let i = 0; i < proveedores.length; i++) {
                             if(proveedores[i].telefono == telValue && telValue != ''){
@@ -1115,23 +1369,43 @@
                     municipio.classList.remove('hide');
                     pais.classList.add('hide');
 
-                    if (isNaN(cel.value) || cel.value.length != 10) {
-                        cel.setCustomValidity("El número de celular debe tener 10 dígitos");
-                    } else {
-                        for (let i = 0; i < proveedores.length; i++) {
-                            if (proveedores[i].celular == celValue) {
-                                cel.setCustomValidity('El número de celular ya está registrado');
-                                return;
-                            }else{
-                                cel.setCustomValidity('');
+                    if(cel.value != ""){
+                        if (isNaN(cel.value) || cel.value.length != 10) {
+                            cel.setCustomValidity("El número de celular debe tener 10 dígitos");
+                            errorCel.classList.add('text-danger');
+                            errorCel.classList.remove('text-secondary');
+                            errorCel.textContent = 'El número de celular debe tener 10 dígitos';
+                        } else {
+                            for (let i = 0; i < proveedores.length; i++) {
+                                if (proveedores[i].celular == celValue) {
+                                    cel.setCustomValidity('El número de celular ya está registrado');
+                                    errorCel.classList.add('text-danger');
+                                    errorCel.classList.remove('text-secondary');
+                                    errorCel.textContent = 'El número de celular ya está registrado';
+                                    return;
+                                }else{
+                                    cel.setCustomValidity('');
+                                    errorCel.classList.remove('text-danger');
+                                    errorCel.classList.add('text-secondary');
+                                    errorCel.innerHTML = '¡Debe tener Whatsapp! <i class="fa fa-whatsapp" aria-hidden="true" style="color: #25D366; font-size: 15px; transform: translate(0px, 2.4px);"></i>';
+                                }
                             }
                         }
+                    }else{
+                        tel.setCustomValidity("El número de celular es obligatorio");
+                        errorCel.classList.remove('text-danger');
+                        errorCel.classList.add('text-secondary');
+                        errorCel.innerHTML = '¡Debe tener Whatsapp! <i class="fa fa-whatsapp" aria-hidden="true" style="color: #25D366; font-size: 15px; transform: translate(0px, 2.4px);"></i>';
                     }
+
 
                     if (tel.value == "") {
                         tel.setCustomValidity("");
+                        errorTel.classList.add('hide');
                     } else if (isNaN(tel.value) || tel.value.length != 10) {
+                        errorTel.classList.remove('hide');
                         tel.setCustomValidity("El número de celular debe tener 10 dígitos");
+                        errorTel.textContent = 'El número de celular debe tener 10 dígitos';
                     } else {
                         for (let i = 0; i < proveedores.length; i++) {
                             if(proveedores[i].telefono == telValue && telValue != ''){
@@ -1154,23 +1428,44 @@
                     departamento.classList.add('hide');
                     municipio.classList.add('hide');
                     pais.classList.remove('hide');
-                    if (isNaN(cel.value) || cel.value.length != 10) {
-                        cel.setCustomValidity("El número de celular debe tener 10 dígitos")
-                    } else {
-                        for (let i = 0; i < proveedores.length; i++) {
-                            if (proveedores[i].celular == celValue) {
-                                cel.setCustomValidity('El número de celular ya está registrado');
-                                return;
-                            }else{
-                                cel.setCustomValidity('');
+
+                   if(cel.value != ""){
+                        if (isNaN(cel.value) || cel.value.length != 10) {
+                            cel.setCustomValidity("El número de celular debe tener 10 dígitos");
+                            errorCel.classList.add('text-danger');
+                            errorCel.classList.remove('text-secondary');
+                            errorCel.textContent = 'El número de celular debe tener 10 dígitos';
+                        } else {
+                            for (let i = 0; i < proveedores.length; i++) {
+                                if (proveedores[i].celular == celValue) {
+                                    cel.setCustomValidity('El número de celular ya está registrado');
+                                    errorCel.classList.add('text-danger');
+                                    errorCel.classList.remove('text-secondary');
+                                    errorCel.textContent = 'El número de celular ya está registrado';
+                                    return;
+                                }else{
+                                    cel.setCustomValidity('');
+                                    errorCel.classList.remove('text-danger');
+                                    errorCel.classList.add('text-secondary');
+                                    errorCel.innerHTML = '¡Debe tener Whatsapp! <i class="fa fa-whatsapp" aria-hidden="true" style="color: #25D366; font-size: 15px; transform: translate(0px, 2.4px);"></i>';
+                                }
                             }
                         }
+                    }else{
+                        tel.setCustomValidity("El número de celular es obligatorio");
+                        errorCel.classList.remove('text-danger');
+                        errorCel.classList.add('text-secondary');
+                        errorCel.innerHTML = '¡Debe tener Whatsapp! <i class="fa fa-whatsapp" aria-hidden="true" style="color: #25D366; font-size: 15px; transform: translate(0px, 2.4px);"></i>';
                     }
+
 
                     if (tel.value == "") {
                         tel.setCustomValidity("");
+                        errorTel.classList.add('hide');
                     } else if (isNaN(tel.value) || tel.value.length != 10) {
+                        errorTel.classList.remove('hide');
                         tel.setCustomValidity("El número de celular debe tener 10 dígitos");
+                        errorTel.textContent = 'El número de celular debe tener 10 dígitos';
                     } else {
                         for (let i = 0; i < proveedores.length; i++) {
                             if(proveedores[i].telefono == telValue && telValue != ''){
@@ -1195,23 +1490,44 @@
                     departamento.classList.add('hide');
                     municipio.classList.add('hide');
                     pais.classList.remove('hide');
-                    if (isNaN(cel.value) || cel.value.length != 8) {
-                        cel.setCustomValidity("El número de celular debe tener 8 dígitos")
-                    } else {
-                        for (let i = 0; i < proveedores.length; i++) {
-                            if (proveedores[i].celular == celValue) {
-                                cel.setCustomValidity('El número de celular ya está registrado');
-                                return;
-                            }else{
-                                cel.setCustomValidity('');
+
+                   if(cel.value != ""){
+                        if (isNaN(cel.value) || cel.value.length != 8) {
+                            cel.setCustomValidity("El número de celular debe tener 8 dígitos");
+                            errorCel.classList.add('text-danger');
+                            errorCel.classList.remove('text-secondary');
+                            errorCel.textContent = 'El número de celular debe tener 8 dígitos';
+                        } else {
+                            for (let i = 0; i < proveedores.length; i++) {
+                                if (proveedores[i].celular == celValue) {
+                                    cel.setCustomValidity('El número de celular ya está registrado');
+                                    errorCel.classList.add('text-danger');
+                                    errorCel.classList.remove('text-secondary');
+                                    errorCel.textContent = 'El número de celular ya está registrado';
+                                    return;
+                                }else{
+                                    cel.setCustomValidity('');
+                                    errorCel.classList.remove('text-danger');
+                                    errorCel.classList.add('text-secondary');
+                                    errorCel.innerHTML = '¡Debe tener Whatsapp! <i class="fa fa-whatsapp" aria-hidden="true" style="color: #25D366; font-size: 15px; transform: translate(0px, 2.4px);"></i>';
+                                }
                             }
                         }
+                    }else{
+                        tel.setCustomValidity("El número de celular es obligatorio");
+                        errorCel.classList.remove('text-danger');
+                        errorCel.classList.add('text-secondary');
+                        errorCel.innerHTML = '¡Debe tener Whatsapp! <i class="fa fa-whatsapp" aria-hidden="true" style="color: #25D366; font-size: 15px; transform: translate(0px, 2.4px);"></i>';
                     }
+
 
                     if (tel.value == "") {
                         tel.setCustomValidity("");
+                        errorTel.classList.add('hide');
                     } else if (isNaN(tel.value) || tel.value.length != 8) {
+                        errorTel.classList.remove('hide');
                         tel.setCustomValidity("El número de celular debe tener 8 dígitos");
+                        errorTel.textContent = 'El número de celular debe tener 8 dígitos';
                     } else {
                         for (let i = 0; i < proveedores.length; i++) {
                             if(proveedores[i].telefono == telValue && telValue != ''){
@@ -1236,23 +1552,44 @@
                     departamento.classList.add('hide');
                     municipio.classList.add('hide');
                     pais.classList.remove('hide');
-                    if (isNaN(cel.value) || cel.value.length != 8) {
-                        cel.setCustomValidity("El número de celular debe tener 8 dígitos")
-                    } else {
-                        for (let i = 0; i < proveedores.length; i++) {
-                            if (proveedores[i].celular == celValue) {
-                                cel.setCustomValidity('El número de celular ya está registrado');
-                                return;
-                            }else{
-                                cel.setCustomValidity('');
+
+                    if(cel.value != ""){
+                        if (isNaN(cel.value) || cel.value.length != 8) {
+                            cel.setCustomValidity("El número de celular debe tener 8 dígitos");
+                            errorCel.classList.add('text-danger');
+                            errorCel.classList.remove('text-secondary');
+                            errorCel.textContent = 'El número de celular debe tener 8 dígitos';
+                        } else {
+                            for (let i = 0; i < proveedores.length; i++) {
+                                if (proveedores[i].celular == celValue) {
+                                    cel.setCustomValidity('El número de celular ya está registrado');
+                                    errorCel.classList.add('text-danger');
+                                    errorCel.classList.remove('text-secondary');
+                                    errorCel.textContent = 'El número de celular ya está registrado';
+                                    return;
+                                }else{
+                                    cel.setCustomValidity('');
+                                    errorCel.classList.remove('text-danger');
+                                    errorCel.classList.add('text-secondary');
+                                    errorCel.innerHTML = '¡Debe tener Whatsapp! <i class="fa fa-whatsapp" aria-hidden="true" style="color: #25D366; font-size: 15px; transform: translate(0px, 2.4px);"></i>';
+                                }
                             }
                         }
+                    }else{
+                        tel.setCustomValidity("El número de celular es obligatorio");
+                        errorCel.classList.remove('text-danger');
+                        errorCel.classList.add('text-secondary');
+                        errorCel.innerHTML = '¡Debe tener Whatsapp! <i class="fa fa-whatsapp" aria-hidden="true" style="color: #25D366; font-size: 15px; transform: translate(0px, 2.4px);"></i>';
                     }
+
 
                     if (tel.value == "") {
                         tel.setCustomValidity("");
+                        errorTel.classList.add('hide');
                     } else if (isNaN(tel.value) || tel.value.length != 8) {
+                        errorTel.classList.remove('hide');
                         tel.setCustomValidity("El número de celular debe tener 8 dígitos");
+                        errorTel.textContent = 'El número de celular debe tener 8 dígitos';
                     } else {
                         for (let i = 0; i < proveedores.length; i++) {
                             if(proveedores[i].telefono == telValue && telValue != ''){
@@ -1277,23 +1614,44 @@
                     departamento.classList.add('hide');
                     municipio.classList.add('hide');
                     pais.classList.remove('hide');
-                    if (isNaN(cel.value) || cel.value.length != 8) {
-                        cel.setCustomValidity("El número de celular debe tener 8 dígitos")
-                    } else {
-                        for (let i = 0; i < proveedores.length; i++) {
-                            if (proveedores[i].celular == celValue) {
-                                cel.setCustomValidity('El número de celular ya está registrado');
-                                return;
-                            }else{
-                                cel.setCustomValidity('');
+
+                    if(cel.value != ""){
+                        if (isNaN(cel.value) || cel.value.length != 8) {
+                            cel.setCustomValidity("El número de celular debe tener 8 dígitos");
+                            errorCel.classList.add('text-danger');
+                            errorCel.classList.remove('text-secondary');
+                            errorCel.textContent = 'El número de celular debe tener 8 dígitos';
+                        } else {
+                            for (let i = 0; i < proveedores.length; i++) {
+                                if (proveedores[i].celular == celValue) {
+                                    cel.setCustomValidity('El número de celular ya está registrado');
+                                    errorCel.classList.add('text-danger');
+                                    errorCel.classList.remove('text-secondary');
+                                    errorCel.textContent = 'El número de celular ya está registrado';
+                                    return;
+                                }else{
+                                    cel.setCustomValidity('');
+                                    errorCel.classList.remove('text-danger');
+                                    errorCel.classList.add('text-secondary');
+                                    errorCel.innerHTML = '¡Debe tener Whatsapp! <i class="fa fa-whatsapp" aria-hidden="true" style="color: #25D366; font-size: 15px; transform: translate(0px, 2.4px);"></i>';
+                                }
                             }
                         }
+                    }else{
+                        tel.setCustomValidity("El número de celular es obligatorio");
+                        errorCel.classList.remove('text-danger');
+                        errorCel.classList.add('text-secondary');
+                        errorCel.innerHTML = '¡Debe tener Whatsapp! <i class="fa fa-whatsapp" aria-hidden="true" style="color: #25D366; font-size: 15px; transform: translate(0px, 2.4px);"></i>';
                     }
+
 
                     if (tel.value == "") {
                         tel.setCustomValidity("");
+                        errorTel.classList.add('hide');
                     } else if (isNaN(tel.value) || tel.value.length != 8) {
+                        errorTel.classList.remove('hide');
                         tel.setCustomValidity("El número de celular debe tener 8 dígitos");
+                        errorTel.textContent = 'El número de celular debe tener 8 dígitos';
                     } else {
                         for (let i = 0; i < proveedores.length; i++) {
                             if(proveedores[i].telefono == telValue && telValue != ''){
@@ -1318,23 +1676,44 @@
                     departamento.classList.add('hide');
                     municipio.classList.add('hide');
                     pais.classList.remove('hide');
-                    if (isNaN(cel.value) || cel.value.length != 8) {
-                        cel.setCustomValidity("El número de celular debe tener 8 dígitos")
-                    } else {
-                        for (let i = 0; i < proveedores.length; i++) {
-                            if (proveedores[i].celular == celValue) {
-                                cel.setCustomValidity('El número de celular ya está registrado');
-                                return;
-                            }else{
-                                cel.setCustomValidity('');
+
+                    if(cel.value != ""){
+                        if (isNaN(cel.value) || cel.value.length != 8) {
+                            cel.setCustomValidity("El número de celular debe tener 8 dígitos");
+                            errorCel.classList.add('text-danger');
+                            errorCel.classList.remove('text-secondary');
+                            errorCel.textContent = 'El número de celular debe tener 8 dígitos';
+                        } else {
+                            for (let i = 0; i < proveedores.length; i++) {
+                                if (proveedores[i].celular == celValue) {
+                                    cel.setCustomValidity('El número de celular ya está registrado');
+                                    errorCel.classList.add('text-danger');
+                                    errorCel.classList.remove('text-secondary');
+                                    errorCel.textContent = 'El número de celular ya está registrado';
+                                    return;
+                                }else{
+                                    cel.setCustomValidity('');
+                                    errorCel.classList.remove('text-danger');
+                                    errorCel.classList.add('text-secondary');
+                                    errorCel.innerHTML = '¡Debe tener Whatsapp! <i class="fa fa-whatsapp" aria-hidden="true" style="color: #25D366; font-size: 15px; transform: translate(0px, 2.4px);"></i>';
+                                }
                             }
                         }
+                    }else{
+                        tel.setCustomValidity("El número de celular es obligatorio");
+                        errorCel.classList.remove('text-danger');
+                        errorCel.classList.add('text-secondary');
+                        errorCel.innerHTML = '¡Debe tener Whatsapp! <i class="fa fa-whatsapp" aria-hidden="true" style="color: #25D366; font-size: 15px; transform: translate(0px, 2.4px);"></i>';
                     }
+
 
                     if (tel.value == "") {
                         tel.setCustomValidity("");
+                        errorTel.classList.add('hide');
                     } else if (isNaN(tel.value) || tel.value.length != 8) {
+                        errorTel.classList.remove('hide');
                         tel.setCustomValidity("El número de celular debe tener 8 dígitos");
+                        errorTel.textContent = 'El número de celular debe tener 8 dígitos';
                     } else {
                         for (let i = 0; i < proveedores.length; i++) {
                             if(proveedores[i].telefono == telValue && telValue != ''){
@@ -1359,23 +1738,44 @@
                     departamento.classList.add('hide');
                     municipio.classList.add('hide');
                     pais.classList.remove('hide');
-                    if (isNaN(cel.value) || cel.value.length != 10) {
-                        cel.setCustomValidity("El número de celular debe tener 10 dígitos")
-                    } else {
-                        for (let i = 0; i < proveedores.length; i++) {
-                            if (proveedores[i].celular == celValue) {
-                                cel.setCustomValidity('El número de celular ya está registrado');
-                                return;
-                            }else{
-                                cel.setCustomValidity('');
+
+                    if(cel.value != ""){
+                        if (isNaN(cel.value) || cel.value.length != 10) {
+                            cel.setCustomValidity("El número de celular debe tener 10 dígitos");
+                            errorCel.classList.add('text-danger');
+                            errorCel.classList.remove('text-secondary');
+                            errorCel.textContent = 'El número de celular debe tener 10 dígitos';
+                        } else {
+                            for (let i = 0; i < proveedores.length; i++) {
+                                if (proveedores[i].celular == celValue) {
+                                    cel.setCustomValidity('El número de celular ya está registrado');
+                                    errorCel.classList.add('text-danger');
+                                    errorCel.classList.remove('text-secondary');
+                                    errorCel.textContent = 'El número de celular ya está registrado';
+                                    return;
+                                }else{
+                                    cel.setCustomValidity('');
+                                    errorCel.classList.remove('text-danger');
+                                    errorCel.classList.add('text-secondary');
+                                    errorCel.innerHTML = '¡Debe tener Whatsapp! <i class="fa fa-whatsapp" aria-hidden="true" style="color: #25D366; font-size: 15px; transform: translate(0px, 2.4px);"></i>';
+                                }
                             }
                         }
+                    }else{
+                        tel.setCustomValidity("El número de celular es obligatorio");
+                        errorCel.classList.remove('text-danger');
+                        errorCel.classList.add('text-secondary');
+                        errorCel.innerHTML = '¡Debe tener Whatsapp! <i class="fa fa-whatsapp" aria-hidden="true" style="color: #25D366; font-size: 15px; transform: translate(0px, 2.4px);"></i>';
                     }
+
 
                     if (tel.value == "") {
                         tel.setCustomValidity("");
+                        errorTel.classList.add('hide');
                     } else if (isNaN(tel.value) || tel.value.length != 10) {
+                        errorTel.classList.remove('hide');
                         tel.setCustomValidity("El número de celular debe tener 10 dígitos");
+                        errorTel.textContent = 'El número de celular debe tener 10 dígitos';
                     } else {
                         for (let i = 0; i < proveedores.length; i++) {
                             if(proveedores[i].telefono == telValue && telValue != ''){
@@ -1400,23 +1800,44 @@
                     departamento.classList.add('hide');
                     municipio.classList.add('hide');
                     pais.classList.remove('hide');
-                    if (isNaN(cel.value) || cel.value.length != 8) {
-                        cel.setCustomValidity("El número de celular debe tener 8 dígitos")
-                    } else {
-                        for (let i = 0; i < proveedores.length; i++) {
-                            if (proveedores[i].celular == celValue) {
-                                cel.setCustomValidity('El número de celular ya está registrado');
-                                return;
-                            }else{
-                                cel.setCustomValidity('');
+
+                    if(cel.value != ""){
+                        if (isNaN(cel.value) || cel.value.length != 8) {
+                            cel.setCustomValidity("El número de celular debe tener 8 dígitos");
+                            errorCel.classList.add('text-danger');
+                            errorCel.classList.remove('text-secondary');
+                            errorCel.textContent = 'El número de celular debe tener 8 dígitos';
+                        } else {
+                            for (let i = 0; i < proveedores.length; i++) {
+                                if (proveedores[i].celular == celValue) {
+                                    cel.setCustomValidity('El número de celular ya está registrado');
+                                    errorCel.classList.add('text-danger');
+                                    errorCel.classList.remove('text-secondary');
+                                    errorCel.textContent = 'El número de celular ya está registrado';
+                                    return;
+                                }else{
+                                    cel.setCustomValidity('');
+                                    errorCel.classList.remove('text-danger');
+                                    errorCel.classList.add('text-secondary');
+                                    errorCel.innerHTML = '¡Debe tener Whatsapp! <i class="fa fa-whatsapp" aria-hidden="true" style="color: #25D366; font-size: 15px; transform: translate(0px, 2.4px);"></i>';
+                                }
                             }
                         }
+                    }else{
+                        tel.setCustomValidity("El número de celular es obligatorio");
+                        errorCel.classList.remove('text-danger');
+                        errorCel.classList.add('text-secondary');
+                        errorCel.innerHTML = '¡Debe tener Whatsapp! <i class="fa fa-whatsapp" aria-hidden="true" style="color: #25D366; font-size: 15px; transform: translate(0px, 2.4px);"></i>';
                     }
+
 
                     if (tel.value == "") {
                         tel.setCustomValidity("");
+                        errorTel.classList.add('hide');
                     } else if (isNaN(tel.value) || tel.value.length != 8) {
+                        errorTel.classList.remove('hide');
                         tel.setCustomValidity("El número de celular debe tener 8 dígitos");
+                        errorTel.textContent = 'El número de celular debe tener 8 dígitos';
                     } else {
                         for (let i = 0; i < proveedores.length; i++) {
                             if(proveedores[i].telefono == telValue && telValue != ''){
@@ -1441,23 +1862,44 @@
                     departamento.classList.add('hide');
                     municipio.classList.add('hide');
                     pais.classList.remove('hide');
-                    if (isNaN(cel.value) || cel.value.length != 8) {
-                        cel.setCustomValidity("El número de celular debe tener 8 dígitos")
-                    } else {
-                        for (let i = 0; i < proveedores.length; i++) {
-                            if (proveedores[i].celular == celValue) {
-                                cel.setCustomValidity('El número de celular ya está registrado');
-                                return;
-                            }else{
-                                cel.setCustomValidity('');
+
+                    if(cel.value != ""){
+                        if (isNaN(cel.value) || cel.value.length != 8) {
+                            cel.setCustomValidity("El número de celular debe tener 8 dígitos");
+                            errorCel.classList.add('text-danger');
+                            errorCel.classList.remove('text-secondary');
+                            errorCel.textContent = 'El número de celular debe tener 8 dígitos';
+                        } else {
+                            for (let i = 0; i < proveedores.length; i++) {
+                                if (proveedores[i].celular == celValue) {
+                                    cel.setCustomValidity('El número de celular ya está registrado');
+                                    errorCel.classList.add('text-danger');
+                                    errorCel.classList.remove('text-secondary');
+                                    errorCel.textContent = 'El número de celular ya está registrado';
+                                    return;
+                                }else{
+                                    cel.setCustomValidity('');
+                                    errorCel.classList.remove('text-danger');
+                                    errorCel.classList.add('text-secondary');
+                                    errorCel.innerHTML = '¡Debe tener Whatsapp! <i class="fa fa-whatsapp" aria-hidden="true" style="color: #25D366; font-size: 15px; transform: translate(0px, 2.4px);"></i>';
+                                }
                             }
                         }
+                    }else{
+                        tel.setCustomValidity("El número de celular es obligatorio");
+                        errorCel.classList.remove('text-danger');
+                        errorCel.classList.add('text-secondary');
+                        errorCel.innerHTML = '¡Debe tener Whatsapp! <i class="fa fa-whatsapp" aria-hidden="true" style="color: #25D366; font-size: 15px; transform: translate(0px, 2.4px);"></i>';
                     }
+
 
                     if (tel.value == "") {
                         tel.setCustomValidity("");
+                        errorTel.classList.add('hide');
                     } else if (isNaN(tel.value) || tel.value.length != 8) {
+                        errorTel.classList.remove('hide');
                         tel.setCustomValidity("El número de celular debe tener 8 dígitos");
+                        errorTel.textContent = 'El número de celular debe tener 8 dígitos';
                     } else {
                         for (let i = 0; i < proveedores.length; i++) {
                             if(proveedores[i].telefono == telValue && telValue != ''){
@@ -1479,12 +1921,11 @@
                     departamento.removeAttribute('required');
                     municipio.removeAttribute('required');
                 }
-
             }
 
             codigo.addEventListener('change', updateVisibility);
-            cel.addEventListener('change', updateVisibility);
-            tel.addEventListener('change', updateVisibility);
+            cel.addEventListener('input', updateVisibility);
+            tel.addEventListener('input', updateVisibility);
 
             updateVisibility();
         });
@@ -1582,9 +2023,9 @@
 
                     for(let i = 0; i < proveedores.length; i++){
                         if(proveedores[i].email.toLowerCase() == emailValue.toLowerCase()){
-                            email.setCustomValidity('Esta correo electrónico ya está registrado');
+                            email.setCustomValidity('Este correo electrónico ya está registrado');
                             error.classList.remove('hide');
-                            error.textContent = 'Esta correo electrónico ya está registrado';
+                            error.textContent = 'Este correo electrónico ya está registrado';
                             return;
                         }else{
                             email.setCustomValidity('');
@@ -1605,40 +2046,121 @@
         });
     </script>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function(){
-        let nombre = document.getElementById('nombre_establecimiento');
-        let proveedores = @json($proveedores);
-        let error = document.getElementById('nombre-error');
+    <script>
+        document.addEventListener('DOMContentLoaded', function(){
+            let nombre = document.getElementById('nombre_establecimiento');
+            let proveedores = @json($proveedores);
+            let error = document.getElementById('nombre-error');
 
-        function nombreValidity(){
-            if (nombre.value.length != 0) {
-                let nombreValue = nombre.value;
+            function nombreValidity(){
+                if (nombre.value.length != 0) {
+                    let nombreValue = nombre.value;
 
-                for(let i = 0; i < proveedores.length; i++){
-                    if(proveedores[i].nombre_comercial.toLowerCase() == nombreValue.toLowerCase()){
-                        nombre.setCustomValidity('Este nombre ya está registrado');
-                        error.classList.remove('hide');
-                        error.textContent = 'Este nombre ya está registrado';
-                        return;
-                    }else{
-                        nombre.setCustomValidity('');
-                        error.classList.add('hide');
-                        error.textContent = '';
+                    if (proveedores.length > 0) {
+                        for(let i = 0; i < proveedores.length; i++){
+                            if (proveedores[i].nombre_comercial) {
+                                if(proveedores[i].nombre_comercial.toLowerCase() == nombreValue.toLowerCase()){
+                                    nombre.setCustomValidity('Este nombre ya está registrado');
+                                    error.classList.remove('hide');
+                                    error.textContent = 'Este nombre ya está registrado';
+                                    return;
+                                }else{
+                                    nombre.setCustomValidity('');
+                                    error.classList.add('hide');
+                                    error.textContent = '';
+                                }
+                            }
+                        }
                     }
+                }else {
+                    nombre.setCustomValidity("");
+                    error.classList.add('hide');
+                    error.textContent = '';
                 }
-            }else {
-                nombre.setCustomValidity("");
-                error.classList.add('hide');
-                error.textContent = '';
             }
-        }
 
-        nombre.addEventListener('input', emailValidity);
+            nombre.addEventListener('input', nombreValidity);
 
-        nombreValidity();
-    });
-</script>
+            nombreValidity();
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function(){
+            const inputContraseña = document.getElementById("password");
+            const passConfirm = document.getElementById('confirm_password');
+
+            inputContraseña.addEventListener("input", function () {
+                const contraseña = this.value;
+                const mensajeValidacion = document.getElementById("pass-error");
+
+                const resultadoValidacion = validarContraseña(contraseña);
+
+                if (resultadoValidacion === true) {
+                    mensajeValidacion.textContent = "";
+                    this.setCustomValidity("");
+                    mensajeValidacion.classList.add("valido");
+                } else {
+                    mensajeValidacion.textContent = resultadoValidacion;
+                    this.setCustomValidity(resultadoValidacion);
+                    mensajeValidacion.classList.remove("valido");
+                }
+
+            });
+
+            passConfirm.addEventListener('input', function(){
+                const confimar = this.value;
+                const contraseñaV = inputContraseña.value;
+                const mensajeError = document.getElementById('passC-error');
+
+                const validar = compararContraseñas(contraseñaV, confimar);
+
+                if (validar === true) {
+                    mensajeError.textContent = "";
+                    this.setCustomValidity("");
+                    mensajeError.classList.add("valido");
+                } else {
+                    mensajeError.textContent = validar;
+                    this.setCustomValidity(validar);
+                    mensajeError.classList.remove("valido");
+                }
+            });
+
+            function validarContraseña(contraseña) {
+                // Expresión regular para una contraseña segura
+                const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,}$/;
+
+                if(contraseña.length != 0){
+                    // Validar longitud
+                    if (contraseña.length < 8) {
+                        return "La contraseña debe tener al menos 8 caracteres";
+                    }
+
+                    // Validar con la expresión regular
+                    if (!regex.test(contraseña)) {
+                        return "La contraseña debe contener al menos una letra minúscula, una mayúscula, un número y un caracter especial";
+                    }
+                }else{
+                    return "";
+                }
+
+                // Contraseña válida
+                return true;
+            }
+
+            function compararContraseñas(contraseña, confirmar){
+
+                // Validar longitud
+                if (confirmar.length != contraseña.length && confirmar != contraseña) {
+                    return "Las contraseñas no coinciden.";
+                }
+
+                // Contraseña válida
+                return true;
+            }
+
+        });
+    </script>
 
     <script>
         // Obtener los elementos del formulario
@@ -1936,7 +2458,7 @@
 
         //loader
 
-        const form = document.getElementById('form_client');
+        const form = document.getElementById('registrationForm');
         const overlay = document.getElementById('overlay');
 
         // Ocultar el loader inicialmente

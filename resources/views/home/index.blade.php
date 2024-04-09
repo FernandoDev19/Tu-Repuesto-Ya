@@ -16,14 +16,11 @@
                 <article id="container-text">
                     <div class="text-center">
                         <h1 style="margin-bottom: 10px;">AHORRA <span class="typed"></span></h1>
-                        <p class="text-color-primary">
-                            <span class="none">OLVÍDATE DE IR A BUSCAR</span> <br>
-                            TUS
-                            REPUESTOS PARA CARROS</p>
+                        <p class="text-color-primary">REPUESTOS PARA CARROS</p>
                             <div class="flex-j-center-cel w-100">
                                 <a title="Crear solicitud de repuesto" class="WSP" href="{{route('vistaFormulario')}}">
-                                    <span class="none">¡Busca aquí!</span> <span class="none-pc">¡Buscalos aquí!</span>
-                                    <i class="fa fa-whatsapp" style="font-size: 40px;" aria-hidden="true"></i>
+                                    <span>¡Busca aquí!</span>
+                                    <i class="fab fa-whatsapp" style="font-size: 40px;" aria-hidden="true"></i>
                                 </a>
                             </div>
                             <h6 id="parrafo-3-sesion-de-contacto-por-whatsapp" style="width: 100%;">
@@ -34,187 +31,18 @@
                     </div>
                 </article>
                 <div id="container-img">
-                    <img src="{{asset('img/App.webp')}}"
+                    <img src="{{asset('img/turepuestoya-repuestos-para-carros.webp')}}"
                         alt="celular" width="736">
                 </div>
             </div>
         </section>
 
-        <section data-aos="fade-right" data-aos-duration="700" id="sesion-de-marcas-y-cotizaciones">
-            <div id="article_marcas">
-                <div class="row align-items-center" style="width: 100%;">
-                    <div class="col-md-14" style="padding: 0;">
-                        <div id="text">
-                            <p><span class="font_size_article_marcas2">REPUESTOS PARA CARROS CON LOS MEJORES PRECIOS DEL MERCADO DE MANERA FÁCIL Y RÁPIDA</span></p>
-                        </div>
-                    </div>
-                </div>
-                <div class="swiper content_marcas">
-                    <div class="swiper-wrapper">
-                        <div class="logo_marca swiper-slide" data-toggle="modal"
-                        data-target="#clienteModal">
-                            <img title="kia" src="{{ asset('icon/iconos_marcas/kia.webp') }}" alt="Logo Kia"
-                                decoding="async">
-                        </div>
-                        <div class="logo_marca swiper-slide" data-toggle="modal"
-                        data-target="#clienteModal">
-                            <img title="hyundai" src="{{ asset('icon/iconos_marcas/hyundai.webp') }}" alt="Logo Hyundai"
-                                decoding="async">
-                        </div>
-                        <div class="logo_marca swiper-slide" data-toggle="modal"
-                        data-target="#clienteModal">
-                            <img title="nissan" src="{{ asset('icon/iconos_marcas/nissan.webp') }}" alt="Logo Nissan"
-                                decoding="async">
-                        </div>
-                        <div class="logo_marca swiper-slide" data-toggle="modal"
-                        data-target="#clienteModal">
-                            <img title="volkswagen" src="{{ asset('icon/iconos_marcas/volkswagen.webp') }}"
-                                alt="Logo Volkswagen" decoding="async">
-                        </div>
-                        <div id="logo_marca_audi" class="logo_marca swiper-slide" data-toggle="modal"
-                        data-target="#clienteModal">
-                            <img title="audi" src="{{ asset('icon/iconos_marcas/audi-logo.webp') }}" alt="Logo Audi"
-                                decoding="async">
-                        </div>
-                        <div id="logo_marca_bmw" class="swiper-slide" data-toggle="modal"
-                        data-target="#clienteModal">
-                            <img title="bmw" src="{{ asset('icon/iconos_marcas/bmw-logo.webp') }}" alt="Logo BMW"
-                                decoding="async">
-                        </div>
-                        <div id="logo_marca_f" class="swiper-slide" data-toggle="modal"
-                        data-target="#clienteModal">
-                            <img title="ferrari" src="{{ asset('icon/iconos_marcas/Ferrari_logo.webp') }}"
-                                alt="Logo Ferrari" decoding="async">
-                        </div>
-                        <div id="logo_marca_jaguar" class="swiper-slide" data-toggle="modal"
-                        data-target="#clienteModal">
-                            <img title="jaguar" src="{{ asset('icon/iconos_marcas/jaguar-logo.webp') }}"
-                                alt="Logo Jaguar" decoding="async">
-                        </div>
-                        <div id="logo_marca_lambo" class="swiper-slide" data-toggle="modal"
-                        data-target="#clienteModal">
-                            <img title="lamborghini" src="{{ asset('icon/iconos_marcas/lamborghini-logo.webp') }}"
-                                alt="Logo Lamborghini" decoding="async">
-                        </div>
-                        <div class="logo_marca swiper-slide" data-toggle="modal"
-                        data-target="#clienteModal">
-                            <img title="rolls-royce" src="{{ asset('icon/iconos_marcas/rolls-royce-logo.webp') }}"
-                                alt="Logo Rolls Royce" decoding="async">
-                        </div>
-                        {{-- <div id="logo_marca_suba" class="swiper-slide" data-toggle="modal"
-                        data-target="#clienteModal">
-                            <img title="subaru" src="{{ asset('icon/iconos_marcas/subaru-icon.webp') }}" alt="logo_subaru"
-                                decoding="async">
-                        </div> --}}
-                        <div id="logo_marca_susu" class="swiper-slide" data-toggle="modal"
-                        data-target="#clienteModal">
-                            <img title="suzuki" src="{{ asset('icon/iconos_marcas/suzuki-logo.webp') }}" alt="Logo Susuki"
-                                decoding="async">
-                        </div>
-                        <div id="logo_marca_volvo" class="swiper-slide" data-toggle="modal"
-                        data-target="#clienteModal">
-                            <img title="volvo" src="{{ asset('icon/iconos_marcas/volvo-logo.webp') }}" alt="Logo Volvo"
-                                decoding="async">
-                        </div>
-                        <!--<div id="logo_marca_kawa" class="swiper-slide">
-                            <img title="kawasaki" src="{{ asset('icon/iconos_marcas/Kawasaki-Logo.webp') }}"
-                                alt="logo_kawasaki" decoding="async">
-                        </div>-->
-                        <div class="logo_marca swiper-slide" data-toggle="modal"
-                        data-target="#clienteModal">
-                            <img title="renault" src="{{ asset('icon/iconos_marcas/renault.webp') }}" alt="Logo Renault"
-                                decoding="async">
-                        </div>
-                        <div class="logo_marca swiper-slide" data-toggle="modal"
-                        data-target="#clienteModal">
-                            <img title="ford" src="{{ asset('icon/iconos_marcas/ford.webp') }}" alt="Logo Ford"
-                                decoding="async">
-                        </div>
-                        <div class="logo_marca swiper-slide" data-toggle="modal"
-                        data-target="#clienteModal">
-                            <img title="honda" src="{{ asset('icon/iconos_marcas/honda.webp') }}" alt="Logo Honda"
-                                decoding="async">
-                        </div>
-                        <div class="logo_marca swiper-slide" data-toggle="modal"
-                        data-target="#clienteModal">
-                            <img title="mazda" src="{{ asset('icon/iconos_marcas/mazda.webp') }}" alt="Logo Mazda"
-                                decoding="async">
-                        </div>
-                        <div class="logo_marca swiper-slide" data-toggle="modal"
-                        data-target="#clienteModal">
-                            <img title="toyota" src="{{ asset('icon/iconos_marcas/toyota.webp') }}" alt="Logo Toyota"
-                                decoding="async">
-                        </div>
-                        <div class="logo_marca swiper-slide" data-toggle="modal"
-                        data-target="#clienteModal">
-                            <img title="ssangyong" src="{{ asset('icon/iconos_marcas/ssangyong.webp') }}" alt="Logo Ssangyong"
-                                decoding="async">
-                        </div>
-                        <div class="logo_marca swiper-slide" data-toggle="modal"
-                        data-target="#clienteModal">
-                            <img title="chevrolet" src="{{ asset('icon/iconos_marcas/chevrolet.webp') }}" alt="Logo Chevrolet"
-                                decoding="async">
-                        </div>
-                        <div class="logo_marca swiper-slide" data-toggle="modal"
-                        data-target="#clienteModal">
-                            <img title="mercedes" src="{{ asset('icon/iconos_marcas/mercedes.webp') }}" alt="Logo Mercedes"
-                                decoding="async">
-                        </div>
-                        <div class="logo_marca swiper-slide" data-toggle="modal"
-                        data-target="#clienteModal">
-                            <img title="foton" src="{{ asset('icon/iconos_marcas/foton.webp') }}" alt="Logo Foton"
-                                decoding="async">
-                        </div>
-                        <div class="logo_marca swiper-slide" data-toggle="modal"
-                        data-target="#clienteModal">
-                            <img title="kenworth" src="{{ asset('icon/iconos_marcas/kenworth.webp') }}" alt="Logo Kenworth"
-                                decoding="async">
-                        </div>
-                        <div class="logo_marca swiper-slide" data-toggle="modal"
-                        data-target="#clienteModal">
-                            <img title="byd" src="{{ asset('icon/iconos_marcas/byd.webp') }}" alt="Logo BYD"
-                                decoding="async">
-                        </div>
-                        <div class="logo_marca swiper-slide" data-toggle="modal"
-                        data-target="#clienteModal">
-                            <img title="dfsk" src="{{ asset('icon/iconos_marcas/dfsk.webp') }}" alt="Logo DFSK"
-                                decoding="async">
-                        </div>
-                        <div class="logo_marca swiper-slide" data-toggle="modal"
-                        data-target="#clienteModal">
-                            <img title="dodge" src="{{ asset('icon/iconos_marcas/dodge.webp') }}" alt="Logo Dodge"
-                                decoding="async">
-                        </div>
-                        <div class="logo_marca swiper-slide" data-toggle="modal"
-                        data-target="#clienteModal">
-                            <img title="mitsubishi" src="{{ asset('icon/iconos_marcas/mitsubishi.webp') }}" alt="Logo Mitsubishi"
-                                decoding="async">
-                        </div>
-                        <!--<div class="logo_marca swiper-slide">
-                            <img title="yamaha" src="{{ asset('icon/iconos_marcas/yamaha.webp') }}" alt="logo_yamaha"
-                                decoding="async">
-                        </div>-->
-                        <!--<div class="logo_marca swiper-slide">
-                            <img title="auteco" src="{{ asset('icon/iconos_marcas/auteco.webp') }}" alt="logo_auteco"
-                                decoding="async">
-                        </div>-->
-                        <div class="logo_marca swiper-slide" data-toggle="modal"
-                        data-target="#clienteModal">
-                            <img title="jeep" src="{{ asset('icon/iconos_marcas/jeep.webp') }}" alt="Logo Jeep"
-                                decoding="async">
-                        </div>
-                        <div class="logo_marca swiper-slide" data-toggle="modal"
-                        data-target="#clienteModal">
-                            <img title="peugeot" src="{{ asset('icon/iconos_marcas/peugeot.webp') }}" alt="Logo Peugeot"
-                                decoding="async">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+        <div class="separator" style="width:100%; padding: 0 5%;">
+            <hr>
+        </div>
 
         <section id="solicitud-de-repuestos" data-aos="fade-right" data-aos-duration="700">
-            <div class="container-flex">
+            <div class="container-flex" id="cuentanos-flex-container">
                 <div class="w-50" id="container-text-cuentanos">
                     <h2>1. CUÉNTANOS:</h2>
                     <div id="container-list-cuentanos">
@@ -243,9 +71,9 @@
                     </div>
                 </div>
 
-                <div class="w-40" id="container-img-cuentanos">
-                    <img src="{{asset('img/img-carro.webp')}}"
-                        alt="carro" width="736">
+                  <div id="container-img-cuentanos">
+                    <h2 id="text-video-turepuestoya" style="font-size: 1.2rem; font-weight: 700;">ASÍ FUNCIONA</h2>
+                    <iframe style="width: 100%;" width="600" height="380" src="https://www.youtube.com/embed/nVWdoFRnccA" title="video explicativo de Tu Repuesto Ya" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                 </div>
             </div>
         </section>
@@ -315,19 +143,196 @@
                 <div class="footer-sesion-de-contacto-por-whatsapp w-100">
                     <a style="width: 300px; height: 70px; background-color: #25D366; margin-top: 4% !important; margin-bottom: 0;" title="Crear solicitud de repuesto" class="WSP" href="https://api.whatsapp.com/send?phone=+573249216736&text=%2A%C2%A1Hola%21%2A%20%E2%9C%8B%20Vengo%20de%20la%20p%C3%A1gina%20web%20de%20%2ATu%20Repuesto%20Ya%2A%20Estoy%20buscando%20lo%20siguiente%3A">
                         ¡Busca aquí!
-                        <i class="fa fa-whatsapp" style="font-size: 40px;" aria-hidden="true"></i>
+                        <i class="fab fa-whatsapp" style="font-size: 40px;" aria-hidden="true"></i>
 
                     </a>
                 </div>
             </div>
             <div id="container-text-body-busqueda-de-productos-diferentes">
-                <p><span style="font-weight: 700;">Cuéntale a tus amigos</span><br>y por cada compra de tus referidos,<br>gánate un obsequio</p>
+                <p><span style="font-weight: 700;">Cuéntale a tus amigos</span><br>y por cada compra de repuestos para carros que realicen tus referidos,<br>gánate un obsequio</p>
                 <div id="container-img-busqueda-de-productos-diferentes">
                     <img class="icon_chat" id='icon_chat' src="{{ asset('img/img-megafono.webp') }}" alt="megafono">
                 </div>
             </div>
         </div>
     </footer>
+
+    <div class="separator" style="width:100%; padding: 0 5%;">
+        <hr>
+    </div>
+
+    <section data-aos="fade-right" data-aos-duration="700" id="sesion-de-marcas-y-cotizaciones">
+        <div id="article_marcas">
+            <div class="row align-items-center" style="width: 100%;">
+                <div class="col-md-14" style="padding: 0;">
+                    <div id="text">
+                        <p><span class="font_size_article_marcas2">REPUESTOS PARA CARROS CON LOS MEJORES PRECIOS DEL MERCADO DE MANERA FÁCIL Y RÁPIDA</span></p>
+                    </div>
+                </div>
+            </div>
+            <div class="swiper content_marcas">
+                <div class="swiper-wrapper">
+                    <div class="logo_marca swiper-slide" data-toggle="modal"
+                    data-target="#clienteModal">
+                        <img title="kia" src="{{ asset('icon/iconos_marcas/kia.webp') }}" alt="Logo Kia"
+                            decoding="async">
+                    </div>
+                    <div class="logo_marca swiper-slide" data-toggle="modal"
+                    data-target="#clienteModal">
+                        <img title="hyundai" src="{{ asset('icon/iconos_marcas/hyundai.webp') }}" alt="Logo Hyundai"
+                            decoding="async">
+                    </div>
+                    <div class="logo_marca swiper-slide" data-toggle="modal"
+                    data-target="#clienteModal">
+                        <img title="nissan" src="{{ asset('icon/iconos_marcas/nissan.webp') }}" alt="Logo Nissan"
+                            decoding="async">
+                    </div>
+                    <div class="logo_marca swiper-slide" data-toggle="modal"
+                    data-target="#clienteModal">
+                        <img title="volkswagen" src="{{ asset('icon/iconos_marcas/volkswagen.webp') }}"
+                            alt="Logo Volkswagen" decoding="async">
+                    </div>
+                    <div id="logo_marca_audi" class="logo_marca swiper-slide" data-toggle="modal"
+                    data-target="#clienteModal">
+                        <img title="audi" src="{{ asset('icon/iconos_marcas/audi-logo.webp') }}" alt="Logo Audi"
+                            decoding="async">
+                    </div>
+                    <div id="logo_marca_bmw" class="swiper-slide" data-toggle="modal"
+                    data-target="#clienteModal">
+                        <img title="bmw" src="{{ asset('icon/iconos_marcas/bmw-logo.webp') }}" alt="Logo BMW"
+                            decoding="async">
+                    </div>
+                    <div id="logo_marca_f" class="swiper-slide" data-toggle="modal"
+                    data-target="#clienteModal">
+                        <img title="ferrari" src="{{ asset('icon/iconos_marcas/Ferrari_logo.webp') }}"
+                            alt="Logo Ferrari" decoding="async">
+                    </div>
+                    <div id="logo_marca_jaguar" class="swiper-slide" data-toggle="modal"
+                    data-target="#clienteModal">
+                        <img title="jaguar" src="{{ asset('icon/iconos_marcas/jaguar-logo.webp') }}"
+                            alt="Logo Jaguar" decoding="async">
+                    </div>
+                    <div id="logo_marca_lambo" class="swiper-slide" data-toggle="modal"
+                    data-target="#clienteModal">
+                        <img title="lamborghini" src="{{ asset('icon/iconos_marcas/lamborghini-logo.webp') }}"
+                            alt="Logo Lamborghini" decoding="async">
+                    </div>
+                    <div class="logo_marca swiper-slide" data-toggle="modal"
+                    data-target="#clienteModal">
+                        <img title="rolls-royce" src="{{ asset('icon/iconos_marcas/rolls-royce-logo.webp') }}"
+                            alt="Logo Rolls Royce" decoding="async">
+                    </div>
+                    {{-- <div id="logo_marca_suba" class="swiper-slide" data-toggle="modal"
+                    data-target="#clienteModal">
+                        <img title="subaru" src="{{ asset('icon/iconos_marcas/subaru-icon.webp') }}" alt="logo_subaru"
+                            decoding="async">
+                    </div> --}}
+                    <div id="logo_marca_susu" class="swiper-slide" data-toggle="modal"
+                    data-target="#clienteModal">
+                        <img title="suzuki" src="{{ asset('icon/iconos_marcas/suzuki-logo.webp') }}" alt="Logo Susuki"
+                            decoding="async">
+                    </div>
+                    <div id="logo_marca_volvo" class="swiper-slide" data-toggle="modal"
+                    data-target="#clienteModal">
+                        <img title="volvo" src="{{ asset('icon/iconos_marcas/volvo-logo.webp') }}" alt="Logo Volvo"
+                            decoding="async">
+                    </div>
+                    <!--<div id="logo_marca_kawa" class="swiper-slide">
+                        <img title="kawasaki" src="{{ asset('icon/iconos_marcas/Kawasaki-Logo.webp') }}"
+                            alt="logo_kawasaki" decoding="async">
+                    </div>-->
+                    <div class="logo_marca swiper-slide" data-toggle="modal"
+                    data-target="#clienteModal">
+                        <img title="renault" src="{{ asset('icon/iconos_marcas/renault.webp') }}" alt="Logo Renault"
+                            decoding="async">
+                    </div>
+                    <div class="logo_marca swiper-slide" data-toggle="modal"
+                    data-target="#clienteModal">
+                        <img title="ford" src="{{ asset('icon/iconos_marcas/ford.webp') }}" alt="Logo Ford"
+                            decoding="async">
+                    </div>
+                    <div class="logo_marca swiper-slide" data-toggle="modal"
+                    data-target="#clienteModal">
+                        <img title="honda" src="{{ asset('icon/iconos_marcas/honda.webp') }}" alt="Logo Honda"
+                            decoding="async">
+                    </div>
+                    <div class="logo_marca swiper-slide" data-toggle="modal"
+                    data-target="#clienteModal">
+                        <img title="mazda" src="{{ asset('icon/iconos_marcas/mazda.webp') }}" alt="Logo Mazda"
+                            decoding="async">
+                    </div>
+                    <div class="logo_marca swiper-slide" data-toggle="modal"
+                    data-target="#clienteModal">
+                        <img title="toyota" src="{{ asset('icon/iconos_marcas/toyota.webp') }}" alt="Logo Toyota"
+                            decoding="async">
+                    </div>
+                    <div class="logo_marca swiper-slide" data-toggle="modal"
+                    data-target="#clienteModal">
+                        <img title="ssangyong" src="{{ asset('icon/iconos_marcas/ssangyong.webp') }}" alt="Logo Ssangyong"
+                            decoding="async">
+                    </div>
+                    <div class="logo_marca swiper-slide" data-toggle="modal"
+                    data-target="#clienteModal">
+                        <img title="chevrolet" src="{{ asset('icon/iconos_marcas/chevrolet.webp') }}" alt="Logo Chevrolet"
+                            decoding="async">
+                    </div>
+                    <div class="logo_marca swiper-slide" data-toggle="modal"
+                    data-target="#clienteModal">
+                        <img title="mercedes" src="{{ asset('icon/iconos_marcas/mercedes.webp') }}" alt="Logo Mercedes"
+                            decoding="async">
+                    </div>
+                    <div class="logo_marca swiper-slide" data-toggle="modal"
+                    data-target="#clienteModal">
+                        <img title="foton" src="{{ asset('icon/iconos_marcas/foton.webp') }}" alt="Logo Foton"
+                            decoding="async">
+                    </div>
+                    <div class="logo_marca swiper-slide" data-toggle="modal"
+                    data-target="#clienteModal">
+                        <img title="kenworth" src="{{ asset('icon/iconos_marcas/kenworth.webp') }}" alt="Logo Kenworth"
+                            decoding="async">
+                    </div>
+                    <div class="logo_marca swiper-slide" data-toggle="modal"
+                    data-target="#clienteModal">
+                        <img title="byd" src="{{ asset('icon/iconos_marcas/byd.webp') }}" alt="Logo BYD"
+                            decoding="async">
+                    </div>
+                    <div class="logo_marca swiper-slide" data-toggle="modal"
+                    data-target="#clienteModal">
+                        <img title="dfsk" src="{{ asset('icon/iconos_marcas/dfsk.webp') }}" alt="Logo DFSK"
+                            decoding="async">
+                    </div>
+                    <div class="logo_marca swiper-slide" data-toggle="modal"
+                    data-target="#clienteModal">
+                        <img title="dodge" src="{{ asset('icon/iconos_marcas/dodge.webp') }}" alt="Logo Dodge"
+                            decoding="async">
+                    </div>
+                    <div class="logo_marca swiper-slide" data-toggle="modal"
+                    data-target="#clienteModal">
+                        <img title="mitsubishi" src="{{ asset('icon/iconos_marcas/mitsubishi.webp') }}" alt="Logo Mitsubishi"
+                            decoding="async">
+                    </div>
+                    <!--<div class="logo_marca swiper-slide">
+                        <img title="yamaha" src="{{ asset('icon/iconos_marcas/yamaha.webp') }}" alt="logo_yamaha"
+                            decoding="async">
+                    </div>-->
+                    <!--<div class="logo_marca swiper-slide">
+                        <img title="auteco" src="{{ asset('icon/iconos_marcas/auteco.webp') }}" alt="logo_auteco"
+                            decoding="async">
+                    </div>-->
+                    <div class="logo_marca swiper-slide" data-toggle="modal"
+                    data-target="#clienteModal">
+                        <img title="jeep" src="{{ asset('icon/iconos_marcas/jeep.webp') }}" alt="Logo Jeep"
+                            decoding="async">
+                    </div>
+                    <div class="logo_marca swiper-slide" data-toggle="modal"
+                    data-target="#clienteModal">
+                        <img title="peugeot" src="{{ asset('icon/iconos_marcas/peugeot.webp') }}" alt="Logo Peugeot"
+                            decoding="async">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <!-- Logout Modal-->
     <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -354,11 +359,21 @@
     </div>
 
         <!-- Botón whatsapp -->
-    <!--<a href="https://api.whatsapp.com/send?phone=573249216736&text=%2A%C2%A1Hola%21%2A%20%E2%9C%8B%20Vengo%20de%20la%20p%C3%A1gina%20web%20de%20%2ATu%20Repuesto%20Ya%2A%20Me%20gustar%C3%ADa%20recibir%20cotizaciones%20sobre%20un%20repuesto%20que%20necesito." id="btn_whatsapp_kommo"><i class="fa fa-whatsapp" aria-hidden="true"></i></a>-->
+    <a href="https://api.whatsapp.com/send?phone=573249216736&text=%2A%C2%A1Hola%21%2A%20%E2%9C%8B%20Vengo%20de%20la%20p%C3%A1gina%20web%20de%20%2ATu%20Repuesto%20Ya%2A%20Me%20gustar%C3%ADa%20recibir%20cotizaciones%20sobre%20un%20repuesto%20que%20necesito." id="btn_whatsapp_kommo" target="_blank" aria-label="Enviar mensaje por whatsapp a Tu Repuesto Ya" style="transition: 1000ms; display: none; opacity: 0;"><i class="fab fa-whatsapp" aria-hidden="true"></i></a>
 
     <!-- Enviar cierre de sesión-->
     <script>
         document.getElementById('logoutForm').addEventListener('submit',function(event){event.preventDefault();this.submit();});
+    </script>
+
+    <script>
+        setTimeout(() => {
+            let btn_whatsapp = document.getElementById('btn_whatsapp_kommo');
+            btn_whatsapp.style.display = 'block';
+            setTimeout(() => {
+                btn_whatsapp.style.opacity = 1;
+            }, 100);
+        }, 5000);
     </script>
     <!-- ................................................................................................. -->
 @endsection

@@ -5,6 +5,8 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ProveedorController;
+use App\Livewire\KeyWords;
+use App\Models\Category;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,10 +37,10 @@ Route::controller(UsersController::class)->group(function () {
     Route::post("/login/verificacion", "verification")->name("verification");
     Route::get("/registro", "register")->name("register");
     Route::post("/registro/almacenar", "store")->name("store");
-    Route::get("/restablecer-contraseña", "resetPassword")->name("reset-password");
-    Route::post("/restablecer-contraseña/verificacion", "emailVerification")->name("emailVerification");
-    Route::get("/cambiar-contraseña/{token}", "changePasswordToken")->name("change-password-token");
-    Route::post("/cambiar-contraseña/verificacion", "changePasswordVerification")->name("change-password");
+    Route::get("/restablecer", "resetPassword")->name("reset-password");
+    Route::post("/restablecer/verificacion", "emailVerification")->name("emailVerification");
+    Route::get("/cambiar/{token}", "changePasswordToken")->name("change-password-token");
+    Route::post("/cambiar/verificacion", "changePasswordVerification")->name("change-password");
 });
 
 Route::middleware(['auth', 'checkProveedor'])->group(function () {
@@ -51,6 +53,18 @@ Route::middleware('auth')->group(function () {
         Route::get('/solicitud/{codigo}/{id?}', 'solicitudRepuesto')->name('solicitud');
         Route::get('/solicitud/{filename}', 'verImagenSolicitud')->name('verImagen');
     });
+    
+    Route::get('/categorias', [AdminController::class, 'categoriesView'])->name('keywords');
+    Route::get('/categorias/{categoria}/{id}', function($categoria, $id){
+        $category = Category::with('keyword')->get();
+        return view('admin.keywords.keyword', compact('id', 'categoria', 'category'));
+    });
+
+    Route::post('/palabras-claves/crear/{id}', [AdminController::class, 'saveKeyword'])->name('saveKeyword');
+    
+    Route::get('/registro-de-actividades', [AdminController::class, 'activityLogView'])->name('activityLog');
+        
+    Route::post('/categorias/nueva-categoria', [AdminController::class, 'saveCategory'])->name('saveCategory');
 
     Route::get('/administrador/panel', [AdminController::class, 'index'])->name("dashboard")->middleware('can:dashboard');
     /*Route::get('/profile', [AdminController::class, 'profile'])->name('profile');
@@ -85,7 +99,7 @@ Route::get('public/img/logo_whatsapp.png', function () {
     ]);
 })->name('video');
 
-Route::get('/politicas-de-privacidad', function(){
+Route::get('/politica-de-privacidad', function(){
      $name = null;
 
     if (auth()->check()) {

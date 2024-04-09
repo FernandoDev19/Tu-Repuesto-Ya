@@ -66,7 +66,7 @@ class WhatsAppMessageJob implements ShouldQueue
     /**
      * Execute the job.
      */
-    public function handle()
+    public function handle(): void
     {
         $proveedor = $this->proveedor;
         $celular = $this->celular;

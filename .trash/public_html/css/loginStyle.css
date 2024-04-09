@@ -1,0 +1,131 @@
+:root {
+    --color-primary: #5593E8;
+    --color-secondary: #406DBE;
+    --color-tertiary: #313131;
+    --color-letter: #F2B705;
+    --color-fondo-footer: #96d3f2;
+    --height-sessions: 170px;
+}
+
+.container-footer{
+    height: 4%;
+    margin-top: 1%;
+}
+
+.container-flex{
+    display: flex;
+}
+
+.container-items{
+    width: 100%;
+    text-align: center;
+}
+
+.item{
+    font-size: 100%;
+    font-weight: 700;
+    text-decoration: none;
+    color: unset;
+    padding: 0.5%;
+    text-align: center;
+    margin: 0;
+    transition: color 300ms;
+}
+
+.item:hover{
+    color: var(--color-primary);
+}
+
+.page-header{
+    min-height: 90vh; 
+}
+
+.video-container{
+    background: black !important;
+    position: relative;
+    height: 100%;
+    width: 100%;
+    z-index: 1;
+    overflow: hidden;
+}
+
+.video-container video{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    min-width: 100%;
+    min-height: 100%;
+    width: 100%;
+    height: 100%;
+    transform: translate(-50%, -50%);
+}
+
+/* *************************************************************************************************************************** */
+
+@media screen and (max-width: 470px){
+
+    body {
+        color: var(--color-tertiary) !important;
+        background: white !important;
+    }
+
+    card-plain {
+        text-align: center;
+    }
+
+    .btn-login{
+        padding: 5% !important;
+    }
+
+    .contenedor-login{
+        padding: 2% !important;
+    }
+
+    #login-footer{
+        margin-top: 2% !important;
+        color: slategray;
+    }
+
+    .bg-transparent-cel{
+        background: transparent !important;
+        box-shadow: none !important;
+    }
+
+    .text-cel-center h4, p{
+        text-align: center !important;
+    }
+
+    .text-cel-center h4{
+        font-size: 200%;
+    }
+
+    .logo{
+        height: 138px !important;
+        margin: 10% 0 0 0;
+    }
+
+    .logo-login-cel-position {
+        position: relative !important;
+    }
+
+    .flex-col-cel{
+        display: flex;
+        flex-direction: column !important;
+    }
+    
+    .item{
+    font-size: 70%;
+    }
+}
+
+@media screen and (min-width: 471px) and (max-width: 991px){
+    .contenedor-login{
+        padding: 7% !important;
+    }
+}
+
+@media screen and (max-width: 991px){
+    .page-header{
+        min-height: auto; 
+}
+}
