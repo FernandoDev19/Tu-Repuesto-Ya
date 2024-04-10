@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Log;
 class WhatsAppMessageJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-
+ 
     protected $proveedor;
     protected $celular;
     protected $json_repuestos;

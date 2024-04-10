@@ -245,7 +245,7 @@ class AdminController extends Controller
             $municipios = Geolocation::where('departamento', $departamento)->pluck('municipio');
             $group[$departamento] = $municipios;
         }
-        
+
         $categorias = Category::where('nombre_categoria', '!=', 'Prueba')->get();
 
         if ($usuario) {
@@ -913,7 +913,7 @@ class AdminController extends Controller
                 }
             }
         }
-        
+
          foreach ($solicitudes as $solicitud) {
             $answer2 = Answer::with('proveedor')->get();
         }
@@ -1028,8 +1028,8 @@ class AdminController extends Controller
             $municipios = Geolocation::where('departamento', $departamento)->pluck('municipio');
             $group[$departamento] = $municipios;
         }
-        
-                $categorias = Category::where('nombre_categoria', '!=', 'Prueba')->get();
+
+        $categorias = Category::where('nombre_categoria', '!=', 'Prueba')->get();
 
         // Retorna la vista de la lista de proveedores, usando compact para enviar los datos a la vista
         return view('admin.providers', compact('proveedor', 'proveedor_m', 'proveedores_all', 'preferencias_de_marcas', 'departamentos', 'group', 'codigos', 'categorias'));

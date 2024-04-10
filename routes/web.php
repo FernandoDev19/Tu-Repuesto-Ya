@@ -5,8 +5,11 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ProveedorController;
-use App\Livewire\KeyWords;
+use App\Jobs\NoticiaWhatsappJob;
+use App\Models\Answer;
 use App\Models\Category;
+use App\Models\Provider;
+use App\Models\User;
 
 /*
 |--------------------------------------------------------------------------
@@ -53,7 +56,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/solicitud/{codigo}/{id?}', 'solicitudRepuesto')->name('solicitud');
         Route::get('/solicitud/{filename}', 'verImagenSolicitud')->name('verImagen');
     });
-    
+
     Route::get('/categorias', [AdminController::class, 'categoriesView'])->name('keywords');
     Route::get('/categorias/{categoria}/{id}', function($categoria, $id){
         $category = Category::with('keyword')->get();
@@ -61,14 +64,12 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::post('/palabras-claves/crear/{id}', [AdminController::class, 'saveKeyword'])->name('saveKeyword');
-    
+
     Route::get('/registro-de-actividades', [AdminController::class, 'activityLogView'])->name('activityLog');
-        
+
     Route::post('/categorias/nueva-categoria', [AdminController::class, 'saveCategory'])->name('saveCategory');
 
     Route::get('/administrador/panel', [AdminController::class, 'index'])->name("dashboard")->middleware('can:dashboard');
-    /*Route::get('/profile', [AdminController::class, 'profile'])->name('profile');
-    Route::get('/profile/update', [AdminController::class, 'profileUpdate'])->name('profileUpdate');*/
     Route::get('administrador/perfil', [AdminController::class, 'profile'])->name('profile');
     Route::post('administrador/perfil/actualizar/{id?}', [AdminController::class, 'profileUpdate'])->name('profileUpdate');
     Route::get('/administrador/proveedor/{nit}/{notificationId}', [AdminController::class, 'verProveedor'])->name('verProveedor')->middleware('can:notifications.viewNotifications');
@@ -108,3 +109,28 @@ Route::get('/politica-de-privacidad', function(){
 
     return view('privacy-policy', compact('name'));
 })->name('privacy-policy');
+
+Route::get('/enviar-mensajes', function(){
+    $proveedores = Provider::all()->where('estado', 1);
+
+    foreach ($proveedores as $proveedor) {
+        // Buscar si el proveedor tiene respuestas
+        $tieneRespuesta = Answer::where('idProveedor', $proveedor->id)->exists();
+
+        $user = User::where('proveedor_id', $proveedor->id)->first();
+
+        // Si no tiene respuestas, enviar el mensaje
+        if (!$tieneRespuesta) {
+          $celular = $proveedor->celular;
+          $telefono = $proveedor->telefono;
+
+          if ($celular) {
+            NoticiaWhatsappJob::dispatch($proveedor, $celular, $user);
+          }
+
+          if ($telefono) {
+            NoticiaWhatsappJob::dispatch($proveedor, $telefono, $user);
+          }
+        }
+      }
+});
