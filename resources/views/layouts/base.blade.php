@@ -278,14 +278,13 @@
                                         </legend>
                                         <div class="flex flex-col mb-4 text-center">
                                             <div style="display: flex; align-items: center;">
-                                                <span class="form-control numeros_campos">1</span>
                                                 <input title="Marca" id="marca-otro"
-                                                    style="border-color: var(--bs-dark-border-subtle); border-radius: 0 .375rem .375rem 0;"
+                                                    style="border-color: var(--bs-dark-border-subtle); border-radius: .375rem;"
                                                     class="form-control text-center hide" value="{{ old('marca') }}"
                                                     placeholder="*Otra Marca" autofocus>
                                                 <select name="marca" id="marca"
                                                     class="form-control text-center"
-                                                    style="color: var(--bs-secondary-color); border-color: var(--bs-dark-border-subtle); border-radius: 0 .375rem .375rem 0;"
+                                                    style="color: var(--bs-secondary-color); border-color: var(--bs-dark-border-subtle); border-radius: .375rem;"
                                                     required>
                                                     <option value="" disabled selected>*Marca del vehiculo
                                                     </option>
@@ -401,10 +400,9 @@
 
                                         <div class="flex flex-col mb-4 text-center">
                                             <div style="display: flex; align-items: center;">
-                                                <span class="form-control numeros_campos">2</span>
                                                 <input type="text" name="referencia" id="referencia"
                                                     class="form-control text-center"
-                                                    style="border-color: var(--bs-dark-border-subtle); border-radius: 0 .375rem .375rem 0;"
+                                                    style="border-color: var(--bs-dark-border-subtle); border-radius: .375rem;"
                                                     placeholder="*Referencia del vehiculo (Ej. Joy)"
                                                     aria-label="Referencia" value="{{ old('referencia') }}" required>
                                             </div>
@@ -416,10 +414,9 @@
                                         <div class="flex flex-col mb-4 text-center">
 
                                             <div style="display: flex; align-items: center;">
-                                                <span class="form-control numeros_campos">3</span>
                                                 <select id="modelo" name="modelo"
                                                     class="form-control text-center"
-                                                    style="color: var(--bs-secondary-color); border-color: var(--bs-dark-border-subtle); border-radius: 0 .375rem .375rem 0;"
+                                                    style="color: var(--bs-secondary-color); border-color: var(--bs-dark-border-subtle); border-radius: .375rem;"
                                                     required>
                                                     <option value='' disabled selected>*Modelo del vehiculo (Año)
                                                     </option>
@@ -440,10 +437,9 @@
 
                                         <div class="flex flex-col mb-4 text-center">
                                             <div style="display: flex; align-items: center;">
-                                                <span class="form-control numeros_campos">4</span>
                                                 <select class="form-control" name="tipo" id="tipo"
                                                     name="tipo"
-                                                    style="color: var(--bs-secondary-color); text-align: center; border-color: var(--bs-dark-border-subtle); border-radius: 0 .375rem .375rem 0;"
+                                                    style="color: var(--bs-secondary-color); text-align: center; border-color: var(--bs-dark-border-subtle); border-radius: .375rem;"
                                                     required>
                                                     <option value="" disabled selected>*Tipo de transmisión
                                                         (Caja)
@@ -484,10 +480,8 @@
 
                                         <div class="flex flex-col text-center">
                                             <div style="display: flex; align-items: center;">
-                                                <span class="form-control numeros_campos"
-                                                    style="height: 5rem; display: flex; align-items: center;">5</span>
                                                 <input name="repuesto" id="repuesto"
-                                                    style="height: 5rem; border-radius: 0.375rem 0.375rem 0 0.375rem; border-color: var(--bs-dark-border-subtle); border-radius: 0 .375rem .375rem 0;"
+                                                    style="border-radius: 0.375rem; border-color: var(--bs-dark-border-subtle); border-radius: .375rem;"
                                                     class="form-control text-center"
                                                     placeholder="*Agrega uno a uno tus repuestos"
                                                     aria-label="Repuesto" value="{{ old('repuesto') }}">
@@ -503,20 +497,20 @@
 
                                         <div style="display: flex; justify-content: flex-end; width: 100%;">
                                             <button type="button" name="agregar_repuesto" id="agregar_repuesto"
-                                                class="btn"
+                                                class="btn mb-3"
                                                 style="transform: translate(-1.5%, 0); transition: all 300ms ease; border-radius: 0 0 .50rem .50rem !important; color: white; background-color: #25D366; padding: 0.3rem 0.8rem; font-size: 0.8rem; border: none;">
                                                 Agregar
                                             </button>
                                         </div>
 
-                                        <div class="text-ejemplo-for-repuestos w-100 text-center mb-4" class="hide">
+                                        {{-- <div class="text-ejemplo-for-repuestos w-100 text-center mb-4" class="hide">
                                             <small class="text-xs text-secondary">Ejemplo: 3 Bujías</small>
-                                        </div>
+                                        </div> --}}
 
                                         <div class="flex flex-col">
                                             <div id="campo_repuestos">
                                                 <div id="items_container" class="items_container form-control"
-                                                    style="border-color: var(--bs-dark-border-subtle);">
+                                                    style="border: none;">
                                                     <div style="width: 100%; height: 1.5rem;"><small
                                                             class="text-xs text-secondary"
                                                             style="position: absolute;">Repuestos agregados:</small>
@@ -530,7 +524,7 @@
                                         @else
                                             <div id="text-maximo-repuestos"
                                                 style="display: flex; width: 100%; justify-content: center;">
-                                                <small class="text-xs mb-4 text-secondary">Máximo 5 repuestos</small>
+                                                <small class="text-xs mt-1 mb-4 text-secondary">Máximo 5 repuestos</small>
                                             </div>
                                         @enderror
 
@@ -609,11 +603,10 @@
                                         </legend>
                                         <div class="flex flex-col mb-4 text-center">
                                             <div style="display: flex; align-items: center;">
-                                                <span class="form-control numeros_campos">1</span>
                                                 <input type="text" class="form-control text-center" id="nombre"
                                                     name="nombre" placeholder="*Nombre"
-                                                    style="border-color: var(--bs-dark-border-subtle); border-radius: 0 .375rem .375rem 0;"
-                                                    aria-label="Nombre" value="{{ old('nombre') }}" required>
+                                                    style="border-color: var(--bs-dark-border-subtle); border-radius: .375rem;"
+                                                    aria-label="Nombre" value="{{ old('nombre') }}" required = "true">
                                             </div>
 
                                             @error('nombre')
@@ -626,20 +619,20 @@
                                                 <div
                                                     style="display: flex; justify-content: space-between; align-items: center; padding: 0; margin-bottom: .3rem;">
                                                     <div style="display: flex; align-items: center; width: 100%;">
-                                                        <span class="form-control numeros_campos">2</span>
-                                                        <select name="codigo_cel" id="codigo-cel"
-                                                            style="border: none; transform: translate(2.3rem, 0px); position: absolute;">
-                                                            @foreach ($codigos as $codigo)
-                                                                <option value="{{ $codigo->codigo }}"
-                                                                    title="{{ $codigo->pais }}">
-                                                                    {{ $codigo->iso . ' ' . $codigo->codigo }}</option>
-                                                            @endforeach
-                                                        </select>
+                                                        <span class="form-control" style="padding-left: 0; padding-right: 0; width: max-content; border-color: var(--bs-dark-border-subtle); border-radius: .375rem 0 0 .375rem;">
+                                                            <select name="codigo_cel" id="codigo-cel" style="height: 100%; border: white 1px solid;">
+                                                                @foreach ($codigos as $codigo)
+                                                                    <option value="{{ $codigo->codigo }}"
+                                                                        title="{{ $codigo->pais }}">
+                                                                        {{ $codigo->codigo }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </span>
                                                         <input type="text" class="text-center form-control"
                                                             id="cel" name="cel"
                                                             placeholder="*Número de celular" aria-label='Cel'
                                                             value="{{ old('cel') }}"
-                                                            style="width: 100%; border-color: var(--bs-dark-border-subtle); border-radius: 0 .375rem .375rem 0;"
+                                                            style="width: 100%; border-color: var(--bs-dark-border-subtle); border-radius: 0  .375rem .375rem 0; border-left: none;"
                                                             required>
                                                     </div>
 
@@ -664,10 +657,9 @@
 
                                         <div class="flex flex-col mb-4 text-center">
                                             <div style="display: flex; align-items: center;">
-                                                <span class="form-control numeros_campos">3</span>
                                                 <input type="email" class="form-control text-center" id="email"
                                                     name="email" placeholder="E-mail"
-                                                    style="border-color: var(--bs-dark-border-subtle); border-radius: 0 .375rem .375rem 0;"
+                                                    style="border-color: var(--bs-dark-border-subtle); border-radius: .375rem;"
                                                     aria-label="Email" value="{{ old('email') }}">
                                             </div>
 
@@ -678,11 +670,9 @@
 
                                         <div class="flex flex-col mb-4 text-center" id="contenedor_departamento">
                                             <div style="display: flex; align-items: center;">
-                                                <span class="form-control numeros_campos"
-                                                    id="numero_campo_departamento">4</span>
                                                 <select id="departamento" name="departamento"
                                                     class="form-control text-center"
-                                                    style="color: var(--bs-secondary-color); border-color: var(--bs-dark-border-subtle); border-radius: 0 .375rem .375rem 0;">
+                                                    style="color: var(--bs-secondary-color); border-color: var(--bs-dark-border-subtle); border-radius: .375rem;">
                                                     <option value="" disabled selected>*Departamento</option>
                                                     @foreach ($departamentos as $departamento)
                                                         <option value="{{ $departamento }}">{{ $departamento }}
@@ -698,11 +688,9 @@
 
                                         <div class="flex flex-col mb-4 text-center" id="contenedor_municipio">
                                             <div style="display: flex; align-items: center;">
-                                                <span class="form-control numeros_campos"
-                                                    id="numero_campo_municipio">5</span>
                                                 <select name="municipio" id="municipio"
                                                     class="form-control text-center"
-                                                    style="color: var(--bs-secondary-color); border-color: var(--bs-dark-border-subtle); border-radius: 0 .375rem .375rem 0;">
+                                                    style="color: var(--bs-secondary-color); border-color: var(--bs-dark-border-subtle); border-radius: .375rem;">
                                                     <option value="" disabled selected>*Municipio</option>
                                                 </select>
                                             </div>
@@ -776,7 +764,8 @@
 
                 // Inicializar elementos ocultos
                 campo_repuestos.classList.add('hide');
-                btn_agregar.classList.add('hide');
+                btn_agregar.setAttribute('disabled', true);
+                btn_agregar.style.background = "var(--color-primary)";
                 text_maximo_repuestos.classList.add('hide');
 
                 // Intentar recuperar los repuestos seleccionados del localStorage
@@ -786,8 +775,12 @@
                 function agregarBoton(item) {
                     let button = document.createElement('button');
                     button.classList.add('item_selected');
+                    button.style.padding = 0;
+                    button.style.height ='max-content';
                     button.setAttribute('name', 'item');
-                    button.innerHTML = item + '<span class="btn_borrar_item">×</span>';
+                    button.innerHTML = '<span style="padding: .5rem 1rem; height: 100%; background: #d3d3d3; border-radius: .25rem 0 0 .25rem;">' + item + "</span>" + '<img height="20" width="16" class="btn_borrar_item" src="{{asset("icon/trash.png")}}" alt="icono de basura" style="padding: .5rem; margin-top: auto; margin-bottom: auto; max-width: max-content; max-height: max-content; box-shadow: 7px 0px 8px -7px inset #00000099; border-radius: 0 .25rem .25rem 0; background: #ff5b5b;">';
+                    btn_agregar.setAttribute('disabled', true);
+                    btn_agregar.style.background = "var(--color-primary)";
 
                     // Agregar un evento de escucha de clics al botón
                     button.addEventListener('click', function() {
@@ -803,7 +796,8 @@
                         if (container.children.length === 1) {
                             campo_repuestos.classList.add('hide');
                             text_maximo_repuestos.classList.add('hide');
-                            btn_agregar.classList.add('hide');
+                            btn_agregar.setAttribute('disabled', true);
+                            btn_agregar.style.background = "var(--color-primary)";
                             campo_repuesto.setCustomValidity('No has agregado ningún repuesto');
                         }
 
@@ -828,8 +822,15 @@
                 }
 
                 // Escuchar el evento clic en el campo de repuestos
-                campo_repuesto.addEventListener('click', function() {
-                    btn_agregar.classList.remove('hide');
+                campo_repuesto.addEventListener('input', function() {
+                    if(campo_repuesto.value.length == 0){
+                        btn_agregar.setAttribute('disabled', true);
+                        btn_agregar.style.background = "var(-color-primary)";
+                    }else{
+                        btn_agregar.removeAttribute('disabled');
+                        btn_agregar.style.background = "#25d366";
+                    }
+
                 });
 
                 // Escuchar el evento clic en el botón de agregar
@@ -862,7 +863,8 @@
                 if (container.children.length === 1) {
                     campo_repuestos.classList.add('hide');
                     text_maximo_repuestos.classList.add('hide');
-                    btn_agregar.classList.add('hide');
+                    btn_agregar.setAttribute('disabled', true);
+                    btn_agregar.style.background = "var(--color-primary)";
                     campo_repuesto.setCustomValidity('No has agregado ningún repuesto');
                 }
 

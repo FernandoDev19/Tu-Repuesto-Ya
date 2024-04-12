@@ -48,9 +48,32 @@ class NoticiaWhatsappJob implements ShouldQueue
             'to' => $this->celular,
             'type' => 'template',
             'template' => [
-                'name' => 'bienvenida_proveedor',
+                'name' => 'noticia_proveedores',
                 'language' => [
                     'code' => 'es',
+                ],
+                'components' => [
+                    [
+                        'type' => 'body',
+                        'parameters' => [
+                            [
+                                'type' => 'text',
+                                'text' => $this->celular
+                            ],
+                            [
+                                'type' => 'text',
+                                'text' => $this->user->email
+                            ],
+                            [
+                                'type' => 'text',
+                                'text' => 'demo12345 \nDemo12345 \n \nSi ninguna de las dos funciona, por favor restablece la contraseña: \nhttps://turepuestoya.co/restablecer'
+                            ],
+                            [
+                                'type' => 'text',
+                                'text' => $this->celular
+                            ],
+                        ],
+                    ],
                 ],
             ],
         ];

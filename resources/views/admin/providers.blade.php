@@ -120,11 +120,11 @@
                                     </div>
                                 </div>
                             </div>
-                    
+
                         </div>
                         <div class="card-body" style="padding: 0;">
                             <div class="table-responsive">
-                    
+
                                 <table class="table table-borderless table-hover" id="proveedoresTable">
                                     <thead>
                                         <tr>
@@ -152,6 +152,8 @@
                                             <th class="text-muted"
                                                 style="padding:10px 5px; text-align:center; font-size: 14px;">C.
                                                 Comercio</th>
+                                                <th class="text-muted" style="padding: 10px 5px; text-align:center; font-size: 14px;">¿Sesión activa?</th>
+                                            <th class="text-muted" style="padding: 10px 5px; text-align:center; font-size: 14px;">¿Ha cotizado?</th>
                                             <th class="text-muted" wire:click="order('estado')"
                                                 style="padding:10px 5px; text-align:center; font-size: 14px;">
                                                 Estado</th>
@@ -163,6 +165,12 @@
                                     <tbody>
                                         @if ($proveedor->isEmpty())
                                             <tr>
+                                                <td style="padding:10px 10px; margin:0; text-align:center; line-height: 1;">
+                                                    No hay registros
+                                                </td>
+                                                <td style="padding:10px 10px; margin:0; text-align:center; line-height: 1;">
+                                                    No hay registros
+                                                </td>
                                                 <td style="padding:10px 10px; margin:0; text-align:center; line-height: 1;">
                                                     No hay registros
                                                 </td>
@@ -252,13 +260,48 @@
                                                             href="{{ route('mostrarArchivo', 'Camara_de_comercio_' . $proveedores->nit_empresa . '.pdf') }}"
                                                             target="_blank">C. Comercio</a>
                                                     </td>
+                                                    @php
+                                                        $sesion_activa = false;
+
+                                                        $sesions = $sesion->where('idProveedor', $proveedores->id)->first();
+
+                                                        if($sesions){
+                                                             if($sesions->sesiones > 0){
+                                                                $sesion_activa = true;
+                                                            }else{
+                                                                $sesion_activa = false;
+                                                            }
+                                                        }
+
+                                                    @endphp
+                                                    <td style="padding:10px 10px; margin:0; text-align:center; font-size: 14;"
+                                                        data-campo="sesion" id="sesion_{{ $proveedores->id }}"
+                                                        data-valor="{{ $sesion_activa ? 'Sí' : 'No' }}">
+                                                        @if ($sesion_activa)
+                                                            <i title="Sesión Activa" class="fas fa-circle" style="color:#12e912;;"></i>
+                                                        @else
+                                                            <i title="Sesión Inactiva" class="fas fa-circle" style="color:#ff5a51;"></i>
+                                                        @endif
+                                                    </td>
+                                                    @php
+                                                        $tieneRespuestas = $tieneRespuesta->where('idProveedor', $proveedores->id)->first();
+                                                    @endphp
+                                                    <td style="padding:10px 10px; margin:0; text-align:center; font-size: 14;"
+                                                        data-campo="respuestas" id="respuestas_{{ $proveedores->id }}"
+                                                        data-valor="{{ $tieneRespuestas ? 'Sí' : 'No' }}">
+                                                        @if ($tieneRespuestas)
+                                                            <i title="Sí ha cotizado" class="fas fa-circle" style="color:#12e912;;"></i>
+                                                        @else
+                                                            <i title="No ha cotizado" class="fas fa-circle" style="color:#ff5a51;"></i>
+                                                        @endif
+                                                    </td>
                                                     <td style="padding:10px 10px; margin:0; text-align:center; font-size: 14;"
                                                         data-campo="estado" id="estado_{{ $proveedores->id }}"
                                                         data-valor="{{ $proveedores->estado ? 'Activo' : 'Inactivo' }}">
                                                         @if ($proveedores->estado)
-                                                            <i class="fas fa-circle" style="color:#12e912;;"></i>
+                                                            <i title="Activo" class="fas fa-circle" style="color:#12e912;;"></i>
                                                         @else
-                                                            <i class="fas fa-circle" style="color:#ff5a51;"></i>
+                                                            <i title="Inactivo" class="fas fa-circle" style="color:#ff5a51;"></i>
                                                         @endif
                                                     </td>
                                                     <td style="padding:10px; width: 6vw;" class="text-center">
@@ -269,7 +312,7 @@
                                                             <i class="fas fa-info-circle"></i>
                                                         </a>
                                                     </td>
-                    
+
                                                     <!-- Modal de Información -->
                                                     <div class="modal fade" id="infoModal{{ $proveedores->id }}"
                                                         tabindex="-1" role="dialog" aria-labelledby="infoModalLabel"
@@ -301,31 +344,31 @@
                                                                                 <li><strong>NIT:
                                                                                     </strong>{{ $proveedores->nit_empresa }}
                                                                                 </li>
-                    
+
                                                                                 <li><strong>Nombre Establecimiento: </strong>
                                                                                     {{ $proveedores->nombre_comercial }}
                                                                                 </li>
-                    
+
                                                                                 <li><strong>Razón Social:
                                                                                     </strong>{{ $proveedores->razon_social }}
                                                                                 </li>
-                    
+
                                                                                 <li><strong>Pais:
                                                                                     </strong>{{ $proveedores->pais }}</li>
-                    
+
                                                                                 <li><strong>Departamento:
                                                                                     </strong>{{ $proveedores->departamento }}
                                                                                 </li>
-                    
+
                                                                                 <li> <strong>Municipio:
                                                                                     </strong>{{ $proveedores->municipio }}</li>
-                    
+
                                                                                 <li><strong>Direccion:
                                                                                     </strong>{{ $proveedores->direccion }}</li>
                                                                             </fieldset>
-                    
+
                                                                             <hr>
-                    
+
                                                                             <fieldset>
                                                                                 <legend style="text-align: center;">
                                                                                     <strong>Información de Contacto:</strong>
@@ -341,26 +384,26 @@
                                                                                     data-toggle="modal" class="text-primary"
                                                                                     data-target="#contactarClienteTelModal{{$proveedores->id}}"
                                                                                     style="cursor: pointer;">{{ $proveedores->telefono }}</a></li>
-                    
+
                                                                                 <li><strong>Representante Legal:
                                                                                     </strong>{{ $proveedores->representante_legal }}
                                                                                 </li>
-                    
+
                                                                                 <li><strong>Contacto Principal:
                                                                                     </strong>{{ $proveedores->contacto_principal }}
                                                                                 </li>
-                    
+
                                                                                 <li><strong>Email:</strong>
                                                                                     <a href="mailto:{{$proveedores->email}}" target="_blank">{{ $proveedores->email }}</a>
                                                                                 </li>
-                                                                                
+
                                                                                 <li><strong>Email Secundario:</strong>
                                                                                     <a href="mailto:{{$proveedores->email_secundario}}" target="_blank">{{ $proveedores->email_secundario }}</a>
                                                                                 </li>
                                                                             </fieldset>
-                    
+
                                                                             <hr>
-                    
+
                                                                             <fieldset>
                                                                                 <legend style="text-align: center;">
                                                                                     <strong>Información Legal:</strong>
@@ -373,7 +416,7 @@
                                                                                         href="{{ route('mostrarArchivo', ['filename' => 'RUT_' . $proveedores->nit_empresa . '.pdf']) }}"
                                                                                         target="_blank">{{ $proveedores->rut }}</a>
                                                                                 </li>
-                    
+
                                                                                 <li><strong>Camara de comercio: </strong>
                                                                                     <a title="Ver camara de comercio"
                                                                                         style="color: #858796; text-decoration: underline;"
@@ -383,9 +426,9 @@
                                                                                         target="_blank">{{ $proveedores->camara_comercio }}</a>
                                                                                 </li>
                                                                             </fieldset>
-                    
+
                                                                             <hr>
-                    
+
                                                                             <fieldset>
                                                                                 <legend style="text-align: center;">
                                                                                     <strong>Otros Detalles:</strong>
@@ -409,9 +452,9 @@
                                                                             </fieldset>
                                                                             <br>
                                                                         </ul>
-                    
+
                                                                     </div>
-                    
+
                                                                     <button class="btn mt-0 align-self-end"
                                                                         data-id="{{ $proveedores->id }}" data-toggle="modal"
                                                                         data-target="#editModal{{ $proveedores->id }}"
@@ -419,9 +462,9 @@
                                                                         <i class="fas fa-edit"></i>
                                                                     </button>
                                                                 </div>
-                    
+
                                                                 <div class="modal-footer">
-                    
+
                                                                     <button class="btn btn-danger"
                                                                         data-id="{{ $proveedores->id }}" data-toggle="modal"
                                                                         data-target="#eraseModal{{ $proveedores->id }}"
@@ -434,7 +477,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                    
+
                                                     <div class="modal" id="contactarClienteCelModal{{$proveedores->id}}" tabindex="-1"
                                                         role="dialog">
                                                         <div class="modal-dialog" role="document">
@@ -451,12 +494,12 @@
                                                                         <a class="btn btn-success" target="_blank" href="https://api.whatsapp.com/send?phone={{ substr($proveedores->celular, 1) }}">Enviar mensaje al {{$proveedores->celular}}</a>
                                                                         <a class="btn btn-primary" target="_blank" href="tel:{{ $proveedores->celular }}">Llamar al {{$proveedores->celular}}</a>
                                                                     </div>
-                    
+
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                    
+
                                                     <div class="modal" id="contactarClienteTelModal{{$proveedores->id}}" tabindex="-1"
                                                         role="dialog">
                                                         <div class="modal-dialog" role="document">
@@ -473,16 +516,16 @@
                                                                         <a class="btn btn-success" target="_blank" href="https://api.whatsapp.com/send?phone={{ substr($proveedores->telefono, 1) }}">Enviar mensaje al {{$proveedores->telefono}}</a>
                                                                         <a class="btn btn-primary" target="_blank" href="tel:{{ $proveedores->telefono }}">Llamar al {{$proveedores->telefono}}</a>
                                                                     </div>
-                    
+
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                    
+
                                                     <div class="modal fade editModal" id="editModal{{ $proveedores->id }}"
                                                         tabindex="-1" role="dialog" aria-labelledby="editModalLabel"
                                                         aria-hidden="true" style="z-index: 1041;">
-                    
+
                                                         <div class="modal-dialog" role="document" style="z-index: 1042;">
                                                             <div class="modal-content" style="z-index: 1043;">
                                                                 <div class="modal-header">
@@ -510,23 +553,23 @@
                                                                             <a class="nav-link text-secondary" href="#" id="tab4_{{$proveedores->id}}">Marcas</a>
                                                                         </li>
                                                                     </ul>
-                    
+
                                                                     <!-- Contenido de las pestañas -->
                                                                     <div class="tab-content">
                                                                         <form id="edit_modal{{ $proveedores->id }}"
                                                                             action="{{ route('editarProveedor') }}"
                                                                             method="POST" enctype="multipart/form-data">
                                                                             @csrf
-                    
+
                                                                             <input type="hidden" name="id"
                                                                             value="{{ $proveedores->id }}">
-                    
+
                                                                             <!-- Parte 1 del formulario -->
                                                                             <div class="tab-pane fade show active" id="tab-content1_{{$proveedores->id}}"
                                                                                 style="transition: all 300ms ease;">
-                    
+
                                                                                 <div class="form-group">
-                    
+
                                                                                     <div class="form-group">
                                                                                         <label for="nit_edit_{{ $proveedores->id }}">NIT:</label>
                                                                                         <input class="form-control" type="text"
@@ -541,7 +584,7 @@
                                                                                             <small id="nit-edit-error{{$proveedores->id}}" class="text-danger text-xs pt-1"></small>
                                                                                         @enderror
                                                                                     </div>
-                    
+
                                                                                     <div class="form-group">
                                                                                         <label for="nombre_comercial_edit_{{ $proveedores->id }}">Nombre Establecimiento:</label>
                                                                                         <input type="text" class="form-control" id="nombre_comercial_edit_{{ $proveedores->id }}" name="nombre_comercial_edit" placeholder="{{$proveedores->nombre_comercial}}" value="{{$proveedores->nombre_comercial}}" maxlength="50" autocomplete="on">
@@ -551,7 +594,7 @@
                                                                                             <small id="nombre-edit-error{{$proveedores->id}}" class="text-danger text-xs pt-1"></small>
                                                                                         @enderror
                                                                                     </div>
-                    
+
                                                                                     <div class="form-group">
                                                                                         <label for="razon_social_edit">Razón
                                                                                             Social:</label>
@@ -568,7 +611,7 @@
                                                                                             <small id="razon-edit-error{{$proveedores->id}}" class="text-danger text-xs pt-1"></small>
                                                                                         @enderror
                                                                                     </div>
-                    
+
                                                                                     <div id="pais{{ $proveedores->id }}"
                                                                                         class="flex flex-col mb-3 hide">
                                                                                         <label>País:</label>
@@ -579,7 +622,7 @@
                                                                                                 style="border: none !important;">{{ $proveedores->pais }}</span>
                                                                                         </div>
                                                                                     </div>
-                    
+
                                                                                     <div id="ciudad{{ $proveedores->id }}"
                                                                                         class="flex flex-col mb-3 hide">
                                                                                         <label for="ciudad_edit">Ciudad:</label>
@@ -588,7 +631,7 @@
                                                                                             name="ciudad_edit"
                                                                                             value="{{ $proveedores->municipio }}">
                                                                                     </div>
-                    
+
                                                                                     <div class="form-group"
                                                                                         id="departamentos{{ $proveedores->id }}">
                                                                                         <label for="departamento">Departamento:</label>
@@ -605,7 +648,7 @@
                                                                                             @endforeach
                                                                                         </select>
                                                                                     </div>
-                    
+
                                                                                     <div id="municipios{{ $proveedores->id }}"
                                                                                         class="form-group">
                                                                                         <label for="municipio_edit">Municipio:</label>
@@ -617,7 +660,7 @@
                                                                                             </option>
                                                                                         </select>
                                                                                     </div>
-                    
+
                                                                                     <div class="form-group">
                                                                                         <label for="direccion">Dirección:</label>
                                                                                         <input type="text" class="form-control"
@@ -627,22 +670,22 @@
                                                                                             value="{{ $proveedores->direccion }}" maxlength="50"
                                                                                             autocomplete="on">
                                                                                     </div>
-                    
+
                                                                                 </div>
-                    
+
                                                                                 <hr>
-                    
+
                                                                                 <div
                                                                                     style="width:100%; height: max-content; display: flex; justify-content: flex-end;">
                                                                                     <button id="btn_siguiente_basica{{$proveedores->id}}" type="button" class="btn btn-primary"
                                                                                        >Siguiente</button>
                                                                                 </div>
-                    
+
                                                                             </div>
-                    
+
                                                                             <!-- Parte 2 del formulario -->
                                                                             <div class="tab-pane fade" id="tab-content2_{{$proveedores->id}}" style="transition: all 300ms ease;">
-                    
+
                                                                                 <div class="form-group">
                                                                                     <div class="form-group">
                                                                                         <label for="cel_edit">Número de celular:</label>
@@ -677,7 +720,7 @@
                                                                                             </div>
                                                                                         @enderror
                                                                                     </div>
-                    
+
                                                                                     <div class="form-group">
                                                                                         <label for="tel">Número
                                                                                             de celular 2°:</label>
@@ -692,7 +735,7 @@
                                                                                                 class="text-danger text-xs pt-1">{{ $message }}</small>
                                                                                         @enderror
                                                                                     </div>
-                    
+
                                                                                     <div class="flex flex-col mb-3">
                                                                                         <label for="representante_legal">Representante
                                                                                             Legal:</label>
@@ -702,7 +745,7 @@
                                                                                             name="representante_legal"
                                                                                             value="{{ $proveedores->representante_legal }}" maxlength="60" autocomplete="on">
                                                                                     </div>
-                    
+
                                                                                     <div class="flex flex-col mb-3">
                                                                                         <label for="contacto_principal">Contacto
                                                                                             Principal:</label>
@@ -726,7 +769,7 @@
                                                                                                 class="text-danger text-xs pt-1">{{ $message }}</small>
                                                                                         @enderror
                                                                                     </div>
-                    
+
                                                                                     <div class="form-group">
                                                                                         <label for="email_2">Correo
                                                                                             electrónico (2°):</label>
@@ -757,7 +800,7 @@
                                                                                         </select>
                                                                                     </div>
                                                                                 </div>
-                    
+
                                                                                 <div
                                                                                     style="width:100%; height: max-content; display: flex; justify-content: flex-end; gap: 5px;">
                                                                                     <button type="button" id="btn_anterior_contacto{{$proveedores->id}}" class="btn btn-secondary"
@@ -765,11 +808,11 @@
                                                                                     <button id="btn_siguiente_contacto{{$proveedores->id}}" type="button" class="btn btn-primary"
                                                                                         >Siguiente</button>
                                                                                 </div>
-                    
+
                                                                             </div>
-                    
+
                                                                             <div class="tab-pane fade" id="tab-content3_{{$proveedores->id}}" style="transition: all 300ms ease;">
-                    
+
                                                                                 <div class="form-group">
                                                                                     <div class="form-group flex flex-col">
                                                                                         <span>RUT:</span>
@@ -795,7 +838,7 @@
                                                                                                 {{ $message }}</div>
                                                                                         @enderror
                                                                                     </div>
-                    
+
                                                                                     <div class="form-group flex flex-col">
                                                                                         <span>Camara de comercio:</span>
                                                                                         <label id="btn2{{ $proveedores->id }}"
@@ -820,7 +863,7 @@
                                                                                         @enderror
                                                                                     </div>
                                                                                 </div>
-                    
+
                                                                                 <div
                                                                                     style="width:100%; height: max-content; display: flex; justify-content: flex-end; gap: 5px;">
                                                                                     <button type="button" id="btn_anterior_legal{{$proveedores->id}}" class="btn btn-secondary"
@@ -828,11 +871,11 @@
                                                                                         <button id="btn_siguiente_legal{{$proveedores->id}}" type="button" class="btn btn-primary"
                                                                                             >Siguiente</button>
                                                                                 </div>
-                    
+
                                                                             </div>
-                    
+
                                                                             <div class="tab-pane fade" id="tab-content4_{{$proveedores->id}}" style="transition: all 300ms ease;">
-                    
+
                                                                                 <div class="form-group">
                                                                                     <div class="flex flex-col">
                                                                                         <label for="marcas">Preferencias de
@@ -960,7 +1003,7 @@
                                                                                             <!--<option value="Yamaha">Yamaha</option>-->
                                                                                             <!--<option value="Zotye">Zotye</option>-->
                                                                                             <option value="otro">Otro</option>
-                    
+
                                                                                         </select>
                                                                                     </div>
                                                                                     <div id="marcas_preferencias{{ $proveedores->id }}"
@@ -981,7 +1024,7 @@
                                                                                             elijas!.</div>
                                                                                     </div>
                                                                                 </div>
-                    
+
                                                                                 <div class="flex flex-col mb-3">
                                                                                     <label
                                                                                         for="categoria_repuesto{{ $proveedores->id }}">Especialidades:</label>
@@ -1021,7 +1064,7 @@
                                                                                         @enderror
                                                                                     </div>
                                                                                 </div>
-                    
+
                                                                                 <div
                                                                                     style="width:100%; height: max-content; display: flex; justify-content: flex-end; gap: 5px;">
                                                                                     <button type="button" id="btn_anterior_marcas{{$proveedores->id}}" class="btn btn-secondary"
@@ -1029,16 +1072,16 @@
                                                                                         <button id="btn_submit" type="submit" class="btn btn-primary"
                                                                                             >Guardar todo</button>
                                                                                 </div>
-                    
+
                                                                             </div>
-                    
+
                                                                         </form>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                    
+
                                                     <!-- Modal para eliminar -->
                                                     <div class="modal fade" id="eraseModal{{ $proveedores->id }}"
                                                         tabindex="-1" role="dialog" aria-labelledby="eraseModalLabel"
@@ -1073,16 +1116,16 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                    
+
                                                 </tr>
-                    
+
                                                 <script>
                                                     document.addEventListener('DOMContentLoaded', function() {
                                                         let codigo = document.getElementById('codigo-cel{{ $proveedores->id }}');
-                    
+
                                                         // Obtener el valor del código del proveedor
                                                         let codigoProveedor = '{{ $proveedores->pais }}';
-                    
+
                                                         if (codigoProveedor == 'Argentina') {
                                                             // Establecer el valor del select al valor del proveedor
                                                             codigo.value = "+54";
@@ -1127,17 +1170,17 @@
                                                         } else if (codigoProveedor == 'Panamá') {
                                                             codigo.value = "+507";
                                                         }
-                    
-                    
+
+
                                                         let cel = document.getElementById('cel_edit_{{ $proveedores->id }}')
                                                         let tel = document.getElementById('tel{{ $proveedores->id }}')
-                    
+
                                                         let pais = document.getElementById('pais{{ $proveedores->id }}');
                                                         let ciudad = document.getElementById('ciudad{{ $proveedores->id }}');
                                                         let textPais = document.getElementById('text-pais_edit{{ $proveedores->id }}');
                                                         let departamento = document.getElementById('departamentos{{ $proveedores->id }}');
                                                         let municipio = document.getElementById('municipios{{ $proveedores->id }}');
-                    
+
                                                         // Función para limpiar el número de celular
                                                         function limpiarCelular() {
                                                             cel.value = cel.value.replace(/[^\d]/g, '');
@@ -1206,26 +1249,26 @@
                                                                 tel.value = tel.value.slice(0, 8);
                                                             }
                                                         }
-                    
+
                                                         // Asigna la función al evento input del campo de celular
                                                         cel.addEventListener('input', limpiarCelular);
                                                         tel.addEventListener('input', limpiarCelular);
-                    
+
                                                         function updateVisibility() {
                                                             sessionStorage.setItem('codigo', codigo.value);
-                    
+
                                                             if (codigo.value == '+54') {
                                                                 departamento.classList.add('hide');
                                                                 municipio.classList.add('hide');
                                                                 pais.classList.remove('hide');
                                                                 ciudad.classList.remove('hide');
-                    
+
                                                                 if (isNaN(cel.value) || cel.value.length != 10) {
                                                                     cel.setCustomValidity("El número de celular debe tener 10 dígitos");
                                                                 } else {
                                                                     cel.setCustomValidity("");
                                                                 }
-                    
+
                                                                 if (tel.value == "") {
                                                                     tel.setCustomValidity("");
                                                                 } else if (isNaN(tel.value) || tel.value.length != 10) {
@@ -1233,9 +1276,9 @@
                                                                 } else {
                                                                     tel.setCustomValidity("");
                                                                 }
-                    
+
                                                                 textPais.textContent = 'Argentina';
-                    
+
                                                                 departamento.removeAttribute('required');
                                                                 municipio.removeAttribute('required');
                                                             } else if (codigo.value == '+591') {
@@ -1243,14 +1286,14 @@
                                                                 municipio.classList.add('hide');
                                                                 pais.classList.remove('hide');
                                                                 ciudad.classList.remove('hide');
-                    
-                    
+
+
                                                                 if (isNaN(cel.value) || cel.value.length != 8) {
                                                                     cel.setCustomValidity("El número de celular debe tener 8 dígitos");
                                                                 } else {
                                                                     cel.setCustomValidity("");
                                                                 }
-                    
+
                                                                 if (tel.value == "") {
                                                                     tel.setCustomValidity("");
                                                                 } else if (isNaN(tel.value) || tel.value.length != 8) {
@@ -1258,9 +1301,9 @@
                                                                 } else {
                                                                     tel.setCustomValidity("");
                                                                 }
-                    
+
                                                                 textPais.textContent = 'Bolivia';
-                    
+
                                                                 departamento.removeAttribute('required');
                                                                 municipio.removeAttribute('required');
                                                             } else if (codigo.value == '+55') {
@@ -1268,13 +1311,13 @@
                                                                 municipio.classList.add('hide');
                                                                 pais.classList.remove('hide');
                                                                 ciudad.classList.remove('hide');
-                    
+
                                                                 if (isNaN(cel.value) || cel.value.length != 11) {
                                                                     cel.setCustomValidity("El número de celular debe tener 11 dígitos");
                                                                 } else {
                                                                     cel.setCustomValidity("");
                                                                 }
-                    
+
                                                                 if (tel.value == "") {
                                                                     tel.setCustomValidity("");
                                                                 } else if (isNaN(tel.value) || tel.value.length != 11) {
@@ -1282,9 +1325,9 @@
                                                                 } else {
                                                                     tel.setCustomValidity("");
                                                                 }
-                    
+
                                                                 textPais.textContent = 'Brasil';
-                    
+
                                                                 departamento.removeAttribute('required');
                                                                 municipio.removeAttribute('required');
                                                             } else if (codigo.value == '+56') {
@@ -1292,7 +1335,7 @@
                                                                 municipio.classList.add('hide');
                                                                 pais.classList.remove('hide');
                                                                 ciudad.classList.remove('hide');
-                    
+
                                                                 if (isNaN(cel.value) || cel.value.length != 9) {
                                                                     cel.setCustomValidity("El número de celular debe tener 9 dígitos");
                                                                 } else {
@@ -1305,9 +1348,9 @@
                                                                 } else {
                                                                     tel.setCustomValidity("");
                                                                 }
-                    
+
                                                                 textPais.textContent = 'Chile';
-                    
+
                                                                 departamento.removeAttribute('required');
                                                                 municipio.removeAttribute('required');
                                                             } else if (codigo.value == '+593') {
@@ -1320,7 +1363,7 @@
                                                                 } else {
                                                                     cel.setCustomValidity("");
                                                                 }
-                    
+
                                                                 if (tel.value == "") {
                                                                     tel.setCustomValidity("");
                                                                 } else if (isNaN(tel.value) || tel.value.length != 10) {
@@ -1328,9 +1371,9 @@
                                                                 } else {
                                                                     tel.setCustomValidity("");
                                                                 }
-                    
+
                                                                 textPais.textContent = 'Ecuador';
-                    
+
                                                                 departamento.removeAttribute('required');
                                                                 municipio.removeAttribute('required');
                                                             } else if (codigo.value == '+594') {
@@ -1343,8 +1386,8 @@
                                                                 } else {
                                                                     cel.setCustomValidity("");
                                                                 }
-                    
-                    
+
+
                                                                 if (tel.value == "") {
                                                                     tel.setCustomValidity("");
                                                                 } else if (isNaN(tel.value) || tel.value.length != 9) {
@@ -1353,7 +1396,7 @@
                                                                     tel.setCustomValidity("");
                                                                 }
                                                                 textPais.textContent = 'Guayana Francesa';
-                    
+
                                                                 departamento.removeAttribute('required');
                                                                 municipio.removeAttribute('required');
                                                             } else if (codigo.value == '+592') {
@@ -1366,7 +1409,7 @@
                                                                 } else {
                                                                     cel.setCustomValidity("");
                                                                 }
-                    
+
                                                                 if (tel.value == "") {
                                                                     tel.setCustomValidity("");
                                                                 } else if (isNaN(tel.value) || tel.value.length != 7) {
@@ -1374,9 +1417,9 @@
                                                                 } else {
                                                                     tel.setCustomValidity("");
                                                                 }
-                    
+
                                                                 textPais.textContent = 'Guyana';
-                    
+
                                                                 departamento.removeAttribute('required');
                                                                 municipio.removeAttribute('required');
                                                             } else if (codigo.value == '+595') {
@@ -1389,8 +1432,8 @@
                                                                 } else {
                                                                     cel.setCustomValidity("");
                                                                 }
-                    
-                    
+
+
                                                                 if (tel.value == "") {
                                                                     tel.setCustomValidity("");
                                                                 } else if (isNaN(tel.value) || tel.value.length != 9) {
@@ -1398,10 +1441,10 @@
                                                                 } else {
                                                                     tel.setCustomValidity("");
                                                                 }
-                    
-                    
+
+
                                                                 textPais.textContent = 'Paraguay';
-                    
+
                                                                 departamento.removeAttribute('required');
                                                                 municipio.removeAttribute('required');
                                                             } else if (codigo.value == '+51') {
@@ -1414,15 +1457,15 @@
                                                                 } else {
                                                                     cel.setCustomValidity("");
                                                                 }
-                    
+
                                                                 if (isNaN(tel.value) || tel.value.length != 9) {
                                                                     tel.setCustomValidity("El número de celular debe tener 9 dígitos");
                                                                 } else {
                                                                     tel.setCustomValidity("");
                                                                 }
-                    
+
                                                                 textPais.textContent = 'Perú';
-                    
+
                                                                 departamento.removeAttribute('required');
                                                                 municipio.removeAttribute('required');
                                                             } else if (codigo.value == '+597') {
@@ -1435,8 +1478,8 @@
                                                                 } else {
                                                                     cel.setCustomValidity("");
                                                                 }
-                    
-                    
+
+
                                                                 if (tel.value == "") {
                                                                     tel.setCustomValidity("");
                                                                 } else if (isNaN(tel.value) || tel.value.length != 7) {
@@ -1444,9 +1487,9 @@
                                                                 } else {
                                                                     tel.setCustomValidity("");
                                                                 }
-                    
+
                                                                 textPais.textContent = 'Surinam';
-                    
+
                                                                 departamento.removeAttribute('required');
                                                                 municipio.removeAttribute('required');
                                                             } else if (codigo.value == '+598') {
@@ -1459,8 +1502,8 @@
                                                                 } else {
                                                                     cel.setCustomValidity("");
                                                                 }
-                    
-                    
+
+
                                                                 if (tel.value == "") {
                                                                     tel.setCustomValidity("");
                                                                 } else if (isNaN(tel.value) || tel.value.length != 8) {
@@ -1468,9 +1511,9 @@
                                                                 } else {
                                                                     tel.setCustomValidity("");
                                                                 }
-                    
+
                                                                 textPais.textContent = 'Uruguay';
-                    
+
                                                                 departamento.removeAttribute('required');
                                                                 municipio.removeAttribute('required');
                                                             } else if (codigo.value == '+58') {
@@ -1483,7 +1526,7 @@
                                                                 } else {
                                                                     cel.setCustomValidity("");
                                                                 }
-                    
+
                                                                 if (tel.value == "") {
                                                                     tel.setCustomValidity("");
                                                                 } else if (isNaN(tel.value) || tel.value.length != 10) {
@@ -1492,7 +1535,7 @@
                                                                     tel.setCustomValidity("");
                                                                 }
                                                                 textPais.textContent = 'Venezuela';
-                    
+
                                                                 // Elimina el atributo 'required'
                                                                 departamento.removeAttribute('required');
                                                                 municipio.removeAttribute('required');
@@ -1506,8 +1549,8 @@
                                                                 } else {
                                                                     cel.setCustomValidity("");
                                                                 }
-                    
-                    
+
+
                                                                 if (tel.value == "") {
                                                                     tel.setCustomValidity("");
                                                                 } else if (isNaN(tel.value) || tel.value.length != 10) {
@@ -1516,7 +1559,7 @@
                                                                     tel.setCustomValidity("");
                                                                 }
                                                                 textPais.textContent = 'Colombia';
-                    
+
                                                                 // Establece los campos como obligatorios
                                                                 departamento.setAttribute('required', true);
                                                                 municipio.setAttribute('required', true);
@@ -1530,8 +1573,8 @@
                                                                 } else {
                                                                     cel.setCustomValidity("");
                                                                 }
-                    
-                    
+
+
                                                                 if (tel.value == "") {
                                                                     tel.setCustomValidity("");
                                                                 } else if (isNaN(tel.value) || tel.value.length != 10) {
@@ -1540,7 +1583,7 @@
                                                                     tel.setCustomValidity("");
                                                                 }
                                                                 textPais.textContent = 'Estados Unidos';
-                    
+
                                                                 departamento.removeAttribute('required');
                                                                 municipio.removeAttribute('required');
                                                             } else if (codigo.value == '+506') {
@@ -1553,8 +1596,8 @@
                                                                 } else {
                                                                     cel.setCustomValidity("");
                                                                 }
-                    
-                    
+
+
                                                                 if (tel.value == "") {
                                                                     tel.setCustomValidity("");
                                                                 } else if (isNaN(tel.value) || tel.value.length != 8) {
@@ -1563,7 +1606,7 @@
                                                                     tel.setCustomValidity("");
                                                                 }
                                                                 textPais.textContent = 'Costa Rica';
-                    
+
                                                                 departamento.removeAttribute('required');
                                                                 municipio.removeAttribute('required');
                                                             } else if (codigo.value == '+503') {
@@ -1576,8 +1619,8 @@
                                                                 } else {
                                                                     cel.setCustomValidity("");
                                                                 }
-                    
-                    
+
+
                                                                 if (tel.value == "") {
                                                                     tel.setCustomValidity("");
                                                                 } else if (isNaN(tel.value) || tel.value.length != 8) {
@@ -1586,7 +1629,7 @@
                                                                     tel.setCustomValidity("");
                                                                 }
                                                                 textPais.textContent = 'El Salvador';
-                    
+
                                                                 departamento.removeAttribute('required');
                                                                 municipio.removeAttribute('required');
                                                             } else if (codigo.value == '+502') {
@@ -1599,8 +1642,8 @@
                                                                 } else {
                                                                     cel.setCustomValidity("");
                                                                 }
-                    
-                    
+
+
                                                                 if (tel.value == "") {
                                                                     tel.setCustomValidity("");
                                                                 } else if (isNaN(tel.value) || tel.value.length != 8) {
@@ -1609,7 +1652,7 @@
                                                                     tel.setCustomValidity("");
                                                                 }
                                                                 textPais.textContent = 'Guatemala';
-                    
+
                                                                 departamento.removeAttribute('required');
                                                                 municipio.removeAttribute('required');
                                                             } else if (codigo.value == '+504') {
@@ -1622,8 +1665,8 @@
                                                                 } else {
                                                                     cel.setCustomValidity("");
                                                                 }
-                    
-                    
+
+
                                                                 if (tel.value == "") {
                                                                     tel.setCustomValidity("");
                                                                 } else if (isNaN(tel.value) || tel.value.length != 8) {
@@ -1631,9 +1674,9 @@
                                                                 } else {
                                                                     tel.setCustomValidity("");
                                                                 }
-                    
+
                                                                 textPais.textContent = 'Honduras';
-                    
+
                                                                 departamento.removeAttribute('required');
                                                                 municipio.removeAttribute('required');
                                                             } else if (codigo.value == '+52') {
@@ -1646,8 +1689,8 @@
                                                                 } else {
                                                                     cel.setCustomValidity("");
                                                                 }
-                    
-                    
+
+
                                                                 if (tel.value == "") {
                                                                     tel.setCustomValidity("");
                                                                 } else if (isNaN(tel.value) || tel.value.length != 10) {
@@ -1656,7 +1699,7 @@
                                                                     tel.setCustomValidity("");
                                                                 }
                                                                 textPais.textContent = 'México';
-                    
+
                                                                 departamento.removeAttribute('required');
                                                                 municipio.removeAttribute('required');
                                                             } else if (codigo.value == '+505') {
@@ -1669,8 +1712,8 @@
                                                                 } else {
                                                                     cel.setCustomValidity("");
                                                                 }
-                    
-                    
+
+
                                                                 if (tel.value == "") {
                                                                     tel.setCustomValidity("");
                                                                 } else if (isNaN(tel.value) || tel.value.length != 8) {
@@ -1679,7 +1722,7 @@
                                                                     tel.setCustomValidity("");
                                                                 }
                                                                 textPais.textContent = 'Nicaragua';
-                    
+
                                                                 departamento.removeAttribute('required');
                                                                 municipio.removeAttribute('required');
                                                             } else if (codigo.value == '+507') {
@@ -1692,8 +1735,8 @@
                                                                 } else {
                                                                     cel.setCustomValidity("");
                                                                 }
-                    
-                    
+
+
                                                                 if (tel.value == "") {
                                                                     tel.setCustomValidity("");
                                                                 } else if (isNaN(tel.value) || tel.value.length != 8) {
@@ -1702,25 +1745,25 @@
                                                                     tel.setCustomValidity("");
                                                                 }
                                                                 textPais.textContent = 'Panamá';
-                    
+
                                                                 departamento.removeAttribute('required');
                                                                 municipio.removeAttribute('required');
                                                             }
                                                         }
-                    
+
                                                         codigo.addEventListener('change', updateVisibility);
                                                         cel.addEventListener('change', updateVisibility);
                                                         tel.addEventListener('change', updateVisibility);
-                    
+
                                                         updateVisibility();
                                                     });
                                                 </script>
-                    
+
                                                 <script>
                                                     // Obtener los elementos del formulario dentro de cada iteración
                                                     const departamentoSelect{{ $proveedores->id }} = document.getElementById('departamento{{ $proveedores->id }}');
                                                     const municipioSelect{{ $proveedores->id }} = document.getElementById('municipio{{ $proveedores->id }}');
-                    
+
                                                     // Función para cargar los municipios según el departamento seleccionado
                                                     function cargarMunicipios{{ $proveedores->id }}(departamento) {
                                                         municipioSelect{{ $proveedores->id }}.innerHTML = '<option value="">Seleccione un municipio</option>';
@@ -1734,7 +1777,7 @@
                                                             });
                                                         }
                                                     }
-                    
+
                                                     // Evento para cargar los municipios al seleccionar un departamento
                                                     departamentoSelect{{ $proveedores->id }}.addEventListener('change', function() {
                                                         const selectedDepartamento = departamentoSelect{{ $proveedores->id }}.value;
@@ -1745,70 +1788,70 @@
                                                             municipioSelect{{ $proveedores->id }}.innerHTML =
                                                                 '<option value="">Seleccione un municipio</option>';
                                                         }
-                    
+
                                                         // Guardar la selección actual en localStorage cuando cambia
                                                         localStorage.setItem('selectedDepartamento{{ $proveedores->id }}', selectedDepartamento);
                                                     });
-                    
+
                                                     // Obtener el valor anterior de 'departamento' almacenado en localStorage
                                                     const storedDepartamento{{ $proveedores->id }} = localStorage.getItem(
                                                         'selectedDepartamento{{ $proveedores->id }}');
-                    
+
                                                     // Verificar si hay un valor almacenado y establecerlo como la opción seleccionada
                                                     if (storedDepartamento{{ $proveedores->id }}) {
                                                         departamentoSelect{{ $proveedores->id }}.value = storedDepartamento{{ $proveedores->id }};
                                                         cargarMunicipios{{ $proveedores->id }}(storedDepartamento{{ $proveedores->id }});
                                                     }
                                                 </script>
-                    
+
                                                 <script>
                                                     document.addEventListener('DOMContentLoaded', function() {
                                                         let marcas = document.getElementById('marcas{{ $proveedores->id }}');
                                                         let container = document.getElementById('items_container{{ $proveedores->id }}');
                                                         let marcas_preferencias = document.getElementById('marcas_preferencias{{ $proveedores->id }}');
                                                         marcas_preferencias.classList.add('hide');
-                    
+
                                                         // Función para agregar un botón
                                                         function agregarBoton(item) {
                                                             const botonesExistentes = Array.from(container.children).map(button => button.textContent.replace(/×/g, ''));
-                    
+
                                                             if (!botonesExistentes.includes(item)) {
                                                                 let button = document.createElement('button');
                                                                 button.type = 'button'; // Cambiamos el tipo de submit a button
                                                                 button.classList.add('item_selected');
                                                                 button.setAttribute('name', 'item');
                                                                 button.innerHTML = item + '<span class="btn_borrar_item">×</span>';
-                    
+
                                                                 // Agregar un evento de escucha de clics al botón
                                                                 button.addEventListener('click', function(event) {
                                                                     event.preventDefault(); // Evitar la recarga de la página
-                    
+
                                                                     // Eliminar el botón del contenedor
                                                                     container.removeChild(button);
-                    
+
                                                                     if (container.children.length === 0) {
                                                                         marcas_preferencias.classList.add('hide');
                                                                         marcas.removeAttribute('required');
                                                                     }
                                                                 });
-                    
+
                                                                 container.appendChild(button);
                                                             }
-                    
+
                                                         }
-                    
+
                                                         // Si hay marcas seleccionadas, recrear los botones
                                                         if (container.children.length > 0) {
                                                             marcas_preferencias.classList.remove('hide');
                                                             marcas.removeAttribute('required');
-                    
+
                                                             // Agregar el evento de clic a los botones existentes
                                                             let botones = container.querySelectorAll('.item_selected');
                                                             botones.forEach(function(button) {
                                                                 button.addEventListener('click', function(event) {
                                                                     event.preventDefault();
                                                                     container.removeChild(button);
-                    
+
                                                                     if (container.children.length === 0) {
                                                                         marcas_preferencias.classList.add('hide');
                                                                         marcas.removeAttribute('required');
@@ -1816,9 +1859,9 @@
                                                                 });
                                                             });
                                                         }
-                    
+
                                                         marcas.addEventListener('change', function() {
-                    
+
                                                             let item = marcas.value;
                                                             const botonesExistentes = Array.from(container.children).map(button => button.textContent);
                                                             if (item !== "" && !botonesExistentes.includes(item)) {
@@ -1826,30 +1869,30 @@
                                                                 marcas_preferencias.classList.remove('hide');
                                                             }
                                                         });
-                    
+
                                                         document.getElementById('edit_modal{{ $proveedores->id }}').addEventListener('submit', function(
                                                             event) {
                                                             event.preventDefault(); // Evitar el envío del formulario para manejarlo manualmente
-                    
+
                                                             // Obtener los textos de los botones en un arreglo
                                                             let textosSeleccionados = Array.from(container.children).map(button => button.textContent);
-                    
+
                                                             // Convertir el arreglo a una cadena JSON
                                                             let jsonTextosSeleccionados = JSON.stringify(textosSeleccionados);
-                    
+
                                                             // Agregar un campo oculto al formulario y asignarle la cadena JSON
                                                             let inputJson = document.createElement('input');
                                                             inputJson.type = 'hidden';
                                                             inputJson.name = 'json_marcas';
                                                             inputJson.value = jsonTextosSeleccionados.replace(/×/g, '').replace(/\n/g, '').replace(/\r/g, '');
                                                             this.appendChild(inputJson);
-                    
+
                                                             // Ahora, puedes enviar el formulario
                                                             this.submit();
                                                         });
                                                     });
                                                 </script>
-                    
+
                                                 <script>
                                                     document.addEventListener('DOMContentLoaded', function() {
                                                         let categoria = document.getElementById('categoria_repuesto{{ $proveedores->id }}');
@@ -1857,49 +1900,49 @@
                                                         let categorias_preferencias = document.getElementById(
                                                             'categorias_preferencias{{ $proveedores->id }}');
                                                         categorias_preferencias.classList.add('hide');
-                    
-                    
+
+
                                                         // Función para agregar un botón
                                                         function agregarBoton(item) {
                                                             const botonesExistentes = Array.from(container.children).map(button => button.textContent.replace(/×/g, ''));
-                    
+
                                                             if (!botonesExistentes.includes(item)) {
                                                                 let button = document.createElement('button');
                                                                 button.type = 'button'; // Cambiamos el tipo de submit a button
                                                                 button.classList.add('item_selected');
                                                                 button.setAttribute('name', 'item_category');
                                                                 button.innerHTML = item + '<span class="btn_borrar_item">×</span>';
-                    
+
                                                                 // Agregar un evento de escucha de clics al botón
                                                                 button.addEventListener('click', function(event) {
                                                                     event.preventDefault(); // Evitar la recarga de la página
-                    
+
                                                                     // Eliminar el botón del contenedor
                                                                     container.removeChild(button);
-                    
+
                                                                     if (container.children.length === 0) {
                                                                         categorias_preferencias.classList.add('hide');
                                                                         categoria.removeAttribute('required');
                                                                     }
                                                                 });
-                    
+
                                                                 container.appendChild(button);
                                                             }
-                    
+
                                                         }
-                    
+
                                                         // Si hay categorias seleccionadas, recrear los botones
                                                         if (container.children.length > 0) {
                                                             categorias_preferencias.classList.remove('hide');
                                                             categoria.removeAttribute('required');
-                    
+
                                                             // Agregar el evento de clic a los botones existentes
                                                             let botones = container.querySelectorAll('.item_selected');
                                                             botones.forEach(function(button) {
                                                                 button.addEventListener('click', function(event) {
                                                                     event.preventDefault();
                                                                     container.removeChild(button);
-                    
+
                                                                     if (container.children.length === 0) {
                                                                         categorias_preferencias.classList.add('hide');
                                                                         categoria.removeAttribute('required');
@@ -1907,9 +1950,9 @@
                                                                 });
                                                             });
                                                         }
-                    
+
                                                         categoria.addEventListener('change', function() {
-                    
+
                                                             let item = categoria.value;
                                                             const botonesExistentes = Array.from(container.children).map(button => button.textContent);
                                                             if (item !== "" && !botonesExistentes.includes(item)) {
@@ -1917,50 +1960,50 @@
                                                                 categorias_preferencias.classList.remove('hide');
                                                             }
                                                         });
-                    
+
                                                         document.getElementById('edit_modal{{ $proveedores->id }}').addEventListener('submit', function(
                                                             event) {
                                                             event.preventDefault(); // Evitar el envío del formulario para manejarlo manualmente
-                    
+
                                                             // Obtener los textos de los botones en un arreglo
                                                             let textosSeleccionados = Array.from(container.children).map(button => button.textContent);
-                    
+
                                                             // Convertir el arreglo a una cadena JSON
                                                             let jsonTextosSeleccionados = JSON.stringify(textosSeleccionados);
-                    
+
                                                             // Agregar un campo oculto al formulario y asignarle la cadena JSON
                                                             let inputJson = document.createElement('input');
                                                             inputJson.type = 'hidden';
                                                             inputJson.name = 'json_categorias';
                                                             inputJson.value = jsonTextosSeleccionados.replace(/×/g, '').replace(/\n/g, '').replace(/\r/g, '');
                                                             this.appendChild(inputJson);
-                    
+
                                                             // Ahora, puedes enviar el formulario
                                                             this.submit();
                                                         });
                                                     });
                                                 </script>
-                    
+
                                                 <script>
                                                     document.addEventListener('DOMContentLoaded', function() {
-                    
+
                                                         let text_rut = document.getElementById('text_file_rut{{ $proveedores->id }}');
                                                         let text_cam = document.getElementById('text_file_cam{{ $proveedores->id }}');
-                    
+
                                                         text_rut.innerHTML = "{{ $proveedores->rut }}";
                                                         text_cam.innerHTML = "{{ $proveedores->camara_comercio }}";
-                    
+
                                                         let rut = document.getElementById('rut{{ $proveedores->id }}');
                                                         let cam = document.getElementById('cam{{ $proveedores->id }}');
-                    
+
                                                         const btn1 = document.getElementById('btn1{{ $proveedores->id }}');
                                                         const i1 = document.getElementById('check1{{ $proveedores->id }}');
                                                         i1.style.display = "none";
-                    
+
                                                         const btn2 = document.getElementById('btn2{{ $proveedores->id }}');
                                                         const i2 = document.getElementById('check2{{ $proveedores->id }}');
                                                         i2.style.display = 'none';
-                    
+
                                                         rut.addEventListener('change', function() {
                                                             if (this.files.length > 0) {
                                                                 console.log('Se ha seleccionado al menos un archivo.');
@@ -1969,7 +2012,7 @@
                                                                 text_rut.innerHTML = this.files[0].name;
                                                             }
                                                         });
-                    
+
                                                         cam.addEventListener('change', function() {
                                                             if (this.files.length > 0) {
                                                                 btn2.style.borderColor = 'rgb(157, 232, 157)';
@@ -1979,32 +2022,32 @@
                                                         });
                                                     });
                                                 </script>
-                                                
+
                                                 <script>
                                                     document.addEventListener('DOMContentLoaded', function(){
                                                         let proveedores = @json($proveedores_all);
 
                                                         let nit = document.getElementById('nit_edit_{{ $proveedores->id }}');
                                                         let errorNit = document.getElementById('nit-edit-error{{$proveedores->id}}');
-                                                        
+
                                                         function validateNit() {
                                                           if (!nit.value) {
                                                             errorNit.textContent = 'El NIT es obligatorio';
                                                             return;
                                                           }
-                                                        
+
                                                           nit.value = nit.value.slice(0, 12);
-                                                        
+
                                                           if (isNaN(nit.value)) {
                                                             errorNit.textContent = 'El NIT debe contener solo números';
                                                             return;
                                                           }
-                                                        
+
                                                           if (nit.value.length < 8) {
                                                             errorNit.textContent = 'El NIT es muy corto';
                                                             return;
                                                           }
-                                                        
+
                                                           for (let i = 0; i < proveedores.length; i++) {
                                                             if (proveedores[i].id !== {{$proveedores->id}}) {
                                                               if (proveedores[i].nit_empresa === nit.value) {
@@ -2013,23 +2056,23 @@
                                                               }
                                                             }
                                                           }
-                                                        
+
                                                           errorNit.textContent = '';
                                                         }
-                                                        
+
                                                         nit.addEventListener('input', validateNit);
-                                                        
+
                                                         validateNit();
-                                                        
+
                                                         let razon = document.getElementById('razon_social_edit{{$proveedores->id}}');
                                                         let nombre = document.getElementById('nombre_comercial_edit_{{$proveedores->id}}');
                                                         let error_razon = document.getElementById('razon-edit-error{{$proveedores->id}}');
                                                         let error_nombre = document.getElementById('nombre-edit-error{{$proveedores->id}}');
-                                            
+
                                                         function razonAndNombreValidity(){
                                                             if (razon.value.length != 0) {
                                                                 let razonValue = razon.value;
-                                            
+
                                                                 for(let i = 0; i < proveedores.length; i++){
                                                                     if(proveedores[i].id != {{$proveedores->id}}){
                                                                         if(proveedores[i].razon_social.toLowerCase() == razonValue.toLowerCase()){
@@ -2049,10 +2092,10 @@
                                                                 razon.setCustomValidity("La razon social es obligatioria");
                                                                 error_razon.textContent = 'La razon social es obligatioria';
                                                             }
-                                                            
+
                                                             if (nombre.value.length != 0) {
                                                                 let nombreValue = nombre.value;
-                                            
+
                                                                 for(let i = 0; i < proveedores.length; i++){
                                                                     if(proveedores[i].id != {{$proveedores->id}}){
                                                                         if(proveedores[i].razon_social.toLowerCase() == nombreValue.toLowerCase()){
@@ -2073,57 +2116,57 @@
                                                                 error_nombre.textContent = 'El nombre comercial es obligatorio';
                                                             }
                                                         }
-                                            
+
                                                         razon.addEventListener('input', razonAndNombreValidity);
                                                         nombre.addEventListener('input', razonAndNombreValidity);
-                                            
+
                                                         razonAndNombreValidity();
-                                                        
+
                                                     });
                                                 </script>
-                    
+
                                                 <script>
                                                     document.addEventListener('DOMContentLoaded', function(){
-                    
+
                                                         let tab1 = document.getElementById('tab1_{{$proveedores->id}}');
                                                         let btnSTab1 = document.getElementById('btn_siguiente_basica{{$proveedores->id}}');
-                    
+
                                                         let tab2 = document.getElementById('tab2_{{$proveedores->id}}');
                                                         let btnATab2 = document.getElementById('btn_anterior_contacto{{$proveedores->id}}');
                                                         let btnSTab2 = document.getElementById('btn_siguiente_contacto{{$proveedores->id}}');
-                    
+
                                                         let tab3 = document.getElementById('tab3_{{$proveedores->id}}');
                                                         let btnATab3 = document.getElementById('btn_anterior_legal{{$proveedores->id}}');
                                                         let btnSTab3 = document.getElementById('btn_siguiente_legal{{$proveedores->id}}');
-                    
+
                                                         let tab4 = document.getElementById('tab4_{{$proveedores->id}}');
                                                         let btnATab4 = document.getElementById('btn_anterior_marcas{{$proveedores->id}}');
-                                                        
+
                                                         let tabId1 = document.getElementById('tab-content1_{{$proveedores->id}}');
                                                         let tabId2 = document.getElementById('tab-content2_{{$proveedores->id}}');
                                                         let tabId3 = document.getElementById('tab-content3_{{$proveedores->id}}');
                                                         let tabId4 = document.getElementById('tab-content4_{{$proveedores->id}}');
-                    
+
                                                         tab1.addEventListener('click', function () {
-                    
+
                                                             tabId1.classList.remove('hide');
                                                             tab1.classList.add('active');
                                                             tab1.classList.add('paso_activo');
                                                             tabId1.classList.add('show');
                                                             tabId1.classList.add('active');
-                    
+
                                                             tabId2.classList.add('hide');
                                                             tabId2.classList.remove('active');
                                                             tab2.classList.remove('active');
                                                             tab2.classList.remove('paso_activo');
                                                             tabId2.classList.remove('show');
-                    
+
                                                             tabId3.classList.add('hide');
                                                             tabId3.classList.remove('active');
                                                             tab3.classList.remove('active');
                                                             tab3.classList.remove('paso_activo');
                                                             tabId3.classList.remove('show');
-                    
+
                                                             tabId4.classList.add('hide');
                                                             tabId4.classList.remove('active');
                                                             tab4.classList.remove('active');
@@ -2131,52 +2174,52 @@
                                                             tabId4.classList.remove('show');
                                                         });
                                                         btnSTab1.addEventListener('click', function () {
-                    
+
                                                             tabId1.classList.add('hide');
                                                             tabId1.classList.remove('active');
                                                             tab1.classList.remove('active');
                                                             tab1.classList.remove('paso_activo');
                                                             tabId1.classList.remove('show');
-                    
+
                                                             tabId2.classList.remove('hide');
                                                             tab2.classList.add('active');
                                                             tab2.classList.add('paso_activo');
                                                             tabId2.classList.add('show');
                                                             tabId2.classList.add('active');
-                    
+
                                                             tabId3.classList.add('hide');
                                                             tabId3.classList.remove('active');
                                                             tab3.classList.remove('active');
                                                             tab3.classList.remove('paso_activo');
                                                             tabId3.classList.remove('show');
-                    
+
                                                             tabId4.classList.add('hide');
                                                             tabId4.classList.remove('active');
                                                             tab4.classList.remove('active');
                                                             tab4.classList.remove('paso_activo');
                                                             tabId4.classList.remove('show');
                                                         });
-                    
+
                                                         tab2.addEventListener('click', function () {
-                    
+
                                                             tabId1.classList.add('hide');
                                                             tabId1.classList.remove('active');
                                                             tab1.classList.remove('active');
                                                             tab1.classList.remove('paso_activo');
                                                             tabId1.classList.remove('show');
-                    
+
                                                             tabId2.classList.remove('hide');
                                                             tab2.classList.add('active');
                                                             tab2.classList.add('paso_activo');
                                                             tabId2.classList.add('show');
                                                             tabId2.classList.add('active');
-                    
+
                                                             tabId3.classList.add('hide');
                                                             tabId3.classList.remove('active');
                                                             tab3.classList.remove('active');
                                                             tab3.classList.remove('paso_activo');
                                                             tabId3.classList.remove('show');
-                    
+
                                                             tabId4.classList.add('hide');
                                                             tabId4.classList.remove('active');
                                                             tab4.classList.remove('active');
@@ -2184,25 +2227,25 @@
                                                             tabId4.classList.remove('show');
                                                         });
                                                         btnATab2.addEventListener('click', function () {
-                    
+
                                                             tabId1.classList.remove('hide');
                                                             tab1.classList.add('active');
                                                             tab1.classList.add('paso_activo');
                                                             tabId1.classList.add('show');
                                                             tabId1.classList.add('active');
-                    
+
                                                             tabId2.classList.add('hide');
                                                             tabId2.classList.remove('active');
                                                             tab2.classList.remove('active');
                                                             tab2.classList.remove('paso_activo');
                                                             tabId2.classList.remove('show');
-                    
+
                                                             tabId3.classList.add('hide');
                                                             tabId3.classList.remove('active');
                                                             tab3.classList.remove('active');
                                                             tab3.classList.remove('paso_activo');
                                                             tabId3.classList.remove('show');
-                    
+
                                                             tabId4.classList.add('hide');
                                                             tabId4.classList.remove('active');
                                                             tab4.classList.remove('active');
@@ -2210,52 +2253,52 @@
                                                             tabId4.classList.remove('show');
                                                         });
                                                         btnSTab2.addEventListener('click', function () {
-                    
+
                                                             tabId1.classList.add('hide');
                                                             tabId1.classList.remove('active');
                                                             tab1.classList.remove('active');
                                                             tab1.classList.remove('paso_activo');
                                                             tabId1.classList.remove('show');
-                    
+
                                                             tabId2.classList.add('hide');
                                                             tabId2.classList.remove('active');
                                                             tab2.classList.remove('active');
                                                             tab2.classList.remove('paso_activo');
                                                             tabId2.classList.remove('show');
-                    
+
                                                             tabId3.classList.remove('hide');
                                                             tab3.classList.add('active');
                                                             tab3.classList.add('paso_activo');
                                                             tabId3.classList.add('show');
                                                             tabId3.classList.add('active');
-                    
+
                                                             tabId4.classList.add('hide');
                                                             tabId4.classList.remove('active');
                                                             tab4.classList.remove('active');
                                                             tab4.classList.remove('paso_activo');
                                                             tabId4.classList.remove('show');
                                                         });
-                    
+
                                                         tab3.addEventListener('click', function () {
-                    
+
                                                             tabId1.classList.add('hide');
                                                             tabId1.classList.remove('active');
                                                             tab1.classList.remove('active');
                                                             tab1.classList.remove('paso_activo');
                                                             tabId1.classList.remove('show');
-                    
+
                                                             tabId2.classList.add('hide');
                                                             tabId2.classList.remove('active');
                                                             tab2.classList.remove('active');
                                                             tab2.classList.remove('paso_activo');
                                                             tabId2.classList.remove('show');
-                    
+
                                                             tabId3.classList.remove('hide');
                                                             tab3.classList.add('active');
                                                             tab3.classList.add('paso_activo');
                                                             tabId3.classList.add('show');
                                                             tabId3.classList.add('active');
-                    
+
                                                             tabId4.classList.add('hide');
                                                             tabId4.classList.remove('active');
                                                             tab4.classList.remove('active');
@@ -2263,25 +2306,25 @@
                                                             tabId4.classList.remove('show');
                                                         });
                                                         btnATab3.addEventListener('click', function () {
-                    
+
                                                             tabId1.classList.add('hide');
                                                             tabId1.classList.remove('active');
                                                             tab1.classList.remove('active');
                                                             tab1.classList.remove('paso_activo');
                                                             tabId1.classList.remove('show');
-                    
+
                                                             tabId2.classList.remove('hide');
                                                             tab2.classList.add('active');
                                                             tab2.classList.add('paso_activo');
                                                             tabId2.classList.add('show');
                                                             tabId2.classList.add('active');
-                    
+
                                                             tabId3.classList.add('hide');
                                                             tabId3.classList.remove('active');
                                                             tab3.classList.remove('active');
                                                             tab3.classList.remove('paso_activo');
                                                             tabId3.classList.remove('show');
-                    
+
                                                             tabId4.classList.add('hide');
                                                             tabId4.classList.remove('active');
                                                             tab4.classList.remove('active');
@@ -2289,52 +2332,52 @@
                                                             tabId4.classList.remove('show');
                                                         });
                                                         btnSTab3.addEventListener('click', function () {
-                    
+
                                                             tabId1.classList.add('hide');
                                                             tabId1.classList.remove('active');
                                                             tab1.classList.remove('active');
                                                             tab1.classList.remove('paso_activo');
                                                             tabId1.classList.remove('show');
-                    
+
                                                             tabId2.classList.add('hide');
                                                             tabId2.classList.remove('active');
                                                             tab2.classList.remove('active');
                                                             tab2.classList.remove('paso_activo');
                                                             tabId2.classList.remove('show');
-                    
+
                                                             tabId3.classList.add('hide');
                                                             tabId3.classList.remove('active');
                                                             tab3.classList.remove('active');
                                                             tab3.classList.remove('paso_activo');
                                                             tabId3.classList.remove('show');
-                    
+
                                                             tabId4.classList.remove('hide');
                                                             tab4.classList.add('active');
                                                             tab4.classList.add('paso_activo');
                                                             tabId4.classList.add('show');
                                                             tabId4.classList.add('active');
                                                         });
-                    
+
                                                         tab4.addEventListener('click', function () {
-                    
+
                                                             tabId1.classList.add('hide');
                                                             tabId1.classList.remove('active');
                                                             tab1.classList.remove('active');
                                                             tab1.classList.remove('paso_activo');
                                                             tabId1.classList.remove('show');
-                    
+
                                                             tabId2.classList.add('hide');
                                                             tabId2.classList.remove('active');
                                                             tab2.classList.remove('active');
                                                             tab2.classList.remove('paso_activo');
                                                             tabId2.classList.remove('show');
-                    
+
                                                             tabId3.classList.add('hide');
                                                             tabId3.classList.remove('active');
                                                             tab3.classList.remove('active');
                                                             tab3.classList.remove('paso_activo');
                                                             tabId3.classList.remove('show');
-                    
+
                                                             tabId4.classList.remove('hide');
                                                             tab4.classList.add('active');
                                                             tab4.classList.add('paso_activo');
@@ -2342,66 +2385,66 @@
                                                             tabId4.classList.add('active');
                                                         });
                                                         btnATab4.addEventListener('click', function () {
-                    
+
                                                             tabId1.classList.add('hide');
                                                             tabId1.classList.remove('active');
                                                             tab1.classList.remove('active');
                                                             tab1.classList.remove('paso_activo');
                                                             tabId1.classList.remove('show');
-                    
+
                                                             tabId2.classList.add('hide');
                                                             tabId2.classList.remove('active');
                                                             tab2.classList.remove('active');
                                                             tab2.classList.remove('paso_activo');
                                                             tabId2.classList.remove('show');
-                    
+
                                                             tabId3.classList.remove('hide');
                                                             tab3.classList.add('active');
                                                             tab3.classList.add('paso_activo');
                                                             tabId3.classList.add('show');
                                                             tabId3.classList.add('active');
-                    
+
                                                             tabId4.classList.add('hide');
                                                             tabId4.classList.remove('active');
                                                             tab4.classList.remove('active');
                                                             tab4.classList.remove('paso_activo');
                                                             tabId4.classList.remove('show');
                                                         });
-                    
+
                                                         // function validateForm1() {
                                                         //     campo_nombre.removeAttribute('required');
                                                         //     campo_cel.setCustomValidity("");
                                                         //     campo_cel.removeAttribute("required");
                                                         //     campo_departamento.removeAttribute('required');
                                                         //     campo_municipio.removeAttribute('required');
-                    
+
                                                         //     let form = document.getElementById('form_client');
                                                         //     if (!form.reportValidity()) {
                                                         //         return;
                                                         //     }
-                    
+
                                                         //     // Cambiar a la siguiente pestaña solo si todos los campos son válidos
                                                         //     changeTab1();
                                                         // }
-                    
+
                                                         // function validateForm2() {
                                                         //     campo_nombre.setAttribute('required', true);
                                                         //     campo_cel.setAttribute("required", true);
-                    
+
                                                         //     let form = document.getElementById('form_client');
                                                         //     if (!form.reportValidity()) {
                                                         //         return;
                                                         //     }
                                                         // }
-                    
+
                                                     })
                                                 </script>
                                             @endforeach
                                         @endif
-                    
+
                                     </tbody>
                                 </table>
-                    
+
                                 <!-- Modal de creación -->
                                 <div class="modal fade createModal" id="createModal" tabindex="-1" role="dialog" aria-labelledby="createModalLabel" aria-hidden="true" style="z-index: 1041;">
                                     <div class="modal-dialog" role="document" style="z-index: 1042;">
@@ -2418,7 +2461,7 @@
                                                 <form id="create_modal" action="{{ route('createProvider') }}"
                                                     method="POST" enctype="multipart/form-data">
                                                     @csrf
-                    
+
                                                     <div class="form-group">
                                                         <label for="nit_create"><span class="text-danger">*</span>NIT:</label>
                                                         <input class="form-control" type="text" id="nit_create"
@@ -2428,7 +2471,7 @@
                                                             <small class="text-danger text-xs pt-1">{{ $message }}</small>
                                                         @enderror
                                                     </div>
-                    
+
                                                     <div class="form-group">
                                                         <label for="nombre_comercial_create"><span class="text-danger">*</span>Nombre Establecimiento:</label>
                                                         <input type="text" class="form-control" id="nombre_comercial_create" name="nombre_comercial_create" placeholder="" value="{{old('nombre_comercial_create')}}" maxlength="50" autocomplete="on" required>
@@ -2436,7 +2479,7 @@
                                                             <small class="text-danger text-xs pt-1">{{ $message }}</small>
                                                         @enderror
                                                     </div>
-                    
+
                                                     <div class="form-group">
                                                         <label for="razon_create"><span class="text-danger">*</span>Razón
                                                             Social:</label>
@@ -2447,7 +2490,7 @@
                                                             <small class="text-danger text-xs pt-1">{{ $message }}</small>
                                                         @enderror
                                                     </div>
-                                                    
+
                                                    <div class="flex flex-col mb-3">
                                                         <label for="gerente"><span class="text-danger">*</span>Gerente:</label>
                                                         <input type="text" name="gerente_create" id="gerente" class="form-control"
@@ -2457,7 +2500,7 @@
                                                             <div class="text-danger text-xs pt-1">{{ $message }}</div>
                                                         @enderror
                                                     </div>
-                    
+
                                                     <div class="flex flex-col mb-3">
                                                         <label for="administrador"><span class="text-danger">*</span>Aministrador:</label>
                                                         <input type="text" name="administrador_create" id="administrador" class="form-control"
@@ -2467,7 +2510,7 @@
                                                             <div class="text-danger text-xs pt-1">{{ $message }}</div>
                                                         @enderror
                                                     </div>
-                    
+
                                                     <div class="form-group">
                                                         <label for="cel_create"><span class="text-danger">*</span>Número de celular:</label>
                                                         <div class="form-control"
@@ -2496,7 +2539,7 @@
                                                             </div>
                                                         @enderror
                                                     </div>
-                    
+
                                                     <div class="form-group">
                                                         <label for="tel_create">Número
                                                             de celular 2°:</label>
@@ -2507,21 +2550,21 @@
                                                             <small class="text-danger text-xs pt-1">{{ $message }}</small>
                                                         @enderror
                                                     </div>
-                    
+
                                                     <div class="flex flex-col mb-3">
                                                         <label for="representante_legal_create">Representante Legal:</label>
                                                         <input id="representante_legal_create" type="text"
                                                             class="form-control" name="representante_legal_create"
                                                             value="{{ old('representante_legal_create') }}" maxlength="60" autocomplete="on">
                                                     </div>
-                    
+
                                                     <div class="flex flex-col mb-3">
                                                         <label for="contacto_principal_create">Contacto Principal:</label>
                                                         <input id="contacto_principal_create" type="text"
                                                             class="form-control" name="contacto_principal_cerate"
                                                             value="{{ old('contacto_principal_create') }}" autocomplete="on">
                                                     </div>
-                    
+
                                                     <div id="pais_create" class="flex flex-col mb-3 hide">
                                                         <label>País:</label>
                                                         <div class="form-control">
@@ -2529,13 +2572,13 @@
                                                                 style="border: none !important;"></span>
                                                         </div>
                                                     </div>
-                    
+
                                                     <div id="ciudad_create" class="flex flex-col mb-3 hide">
                                                         <label for="ciudad_create"><span class="text-danger">*</span>Ciudad:</label>
                                                         <input id="ciudad_input_create" type="text" class="form-control"
                                                             name="ciudad_create" value="{{ old('ciudad_create') }}">
                                                     </div>
-                    
+
                                                     <div class="form-group">
                                                         <label for="email_create"><span class="text-danger">*</span>Correo
                                                             electrónico:</label>
@@ -2546,7 +2589,7 @@
                                                             <small class="text-danger text-xs pt-1">{{ $message }}</small>
                                                         @enderror
                                                     </div>
-                    
+
                                                     <div class="form-group">
                                                         <label for="email_2_create">Correo
                                                             electrónico (2°):</label>
@@ -2557,7 +2600,7 @@
                                                             <small class="text-danger text-xs pt-1">{{ $message }}</small>
                                                         @enderror
                                                     </div>
-                    
+
                                                     <div class="form-group" id="departamentos_create">
                                                         <label for="departamento"><span class="text-danger">*</span>Departamento:</label>
                                                         <select id="departamento_create" name="departamento_create"
@@ -2576,7 +2619,7 @@
                                                             <small class="text-danger text-xs pt-1">{{ $message }}</small>
                                                         @enderror
                                                     </div>
-                    
+
                                                     <div id="municipios_create" class="form-group">
                                                         <label for="municipio_create"><span class="text-danger">*</span>Municipio:</label>
                                                         <select id="municipio_create" name="municipio_create"
@@ -2590,7 +2633,7 @@
                                                             <small class="text-danger text-xs pt-1">{{ $message }}</small>
                                                         @enderror
                                                     </div>
-                    
+
                                                     <div class="form-group">
                                                         <label for="direccion"><span class="text-danger">*</span>Dirección:</label>
                                                         <input type="text" class="form-control" id="direccion_create"
@@ -2600,7 +2643,7 @@
                                                             <small class="text-danger text-xs pt-1">{{ $message }}</small>
                                                         @enderror
                                                     </div>
-                    
+
                                                     <div class="form-group">
                                                         <div class="flex flex-col">
                                                             <label for="marcas_create"><span class="text-danger">*</span>Preferencias de Marcas:</label>
@@ -2712,20 +2755,20 @@
                                                                 <!--<option value="Yamaha">Yamaha</option>-->
                                                                 <!--<option value="Zotye">Zotye</option>-->
                                                                 <option value="otro">Otro</option>
-                    
+
                                                             </select>
                                                         </div>
                                                         <div id="marcas_preferencias_create"
                                                             class="marcas_preferencias flex flex-col mb-3">
                                                             <div id="items_container_create"
                                                                 class="items_container form-control">
-                    
+
                                                             </div>
                                                             <div class="text-secondary text-xs pt-1">¡Solo le llegaran
                                                                 solicitudes de las marcas que elijas!.</div>
                                                         </div>
                                                     </div>
-                    
+
                                                     <div class="flex flex-col mb-3">
                                                         <label for="categoria_repuesto_create"><span class="text-danger">*</span>Especialidades:</label>
                                                         <select title="Especialidad: ¿En que repuestos se especializa?"
@@ -2742,7 +2785,7 @@
                                                             class="categorias_preferencias flex flex-col mb-3">
                                                             <div id="items_container_categorias_create"
                                                                 class="items_container form-control">
-                    
+
                                                             </div>
                                                             @error('json_marcas')
                                                                 <div class="text-danger text-xs pt-1">{{ $message }}</div>
@@ -2752,7 +2795,7 @@
                                                             @enderror
                                                         </div>
                                                     </div>
-                    
+
                                                     <div class="form-group flex flex-col">
                                                         <span>RUT:</span>
                                                         <label id="btn1_create" class="button form-control" for="rut_create"
@@ -2770,7 +2813,7 @@
                                                             <div class="text-danger text-xs pt-1">{{ $message }}</div>
                                                         @enderror
                                                     </div>
-                    
+
                                                     <div class="form-group flex flex-col">
                                                         <span>Camara de comercio:</span>
                                                         <label id="btn2_create" class="button form-control" for="cam_create"
@@ -2786,7 +2829,7 @@
                                                             <div class="text-danger text-xs pt-1">{{ $message }}</div>
                                                         @enderror
                                                     </div>
-                    
+
                                                     <div class="form-group">
                                                         <label for="estado">Estado:</label>
                                                         <select class="form-control" id="estado_create" name="estado_create"
@@ -2804,7 +2847,7 @@
                                                         Cambios</button>
                                                 </form>
                                             </div>
-                    
+
                                             <div class="modal-footer">
                                                 <button class="btn btn-secondary" id="btnCloseModalCreate2" type="button"
                                                     data-dismiss="modal">Cerrar</button>
@@ -2812,11 +2855,11 @@
                                         </div>
                                     </div>
                                 </div>
-                    
+
                                 <script>
                                     document.addEventListener('DOMContentLoaded', function() {
                                         let nit = document.getElementById('nit_create');
-                    
+
                                         function nitValidity() {
                                             if (nit.value.length != 0) {
                                                 nit.value = nit.value.slice(0, 12);
@@ -2831,30 +2874,30 @@
                                                 nit.setCustomValidity("");
                                             }
                                         }
-                    
+
                                         nit.addEventListener('input', nitValidity);
-                    
+
                                         nitValidity();
                                     });
                                 </script>
-                    
+
                                 <script>
                                     document.addEventListener('DOMContentLoaded', function() {
-                    
+
                                         let text_rut = document.getElementById('text_file_rut_create');
                                         let text_cam = document.getElementById('text_file_cam_create');
-                    
+
                                         let rut = document.getElementById('rut_create');
                                         let cam = document.getElementById('cam_create');
-                    
+
                                         const btn1 = document.getElementById('btn1_create');
                                         const i1 = document.getElementById('check1_create');
                                         i1.style.display = "none";
-                    
+
                                         const btn2 = document.getElementById('btn2_create');
                                         const i2 = document.getElementById('check2_create');
                                         i2.style.display = 'none';
-                    
+
                                         rut.addEventListener('change', function() {
                                             if (this.files.length > 0) {
                                                 console.log('Se ha seleccionado al menos un archivo.');
@@ -2863,7 +2906,7 @@
                                                 text_rut.innerHTML = this.files[0].name;
                                             }
                                         });
-                    
+
                                         cam.addEventListener('change', function() {
                                             if (this.files.length > 0) {
                                                 btn2.style.borderColor = 'rgb(157, 232, 157)';
@@ -2873,52 +2916,52 @@
                                         });
                                     });
                                 </script>
-                    
+
                                 <script>
                                     document.addEventListener('DOMContentLoaded', function() {
                                         let categoria = document.getElementById('categoria_repuesto_create');
                                         let container = document.getElementById('items_container_categorias_create');
                                         let categorias_preferencias = document.getElementById('categorias_preferencias_create');
                                         categorias_preferencias.classList.add('hide');
-                    
+
                                         // Intentar recuperar las categorias seleccionadas del localStorage
                                         let categoriaSeleccionados_create = JSON.parse(localStorage.getItem('categoriaSeleccionados_create')) ||
                                         {};
-                    
+
                                         // Función para agregar un botón
                                         function agregarBoton(item_category) {
                                             let button = document.createElement('button');
                                             button.classList.add('item_selected');
                                             button.setAttribute('name', 'item_category');
                                             button.innerHTML = item_category + '<span class="btn_borrar_item">×</span>';
-                    
+
                                             // Agregar un evento de escucha de clics al botón
                                             button.addEventListener('click', function() {
                                                 // Eliminar el botón del contenedor
                                                 container.removeChild(button);
-                    
+
                                                 // Eliminar la opción del objeto seleccionados
                                                 delete categoriaSeleccionados_create[item_category];
-                    
+
                                                 // Guardar las categorias seleccionadas en el localStorage
                                                 localStorage.setItem('categoriaSeleccionados_create', JSON.stringify(
                                                     categoriaSeleccionados_create));
-                    
+
                                                 if (Object.keys(categoriaSeleccionados_create).length === 0) {
                                                     categoria.setAttribute('required', true);
                                                 }
                                             });
-                    
+
                                             container.appendChild(button);
-                    
+
                                             // Marcar la opción como seleccionada
                                             categoriaSeleccionados_create[item_category] = true;
-                    
+
                                             // Guardar las categorias seleccionadas en el localStorage
                                             localStorage.setItem('categoriaSeleccionados_create', JSON.stringify(
                                             categoriaSeleccionados_create));
                                         }
-                    
+
                                         // Si hay categorias seleccionadas, recrear los botones
                                         if (Object.keys(categoriaSeleccionados_create).length > 0) {
                                             categorias_preferencias.classList.remove('hide');
@@ -2927,7 +2970,7 @@
                                                 agregarBoton(item_category);
                                             }
                                         }
-                    
+
                                         categoria.addEventListener('change', function() {
                                             let item_category = categoria.value;
                                             if (item_category !== "") {
@@ -2938,82 +2981,82 @@
                                                 }
                                             }
                                         });
-                    
+
                                         if (Object.keys(categoriaSeleccionados_create).length === 0) {
                                             categoria.setAttribute('required', true);
                                         } else {
                                             categoria.removeAttribute('required');
                                         }
-                    
+
                                         document.getElementById('create_modal').addEventListener('submit', function(event) {
                                             event.preventDefault(); // Evitar el envío del formulario para manejarlo manualmente
-                    
+
                                             // Obtener los textos de los botones en un arreglo
                                             let textosSeleccionados = Object.keys(categoriaSeleccionados_create);
-                    
+
                                             // Convertir el arreglo a una cadena JSON
                                             let jsonTextosSeleccionados = JSON.stringify(textosSeleccionados);
-                    
+
                                             // Agregar un campo oculto al formulario y asignarle la cadena JSON
                                             let inputJsonCategory = document.createElement('input');
                                             inputJsonCategory.type = 'hidden';
                                             inputJsonCategory.name = 'json_categorias_create';
                                             inputJsonCategory.value = jsonTextosSeleccionados.replace(/×/g, '').replace(/\n/g, '');
                                             this.appendChild(inputJsonCategory);
-                    
+
                                             // Limpiar los datos en localStorage después de enviar el formulario
                                             localStorage.removeItem('categoriaSeleccionados_create');
-                    
+
                                             container.innerHTML = "";
-                    
+
                                             // Ahora, puedes enviar el formulario
                                             this.submit();
                                         });
                                     });
                                 </script>
-                    
+
                                 <script>
                                     document.addEventListener('DOMContentLoaded', function() {
                                         let marcas = document.getElementById('marcas_create');
                                         let container = document.getElementById('items_container_create');
                                         let marcas_preferencias = document.getElementById('marcas_preferencias_create');
                                         marcas_preferencias.classList.add('hide');
-                    
+
                                         // Intentar recuperar las marcas seleccionadas del localStorage
                                         let seleccionados_create = JSON.parse(localStorage.getItem('seleccionados_create')) || {};
-                    
+
                                         // Función para agregar un botón
                                         function agregarBoton(item) {
                                             let button = document.createElement('button');
                                             button.classList.add('item_selected');
                                             button.setAttribute('name', 'item_create');
                                             button.innerHTML = item + '<span class="btn_borrar_item">×</span>';
-                    
+
                                             // Agregar un evento de escucha de clics al botón
                                             button.addEventListener('click', function() {
                                                 // Eliminar el botón del contenedor
                                                 container.removeChild(button);
-                    
+
                                                 // Eliminar la opción del objeto seleccionados
                                                 delete seleccionados_create[item];
-                    
+
                                                 // Guardar las marcas seleccionadas en el localStorage
                                                 localStorage.setItem('seleccionados_create', JSON.stringify(seleccionados_create));
-                    
+
                                                 if (!Object.keys(seleccionados_create).length === 0) {
                                                     marcas.removeAttribute('required');
                                                 }
                                             });
-                    
+
                                             container.appendChild(button);
-                    
+
                                             // Marcar la opción como seleccionada
                                             seleccionados_create[item] = true;
-                    
+
                                             // Guardar las marcas seleccionadas en el localStorage
                                             localStorage.setItem('seleccionados_create', JSON.stringify(seleccionados_create));
                                         }
-                    
+
                                         // Si hay marcas seleccionadas, recrear los botones
                                         if (Object.keys(seleccionados_create).length > 0) {
                                             marcas_preferencias.classList.remove('hide');
@@ -3022,7 +3065,7 @@
                                                 agregarBoton(item);
                                             }
                                         }
-                    
+
                                         marcas.addEventListener('change', function() {
                                             let item = marcas.value;
                                             if (item !== "") {
@@ -3035,45 +3078,45 @@
                                                 }
                                             }
                                         });
-                    
+
                                         if (Object.keys(seleccionados_create).length === 0) {
                                             marcas.setAttribute('required', true);
                                         } else {
                                             marcas.removeAttribute('required');
                                         }
-                    
+
                                         document.getElementById('create_modal').addEventListener('submit', function(event) {
                                             event.preventDefault(); // Evitar el envío del formulario para manejarlo manualmente
-                    
+
                                             // Obtener los textos de los botones en un arreglo
                                             let textosSeleccionados = Object.keys(seleccionados_create);
-                    
+
                                             // Convertir el arreglo a una cadena JSON
                                             let jsonTextosSeleccionados = JSON.stringify(textosSeleccionados);
-                    
+
                                             // Agregar un campo oculto al formulario y asignarle la cadena JSON
                                             let inputJson = document.createElement('input');
                                             inputJson.type = 'hidden';
                                             inputJson.name = 'json_marcas_create';
                                             inputJson.value = jsonTextosSeleccionados.replace(/×/g, '').replace(/\n/g, '');
                                             this.appendChild(inputJson);
-                    
+
                                             // Limpiar los datos en localStorage después de enviar el formulario
                                             localStorage.removeItem('seleccionados_create');
                                             container.innerHTML = "";
-                    
+
                                             // Ahora, puedes enviar el formulario
                                             this.submit();
                                         });
-                    
+
                                     });
                                 </script>
-                    
+
                                 <script>
                                     // Obtener los elementos del formulario dentro de cada iteración
                                     const departamentoSelect = document.getElementById('departamento_create');
                                     const municipioSelect = document.getElementById('municipio_create');
-                    
+
                                     // Función para cargar los municipios según el departamento seleccionado
                                     function cargarMunicipios(departamento) {
                                         municipioSelect.innerHTML = '<option value="">Seleccione un municipio</option>';
@@ -3086,7 +3129,7 @@
                                             });
                                         }
                                     }
-                    
+
                                     // Evento para cargar los municipios al seleccionar un departamento
                                     departamentoSelect.addEventListener('change', function() {
                                         const selectedDepartamentoCreate = departamentoSelect.value;
@@ -3096,34 +3139,34 @@
                                             // Si no se ha seleccionado un departamento, limpiar el campo de municipio
                                             municipioSelect.innerHTML = '<option value="">Seleccione un municipio</option>';
                                         }
-                    
+
                                         // Guardar la selección actual en localStorage cuando cambia
                                         localStorage.setItem('selectedDepartamentoCreate', selectedDepartamentoCreate);
                                     });
-                    
+
                                     // Obtener el valor anterior de 'departamento' almacenado en localStorage
                                     const storedDepartamento = localStorage.getItem('selectedDepartamentoCreate');
-                    
+
                                     // Verificar si hay un valor almacenado y establecerlo como la opción seleccionada
                                     if (storedDepartamento) {
                                         departamentoSelect.value = storedDepartamento;
                                         cargarMunicipios(storedDepartamento);
                                     }
                                 </script>
-                    
+
                                 <script>
                                     document.addEventListener('DOMContentLoaded', function() {
                                         let codigo = document.getElementById('codigo_cel_create');
-                    
+
                                         let cel = document.getElementById('cel_create');
                                         let tel = document.getElementById('tel_create');
-                    
+
                                         let pais = document.getElementById('pais_create');
                                         let ciudad = document.getElementById('ciudad_create');
                                         let textPais = document.getElementById('text_pais_create');
                                         let departamento = document.getElementById('departamentos_create');
                                         let municipio = document.getElementById('municipios_create');
-                    
+
                                         // Función para limpiar el número de celular
                                         function limpiarCelular() {
                                             cel.value = cel.value.replace(/[^\d]/g, '');
@@ -3192,26 +3235,26 @@
                                                 tel.value = tel.value.slice(0, 8);
                                             }
                                         }
-                    
+
                                         // Asigna la función al evento input del campo de celular
                                         cel.addEventListener('input', limpiarCelular);
                                         tel.addEventListener('input', limpiarCelular);
-                    
+
                                         function updateVisibility() {
                                             sessionStorage.setItem('codigo', codigo.value);
-                    
+
                                             if (codigo.value == '+54') {
                                                 departamento.classList.add('hide');
                                                 municipio.classList.add('hide');
                                                 pais.classList.remove('hide');
                                                 ciudad.classList.remove('hide');
-                    
+
                                                 if (isNaN(cel.value) || cel.value.length != 10) {
                                                     cel.setCustomValidity("El número de celular debe tener 10 dígitos");
                                                 } else {
                                                     cel.setCustomValidity("");
                                                 }
-                    
+
                                                 if (tel.value == "") {
                                                     tel.setCustomValidity("");
                                                 } else if (isNaN(tel.value) || tel.value.length != 10) {
@@ -3219,9 +3262,9 @@
                                                 } else {
                                                     tel.setCustomValidity("");
                                                 }
-                    
+
                                                 textPais.textContent = 'Argentina';
-                    
+
                                                 departamento.removeAttribute('required');
                                                 municipio.removeAttribute('required');
                                             } else if (codigo.value == '+591') {
@@ -3229,14 +3272,14 @@
                                                 municipio.classList.add('hide');
                                                 pais.classList.remove('hide');
                                                 ciudad.classList.remove('hide');
-                    
-                    
+
+
                                                 if (isNaN(cel.value) || cel.value.length != 8) {
                                                     cel.setCustomValidity("El número de celular debe tener 8 dígitos");
                                                 } else {
                                                     cel.setCustomValidity("");
                                                 }
-                    
+
                                                 if (tel.value == "") {
                                                     tel.setCustomValidity("");
                                                 } else if (isNaN(tel.value) || tel.value.length != 8) {
@@ -3244,9 +3287,9 @@
                                                 } else {
                                                     tel.setCustomValidity("");
                                                 }
-                    
+
                                                 textPais.textContent = 'Bolivia';
-                    
+
                                                 departamento.removeAttribute('required');
                                                 municipio.removeAttribute('required');
                                             } else if (codigo.value == '+55') {
@@ -3254,13 +3297,13 @@
                                                 municipio.classList.add('hide');
                                                 pais.classList.remove('hide');
                                                 ciudad.classList.remove('hide');
-                    
+
                                                 if (isNaN(cel.value) || cel.value.length != 11) {
                                                     cel.setCustomValidity("El número de celular debe tener 11 dígitos");
                                                 } else {
                                                     cel.setCustomValidity("");
                                                 }
-                    
+
                                                 if (tel.value == "") {
                                                     tel.setCustomValidity("");
                                                 } else if (isNaN(tel.value) || tel.value.length != 11) {
@@ -3268,9 +3311,9 @@
                                                 } else {
                                                     tel.setCustomValidity("");
                                                 }
-                    
+
                                                 textPais.textContent = 'Brasil';
-                    
+
                                                 departamento.removeAttribute('required');
                                                 municipio.removeAttribute('required');
                                             } else if (codigo.value == '+56') {
@@ -3278,7 +3321,7 @@
                                                 municipio.classList.add('hide');
                                                 pais.classList.remove('hide');
                                                 ciudad.classList.remove('hide');
-                    
+
                                                 if (isNaN(cel.value) || cel.value.length != 9) {
                                                     cel.setCustomValidity("El número de celular debe tener 9 dígitos");
                                                 } else {
@@ -3291,9 +3334,9 @@
                                                 } else {
                                                     tel.setCustomValidity("");
                                                 }
-                    
+
                                                 textPais.textContent = 'Chile';
-                    
+
                                                 departamento.removeAttribute('required');
                                                 municipio.removeAttribute('required');
                                             } else if (codigo.value == '+593') {
@@ -3306,7 +3349,7 @@
                                                 } else {
                                                     cel.setCustomValidity("");
                                                 }
-                    
+
                                                 if (tel.value == "") {
                                                     tel.setCustomValidity("");
                                                 } else if (isNaN(tel.value) || tel.value.length != 10) {
@@ -3314,9 +3357,9 @@
                                                 } else {
                                                     tel.setCustomValidity("");
                                                 }
-                    
+
                                                 textPais.textContent = 'Ecuador';
-                    
+
                                                 departamento.removeAttribute('required');
                                                 municipio.removeAttribute('required');
                                             } else if (codigo.value == '+594') {
@@ -3329,8 +3372,8 @@
                                                 } else {
                                                     cel.setCustomValidity("");
                                                 }
-                    
-                    
+
+
                                                 if (tel.value == "") {
                                                     tel.setCustomValidity("");
                                                 } else if (isNaN(tel.value) || tel.value.length != 9) {
@@ -3339,7 +3382,7 @@
                                                     tel.setCustomValidity("");
                                                 }
                                                 textPais.textContent = 'Guayana Francesa';
-                    
+
                                                 departamento.removeAttribute('required');
                                                 municipio.removeAttribute('required');
                                             } else if (codigo.value == '+592') {
@@ -3352,7 +3395,7 @@
                                                 } else {
                                                     cel.setCustomValidity("");
                                                 }
-                    
+
                                                 if (tel.value == "") {
                                                     tel.setCustomValidity("");
                                                 } else if (isNaN(tel.value) || tel.value.length != 7) {
@@ -3360,9 +3403,9 @@
                                                 } else {
                                                     tel.setCustomValidity("");
                                                 }
-                    
+
                                                 textPais.textContent = 'Guyana';
-                    
+
                                                 departamento.removeAttribute('required');
                                                 municipio.removeAttribute('required');
                                             } else if (codigo.value == '+595') {
@@ -3375,8 +3418,8 @@
                                                 } else {
                                                     cel.setCustomValidity("");
                                                 }
-                    
-                    
+
+
                                                 if (tel.value == "") {
                                                     tel.setCustomValidity("");
                                                 } else if (isNaN(tel.value) || tel.value.length != 9) {
@@ -3384,10 +3427,10 @@
                                                 } else {
                                                     tel.setCustomValidity("");
                                                 }
-                    
-                    
+
+
                                                 textPais.textContent = 'Paraguay';
-                    
+
                                                 departamento.removeAttribute('required');
                                                 municipio.removeAttribute('required');
                                             } else if (codigo.value == '+51') {
@@ -3400,15 +3443,15 @@
                                                 } else {
                                                     cel.setCustomValidity("");
                                                 }
-                    
+
                                                 if (isNaN(tel.value) || tel.value.length != 9) {
                                                     tel.setCustomValidity("El número de celular debe tener 9 dígitos");
                                                 } else {
                                                     tel.setCustomValidity("");
                                                 }
-                    
+
                                                 textPais.textContent = 'Perú';
-                    
+
                                                 departamento.removeAttribute('required');
                                                 municipio.removeAttribute('required');
                                             } else if (codigo.value == '+597') {
@@ -3421,8 +3464,8 @@
                                                 } else {
                                                     cel.setCustomValidity("");
                                                 }
-                    
-                    
+
+
                                                 if (tel.value == "") {
                                                     tel.setCustomValidity("");
                                                 } else if (isNaN(tel.value) || tel.value.length != 7) {
@@ -3430,9 +3473,9 @@
                                                 } else {
                                                     tel.setCustomValidity("");
                                                 }
-                    
+
                                                 textPais.textContent = 'Surinam';
-                    
+
                                                 departamento.removeAttribute('required');
                                                 municipio.removeAttribute('required');
                                             } else if (codigo.value == '+598') {
@@ -3445,8 +3488,8 @@
                                                 } else {
                                                     cel.setCustomValidity("");
                                                 }
-                    
-                    
+
+
                                                 if (tel.value == "") {
                                                     tel.setCustomValidity("");
                                                 } else if (isNaN(tel.value) || tel.value.length != 8) {
@@ -3454,9 +3497,9 @@
                                                 } else {
                                                     tel.setCustomValidity("");
                                                 }
-                    
+
                                                 textPais.textContent = 'Uruguay';
-                    
+
                                                 departamento.removeAttribute('required');
                                                 municipio.removeAttribute('required');
                                             } else if (codigo.value == '+58') {
@@ -3469,7 +3512,7 @@
                                                 } else {
                                                     cel.setCustomValidity("");
                                                 }
-                    
+
                                                 if (tel.value == "") {
                                                     tel.setCustomValidity("");
                                                 } else if (isNaN(tel.value) || tel.value.length != 10) {
@@ -3478,7 +3521,7 @@
                                                     tel.setCustomValidity("");
                                                 }
                                                 textPais.textContent = 'Venezuela';
-                    
+
                                                 // Elimina el atributo 'required'
                                                 departamento.removeAttribute('required');
                                                 municipio.removeAttribute('required');
@@ -3492,8 +3535,8 @@
                                                 } else {
                                                     cel.setCustomValidity("");
                                                 }
-                    
-                    
+
+
                                                 if (tel.value == "") {
                                                     tel.setCustomValidity("");
                                                 } else if (isNaN(tel.value) || tel.value.length != 10) {
@@ -3502,7 +3545,7 @@
                                                     tel.setCustomValidity("");
                                                 }
                                                 textPais.textContent = 'Colombia';
-                    
+
                                                 // Establece los campos como obligatorios
                                                 departamento.setAttribute('required', true);
                                                 municipio.setAttribute('required', true);
@@ -3516,8 +3559,8 @@
                                                 } else {
                                                     cel.setCustomValidity("");
                                                 }
-                    
-                    
+
+
                                                 if (tel.value == "") {
                                                     tel.setCustomValidity("");
                                                 } else if (isNaN(tel.value) || tel.value.length != 10) {
@@ -3526,7 +3569,7 @@
                                                     tel.setCustomValidity("");
                                                 }
                                                 textPais.textContent = 'Estados Unidos';
-                    
+
                                                 departamento.removeAttribute('required');
                                                 municipio.removeAttribute('required');
                                             } else if (codigo.value == '+506') {
@@ -3539,8 +3582,8 @@
                                                 } else {
                                                     cel.setCustomValidity("");
                                                 }
-                    
-                    
+
+
                                                 if (tel.value == "") {
                                                     tel.setCustomValidity("");
                                                 } else if (isNaN(tel.value) || tel.value.length != 8) {
@@ -3549,7 +3592,7 @@
                                                     tel.setCustomValidity("");
                                                 }
                                                 textPais.textContent = 'Costa Rica';
-                    
+
                                                 departamento.removeAttribute('required');
                                                 municipio.removeAttribute('required');
                                             } else if (codigo.value == '+503') {
@@ -3562,8 +3605,8 @@
                                                 } else {
                                                     cel.setCustomValidity("");
                                                 }
-                    
-                    
+
+
                                                 if (tel.value == "") {
                                                     tel.setCustomValidity("");
                                                 } else if (isNaN(tel.value) || tel.value.length != 8) {
@@ -3572,7 +3615,7 @@
                                                     tel.setCustomValidity("");
                                                 }
                                                 textPais.textContent = 'El Salvador';
-                    
+
                                                 departamento.removeAttribute('required');
                                                 municipio.removeAttribute('required');
                                             } else if (codigo.value == '+502') {
@@ -3585,8 +3628,8 @@
                                                 } else {
                                                     cel.setCustomValidity("");
                                                 }
-                    
-                    
+
+
                                                 if (tel.value == "") {
                                                     tel.setCustomValidity("");
                                                 } else if (isNaN(tel.value) || tel.value.length != 8) {
@@ -3595,7 +3638,7 @@
                                                     tel.setCustomValidity("");
                                                 }
                                                 textPais.textContent = 'Guatemala';
-                    
+
                                                 departamento.removeAttribute('required');
                                                 municipio.removeAttribute('required');
                                             } else if (codigo.value == '+504') {
@@ -3608,8 +3651,8 @@
                                                 } else {
                                                     cel.setCustomValidity("");
                                                 }
-                    
-                    
+
+
                                                 if (tel.value == "") {
                                                     tel.setCustomValidity("");
                                                 } else if (isNaN(tel.value) || tel.value.length != 8) {
@@ -3617,9 +3660,9 @@
                                                 } else {
                                                     tel.setCustomValidity("");
                                                 }
-                    
+
                                                 textPais.textContent = 'Honduras';
-                    
+
                                                 departamento.removeAttribute('required');
                                                 municipio.removeAttribute('required');
                                             } else if (codigo.value == '+52') {
@@ -3632,8 +3675,8 @@
                                                 } else {
                                                     cel.setCustomValidity("");
                                                 }
-                    
-                    
+
+
                                                 if (tel.value == "") {
                                                     tel.setCustomValidity("");
                                                 } else if (isNaN(tel.value) || tel.value.length != 10) {
@@ -3642,7 +3685,7 @@
                                                     tel.setCustomValidity("");
                                                 }
                                                 textPais.textContent = 'México';
-                    
+
                                                 departamento.removeAttribute('required');
                                                 municipio.removeAttribute('required');
                                             } else if (codigo.value == '+505') {
@@ -3655,8 +3698,8 @@
                                                 } else {
                                                     cel.setCustomValidity("");
                                                 }
-                    
-                    
+
+
                                                 if (tel.value == "") {
                                                     tel.setCustomValidity("");
                                                 } else if (isNaN(tel.value) || tel.value.length != 8) {
@@ -3665,7 +3708,7 @@
                                                     tel.setCustomValidity("");
                                                 }
                                                 textPais.textContent = 'Nicaragua';
-                    
+
                                                 departamento.removeAttribute('required');
                                                 municipio.removeAttribute('required');
                                             } else if (codigo.value == '+507') {
@@ -3678,8 +3721,8 @@
                                                 } else {
                                                     cel.setCustomValidity("");
                                                 }
-                    
-                    
+
+
                                                 if (tel.value == "") {
                                                     tel.setCustomValidity("");
                                                 } else if (isNaN(tel.value) || tel.value.length != 8) {
@@ -3688,33 +3731,33 @@
                                                     tel.setCustomValidity("");
                                                 }
                                                 textPais.textContent = 'Panamá';
-                    
+
                                                 departamento.removeAttribute('required');
                                                 municipio.removeAttribute('required');
                                             }
                                         }
-                    
+
                                         codigo.addEventListener('change', updateVisibility);
                                         cel.addEventListener('change', updateVisibility);
                                         tel.addEventListener('change', updateVisibility);
                                         updateVisibility();
                                     });
                                 </script>
-                    
+
                             </div>
                         </div>
-                    
+
                         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-                    
+
                         <!-- Core plugin JavaScript-->
                         <script src="{{ asset('vendor/jquery-easing/jquery.easing.min.js') }}"></script>
-                    
+
                         <!-- Custom scripts for all pages-->
                         <script src="{{ asset('js/sb-admin-2.min.js') }}"></script>
-                    
+
                         <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
-                    
-                    
+
+
                         <script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
                         <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
                         <!-- Botones de paginación -->

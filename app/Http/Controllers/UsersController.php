@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Country_code;
 use App\Models\Geolocation;
 use App\Models\Category;
+use App\Models\Session_log;
 
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
@@ -107,6 +108,20 @@ class UsersController extends Controller
                         Log::error('Error al registrar la nueva actividad: ' . $e->getMessage());
                     }
 
+                    $sesion_activa = Session_log::where('idProveedor', auth()->user()->proveedor_id)->first();
+
+                    if($sesion_activa){
+                        $sesion_activa->sesiones += 1;
+                        $sesion_activa->save();
+                    }else{
+                        $sesion = new Session_log();
+                        $sesion->idProveedor = auth()->user()->proveedor_id;
+                        $sesion->direccion_ip = request()->ip();
+                        $sesion->navegador = request()->header('user-agent');
+                        $sesion->sesiones = 1;
+                        $sesion->save();
+                    }
+
                     return redirect()->intended(route('dashboard'));
                 }
             } else {
@@ -115,6 +130,109 @@ class UsersController extends Controller
                 return redirect()->route('login_outAnimate')->withErrors([
                     'email' => 'Error al autenticar al usuario.',
                 ]);
+            }
+        }else{
+            $proveedor = Provider::where('email', $request->email)->first();
+
+            if($proveedor){
+                $user_old = User::where('proveedor_id', $proveedor->id)->first();
+
+                if(!$user_old){
+                    $user = new User();
+                    $user->name = $proveedor->razon_social;
+                    $user->cel = $proveedor->celular;
+                    if ($proveedor->telefono) {
+                        $user->tel = $proveedor->telefono;
+                    }
+                    $user->email = $proveedor->email;
+                    $user->role = 'Proveedor';
+                    $user->password = 'demo12345';
+                    $user->proveedor()->associate($proveedor);
+                    $user->assignRole('Proveedor');
+                    $user->save();
+
+                    if (!$proveedor->estado) {
+                        // El usuario es un proveedor con cuenta inactiva
+                        auth()->logout();
+                        return redirect()->route('login_outAnimate')->withErrors([
+                            'email' => 'Tu cuenta está inactiva. Contacta al administrador para obtener acceso.',
+                        ]);
+                    }else{
+                        if (auth()->attempt($credentials)) {
+                            $user = auth()->user();
+
+                            if ($user) {
+                                if ($user->role === 'Admin') {
+
+                                    $new_log = new Activity_log();
+                                    $new_log->fecha = Carbon::now();
+                                    if(auth()->check()){
+                                        $new_log->usuario = auth()->user()->name;
+                                    }else{
+                                        $new_log->usuario = 'Desconocido';
+                                    }
+                                    $new_log->actividad = 'Ha iniciado sesión.';
+                                    $new_log->descripcion = 'Se ha iniciado una sesión';
+                                    $new_log->navegador = request()->header('user-agent');
+                                    $new_log->direccion_ip = request()->ip();
+                                    $new_log->role = 'Admin';
+
+                                    try{
+                                        $new_log->save();
+                                    }catch(\exception $e){
+                                        Log::error('Error al registrar la nueva actividad: ' . $e->getMessage());
+                                    }
+
+                                    return redirect()->intended(route('dashboard'));
+                                } elseif ($user->role === 'Proveedor') {
+                                    if (!$user->proveedor->estado) {
+                                        // El usuario es un proveedor con cuenta inactiva
+                                        auth()->logout();
+                                        return redirect()->route('login_outAnimate')->withErrors([
+                                            'email' => 'Tu cuenta está inactiva. Contacta al administrador para obtener acceso.',
+                                        ]);
+                                    }
+
+                                    $new_log = new Activity_log();
+                                    $new_log->fecha = Carbon::now();
+                                    if(auth()->check()){
+                                        $new_log->usuario = auth()->user()->name;
+                                    }else{
+                                        $new_log->usuario = 'Desconocido';
+                                    }
+                                    $new_log->actividad = 'Ha iniciado sesión.';
+                                    $new_log->descripcion = 'Se ha iniciado una sesión';
+                                    $new_log->navegador = request()->header('user-agent');
+                                    $new_log->direccion_ip = request()->ip();
+                                    $new_log->role = 'Admin';
+
+                                    try{
+                                        $new_log->save();
+                                    }catch(\exception $e){
+                                        Log::error('Error al registrar la nueva actividad: ' . $e->getMessage());
+                                    }
+
+                                    $sesion_activa = Session_log::where('idProveedor', auth()->user()->proveedor_id)->first();
+
+                                    if($sesion_activa){
+                                        $sesion_activa->sesiones += 1;
+                                        $sesion_activa->save();
+                                    }else{
+                                        $sesion = new Session_log();
+                                        $sesion->idProveedor = auth()->user()->proveedor_id;
+                                        $sesion->direccion_ip = request()->ip();
+                                        $sesion->navegador = request()->header('user-agent');
+                                        $sesion->sesiones = 1;
+                                        $sesion->save();
+                                    }
+
+                                    return redirect()->intended(route('dashboard'));
+                                }
+                            }
+                        }
+                    }
+                }
+
             }
         }
 
@@ -575,7 +693,7 @@ class UsersController extends Controller
                         $enlace = "$request->nit/$notification->id";
                     }
                 }
-                
+
                 $token = 'EAAyaksOlpN4BO64MEL1cjlEGMvDQb6liWd3oCOIhvnUZBMeF5tbhAvjZABvBnnaYh9V9waBGZCBJW0LnCFaDcUQMZArNbLSKCUEL1MLmgdoRpQHyvEGdAC0CYOxt3l5N2u2Wi0yAlVFE7mCRtHVkZCSOyZAXyVtbrxxeOjkJqOkFDjloKrVuZBLXJUF4S1KG3u7';
                 $url = 'https://graph.facebook.com/v17.0/196744616845968/messages';
 

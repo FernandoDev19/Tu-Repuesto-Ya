@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Log;
+use App\Jobs\NoticiaWhatsappJob;
 
 //Modelos
 use App\Models\Provider;
@@ -21,6 +22,7 @@ use App\Models\Geolocation;
 use App\Models\Category;
 use App\Models\Keyword;
 use App\Models\Activity_log;
+use App\Models\Session_log;
 
 //Exportar excel
 use App\Exports\ProveedorExport;
@@ -914,7 +916,9 @@ class AdminController extends Controller
             }
         }
 
-         foreach ($solicitudes as $solicitud) {
+        $answer2 = null;
+        
+        foreach ($solicitudes as $solicitud) {
             $answer2 = Answer::with('proveedor')->get();
         }
 
@@ -1031,8 +1035,12 @@ class AdminController extends Controller
 
         $categorias = Category::where('nombre_categoria', '!=', 'Prueba')->get();
 
+        $tieneRespuesta = Answer::all();
+
+        $sesion = Session_log::all();
+
         // Retorna la vista de la lista de proveedores, usando compact para enviar los datos a la vista
-        return view('admin.providers', compact('proveedor', 'proveedor_m', 'proveedores_all', 'preferencias_de_marcas', 'departamentos', 'group', 'codigos', 'categorias'));
+        return view('admin.providers', compact('proveedor', 'proveedor_m', 'proveedores_all', 'preferencias_de_marcas', 'departamentos', 'group', 'codigos', 'categorias', 'tieneRespuesta', 'sesion'));
     }
 
     public function verProveedor($nit, $notificationId)
@@ -1945,10 +1953,23 @@ class AdminController extends Controller
 
     public function logout(Request $request): RedirectResponse
     {
+        $sesion_activa = Session_log::where('idProveedor', auth()->user()->proveedor_id)->first();
+
+        if($sesion_activa){
+            if($sesion_activa->sesiones <= 1){
+                $sesion_activa->sesiones = 0;
+                $sesion_activa->save();
+            }else{
+                $sesion_activa->sesiones -= 1;
+                $sesion_activa->save();
+            }
+        }
+
         //Cierra sesión del usuario
         auth()->logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
+
         return redirect()->route('login');
     }
 }

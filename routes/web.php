@@ -5,7 +5,10 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ProveedorController;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Log;
 use App\Jobs\NoticiaWhatsappJob;
+use App\Mail\NoticiasProveedores;
 use App\Models\Answer;
 use App\Models\Category;
 use App\Models\Provider;
@@ -110,27 +113,22 @@ Route::get('/politica-de-privacidad', function(){
     return view('privacy-policy', compact('name'));
 })->name('privacy-policy');
 
-Route::get('/enviar-mensajes', function(){
-    $proveedores = Provider::all()->where('estado', 1);
+// Route::get('/enviar-mensajes', function(){
+//     $proveedores = Provider::all()->where('estado', 1);
 
-    foreach ($proveedores as $proveedor) {
-        // Buscar si el proveedor tiene respuestas
-        $tieneRespuesta = Answer::where('idProveedor', $proveedor->id)->exists();
+//     foreach($proveedores as $proveedor){
+//         $answer = Answer::where('idProveedor', $proveedor->id)->exists();
 
-        $user = User::where('proveedor_id', $proveedor->id)->first();
+//         if(!$answer){
+//             $email = $proveedor->email;
 
-        // Si no tiene respuestas, enviar el mensaje
-        if (!$tieneRespuesta) {
-          $celular = $proveedor->celular;
-          $telefono = $proveedor->telefono;
+//             $data = [
+//                 'email' => $proveedor->email,
+//             ];
 
-          if ($celular) {
-            NoticiaWhatsappJob::dispatch($proveedor, $celular, $user);
-          }
+//             Mail::to($email)->cc($proveedor->email_secundario)->queue(new NoticiasProveedores($data));
+//             Log::info('Enviado a '. $proveedor->email);
+//         }
+//     }
+// });
 
-          if ($telefono) {
-            NoticiaWhatsappJob::dispatch($proveedor, $telefono, $user);
-          }
-        }
-      }
-});

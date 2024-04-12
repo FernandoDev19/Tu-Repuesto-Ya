@@ -20,7 +20,7 @@
                             <div class="flex-j-center-cel w-100">
                                 <a title="Crear solicitud de repuesto" class="WSP" href="{{route('vistaFormulario')}}">
                                     <span>¡Busca aquí!</span>
-                                    <i class="fab fa-whatsapp" style="font-size: 40px;" aria-hidden="true"></i>
+                                    <i class="fas fa-search" style="font-size: 40px;" aria-hidden="true"></i>
                                 </a>
                             </div>
                             <h6 id="parrafo-3-sesion-de-contacto-por-whatsapp" style="width: 100%;">
@@ -73,7 +73,7 @@
 
                   <div id="container-img-cuentanos">
                     <h2 id="text-video-turepuestoya" style="font-size: 1.2rem; font-weight: 700;">ASÍ FUNCIONA</h2>
-                    <iframe style="width: 100%;" width="600" height="380" src="https://www.youtube.com/embed/nVWdoFRnccA" title="video explicativo de Tu Repuesto Ya" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                    <iframe id="video-youtube-trya" loading="lazy" style="width: 100%;" width="600" height="380" title="video explicativo de Tu Repuesto Ya" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                 </div>
             </div>
         </section>
@@ -364,6 +364,13 @@
     <!-- Enviar cierre de sesión-->
     <script>
         document.getElementById('logoutForm').addEventListener('submit',function(event){event.preventDefault();this.submit();});
+    </script>
+
+    <script>
+        let video_youtube = document.getElementById('video-youtube-trya');
+        setTimeout(() => {
+            video_youtube.setAttribute('src', 'https://www.youtube.com/embed/nVWdoFRnccA');
+        }, 3000);
     </script>
 
     <script>

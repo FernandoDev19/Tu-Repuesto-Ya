@@ -44,15 +44,15 @@
     min-width: 70px;
     height: max-content;
     border-radius: .25rem;
-    border: 1px solid lightgray;
+    border: none !important;
     margin: 3px;
     display: flex;
     justify-content: space-between;
-    gap: .7rem;
+    /* gap: .7rem; */
     border: 1px solid black;
     font-weight: 600;
     padding: 1% 2%;
-    background-color: lightgray;
+    background: transparent;
     text-align: center;
     transition: all 0.3s ease;
 }
@@ -2531,7 +2531,7 @@ height: 10%;
 
 
 input#repuesto {
-    font-weight: 800;
+    font-weight: 700;
 }
 
 
@@ -2541,4 +2541,21 @@ div#container-img-cuentanos {
 
 div#cuentanos-flex-container {
     gap: 2rem;
+}
+
+
+input.form-control:user-invalid {
+    border: 1px solid red !important;
+    box-shadow: none;
+}
+
+select:user-invalid {
+    border: 1px solid red !important;
+    box-shadow: none;
+}
+
+
+input#nombre:invalid {
+    border: 1px solid red !important;
+    box-shadow: none;
 }

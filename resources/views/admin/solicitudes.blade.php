@@ -201,7 +201,7 @@
                                                         </a>
 
                                                     </td>
-                                                    
+
                                                       <!-- Modal de respuestas -->
                                                         <div class="modal fade" id="respuestasModal{{ $solicitud->id }}"
                                                             tabindex="-1" role="dialog" aria-labelledby="respuestasModalLabel"
@@ -217,19 +217,22 @@
                                                                             <span aria-hidden="true">×</span>
                                                                         </button>
                                                                     </div>
-                    
+
                                                                     <div class="modal-body d-flex justify-content-between">
                                                                         <div class="text-wrap w-100">
                                                                             <ul style="padding-left: 2rem;">
-                                                                                @foreach ($answer2 as $answer)
-                                                                                    @if ($answer->idSolicitud == $solicitud->id)
-                                                                                        <li>{{$answer->proveedor->razon_social}}</li>
-                                                                                    @endif
-                                                                                @endforeach
+                                                                                @if($answer2)
+                                                                                    @foreach ($answer2 as $answer)
+                                                                                        @if ($answer->idSolicitud == $solicitud->id)
+                                                                                            <li>{{$answer->proveedor->razon_social}}</li>
+                                                                                        @endif
+                                                                                    @endforeach
+                                                                                @endif
+
                                                                             </ul>
                                                                         </div>
                                                                     </div>
-                    
+
                                                                     <div class="modal-footer">
                                                                         <button class="btn btn-secondary" type="button"
                                                                             data-dismiss="modal">Cerrar</button>

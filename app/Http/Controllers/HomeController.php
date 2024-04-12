@@ -115,12 +115,15 @@ class HomeController extends Controller
                 ->with('error', '¡Error! ¡No se pudo enviar la solicitud!, Revise sus datos y envie nuevamente');
         }
 
-        $solicitudes_old = Solicitude::whereDate('created_at', '<', now()->subDays(25))->get();
+        $solicitudes_old = Solicitude::whereDate('created_at', '<', now()->subDays(10))->get();
 
         // Eliminar las imágenes de las solicitudes que tengan más de 25 días
         foreach ($solicitudes_old as $solicitud) {
             // Llamar a la función eliminarImagenes()
             $this->eliminarImagenes($solicitud->id);
+            // $solicitud->estado = false;
+            // $solicitud->codigo = null;
+            // $solicitud->save();
         }
 
         $solicitud = new Solicitude();
