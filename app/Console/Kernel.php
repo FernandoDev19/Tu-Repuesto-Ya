@@ -15,14 +15,16 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        // $schedule->command('inspire')->hourly();
+        $schedule->command('verify:solicitudes')->everyTenMinutes();
     }
 
     /**
      * Register the commands for the application.
      */
+    protected $commands = [
+        \App\Console\Commands\verifySolicitudesCommand::class,
+    ];
     protected function commands(): void
     {
-        
     }
 }

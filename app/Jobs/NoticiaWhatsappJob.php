@@ -9,7 +9,6 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
 use App\Models\Provider;
-use App\Models\User;
 
 class NoticiaWhatsappJob implements ShouldQueue
 {
@@ -17,21 +16,18 @@ class NoticiaWhatsappJob implements ShouldQueue
 
     protected $proveedor;
     protected $celular;
-    protected $user;
 
     /**
      * Create a new job instance.
      * public string
      * @param Provider $proveedor
      * @param string $celular
-     * @param User $user
      */
 
-    public function __construct(Provider $proveedor, $celular, User $user)
+    public function __construct(Provider $proveedor, $celular)
     {
         $this->proveedor = $proveedor;
         $this->celular = $celular;
-        $this->user = $user;
     }
 
     /**
@@ -54,6 +50,17 @@ class NoticiaWhatsappJob implements ShouldQueue
                 ],
                 'components' => [
                     [
+                        'type' => 'header',
+                        'parameters' => [
+                            [
+                                'type' => 'video',
+                                'video' => [
+                                    'link' => 'https://turepuestoya.co/public/movies/video_trya.mp4',
+                                ]
+                            ],
+                        ],
+                    ],
+                    [
                         'type' => 'body',
                         'parameters' => [
                             [
@@ -62,7 +69,7 @@ class NoticiaWhatsappJob implements ShouldQueue
                             ],
                             [
                                 'type' => 'text',
-                                'text' => $this->user->email
+                                'text' => $this->proveedor->email
                             ],
                             [
                                 'type' => 'text',
@@ -97,5 +104,6 @@ class NoticiaWhatsappJob implements ShouldQueue
         curl_close($curl);
 
         Log::info('Mensaje enviado:', $mensajeData);
+        Log::info('Mensaje estado:', $response);
     }
 }

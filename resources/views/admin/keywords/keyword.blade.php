@@ -8,18 +8,18 @@
     <nav class="navbar navbar-expand navbar-light bg-white shadow topbar static-top d-flex justify-content-center">
 
         <!-- Topbar Navbar -->
-        <ul class="navbar-nav" style="font-size: 1.3rem;">
+        <ul id="lista-nav-items" class="navbar-nav" style="font-size: 1.3rem;">
 
             <li class="nav-item">
                 <a class="nav-link" style="color: var(--gray); padding: 0 .50rem; gap: 3px;" href="{{ route('dashboard') }}">
-                    <i class="fas fa-fw fa-tachometer-alt"> </i>
+                    <i class="fas fa-fw fa-tachometer-alt icon-sidebar"> </i>
                     <span class="nav-items-cel-small"> Panel</span></a>
             </li>
 
             @can('providers.loadProviders')
                 <li class="nav-item">
                     <a href="{{ route('loadProviders') }}" class="nav-link"
-                        style="color: var(--gray); padding: 0 .50rem; gap: 3px;"><i class="fas fa-users"> </i><span
+                        style="color: var(--gray); padding: 0 .50rem; gap: 3px;"><i class="fas fa-users icon-sidebar"> </i><span
                             class="nav-items-cel-small">Proveedores</span> </a>
                 </li>
             @endcan
@@ -27,7 +27,7 @@
             @can('solicitudes.view')
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('viewSolicitudes') }}"
-                        style="color: var(--gray); padding: 0 .50rem; gap: 3px;"><i class="fas fa-file-alt"> </i> <span
+                        style="color: var(--gray); padding: 0 .50rem; gap: 3px;"><i class="fas fa-file-alt icon-sidebar"> </i> <span
                             class="nav-items-cel-small">Solicitudes</span></a>
                 </li>
             @endcan
@@ -35,7 +35,7 @@
             @can('answers.view')
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('viewRespuestas') }}"
-                        style="color: var(--gray); padding: 0 .50rem; gap: 3px;"><i class="fas fa-reply"> </i><span
+                        style="color: var(--gray); padding: 0 .50rem; gap: 3px;"><i class="fas fa-reply icon-sidebar"> </i><span
                             class="nav-items-cel-small">Respuestas</span> </a>
                 </li>
             @endcan

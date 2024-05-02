@@ -51,32 +51,32 @@
     class="navbar navbar-expand navbar-light bg-white shadow topbar static-top d-flex justify-content-center">
 
     <!-- Topbar Navbar -->
-    <ul class="navbar-nav" style="font-size: 1.3rem; gap: 0.6rem;">
+    <ul id="lista-nav-items" class="navbar-nav" style="font-size: 1.3rem; gap: 0.6rem;">
 
         <li class="nav-item">
             <a class="nav-link" style="color: var(--gray); padding: 0 .50rem; gap: 3px;" href="{{ route('dashboard') }}">
-                <i class="fas fa-fw fa-tachometer-alt"> </i>
+                <i class="fas fa-fw fa-tachometer-alt icon-sidebar"> </i>
                 <span class="nav-items-cel-small">Panel</span></a>
         </li>
 
         @can('providers.loadProviders')
             <li class="nav-item">
                 <a href="{{ route('loadProviders') }}" class="nav-link" style="color:#4e73df; padding: 0 .50rem; gap: 3px;"><i
-                        class="fas fa-users"> </i><span class="nav-items-cel-small">Proveedores</span> </a>
+                        class="fas fa-users icon-sidebar"> </i><span class="nav-items-cel-small">Proveedores</span> </a>
             </li>
         @endcan
 
         @can('solicitudes.view')
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('viewSolicitudes') }}" style="color: var(--gray); padding: 0 .50rem; gap: 3px;"><i
-                        class="fas fa-file-alt"> </i> <span class="nav-items-cel-small">Solicitudes</span></a>
+                        class="fas fa-file-alt icon-sidebar"> </i> <span class="nav-items-cel-small">Solicitudes</span></a>
             </li>
         @endcan
 
         @can('answers.view')
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('viewRespuestas') }}" style="color: var(--gray); padding: 0 .50rem; gap: 3px;"><i
-                        class="fas fa-reply"> </i><span class="nav-items-cel-small">Respuestas</span> </a>
+                        class="fas fa-reply icon-sidebar"> </i><span class="nav-items-cel-small">Respuestas</span> </a>
             </li>
         @endcan
 
@@ -206,98 +206,162 @@
                                                             </a>
                                                     </td>
 
-                                                        <!-- Modal de Información -->
+                                                     <!-- Modal de Información -->
                                                     <div class="modal fade" id="infoModal{{ $proveedores->id }}"
                                                         tabindex="-1" role="dialog" aria-labelledby="infoModalLabel"
-                                                        aria-hidden="true">
-                                                        <div class="modal-dialog" role="document">
-                                                            <div class="modal-content">
+                                                        aria-hidden="true" style="z-index: 1041;">
+                                                        <div class="modal-dialog" role="document" style="z-index: 1042;">
+                                                            <div class="modal-content" style="z-index: 1043;">
                                                                 <div class="modal-header">
-                                                                    <h5 class="modal-title" id="infoModalLabel">
+                                                                    <h5 class="modal-title"
+                                                                        id="infoModalLabel{{ $proveedores->id }}">
                                                                         <strong>Información
-                                                                        del Proveedor</strong></h5>
-                                                                    <button class="close" type="button"
+                                                                            del Proveedor</strong>
+                                                                    </h5>
+                                                                    <button class="close btnCloseModalDetalles" type="button"
                                                                         data-dismiss="modal" aria-label="Close">
                                                                         <span aria-hidden="true">×</span>
                                                                     </button>
                                                                 </div>
-                                                                <div class="modal-body d-flex justify-content-between">
-                                                                     <div id="{{$proveedores->id}}" class="text-wrap">
+                                                                <div class="modal-body d-flex justify-content-between"
+                                                                    style="overflow-y: auto;">
+                                                                    <div id="{{ $proveedores->id }}" class="text-wrap w-100">
                                                                         @php
                                                                             $especialidades[$proveedores->id] = json_decode($proveedores->especialidad, true);
                                                                         @endphp
                                                                         <ul style="padding-left: 2rem;">
                                                                             <fieldset>
-                                                                                <legend style="text-align: center;"><strong>Información Básica:</strong></legend>
-                                                                                <li><strong>NIT: </strong>{{ $proveedores->nit_empresa }}</li>
+                                                                                <legend style="text-align: center;">
+                                                                                    <strong>Información Básica:</strong>
+                                                                                </legend>
+                                                                                <li><strong>NIT:
+                                                                                    </strong>{{ $proveedores->nit_empresa }}
+                                                                                </li>
 
                                                                                 <li><strong>Nombre Establecimiento: </strong>
                                                                                     {{ $proveedores->nombre_comercial }}
                                                                                 </li>
 
-                                                                                <li><strong>Razón Social: </strong>{{ $proveedores->razon_social }}</li>
+                                                                                <li><strong>Razón Social:
+                                                                                    </strong>{{ $proveedores->razon_social }}
+                                                                                </li>
 
-                                                                                <li><strong>Pais: </strong>{{ $proveedores->pais }}</li>
+                                                                                <li><strong>Gerente: </strong>{{ $proveedores->gerente }}</li>
+                                                                                <li><strong>Administrador: </strong>{{ $proveedores->administrador }}</li>
 
-                                                                                <li><strong>Departamento: </strong>{{ $proveedores->departamento }}</li>
+                                                                                <li><strong>Pais:
+                                                                                    </strong>{{ $proveedores->pais }}</li>
 
-                                                                                <li> <strong>Municipio: </strong>{{ $proveedores->municipio }}</li>
+                                                                                <li><strong>Departamento:
+                                                                                    </strong>{{ $proveedores->departamento }}
+                                                                                </li>
 
-                                                                                <li><strong>Direccion: </strong>{{ $proveedores->direccion }}</li>
+                                                                                <li> <strong>Municipio:
+                                                                                    </strong>{{ $proveedores->municipio }}</li>
+
+                                                                                <li><strong>Direccion:
+                                                                                    </strong>{{ $proveedores->direccion }}</li>
                                                                             </fieldset>
 
                                                                             <hr>
 
                                                                             <fieldset>
-                                                                                <legend style="text-align: center;"><strong>Información de Contacto:</strong></legend>
-                                                                                <li><strong>Celular: </strong>{{$proveedores->celular}}</li>
+                                                                                <legend style="text-align: center;">
+                                                                                    <strong>Información de Contacto:</strong>
+                                                                                </legend>
+                                                                                <li><strong>Celular:</strong>
+                                                                                    <a title="Contactar"
+                                                                                            data-toggle="modal" class="text-primary"
+                                                                                            data-target="#contactarClienteCelModal{{$proveedores->id}}"
+                                                                                            style="cursor: pointer;">{{ $proveedores->celular }}</a>
+                                                                                </li>
+                                                                                <li><strong>Celular 2°:
+                                                                                    </strong><a title="Contactar"
+                                                                                    data-toggle="modal" class="text-primary"
+                                                                                    data-target="#contactarClienteTelModal{{$proveedores->id}}"
+                                                                                    style="cursor: pointer;">{{ $proveedores->telefono }}</a></li>
 
-                                                                                <li><strong>Telefono: </strong>{{ $proveedores->telefono }}</li>
+                                                                                <li><strong>Representante Legal:
+                                                                                    </strong>{{ $proveedores->representante_legal }}
+                                                                                </li>
 
-                                                                                <li><strong>Representante Legal: </strong>{{ $proveedores->representante_legal }}</li>
+                                                                                <li><strong>Contacto Principal:
+                                                                                    </strong>{{ $proveedores->contacto_principal }}
+                                                                                </li>
 
-                                                                                <li><strong>Contacto Principal: </strong>{{ $proveedores->contacto_principal }}</li>
+                                                                                <li><strong>Email:</strong>
+                                                                                    <a href="mailto:{{$proveedores->email}}" target="_blank">{{ $proveedores->email }}</a>
+                                                                                </li>
 
-                                                                                <li><strong>Email: </strong>{{ $proveedores->email }}</li>
-
-                                                                                <li><strong>Email Secundario: </strong>{{ $proveedores->email_secundario }}</li>
+                                                                                <li><strong>Email Secundario:</strong>
+                                                                                    <a href="mailto:{{$proveedores->email_secundario}}" target="_blank">{{ $proveedores->email_secundario }}</a>
+                                                                                </li>
                                                                             </fieldset>
 
                                                                             <hr>
 
                                                                             <fieldset>
-                                                                                <legend style="text-align: center;"><strong>Información Legal:</strong></legend>
+                                                                                <legend style="text-align: center;">
+                                                                                    <strong>Información Legal:</strong>
+                                                                                </legend>
                                                                                 <li><strong>RUT: </strong>
-                                                                                <a title="Ver RUT" rel="noopener noreferrer" id="rut"
-                                                                                style="font-size: 14; color: #858796; text-decoration: underline;"
-                                                                                href="{{ route('mostrarArchivo', ['filename' => 'RUT_' . $proveedores->nit_empresa . '.pdf']) }}"
-                                                                                target="_blank">{{$proveedores->rut}}</a></li>
+                                                                                    <a title="Ver RUT"
+                                                                                        rel="noopener noreferrer"
+                                                                                        id="rut"
+                                                                                        style="color: #858796; text-decoration: underline;"
+                                                                                        href="{{ route('mostrarArchivo', ['filename' => 'RUT_' . $proveedores->nit_empresa . '.pdf']) }}"
+                                                                                        target="_blank">{{ $proveedores->rut }}</a>
+                                                                                </li>
 
                                                                                 <li><strong>Camara de comercio: </strong>
-                                                                                <a title="Ver camara de comercio"
-                                                                                style="color: #858796; text-decoration: underline;" id="camara"
-                                                                                rel="noopener noreferrer"
-                                                                                href="{{ route('mostrarArchivo', 'Camara_de_comercio_' . $proveedores->nit_empresa . '.pdf') }}"
-                                                                                target="_blank">{{$proveedores->camara_comercio}}</a></li>
+                                                                                    <a title="Ver camara de comercio"
+                                                                                        style="color: #858796; text-decoration: underline;"
+                                                                                        id="camara"
+                                                                                        rel="noopener noreferrer"
+                                                                                        href="{{ route('mostrarArchivo', 'Camara_de_comercio_' . $proveedores->nit_empresa . '.pdf') }}"
+                                                                                        target="_blank">{{ $proveedores->camara_comercio }}</a>
+                                                                                </li>
                                                                             </fieldset>
 
                                                                             <hr>
 
                                                                             <fieldset>
-                                                                                <legend style="text-align: center;"><strong>Otros Detalles:</strong></legend>
-                                                                                 <li><strong>Preferencia de Marcas: </strong>
-                                                                                @if(isset($preferencias_de_marcas[$proveedores->id]))
-                                                                                    {{ implode(', ', $preferencias_de_marcas[$proveedores->id]) }}
+                                                                                <legend style="text-align: center;">
+                                                                                    <strong>Otros Detalles:</strong>
+                                                                                </legend>
+                                                                                <li><strong>Preferencia de Marcas: </strong>
+                                                                                    @if (isset($preferencias_de_marcas[$proveedores->id]))
+                                                                                        {{ implode(', ', $preferencias_de_marcas[$proveedores->id]) }}
+                                                                                    @else
+                                                                                        No hay preferencias de marcas para este
+                                                                                        proveedor.
+                                                                                    @endif
+                                                                                </li>
+                                                                                <li><strong>Especialidad: </strong>
+                                                                                    @if (isset($especialidades[$proveedores->id]))
+                                                                                        {{ implode(', ', $especialidades[$proveedores->id]) }}
+                                                                                    @else
+                                                                                        No hay preferencias de marcas para este
+                                                                                        proveedor.
+                                                                                    @endif
+                                                                                </li>
+                                                                                <li><strong>Sesión: </strong>@if ($proveedores->sesion)
+                                                                                    <i title="Sesión Activa" class="fas fa-circle" style="color:#12e912;"> Activa</i>
                                                                                 @else
-                                                                                    No hay preferencias de marcas para este proveedor.
+                                                                                    <i title="Sesión Inactiva" class="fas fa-circle" style="color:#ff5a51;"> Inactiva</i>
                                                                                 @endif</li>
-
-                                                                                    <li><strong>Especialidad: </strong>
-                                                                                @if(isset($especialidades[$proveedores->id]))
-                                                                                    {{ implode(', ', $especialidades[$proveedores->id]) }}
+                                                                                <li><strong>¿Ha cotizado?: </strong>@if ($proveedores->ha_cotizado)
+                                                                                    <i title="Sí ha cotizado" class="fas fa-circle" style="color:#12e912;"> Sí ha cotizado</i>
                                                                                 @else
-                                                                                    No hay preferencias de marcas para este proveedor.
+                                                                                    <i title="No ha cotizado" class="fas fa-circle" style="color:#ff5a51;"> No ha cotizado</i>
                                                                                 @endif</li>
+                                                                                <li><strong>Estado: </strong>@if ($proveedores->estado)
+                                                                                    <i title="Estado activo" class="fas fa-circle" style="color:#12e912;"> Activo</i>
+                                                                                @else
+                                                                                    <i title="Estado inactivo" class="fas fa-circle" style="color:#ff5a51;"> Inactivo</i>
+                                                                                @endif</li>
+                                                                                <li><strong>Fecha de creación: </strong>{{ $proveedores->created_at }}</li>
+                                                                                <li><strong>Última edición: </strong>{{ $proveedores->updated_at }}</li>
                                                                             </fieldset>
                                                                             <br>
                                                                         </ul>
@@ -305,24 +369,22 @@
                                                                     </div>
 
                                                                     <button class="btn mt-0 align-self-end"
-                                                                        data-id="{{ $proveedores->id }}"
-                                                                        data-toggle="modal"
+                                                                        data-id="{{ $proveedores->id }}" data-toggle="modal"
                                                                         data-target="#editModal{{ $proveedores->id }}"
-                                                                        onclick="resaltarBotonActivo(this)">
+                                                                        >
                                                                         <i class="fas fa-edit"></i>
                                                                     </button>
                                                                 </div>
 
                                                                 <div class="modal-footer">
 
-                                                                    <button class="btn btn-primary"
-                                                                        data-id="{{ $proveedores->id }}"
-                                                                        data-toggle="modal"
+                                                                    <button class="btn btn-danger"
+                                                                        data-id="{{ $proveedores->id }}" data-toggle="modal"
                                                                         data-target="#eraseModal{{ $proveedores->id }}"
-                                                                        onclick="resaltarBotonActivo(this)">
+                                                                        >
                                                                         Eliminar
                                                                     </button>
-                                                                    <button class="btn btn-secondary" type="button"
+                                                                    <button class="btn btn-secondary btnCloseModalDetalles" type="button"
                                                                         data-dismiss="modal">Cerrar</button>
                                                                 </div>
                                                             </div>

@@ -4,6 +4,8 @@ namespace App\Jobs;
 
 use App\Models\Provider;
 use App\Models\Solicitude;
+use App\Models\message;
+
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -15,10 +17,9 @@ use Illuminate\Support\Facades\Log;
 class WhatsAppMessageJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
- 
+
     protected $proveedor;
     protected $celular;
-    protected $json_repuestos;
     protected $marca;
     protected $referencia;
     protected $modelo;
@@ -35,7 +36,6 @@ class WhatsAppMessageJob implements ShouldQueue
      *
      * @param Provider $proveedor
      * @param string $celular
-     * @param array $json_repuestos
      * @param string $marca
      * @param string $referencia
      * @param string $modelo
@@ -47,11 +47,10 @@ class WhatsAppMessageJob implements ShouldQueue
      * @param string $token
      * @param string $url
      */
-    public function __construct(Provider $proveedor, $celular, $json_repuestos, $marca, $referencia, $modelo, $comentario, $nombre, $departamento, $municipio, Solicitude $solicitud, $token, $url)
+    public function __construct(Provider $proveedor, $celular, $marca, $referencia, $modelo, $comentario, $nombre, $departamento, $municipio, Solicitude $solicitud, $token, $url)
     {
         $this->proveedor = $proveedor;
         $this->celular = $celular;
-        $this->json_repuestos = $json_repuestos;
         $this->marca = $marca;
         $this->referencia = $referencia;
         $this->modelo = $modelo;
@@ -71,7 +70,7 @@ class WhatsAppMessageJob implements ShouldQueue
         $proveedor = $this->proveedor;
         $celular = $this->celular;
 
-        $repuesto = is_array($this->json_repuestos) ? implode(',', $this->json_repuestos) : $this->json_repuestos;
+        $repuesto = is_array($this->solicitud->repuesto) ? implode(',', $this->solicitud->repuesto) : $this->solicitud->repuesto;
         $repuesto = str_replace(array("[", "]", "\"", ","), array("", "", "", ", "), $repuesto);
 
         $marca = $this->marca;
@@ -116,6 +115,40 @@ class WhatsAppMessageJob implements ShouldQueue
                         ],
                     ],
             ]; */
+
+            $new_message = new message();
+            $new_message->celular = '+573053238666';
+            $new_message->mensaje = '¡Hola '. $nombre_proveedor .'! 👋
+
+            Tenemos un *nuevo pedido* para ti 🔔
+            ¡Aquí están los detalles!
+
+            🔩 *Datos del Repuesto:*
+            *- Repuesto:* '. $repuesto .'
+            *- Marca:* ' . $marca .'
+            *- Referencia:* ' . $referencia . '
+            *- Modelo (Año):* ' . $modelo .'
+            *-Comentarios:* "'. $comentario .'"
+
+            📝 *Datos del Cliente:*
+            *-Nombre:* ' . $nombre . '
+            *-País:* '. $pais .'
+            *-Departamento:* '. $departamento .'
+            *-Ciudad:* ' . $municipio . '
+
+            *Gracias por ser parte de nuestro equipo* 👥
+
+            *Con esta alianza le ofrecemos un EXCELENTE servicio a nuestros clientes* ✅
+
+            Si tienes este repuesto disponible, puedes cotizarlo directamente al cliente utilizando el botón inferior ⬇
+
+            Saludos,
+            ⚙ *TU REPUESTO YA* ⚙';
+            $new_message->tipo = 'enviado';
+            $new_message->enviado_a = $celular;
+            $new_message->idSolicitud = $solicitud->id;
+            $new_message->idUser = $proveedor->id;
+            $new_message->save();
 
             $mensajeData = [
                 'messaging_product' => 'whatsapp',
@@ -183,6 +216,17 @@ class WhatsAppMessageJob implements ShouldQueue
                                     'text' => $solicitud->codigo,
                                 ],
                             ],
+                        ],
+                        [
+                            "type" => "button",
+                            "sub_type" => "quick_reply",
+                            "index" => "1",
+                            "parameters" => [
+                              [
+                                "type" => "payload",
+                                "payload" => $solicitud->codigo,
+                              ]
+                            ]
                         ],
                     ],
                 ],

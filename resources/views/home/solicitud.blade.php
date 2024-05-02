@@ -129,10 +129,15 @@
                                                         <div class="form-control text-start"
                                                             style="background-color: rgb(143 143 143 / 21%); height: auto; display: flex; justify-content: space-between; align-items: center;">
                                                             <div class="items_container">
-                                                                @foreach ($repuesto as $repuestos)
-                                                                    <button type="button"
-                                                                        class="item_selected_cliente">{{ $repuestos }}</button>
-                                                                @endforeach
+                                                                @if(is_array($repuesto))
+                                                                    @foreach ($repuesto as $repuestos)
+                                                                        <button type="button"
+                                                                            class="item_selected_cliente">{{ $repuestos }}</button>
+                                                                    @endforeach
+                                                                @else
+                                                                <button type="button"
+                                                                    class="item_selected_cliente">{{ $repuesto }}</button>
+                                                                @endif
                                                             </div>
                                                         </div>
                                                     </div>
@@ -216,16 +221,27 @@
                                                     <div class="form-control"
                                                         style="height: auto; border: none; border: none; padding: 0;">
                                                         <div class="items_container" id="items_container">
-                                                            @foreach ($repuesto as $repuestos)
+                                                            @if(is_array($repuesto))
+                                                                @foreach ($repuesto as $repuestos)
+                                                                    <div style="width:100%; display: flex; gap: 1rem;">
+                                                                        <button type="button"
+                                                                            class="item_selected rojo {{ $count_class++ }}"
+                                                                            name="item"><input type="checkbox"
+                                                                                class="btn_borrar_item"
+                                                                                id="check_{{ $count_btns++ }}">{{ $repuestos }}</button>
+                                                                    </div>
+                                                                @endforeach
+
+                                                            @else
                                                                 <div style="width:100%; display: flex; gap: 1rem;">
                                                                     <button type="button"
                                                                         class="item_selected rojo {{ $count_class++ }}"
                                                                         name="item"><input type="checkbox"
                                                                             class="btn_borrar_item"
-                                                                            id="check_{{ $count_btns++ }}">{{ $repuestos }}</button>
+                                                                            id="check_{{ $count_btns++ }}">{{ $repuesto }}</button>
                                                                 </div>
-                                                            @endforeach
-                                                        </div>
+                                                            @endif
+                                                            </div>
                                                     </div>
                                                     <br>
                                                     <span class="text-primary pt-1"
@@ -321,11 +337,80 @@
                                                 <div class="flex flex-col mb-3">
                                                     <div
                                                         style="width: 100%; display: flex; gap: 5%; flex-wrap: wrap; justify-content: space-between;">
-                                                        @foreach ($repuesto as $repuestos)
+                                                        @if (is_array($repuesto))
+                                                            @foreach ($repuesto as $repuestos)
+                                                                <div id="container_{{ $count_id++ }}" class="hide"
+                                                                    style="display: flex; flex-direction: column; margin: 2% 2% 0 0; gap: 5px; border: 1px solid darkgray;
+                                                                    border-radius: .375rem; border-top: none; border-left: none; border-right: none; padding: 1rem 0;">
+                                                                    <h5><strong>{{ $count++ . '. ' . $repuestos }}</strong>
+                                                                    </h5>
+
+                                                                    <span style="color: #344767;"><span
+                                                                            class="text-danger">*</span>Precio</span>
+                                                                    <input type="text" name="precio[]" id="precio"
+                                                                        class="form-control text-start"
+                                                                        placeholder="ejemplo: 12345..." aria-label="Precio"
+                                                                        value="{{ old('precio[' . $count . ']') }}"
+                                                                        onkeyup="formatoPrecio(this)" disabled required>
+
+
+                                                                    @error('precio')
+                                                                        <small
+                                                                            class="text-danger text-xs pt-1">{{ $message }}</small>
+                                                                    @enderror
+
+                                                                    {{-- <span style="color: #344767;">Tipo de Repuesto</span>
+                                                                    <select name="tipo_repuesto[]" id="tipo_repuesto"
+                                                                        class="form-control text-start"
+                                                                        aria-label="Tipo de repuesto"
+                                                                        style="padding: 0 0 0 0.75rem;" disabled>
+                                                                        <option
+                                                                            title="Son los repuestos que vienen instalados de fábrica en tu vehículo. Garantizan la misma calidad y ajuste que cuando el carro era nuevo."
+                                                                            value="Originales"
+                                                                            style="display: flex; justify-content: space-between;">
+                                                                            Repuestos Originales</option>
+                                                                        <option
+                                                                            value="Tipo Original (Elaborado en diferentes fabricas)"
+                                                                            title="Fabricados por la misma empresa que suministra al fabricante del carro, pero vendidos bajo la marca del fabricante de repuestos.">
+                                                                            Repuestos de tipo Original</option>
+                                                                        <option value="Generico"
+                                                                            title="Repuestos genéricos producidos por diversas empresas, con variaciones en calidad y precio.">
+                                                                            Repuestos Génericos</option>
+                                                                        <option value="Nacionales"
+                                                                            title="Repuestos nacionales fabricados dentro del país, con diferencias en calidad y precio respecto a los originales.">
+                                                                            Repuestos Nacionales</option>
+                                                                        <option value="Coreano"
+                                                                            title="Repuestos coreanos conocidos por su calidad y compatibilidad con modelos específicos de vehículos.">
+                                                                            Repuestos Coreanos</option>
+                                                                        <option value="Japones"
+                                                                            title="Repuestos japoneses que ofrecen alta calidad y rendimiento, ideales para vehículos de marcas japonesas.">
+                                                                            Repuestos Japoneses</option>
+                                                                        <option value="Chino"
+                                                                            title="Repuestos chinos que pueden ser más económicos, pero con una calidad que puede variar significativamente.">
+                                                                            Repuestos Chinos</option>
+                                                                        <option value="Remanufacturado"
+                                                                            title="Repuestos usados que han sido desmontados, inspeccionados y restaurados a condiciones de trabajo como nuevas.">
+                                                                            Repuestos Remanufacturados</option>
+                                                                        <option value="Reacondicionado"
+                                                                            title="Similar a los remanufacturados, pero con un proceso de restauración que puede no ser tan completo.">
+                                                                            Repuestos Reacondicionados</option>
+                                                                        <option value="Usado"
+                                                                            title="Extraídos de vehículos que ya no están en funcionamiento, son una opción más económica pero con una vida útil variable.">
+                                                                            Repuestos Usados o Reciclados</option>
+                                                                    </select>
+
+                                                                    @error('tipo_repuesto')
+                                                                        <small
+                                                                            class="text-danger text-xs pt-1">{{ $message }}</small>
+                                                                    @enderror --}}
+
+                                                                </div>
+                                                            @endforeach
+                                                        @else
                                                             <div id="container_{{ $count_id++ }}" class="hide"
                                                                 style="display: flex; flex-direction: column; margin: 2% 2% 0 0; gap: 5px; border: 1px solid darkgray;
                                                                 border-radius: .375rem; border-top: none; border-left: none; border-right: none; padding: 1rem 0;">
-                                                                <h5><strong>{{ $count++ . '. ' . $repuestos }}</strong>
+                                                                <h5><strong>{{ $count++ . '. ' . $repuesto }}</strong>
                                                                 </h5>
 
                                                                 <span style="color: #344767;"><span
@@ -388,7 +473,8 @@
                                                                 @enderror --}}
 
                                                             </div>
-                                                        @endforeach
+                                                        @endif
+
                                                     </div>
                                                     <!--Tipo de repuesto, Precio y garantia-->
                                                 </div>

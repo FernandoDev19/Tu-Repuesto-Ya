@@ -74,7 +74,7 @@
                             <div class="container_nav container_flex container_flex_user">
                                 <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: white; font-weight: bold !important;">
-                                    <i class="fas fa-user" style="color: #b3b3b3 !important;"></i>
+                                    <i class="fas fa-user"></i>
                                     <span class="nav_e1"
                                         class="mr-2 d-none d-lg-inline text-gray-600 small">{{ $name }}</span>
                                 </a>
@@ -93,9 +93,9 @@
                                         <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                                         Configuraciones
                                     </a>
-                                    <a class="dropdown-item" href="#">
+                                    <a class="dropdown-item" href="{{route('activityLog')}}">
                                         <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                                        Activity Log
+                                        Registro de actividades
                                     </a>
                                     <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
@@ -115,7 +115,7 @@
 
             <li class="nav-item">
                 <div class="container_nav" id="Cnav1">
-                    <a class="nav-link nav_e1" href="{{ route('vistaFormulario') }}" aria-current="page">Cotizar</a>
+                    <a class="nav-link nav_e1" href="{{ route('vistaFormulario') }}" aria-current="page" style="color: white !important;">Cotizar</a>
                     {{-- <div
                                 class="animate__animated animate__fadeInUp animate__delay-0s animate__faster nav_active">
                             </div> --}}
@@ -124,23 +124,23 @@
 
             <li class="nav-item">
                 <div class="container_nav" id="Cnav2">
-                    <a class="nav-link nav_e1" href="#solicitud-de-repuestos">¿Cómo
+                    <a class="nav-link nav_e1" href="#solicitud-de-repuestos" style="color: white !important;">¿Cómo
                         funciona?</a>
                 </div>
             </li>
 
             <li class="nav-item">
                 <div class="container_nav" id="Cnav3">
-                    <a class="nav-link nav_e1" href="#contacto">Contacto</a>
+                    <a class="nav-link nav_e1" href="#contacto" style="color: white !important;">Contacto</a>
                 </div>
             </li>
 
             @guest
-                <li id="container_user" class="nav-item dropdown no-arrow" style="border-top: 1px solid;">
+                <li id="container_user" class="nav-item dropdown no-arrow" style="border-top: 1px solid; width: 100%;">
                     <div class="container_nav container_flex container_flex_user">
                         <a class="nav-link dropdown-toggle" type="button" data-bs-toggle="collapse"
                         data-bs-target="#navbarNav2Dropdown" aria-controls="navbarNav2Dropdown" aria-expanded="false"
-                        aria-label="Toggle navigation" style="color: var(--color-primary)">
+                        aria-label="Toggle navigation" style="color: var(--color-primary) !important;">
                             <span class="nav_e1" class="mr-2 d-none d-lg-inline text-gray-600 small"  style="color: var(--color-primary) !important;">¿Eres
                                 proveedor?</span>
                         </a>
@@ -164,11 +164,11 @@
                     </div>
                 </li>
             @else
-                <li id="container_user" class="nav-item dropdown no-arrow" style="border-top: 1px solid;">
+                <li id="container_user" class="nav-item dropdown no-arrow" style="border-top: 1px solid; width: 100%">
                     <div class="container_nav container_flex container_flex_user">
                         <a class="nav-link dropdown-toggle" type="button" data-bs-toggle="collapse"
                         data-bs-target="#navbarNav2Dropdown" aria-controls="navbarNav2Dropdown" aria-expanded="false"
-                        aria-label="Toggle navigation" style="color: var(--color-primary)">
+                        aria-label="Toggle navigation" style="color: var(--color-primary) !important;">
                             <i class="fas fa-user"></i>
                             <span class="nav_e1"
                                 class="mr-2 d-none d-lg-inline text-gray-600 small" style="color: var(--color-primary) !important;">{{ $name }}</span>
@@ -188,9 +188,9 @@
                                 <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                                 Configuraciones
                             </a>
-                            <a class="dropdown-item" href="#">
+                            <a class="dropdown-item" href="{{route('activityLog')}}">
                                 <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                                Activity Log
+                                Registro de actividades
                             </a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
@@ -236,23 +236,31 @@
             style="max-height: 100vh; max-width: 100vw;">
             <div class="modal-dialog" role="document" style="max-width: 800px !important;">
                 <div class="modal-content">
-                    <div class="modal-header" style="padding: 0; !important">
-                        <h5 class="modal-title" style="font-weight: 700; margin: 1rem 0 1rem 1rem;">Crea tu solicitud
-                        </h5>
-                        <button type="button" id="btn-close-cliente-modal" class="btn btn-close close"
-                            style="margin-right: 1rem;" data-dismiss="modal" aria-label="Close">
+                    <div class="modal-header">
+                        <h5 style="font-weight: 700;">Crea tu solicitud</h5>
+                        <button type="button" id="btn-close-cliente-modal" class="btn btn-close close" data-dismiss="modal" aria-label="Close">
                         </button>
                     </div>
                     <div class="modal-body">
                         <!-- Pestañas del formulario -->
-                        <ul class="nav nav-tabs" id="formTabs">
-                            <li class="nav-item">
-                                <a class="nav-link text-secondary active paso_activo" href="#"
-                                    onclick="changeTab2()" id="tab1">Paso 1</a>
+                        <ul class="nav nav-tabs" id="formTabs" style="justify-content: space-evenly; border: none; flex-wrap: nowrap; margin-bottom: 3rem;">
+                            <li class="nav-item" id="nav-item1" onclick="changeTab1()">
+                                <img decoding="auto" class="img-nav-link" src="{{asset('icon/vehiculo-icon.png')}}" height="100" width="100" alt="vehiculo icon">
+
+                                <div class="nav-link text-secondary active paso_activo" style="border: none;"
+                                    id="tab1"><span class="parts" id="part1">1. Vehículo</span></div>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-secondary" href="#" onclick="validateForm1()"
-                                    id="tab2">Paso 2</a>
+                            <li class="nav-item" id="nav-item2" onclick="changeTab2()">
+                                <img decoding="auto" class="img-nav-link" src="{{asset('icon/repuestos-icon.png')}}" height="100" width="100" alt="vehiculo icon">
+
+                                <div class="nav-link text-secondary" style="border: none;"
+                                    id="tab2"><span class="parts" id="part2">2. Repuesto</span></div>
+                            </li>
+                            <li class="nav-item" id="nav-item3" onclick="changeTab3()">
+                                <img decoding="auto" class="img-nav-link" src="{{asset('icon/user-icon.png')}}" height="100" width="100" alt="vehiculo icon">
+
+                                <div class="nav-link text-secondary" style="border: none;"
+                                    id="tab3"><span class="parts" id="part3">3. Tus Datos</span></div>
                             </li>
                         </ul>
 
@@ -265,29 +273,22 @@
                                 <div class="tab-pane fade show active" id="tab-content1"
                                     style="transition: all 300ms ease;">
 
-                                    <fieldset class="form-group">
-                                        <legend class="text-center" style="display: flex; justify-content: center;">
-                                            <h5
-                                                style="background: var(--color-primary);
-                                            color: white;
-                                            width: max-content;
-                                            padding: .3rem 1.5rem;
-                                            border-radius: 0 0 1rem 1rem;
-                                            font-weight: 600;">
-                                                Datos del vehiculo</h5>
-                                        </legend>
-                                        <div class="flex flex-col mb-4 text-center">
-                                            <div style="display: flex; align-items: center;">
+                                    <div class="form-group">
+                                        <div class="flex flex-col mb-4">
+                                            <label class="form-label" for="marca" style="margin: 0 0 .5rem 0; font-weight: 600;">Elige la marca de tu vehículo<span class="text-danger">*</span></label>
+                                            <div style="display: flex;">
+                                                <label for="check-marca" class="circular-checkbox">
+                                                    <span class="check" id="check-marca" style="background-color: #25d366; border-radius: 50%; height: 100%; width: 100%; display: block;"></span>
+                                                </label>
                                                 <input title="Marca" id="marca-otro"
                                                     style="border-color: var(--bs-dark-border-subtle); border-radius: .375rem;"
-                                                    class="form-control text-center hide" value="{{ old('marca') }}"
+                                                    class="form-control hide" value="{{ old('marca') }}"
                                                     placeholder="*Otra Marca" autofocus>
                                                 <select name="marca" id="marca"
-                                                    class="form-control text-center"
-                                                    style="color: var(--bs-secondary-color); border-color: var(--bs-dark-border-subtle); border-radius: .375rem;"
+                                                    class="form-control"
+                                                    style="color: var(--bs-secondary-color); border-color: transparent; background-color: rgb(235, 234, 234); border-radius: .375rem; appearance: auto;"
                                                     required>
-                                                    <option value="" disabled selected>*Marca del vehiculo
-                                                    </option>
+                                                    <option value="" disabled selected>Selecciona</option>
                                                     <!--<option value="AKT">AKT</option>-->
                                                     <option value="Alfa Romeo">Alfa Romeo</option>
                                                     <option value="Alpine">Alpine</option>
@@ -398,12 +399,16 @@
                                             @enderror
                                         </div>
 
-                                        <div class="flex flex-col mb-4 text-center">
+                                        <div class="flex flex-col mb-4">
+                                            <label class="form-label" for="referencia" style="margin: 0 0 .5rem 0; font-weight: 600;">Referencia del vehículo<span class="text-danger">*</span></label>
                                             <div style="display: flex; align-items: center;">
+                                                <label for="check-referencia" class="circular-checkbox">
+                                                    <span id="check-referencia" class="check" style="background-color: #25d366; border-radius: 50%; height: 100%; width: 100%; display: block;"></span>
+                                                </label>
                                                 <input type="text" name="referencia" id="referencia"
-                                                    class="form-control text-center"
-                                                    style="border-color: var(--bs-dark-border-subtle); border-radius: .375rem;"
-                                                    placeholder="*Referencia del vehiculo (Ej. Joy)"
+                                                    class="form-control"
+                                                    style="border-color: transparent; background-color: rgb(235, 234, 234); border-radius: .375rem;"
+                                                    placeholder="Ejemplo: Joy, Captiva..."
                                                     aria-label="Referencia" value="{{ old('referencia') }}" required>
                                             </div>
                                             @error('referencia')
@@ -411,18 +416,20 @@
                                             @enderror
                                         </div>
 
-                                        <div class="flex flex-col mb-4 text-center">
-
+                                        <div class="flex flex-col mb-4">
+                                            <label class="form-label" for="modelo" style="margin: 0 0 .5rem 0; font-weight: 600;">¿De que año es tu vehículo?<span class="text-danger">*</span></label>
                                             <div style="display: flex; align-items: center;">
+                                                <label for="check-modelo" class="circular-checkbox">
+                                                    <span id="check-modelo" class="check" style="background-color: #25d366; border-radius: 50%; height: 100%; width: 100%; display: block;"></span>
+                                                </label>
                                                 <select id="modelo" name="modelo"
-                                                    class="form-control text-center"
-                                                    style="color: var(--bs-secondary-color); border-color: var(--bs-dark-border-subtle); border-radius: .375rem;"
+                                                    class="form-control"
+                                                    style="appearance: auto; color: var(--bs-secondary-color); border-color: transparent; background-color: rgb(235, 234, 234); border-radius: .375rem;"
                                                     required>
-                                                    <option value='' disabled selected>*Modelo del vehiculo (Año)
-                                                    </option>
+                                                    <option value='' disabled selected>Selecciona</option>
                                                     <?php
                                                     $anioActual = date('Y');
-                                                    for ($modelo = $anioActual + 1; $modelo >= 2005; $modelo--) {
+                                                    for ($modelo = $anioActual + 1; $modelo >= 1999; $modelo--) {
                                                         echo "<option value=\"$modelo\">$modelo</option>";
                                                     }
                                                     ?>
@@ -435,15 +442,17 @@
                                             @enderror
                                         </div>
 
-                                        <div class="flex flex-col mb-4 text-center">
-                                            <div style="display: flex; align-items: center;">
+                                        <div class="flex flex-col mb-4">
+                                            <label class="form-label" for="tipo" style="margin: 0 0 .5rem 0; font-weight: 600;">Tipo de transmisión (Caja)<span class="text-danger">*</span></label>
+                                            <div style="display: flex;">
+                                                <label for="check-tipo" class="circular-checkbox">
+                                                    <span id="check-tipo" class="check" style="background-color: #25d366; border-radius: 50%; height: 100%; width: 100%; display: block;"></span>
+                                                </label>
                                                 <select class="form-control" name="tipo" id="tipo"
                                                     name="tipo"
-                                                    style="color: var(--bs-secondary-color); text-align: center; border-color: var(--bs-dark-border-subtle); border-radius: .375rem;"
+                                                    style="appearance: auto; color: var(--bs-secondary-color); border-color: transparent; background-color: rgb(235, 234, 234); border-radius: .375rem;"
                                                     required>
-                                                    <option value="" disabled selected>*Tipo de transmisión
-                                                        (Caja)
-                                                    </option>
+                                                    <option value="" disabled selected>Selecciona</option>
                                                     <option value="mecánica">Mecánica (Manual)</option>
                                                     <option value="automatica">Automática</option>
                                                 </select>
@@ -453,59 +462,134 @@
                                                 <div class="text-danger text-xs pt-1">{{ $message }}</div>
                                             @enderror
                                         </div>
+                                    </div>
+                                    <div
+                                        style="width:100%; height: max-content; display: flex; justify-content: flex-end;">
+                                        <button id="btn_siguiente" type="button" class="btn btn-primary"
+                                            onclick="changeTab2()">Siguiente</button>
+                                    </div>
 
+                                </div>
+
+                                {{-- Parte 2 del formulario --}}
+                                <div class="tab-pane fade" id="tab-content2" style="transition: all 300ms ease;">
+                                    <div class="form-group">
                                         <?php
-                                        // $repuestos = [
-                                        //     'Llantas' => ['Llantas', 'Llantas delanteras', 'Llantas traseras', 'Llantas de repuesto', 'Llantas de invierno', 'Llantas de verano', 'Llantas deportivas', 'Llantas de alta resistencia', 'Llantas de bajo perfil'],
-                                        //     'Neumáticos' => ['Neumáticos', 'Neumáticos delanteros', 'Neumáticos traseros', 'Neumáticos de repuesto', 'Neumáticos de invierno', 'Neumáticos de verano', 'Neumáticos deportivos', 'Neumáticos de alta resistencia', 'Neumáticos de bajo perfil'],
-                                        //     'Frenos' => ['Pastillas de freno delanteras', 'Pastillas de freno traseras', 'Discos de freno delanteros', 'Discos de freno traseros', 'Tambores de freno traseros', 'Bomba de freno', 'Servofreno'],
-                                        //     'Suspensiones' => ['Amortiguadores delanteros', 'Amortiguadores traseros', 'Resortes delanteros', 'Resortes traseros', 'Barra estabilizadora delantera', 'Barra estabilizadora trasera', 'Bieletas'],
-                                        //     'Direccion' => ['Cremallera de dirección', 'Mangueras de dirección', 'Bomba de dirección', 'Terminales de dirección', 'Juntas homocinéticas'],
-                                        //     'Motor' => ['Filtros de aceite', 'Filtros de aire', 'Filtros de combustible', 'Bujías', 'Bobinas de encendido', 'Correas de distribución', 'Bomba de agua', 'Bomba de aceite', 'Turbocompresor', 'Alternador', 'Arrancador'],
-                                        //     'Transmisión' => ['Aceite de transmisión', 'Filtro de transmisión', 'Embrague', 'Caja de cambios manual', 'Caja de cambios automática'],
-                                        //     'Tren motriz' => ['Juntas homocinéticas', 'Diferencial', 'Semiejes'],
-                                        //     'Chasis' => ['Puertas', 'Ventanas', 'Espejos retrovisores', 'Parachoques', 'Capó', 'Maletero', 'Faros', 'Luces traseras', 'Señales de giro', 'Defensa', 'Placa de matrícula'],
-                                        //     'Electricidad' => ['Baterías', 'Faros', 'Luces traseras', 'Señales de giro', 'Limpiaparabrisas', 'Limpiaparabrisas traseros', 'A/C', 'Calefacción', 'Radio', 'Altavoces', 'Sistema de navegación'],
-                                        //     'Otros' => ['Líquido de frenos', 'Líquido refrigerante', 'Líquido de dirección asistida', 'Líquido de transmisión', 'Limpiador de parabrisas', 'Anticongelante', 'Aceite de motor', 'Aditivos'],
-                                        // ];
+                                            $repuestos = [
+                                                'Llantas' => ['Llantas', 'Llantas delanteras', 'Llantas traseras', 'Llantas de repuesto', 'Llantas de invierno', 'Llantas de verano', 'Llantas deportivas', 'Llantas de alta resistencia', 'Llantas de bajo perfil'],
+                                                'Neumáticos' => ['Neumáticos', 'Neumáticos delanteros', 'Neumáticos traseros', 'Neumáticos de repuesto', 'Neumáticos de invierno', 'Neumáticos de verano', 'Neumáticos deportivos', 'Neumáticos de alta resistencia', 'Neumáticos de bajo perfil'],
+                                                'Frenos' => ['Pastillas de freno delanteras', 'Pastillas de freno traseras', 'Discos de freno delanteros', 'Discos de freno traseros', 'Tambores de freno traseros', 'Bomba de freno', 'Servofreno'],
+                                                'Suspensiones' => ['Amortiguadores delanteros', 'Amortiguadores traseros', 'Resortes delanteros', 'Resortes traseros', 'Barra estabilizadora delantera', 'Barra estabilizadora trasera', 'Bieletas'],
+                                                'Direccion' => ['Cremallera de dirección', 'Mangueras de dirección', 'Bomba de dirección', 'Terminales de dirección', 'Juntas homocinéticas'],
+                                                'Motor' => ['Filtros de aceite', 'Filtros de aire', 'Filtros de combustible', 'Bujías', 'Bobinas de encendido', 'Correas de distribución', 'Bomba de agua', 'Bomba de aceite', 'Turbocompresor', 'Alternador', 'Arrancador'],
+                                                'Transmisión' => ['Aceite de transmisión', 'Filtro de transmisión', 'Embrague', 'Caja de cambios manual', 'Caja de cambios automática'],
+                                                'Tren motriz' => ['Juntas homocinéticas', 'Diferencial', 'Semiejes'],
+                                                'Chasis' => ['Puertas', 'Ventanas', 'Espejos retrovisores', 'Parachoques', 'Capó', 'Maletero', 'Faros', 'Luces traseras', 'Señales de giro', 'Defensa', 'Placa de matrícula'],
+                                                'Electricidad' => ['Baterías', 'Faros', 'Luces traseras', 'Señales de giro', 'Limpiaparabrisas', 'Limpiaparabrisas traseros', 'A/C', 'Calefacción', 'Radio', 'Altavoces', 'Sistema de navegación'],
+                                                'Otros' => ['Líquido de frenos', 'Líquido refrigerante', 'Líquido de dirección asistida', 'Líquido de transmisión', 'Limpiador de parabrisas', 'Anticongelante', 'Aceite de motor', 'Aditivos'],
+                                            ];
 
-                                        // // Convierte a opciones
-                                        // $options = [];
-                                        // foreach ($repuestos as $categoria => $items) {
-                                        //     foreach ($items as $item) {
-                                        //         $options[] = "<option value=\"$item\"></option>";
-                                        //     }
-                                        // }
+                                            // Convierte a opciones
+                                            $options = [];
+                                            foreach ($repuestos as $categoria => $items) {
+                                                foreach ($items as $item) {
+                                                    $options[] = "<option value=\"$item\"></option>";
+                                                }
+                                            }
                                         ?>
-
-                                        <div class="flex flex-col text-center">
-                                            <div style="display: flex; align-items: center;">
-                                                <input name="repuesto" id="repuesto"
-                                                    style="border-radius: 0.375rem; border-color: var(--bs-dark-border-subtle); border-radius: .375rem;"
-                                                    class="form-control text-center"
-                                                    placeholder="*Agrega uno a uno tus repuestos"
+                                        <div class="flex flex-col mb-4">
+                                            <label class="form-label" for="repuesto" style="margin: 0 0 .5rem 0; font-weight: 600;">Nombre del repuesto<span class="text-danger">*</span></label>
+                                            <div style="display: flex;">
+                                                <label for="check-repuesto" class="circular-checkbox">
+                                                    <span id="check-repuesto" class="check" style="background-color: #25d366; border-radius: 50%; height: 100%; width: 100%; display: block;"></span>
+                                                </label>
+                                                <input type="text" name="repuesto" id="repuesto"
+                                                    style="border-radius: 0.375rem; border-color: transparent; background-color: rgb(235, 234, 234); border-radius: .375rem;"
+                                                    class="form-control" list="lista_repuestos"
+                                                    placeholder="Eje. Llantas"
                                                     aria-label="Repuesto" value="{{ old('repuesto') }}">
-                                                {{-- <datalist id="lista_repuestos">
+                                                    <datalist id="lista_repuestos">
+                                                        <option value="" selected disabled>Ejemplos:</option>
+                                                        <?php
+                                                        echo implode("\n", $options);
+                                                        ?>
 
-                                                    <?php
-                                                    //echo implode("\n", $options);
-                                                    ?>
-
-                                                </datalist> --}}
+                                                    </datalist>
                                             </div>
                                         </div>
 
-                                        <div style="display: flex; justify-content: flex-end; width: 100%;">
-                                            <button type="button" name="agregar_repuesto" id="agregar_repuesto"
-                                                class="btn mb-3"
-                                                style="transform: translate(-1.5%, 0); transition: all 300ms ease; border-radius: 0 0 .50rem .50rem !important; color: white; background-color: #25D366; padding: 0.3rem 0.8rem; font-size: 0.8rem; border: none;">
-                                                Agregar
-                                            </button>
+                                        <div class="flex flex-col mb-4">
+                                            <label class="form-label" for="cantidad" style="margin: 0 0 .5rem 0; font-weight: 600;">Cantidad<span class="text-danger">*</span></label>
+                                            <div style="display: flex;">
+                                                <label for="check-cantidad" class="circular-checkbox">
+                                                    <span id="check-cantidad" class="check" style="background-color: #25d366; border-radius: 50%; height: 100%; width: 100%; display: block;"></span>
+                                                </label>
+                                                <input type="number" name="cantidad" id="cantidad"
+                                                    style="border-radius: 0.375rem; border-color: transparent; background-color: rgb(235, 234, 234); border-radius: .375rem;"
+                                                    class="form-control"
+                                                    placeholder="Ejemplo: 5"
+                                                    aria-label="Repuesto" value="{{ old('cantidad') }}">
+                                            </div>
                                         </div>
 
-                                        {{-- <div class="text-ejemplo-for-repuestos w-100 text-center mb-4" class="hide">
-                                            <small class="text-xs text-secondary">Ejemplo: 3 Bujías</small>
-                                        </div> --}}
+                                        <div class="flex flex-col mb-4">
+                                            <div class="form control" style="background-color: rgb(235, 234, 234); padding: 1rem; border-radius: .375rem;">
+                                                <div id="title-checks-container" style="text-align: center; font-weight: 700;">Definición del repuesto (Opcional)</div>
+                                                <div class="checksContainer">
+                                                    <div class="flex-container" id="flex-container-1">
+                                                        <div class="contenedor-checksbox">
+                                                            <div>
+                                                                <input class="inputs-checks" type="checkbox" name="check_derecho" id="check-derecho">
+                                                                <label for="check-derecho">Derecho</label>
+                                                            </div>
+                                                            <div>
+                                                                <input class="inputs-checks" type="checkbox" name="check_izquierdo" id="check-izquierdo">
+                                                                <label for="check-izquierdo">Izquiero</label>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+
+                                                    <div class="flex-container" id="flex-container-2">
+                                                        <div class="contenedor-checksbox">
+                                                            <div>
+                                                                <input class="inputs-checks" type="checkbox" name="check_delantero" id="check-delantero">
+                                                                <label for="check-delantero">Delantero</label>
+                                                            </div>
+                                                            <div>
+                                                                <input class="inputs-checks" type="checkbox" name="check_trasero" id="check-trasero">
+                                                                <label for="check-trasero">Trasero</label>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div style="display: flex; justify-content: center; width: 100%;">
+                                            {{-- <div class="modal fade" id="ejemploModal" tabindex="-1" role="dialog"
+                                                style="max-height: 100vh; max-width: 100vw;">
+                                                <div class="modal-dialog" role="document" style="max-width: max-content !important; top: 0; top: 20vh;">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header" style="padding: 0.25rem 1rem; justify-content: flex-end;">
+                                                            <button type="button" id="btn-close-ejemplo-modal" class="btn btn-close close"
+                                                                style="margin: 0;" data-dismiss="modal" aria-label="Close">
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <img src="{{asset('img/ver-mas.png')}}" alt="ejemplo para agregar repuestos">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div type="button" id="ejemplo_para_agregar_repuestos" data-toggle="modal"  data-target="#ejemploModal" style="color: var(--color-primary); text-decoration: underline; margin-top: .3rem; border-radius: 0 0 .50rem .50rem !important; padding: 0.3rem 0.8rem; font-size: 0.8rem; border: none; height: max-content;">Ver ejemplo</div>--}}
+                                            <a name="agregar_repuesto" id="agregar_repuesto" class="mb-4"
+                                                style="transition: all 300ms ease; border-radius: 0 0 .50rem .50rem !important; color: var(--color-primary); text-decoration: none; font-size: 1rem; border: none; background: none;">
+                                                + Agrega otro repuesto
+                                            </a>
+                                        </div>
 
                                         <div class="flex flex-col">
                                             <div id="campo_repuestos">
@@ -561,51 +645,50 @@
                                             @enderror
                                         </div> --}}
 
-                                        <div class="flex flex-col mb-3 text-center">
-                                            <label id="btn" class="button form-control" for="img_repuesto"
-                                                style="margin: 0; margin-bottom: 0.5rem; cursor: pointer; color: var(--bs-secondary-color); border-color: var(--bs-dark-border-subtle);">
-                                                Sube imágen(es) de repuesto(s) (Opcional)
+                                        <div class="flex flex-col mb-3" style="display: flex; flex-wrap: nowrap;">
+                                            <label id="btn" class="button" for="img_repuesto"
+                                                style="margin-right: 1rem; cursor: pointer; color: var(--bs-secondary-color); border-radius: .375rem; padding: 1rem; background: rgb(235, 234, 234);">
+                                                <img src="{{asset('icon/camara.icon.png')}}" height="100" alt="camara icono" style="height: 100px; width: auto;">
                                             </label>
                                             <input type="file" accept="image/*" name="img_repuesto[]"
-                                                id="img_repuesto" class="form-control text-center"
+                                                id="img_repuesto" class="form-control"
                                                 aria-label="img_repuesto" style="display: none;" multiple>
                                             @error('img_repuesto')
                                                 <div class="text-danger text-xs pt-1">{{ $message }}</div>
                                             @else
-                                                <small class="text-primary tex-xs pt-1">Máximo ( 3 ) imágenes del repuesto;
-                                                    formato
-                                                    png/jpg/jpeg.</small>
+                                                <div class="pt-1">
+                                                    <h6 style="font-weight: 700;" id="aclaraciones-title">Fotografía (Opcional)</h6>
+                                                    <ul class="aclaraciones-list">
+                                                        <li class="text-xs"><small>Máximo ( 3 ) imágenes del repuesto</small></li>
+                                                        <li class="text-xs"><small>Fotografía de la tarjeta de propiedad para una mejor busqueda.</small></li>
+                                                    </ul>
+                                                    <small class="text-xs"></small>
+                                                </div>
                                             @enderror
                                         </div>
-                                    </fieldset>
-
-                                    <div
-                                        style="width:100%; height: max-content; display: flex; justify-content: center;">
-                                        <button id="btn_siguiente" type="button" class="btn btn-primary"
-                                            onclick="validateForm1()">Siguiente</button>
                                     </div>
-
+                                    <div
+                                        style="width:100%; height: max-content; display: flex; justify-content: space-between;">
+                                        <button type="button" class="btn btn-secondary"
+                                            onclick="changeTab1()">Anterior</button>
+                                        <button id="btn_siguiente2" type="button" class="btn btn-primary"
+                                        onclick="changeTab3()">Siguiente</button>
+                                    </div>
                                 </div>
 
-                                <!-- Parte 2 del formulario -->
-                                <div class="tab-pane fade" id="tab-content2" style="transition: all 300ms ease;">
+                                <!-- Parte 3 del formulario -->
+                                <div class="tab-pane fade" id="tab-content3" style="transition: all 300ms ease;">
 
-                                    <fieldset class="form-group">
-                                        <legend class="text-center" style="display: flex; justify-content: center;">
-                                            <h5
-                                                style="background: var(--color-primary);
-                                                    color: white;
-                                                    width: max-content;
-                                                    padding: .3rem 1.5rem;
-                                                    border-radius: 0 0 1rem 1rem;
-                                                    font-weight: 600;">
-                                                Datos personales</h5>
-                                        </legend>
-                                        <div class="flex flex-col mb-4 text-center">
+                                    <div class="form-group">
+                                        <div class="flex flex-col mb-4">
+                                            <label class="form-label" for="nombre" style="margin: 0 0 .5rem 0; font-weight: 600;">Nombre<span class="text-danger">*</span></label>
                                             <div style="display: flex; align-items: center;">
-                                                <input type="text" class="form-control text-center" id="nombre"
-                                                    name="nombre" placeholder="*Nombre"
-                                                    style="border-color: var(--bs-dark-border-subtle); border-radius: .375rem;"
+                                                <label for="check-nombre" class="circular-checkbox">
+                                                    <span id="check-nombre" class="check" style="background-color: #25d366; border-radius: 50%; height: 100%; width: 100%; display: block;"></span>
+                                                </label>
+                                                <input type="text" class="form-control" id="nombre"
+                                                    name="nombre" placeholder="Nombre"
+                                                    style="background-color: rgb(235, 234, 234); border-radius: .375rem;"
                                                     aria-label="Nombre" value="{{ old('nombre') }}" required = "true">
                                             </div>
 
@@ -615,12 +698,16 @@
                                         </div>
 
                                         <div class="group">
-                                            <div class="flex flex-col mb-4 text-center">
+                                            <div class="flex flex-col mb-4">
+                                                <label class="form-label" for="cel" style="margin: 0 0 .5rem 0; font-weight: 600;">Número de celular<span class="text-danger">*</span> <span class="text-secondary" style="font-weight: normal;">(Debe tener WhatsApp)</span></label>
                                                 <div
                                                     style="display: flex; justify-content: space-between; align-items: center; padding: 0; margin-bottom: .3rem;">
+                                                    <label for="check-cel" class="circular-checkbox">
+                                                        <span id="check-cel" class="check" style="background-color: #25d366; border-radius: 50%; height: 100%; width: 100%; display: block;"></span>
+                                                    </label>
                                                     <div style="display: flex; align-items: center; width: 100%;">
-                                                        <span class="form-control" style="padding-left: 0; padding-right: 0; width: max-content; border-color: var(--bs-dark-border-subtle); border-radius: .375rem 0 0 .375rem;">
-                                                            <select name="codigo_cel" id="codigo-cel" style="height: 100%; border: white 1px solid;">
+                                                        <span class="form-control" style="margin-right: .5rem; width: max-content; background-color: rgb(235, 234, 234); border-radius: .375rem;">
+                                                            <select name="codigo_cel" id="codigo-cel" style="height: 100%; background: transparent !important; border: 1px solid rgb(235, 234, 234);">
                                                                 @foreach ($codigos as $codigo)
                                                                     <option value="{{ $codigo->codigo }}"
                                                                         title="{{ $codigo->pais }}">
@@ -628,38 +715,44 @@
                                                                 @endforeach
                                                             </select>
                                                         </span>
-                                                        <input type="text" class="text-center form-control"
+                                                        <input type="text" class="form-control"
                                                             id="cel" name="cel"
-                                                            placeholder="*Número de celular" aria-label='Cel'
+                                                            placeholder="Eje. 300XXX0000" aria-label='Cel'
                                                             value="{{ old('cel') }}"
-                                                            style="width: 100%; border-color: var(--bs-dark-border-subtle); border-radius: 0  .375rem .375rem 0; border-left: none;"
+                                                            style="width: 100%; background-color: rgb(235, 234, 234); border-radius: .375rem;"
                                                             required>
                                                     </div>
 
                                                 </div>
                                                 @error('cel')
                                                     <p class='text-danger text-xs pt-1'>{{ $message }}</p>
-                                                @else
-                                                    <small class="text-xs text-color-secondary">¡Debe tener Whatsapp! <i
-                                                            class="fab fa-whatsapp" aria-hidden="true"
-                                                            style="color: #25D366; font-size: 15px; transform: translate(0px, 2.4px);">
-                                                        </i></small>
                                                 @enderror
                                             </div>
 
-                                            <div id="pais" class="flex flex-col mb-4 text-center hide">
-                                                <div class="form-control"
-                                                    style="border-color: var(--bs-dark-border-subtle);">
-                                                    <span id="text-pais"></span>
+                                            <div id="pais" class="flex flex-col mb-4 hide">
+                                                <label class="form-label" for="text-pais" style="margin: 0 0 .5rem 0; font-weight: 600;">Pais</label>
+                                                <div style="display: flex;">
+                                                    <label for="check-pais" class="circular-checkbox">
+                                                        <span id="check-pais" class="check" style="background-color: #25d366; border-radius: 50%; height: 100%; width: 100%; display: block;"></span>
+                                                    </label>
+                                                    <div class="form-control"
+                                                        style="background-color: rgb(235, 234, 234);">
+                                                        <span id="text-pais"></span>
+                                                    </div>
                                                 </div>
+
                                             </div>
                                         </div>
 
-                                        <div class="flex flex-col mb-4 text-center">
+                                        <div class="flex flex-col mb-4">
+                                            <label class="form-label" for="email" style="margin: 0 0 .5rem 0; font-weight: 600;">E-mail</label>
                                             <div style="display: flex; align-items: center;">
-                                                <input type="email" class="form-control text-center" id="email"
+                                                <label for="check-email" class="circular-checkbox">
+                                                    <span id="check-email" class="check" style="background-color: #25d366; border-radius: 50%; height: 100%; width: 100%; display: block;"></span>
+                                                </label>
+                                                <input type="email" class="form-control" id="email"
                                                     name="email" placeholder="E-mail"
-                                                    style="border-color: var(--bs-dark-border-subtle); border-radius: .375rem;"
+                                                    style="background-color: rgb(235, 234, 234); border-radius: .375rem;"
                                                     aria-label="Email" value="{{ old('email') }}">
                                             </div>
 
@@ -668,12 +761,16 @@
                                             @enderror
                                         </div>
 
-                                        <div class="flex flex-col mb-4 text-center" id="contenedor_departamento">
+                                        <div class="flex flex-col mb-4" id="contenedor_departamento">
+                                            <label class="form-label" for="departamento" style="margin: 0 0 .5rem 0; font-weight: 600;">Departamento<span class="text-danger">*</span></label>
                                             <div style="display: flex; align-items: center;">
+                                                <label for="check-departamento" class="circular-checkbox">
+                                                    <span id="check-departamento" class="check" style="background-color: #25d366; border-radius: 50%; height: 100%; width: 100%; display: block;"></span>
+                                                </label>
                                                 <select id="departamento" name="departamento"
-                                                    class="form-control text-center"
-                                                    style="color: var(--bs-secondary-color); border-color: var(--bs-dark-border-subtle); border-radius: .375rem;">
-                                                    <option value="" disabled selected>*Departamento</option>
+                                                    class="form-control"
+                                                    style="appearance: auto; color: var(--bs-secondary-color); background-color: rgb(235, 234, 234); border-radius: .375rem;">
+                                                    <option value="" disabled selected>Selecciona</option>
                                                     @foreach ($departamentos as $departamento)
                                                         <option value="{{ $departamento }}">{{ $departamento }}
                                                         </option>
@@ -686,12 +783,16 @@
                                             @enderror
                                         </div>
 
-                                        <div class="flex flex-col mb-4 text-center" id="contenedor_municipio">
+                                        <div class="flex flex-col mb-4" id="contenedor_municipio">
+                                            <label class="form-label" for="municipio" style="margin: 0 0 .5rem 0; font-weight: 600;">Municipio<span class="text-danger">*</span></label>
                                             <div style="display: flex; align-items: center;">
+                                                <label for="check-municipio" class="circular-checkbox">
+                                                    <span id="check-municipio" class="check" style="background-color: #25d366; border-radius: 50%; height: 100%; width: 100%; display: block;"></span>
+                                                </label>
                                                 <select name="municipio" id="municipio"
-                                                    class="form-control text-center"
-                                                    style="color: var(--bs-secondary-color); border-color: var(--bs-dark-border-subtle); border-radius: .375rem;">
-                                                    <option value="" disabled selected>*Municipio</option>
+                                                    class="form-control"
+                                                    style="appearance: auto; color: var(--bs-secondary-color); background-color: rgb(235, 234, 234); border-radius: .375rem;">
+                                                    <option value="" disabled selected>Selecciona</option>
                                                 </select>
                                             </div>
 
@@ -700,10 +801,11 @@
                                             @enderror
                                         </div>
 
-                                        <div class="flex flex-col mb-4 text-center">
+                                        <div class="flex flex-col mb-4">
+                                            <label class="form-label" for="comentario" style="margin: 0 0 .5rem 0; font-weight: 600;">Comentarios</label>
                                             <div style="display: flex; align-items: center;">
-                                                <textarea name="comentario" id="comentario" class="form-control text-center"
-                                                    style="border-color: var(--bs-dark-border-subtle);" placeholder="¿Tienes algun comentario?"
+                                                <textarea name="comentario" id="comentario" class="form-control"
+                                                    style="background-color: rgb(235, 234, 234);" placeholder="¿Tienes algun comentario?"
                                                     aria-label="Comentario" rows="5">{{ old('comentario') }}</textarea>
                                             </div>
 
@@ -712,17 +814,16 @@
                                             @enderror
                                         </div>
 
-                                    </fieldset>
+                                    </div>
                                     {{-- <div class="text-center">
                                         <button id="btn_modal_client" type="submit" class="btn btn-primary w-100 my-4 mb-2">Enviar</button>
                                     </div> --}}
 
                                     <div
-                                        style="width:100%; height: max-content; display: flex; justify-content: center; gap: 5px;">
+                                        style="width:100%; height: max-content; display: flex; justify-content: space-between;">
                                         <button type="button" class="btn btn-secondary"
                                             onclick="changeTab2()">Anterior</button>
-                                        <button id="btn_submit" type="submit" class="btn btn-primary"
-                                            onclick="validateForm2()">Enviar</button>
+                                        <button id="btn_submit" type="submit" class="btn btn-primary">Enviar</button>
                                     </div>
 
                                 </div>
@@ -757,15 +858,21 @@
             document.addEventListener('DOMContentLoaded', function() {
                 // Obtener referencias a elementos del DOM
                 let campo_repuesto = document.getElementById('repuesto');
+                let campo_cantidad = document.getElementById('cantidad');
                 let btn_agregar = document.getElementById('agregar_repuesto');
                 let campo_repuestos = document.getElementById('campo_repuestos');
                 let container = document.getElementById('items_container');
                 let text_maximo_repuestos = document.getElementById('text-maximo-repuestos');
+                let check_i = document.getElementById('check-izquierdo');
+                let check_d = document.getElementById('check-derecho');
+                let check_t = document.getElementById('check-trasero');
+                let check_del = document.getElementById('check-delantero');
 
                 // Inicializar elementos ocultos
                 campo_repuestos.classList.add('hide');
                 btn_agregar.setAttribute('disabled', true);
-                btn_agregar.style.background = "var(--color-primary)";
+                btn_agregar.style.cursor = "not-allowed";
+                btn_agregar.setAttribute('title', 'Escribe el nombre del Repuesto.');
                 text_maximo_repuestos.classList.add('hide');
 
                 // Intentar recuperar los repuestos seleccionados del localStorage
@@ -780,7 +887,8 @@
                     button.setAttribute('name', 'item');
                     button.innerHTML = '<span style="padding: .5rem 1rem; height: 100%; background: #d3d3d3; border-radius: .25rem 0 0 .25rem;">' + item + "</span>" + '<img height="20" width="16" class="btn_borrar_item" src="{{asset("icon/trash.png")}}" alt="icono de basura" style="padding: .5rem; margin-top: auto; margin-bottom: auto; max-width: max-content; max-height: max-content; box-shadow: 7px 0px 8px -7px inset #00000099; border-radius: 0 .25rem .25rem 0; background: #ff5b5b;">';
                     btn_agregar.setAttribute('disabled', true);
-                    btn_agregar.style.background = "var(--color-primary)";
+                    btn_agregar.style.cursor = "not-allowed";
+                    btn_agregar.setAttribute('title', 'Escribe el nombre del Repuesto.');
 
                     // Agregar un evento de escucha de clics al botón
                     button.addEventListener('click', function() {
@@ -793,11 +901,12 @@
                         // Guardar las repuestos seleccionadas en el localStorage
                         localStorage.setItem('seleccionados', JSON.stringify(seleccionados));
 
-                        if (container.children.length === 1) {
+                        if (container.children.length === 1 && campo_repuesto === 0) {
                             campo_repuestos.classList.add('hide');
                             text_maximo_repuestos.classList.add('hide');
                             btn_agregar.setAttribute('disabled', true);
-                            btn_agregar.style.background = "var(--color-primary)";
+                            btn_agregar.style.cursor = "not-allowed";
+                            btn_agregar.setAttribute('title', 'Escribe el nombre del Repuesto.');
                             campo_repuesto.setCustomValidity('No has agregado ningún repuesto');
                         }
 
@@ -821,42 +930,75 @@
                     }
                 }
 
-                // Escuchar el evento clic en el campo de repuestos
                 campo_repuesto.addEventListener('input', function() {
                     if(campo_repuesto.value.length == 0){
                         btn_agregar.setAttribute('disabled', true);
-                        btn_agregar.style.background = "var(-color-primary)";
+                        btn_agregar.style.cursor = "not-allowed";
+                        btn_agregar.setAttribute('title', 'Escribe el nombre del Repuesto.');
+                        campo_repuesto.setCustomValidity('Escribe el nombre del repuesto.');
                     }else{
                         btn_agregar.removeAttribute('disabled');
-                        btn_agregar.style.background = "#25d366";
+                        btn_agregar.style.cursor = "pointer";
+                        btn_agregar.removeAttribute('title');
+                        campo_repuesto.setCustomValidity('')
                     }
 
                 });
 
                 // Escuchar el evento clic en el botón de agregar
                 btn_agregar.addEventListener('click', function() {
+                    if(campo_cantidad.value == 0){
+                        campo_cantidad.setCustomValidity('La cantidad no puede ser igual a cero');
+                        let form = document.getElementById('form_client');
+                        if (!form.reportValidity()) {
+                            return;
+                        }
+                    }else{
+                        campo_cantidad.setCustomValidity('');
+                    }
+                    let definicion = [];
+
+                    if (check_i.checked) {
+                        definicion.push('izquierdo');
+                    }
+
+                    if (check_d.checked) {
+                        definicion.push('derecho');
+                    }
+
+                    if (check_t.checked) {
+                        definicion.push('trasero');
+                    }
+
+                    if (check_del.checked) {
+                        definicion.push('delantero');
+                    }
+
+                    let def = definicion.join(', ');
+
                     let item = campo_repuesto.value;
-                    let btnSig = document.getElementById('btn_siguiente');
+                    let cant = campo_cantidad.value;
+                    let btnSig = document.getElementById('btn_siguiente2');
                     campo_repuesto.value = "";
+                    campo_cantidad.value = "";
+                    check_i.checked = false;
+                    check_d.checked = false;
+                    check_t.checked = false;
+                    check_del.checked = false;
 
                     if (item !== "") {
                         if (container.children.length < 6) {
-                            if (!seleccionados[item]) {
-                                agregarBoton(item);
+                            if (!seleccionados[cant + ' ' + item + ' ' + def]) {
+                                agregarBoton(cant + ' ' + item + ' ' + def);
                                 campo_repuestos.classList.remove('hide');
                                 text_maximo_repuestos.classList.remove('hide');
                             }
                         } else {
                             alert('Ya has agregado un máximo de 5 repuestos.');
-                            return; // Salir de la función para evitar ejecutar el código adicional
+                            return;
                         }
                     }
 
-                    if (container.children.length > 1) {
-                        campo_repuesto.setCustomValidity('');
-                    } else {
-                        campo_repuesto.setCustomValidity('No has agregado ningún repuesto');
-                    }
                 });
 
                 // Ocultar elementos si no hay repuestos seleccionadas
@@ -864,32 +1006,41 @@
                     campo_repuestos.classList.add('hide');
                     text_maximo_repuestos.classList.add('hide');
                     btn_agregar.setAttribute('disabled', true);
-                    btn_agregar.style.background = "var(--color-primary)";
-                    campo_repuesto.setCustomValidity('No has agregado ningún repuesto');
+                    btn_agregar.style.cursor = "not-allowed";
+                    btn_agregar.setAttribute('title', 'Escribe el nombre del Repuesto.');
+                    campo_repuesto.setAttribute('required', true);
+                    campo_cantidad.setAttribute('required', true);
+                }else if(container.children.length > 1 && campo_repuesto.length == 0){
+                    campo_repuesto.removeAttribute('required');
+                    campo_cantidad.removeAttribute('required');
+                }else{
+                    campo_repuesto.removeAttribute('required');
                 }
 
                 // Escuchar el evento de envío del formulario
                 document.getElementById('form_client').addEventListener('submit', function(event) {
-                    // Evitar el envío del formulario para manejarlo manualmente
-                    event.preventDefault();
+                    if((campo_cantidad.value == '' && campo_repuesto.value == '') || (campo_cantidad.value != '' && campo_repuesto.value != '') && container.children.length > 1){
+                        // Evitar el envío del formulario para manejarlo manualmente
+                        event.preventDefault();
 
-                    // Obtener los textos de los botones en un arreglo
-                    let textosSeleccionados = Object.keys(seleccionados);
+                        // Obtener los textos de los botones en un arreglo
+                        let textosSeleccionados = Object.keys(seleccionados);
 
-                    // Convertir el arreglo a una cadena JSON
-                    let jsonTextosSeleccionados = JSON.stringify(textosSeleccionados);
+                        // Convertir el arreglo a una cadena JSON
+                        let jsonTextosSeleccionados = JSON.stringify(textosSeleccionados);
 
-                    // Agregar un campo oculto al formulario y asignarle la cadena JSON
-                    let inputJson = document.createElement('input');
-                    inputJson.type = 'hidden';
-                    inputJson.name = 'json_repuestos';
-                    inputJson.value = jsonTextosSeleccionados.replace(/×/g, '').replace(/\n/g, '');
-                    this.appendChild(inputJson);
+                        // Agregar un campo oculto al formulario y asignarle la cadena JSON
+                        let inputJson = document.createElement('input');
+                        inputJson.type = 'hidden';
+                        inputJson.name = 'json_repuestos';
+                        inputJson.value = jsonTextosSeleccionados.replace(/×/g, '').replace(/\n/g, '');
+                        this.appendChild(inputJson);
 
-                    // Limpiar los datos en localStorage después de enviar el formulario
-                    localStorage.removeItem('seleccionados');
+                        // Limpiar los datos en localStorage después de enviar el formulario
+                        localStorage.removeItem('seleccionados');
 
-                    container.value = "";
+                        container.value = "";
+                    }
 
                     // Ahora, puedes enviar el formulario
                     this.submit();
@@ -900,85 +1051,299 @@
 
         <script>
             //Tabs
-            let tabId1 = document.getElementById('tab-content1');
-            let tabId2 = document.getElementById('tab-content2');
-            let tab1 = document.getElementById('tab1');
-            let tab2 = document.getElementById('tab2');
+            const tabId1 = document.getElementById('tab-content1');
+            const tabId2 = document.getElementById('tab-content2');
+            const tabId3 = document.getElementById('tab-content3');
+            const tab1 = document.getElementById('tab1');
+            const tab2 = document.getElementById('tab2');
+            const tab3 = document.getElementById('tab3');
+            const nav_item1 = document.getElementById('nav-item1');
+            const nav_item2 = document.getElementById('nav-item2');
+            const nav_item3 = document.getElementById('nav-item3');
 
-            //Campos parte 2
-            let campo_nombre = document.getElementById('nombre');
-            let campo_cel = document.getElementById('cel');
-            let campo_departamento = document.getElementById('departamento');
-            let campo_municipio = document.getElementById('municipio');
+            nav_item1.style.opacity = '.5';
+            nav_item2.style.opacity = '.5';
+            nav_item3.style.opacity = '.5';
 
-            function changeTab1() {
-                tabId1.classList.add('hide');
-                tab1.classList.remove('active');
-                tab1.classList.remove('paso_activo');
-                tabId1.classList.remove('show');
-                tabId1.classList.remove('active');
-                tabId2.classList.remove('hide');
-                tabId2.classList.add('active');
-                tab2.classList.add('active');
-                tab2.classList.add('paso_activo');
-                tabId2.classList.add('show');
+            const container_checks = document.getElementsByClassName('circular-checkbox');
+            const check = document.getElementsByClassName('check');
+
+            for(let i = 0; i < container_checks.length; i++){
+                container_checks[i].style.border = '2px rgb(235, 234, 234) solid';
+            }
+            for(let i = 0; i < check.length; i++){
+                check[i].style.backgroundColor = 'rgb(235, 234, 234)';
             }
 
-            function changeTab2() {
+            const select_marca = document.getElementById('marca');
+            const campo_marca_otro = document.getElementById('marca-otro');
+            const campo_referencia = document.getElementById('referencia');
+            const select_modelo = document.getElementById('modelo');
+            const select_transmisión = document.getElementById('tipo');
+
+            const campo_repuesto = document.getElementById('repuesto');
+            const campo_cantidad = document.getElementById('cantidad');
+            const container = document.getElementById('items_container');
+
+            const campo_nombre = document.getElementById('nombre');
+            const campo_cel = document.getElementById('cel');
+            const campo_email = document.getElementById('email');
+            const campo_departamento = document.getElementById('departamento');
+            const campo_municipio = document.getElementById('municipio');
+
+
+            function changeTab1() {
+
+                if(select_marca.value !== ''){
+                    container_checks[0].style.border = '2px #25d366 solid';
+                    check[0].style.backgroundColor = '#25d366';
+                }
+
+                if (campo_referencia.value !== '') {
+                    container_checks[1].style.border = '2px #25d366 solid';
+                    check[1].style.backgroundColor = '#25d366';
+                }
+
+
                 tabId1.classList.remove('hide');
                 tab1.classList.add('active');
                 tab1.classList.add('paso_activo');
                 tabId1.classList.add('show');
                 tabId1.classList.add('active');
+
                 tabId2.classList.add('hide');
                 tabId2.classList.remove('active');
                 tab2.classList.remove('active');
                 tab2.classList.remove('paso_activo');
                 tabId2.classList.remove('show');
+
+                tabId3.classList.add('hide');
+                tabId3.classList.remove('active');
+                tab3.classList.remove('active');
+                tab3.classList.remove('paso_activo');
+                tabId3.classList.remove('show');
+
+                nav_item1.style.opacity = '1';
+                nav_item2.style.opacity = '.5';
+                nav_item3.style.opacity = '.5';
+
             }
 
-            function validateForm1() {
+            function changeTab2() {
+
                 campo_nombre.removeAttribute('required');
                 campo_cel.setCustomValidity("");
                 campo_cel.removeAttribute("required");
                 campo_departamento.removeAttribute('required');
                 campo_municipio.removeAttribute('required');
+                campo_cantidad.removeAttribute('required');
+                campo_cantidad.setCustomValidity('');
+                campo_repuesto.removeAttribute('required');
+                campo_repuesto.setCustomValidity('');
 
-                let form = document.getElementById('form_client');
+                const form = document.getElementById('form_client');
                 if (!form.reportValidity()) {
                     return;
+                }else{
+                    tabId1.classList.add('hide');
+                    tab1.classList.remove('active');
+                    tab1.classList.remove('paso_activo');
+                    tabId1.classList.remove('show');
+                    tabId1.classList.remove('active');
+
+                    tabId2.classList.remove('hide');
+                    tabId2.classList.add('active');
+                    tab2.classList.add('active');
+                    tab2.classList.add('paso_activo');
+                    tabId2.classList.add('show');
+
+                    tabId3.classList.add('hide');
+                    tabId3.classList.remove('active');
+                    tab3.classList.remove('active');
+                    tab3.classList.remove('paso_activo');
+                    tabId3.classList.remove('show');
                 }
 
-                // Cambiar a la siguiente pestaña solo si todos los campos son válidos
-                changeTab1();
+                nav_item1.style.opacity = '.5';
+                nav_item2.style.opacity = '1';
+                nav_item3.style.opacity = '.5';
             }
 
-            function validateForm2() {
+            function changeTab3() {
+
+                if(container.children.length > 1){
+                    campo_repuesto.removeAttribute('required');
+                    campo_cantidad.removeAttribute('required');
+                }else{
+                    campo_repuesto.setAttribute('required', true);
+                    campo_cantidad.setAttribute('required', true);
+                    if(campo_cantidad.value == 0){
+                        campo_cantidad.setCustomValidity('La cantidad no puede ser igual a cero');
+                    }else{
+                        campo_cantidad.setCustomValidity('');
+                    }
+
+                }
+                const form = document.getElementById('form_client');
+                if (!form.reportValidity()) {
+                    return;
+                }else{
+                    tabId1.classList.add('hide');
+                    tab1.classList.remove('active');
+                    tab1.classList.remove('paso_activo');
+                    tabId1.classList.remove('show');
+                    tabId1.classList.remove('active');
+
+                    tabId2.classList.add('hide');
+                    tabId2.classList.remove('active');
+                    tab2.classList.remove('active');
+                    tab2.classList.remove('paso_activo');
+                    tabId2.classList.remove('show');
+
+                    tabId3.classList.remove('hide');
+                    tabId3.classList.add('active');
+                    tab3.classList.add('active');
+                    tab3.classList.add('paso_activo');
+                    tabId3.classList.add('show');
+                }
+
+                nav_item1.style.opacity = '.5';
+                nav_item2.style.opacity = '.5';
+                nav_item3.style.opacity = '1';
+
                 campo_nombre.setAttribute('required', true);
-                campo_cel.setAttribute("required", true);
+                campo_cel.setAttribute('required', true);
+                campo_departamento.setAttribute('required', true);
+                campo_municipio.setAttribute('required', true);
 
-                let form = document.getElementById('form_client');
-                if (!form.reportValidity()) {
-                    return;
-                }
             }
 
-            // campo_marca.addEventListener('change', validar_datos_1);
-            // campo_referencia.addEventListener('change', validar_datos_1);
-            // campo_modelo.addEventListener('change', validar_datos_1);
-            // campo_caja.addEventListener('change', validar_datos_1);
-            // campo_repuestos.addEventListener('change', validar_datos_1);
-            // // campo_categorias.addEventListener('change', validar_datos_1);
+            select_marca.addEventListener('change', () => {
+                if(select_marca.value != ''){
+                    container_checks[0].style.border = '2px #25d366 solid';
+                    check[0].style.backgroundColor = '#25d366';
+                }else{
+                    container_checks[0].style.border = '2px #ff5a51 solid';
+                    check[0].style.backgroundColor = '#ff5a51';
+                }
+            });
+            campo_marca_otro.addEventListener('input', () => {
+                if(campo_marca_otro.value != ''){
+                    container_checks[0].style.border = '2px #25d366 solid';
+                    check[0].style.backgroundColor = '#25d366';
+                }else{
+                    container_checks[0].style.border = '2px #ff5a51 solid';
+                    check[0].style.backgroundColor = '#ff5a51';
+                }
+            });
+            campo_referencia.addEventListener('input', () => {
+                if (campo_referencia.value !== '') {
+                    container_checks[1].style.border = '2px #25d366 solid';
+                    check[1].style.backgroundColor = '#25d366';
+                } else {
+                    container_checks[1].style.border = '2px #ff5a51 solid';
+                    check[1].style.backgroundColor = '#ff5a51';
+                }
+            });
 
-            // campo_nombre.addEventListener('change', validar_datos_2);
-            // campo_cel.addEventListener('change', validar_datos_2);
-            // campo_departamento.addEventListener('change', validar_datos_2);
-            // campo_municipio.addEventListener('change', validar_datos_2);
+            select_modelo.addEventListener('change', () => {
+                if(select_modelo.value != ''){
+                    container_checks[2].style.border = '2px #25d366 solid';
+                    check[2].style.backgroundColor = '#25d366';
+                }else{
+                    container_checks[2].style.border = '2px #ff5a51 solid';
+                    check[2].style.backgroundColor = '#ff5a51';
+                }
+            });
+            select_transmisión.addEventListener('change', () => {
+                if(select_transmisión.value != ''){
+                    container_checks[3].style.border = '2px #25d366 solid';
+                    check[3].style.backgroundColor = '#25d366';
+                }else{
+                    container_checks[3].style.border = '2px #ff5a51 solid';
+                    check[3].style.backgroundColor = '#ff5a51';
+                }
+            });
 
-            // validar_datos_1();
-            // validar_datos_2();
+            repuesto.addEventListener('input', function() {
+                if (repuesto.value !== '') {
+                    container_checks[4].style.border = '2px #25d366 solid';
+                    check[4].style.backgroundColor = '#25d366';
+                } else {
+                    container_checks[4].style.border = '2px #ff5a51 solid';
+                    check[4].style.backgroundColor = '#ff5a51';
+                }
+            });
 
-            changeTab2();
+            cantidad.addEventListener('input', function() {
+                if (cantidad.value !== '') {
+                    container_checks[5].style.border = '2px #25d366 solid';
+                    check[5].style.backgroundColor = '#25d366';
+                } else {
+                    container_checks[5].style.border = '2px #ff5a51 solid';
+                    check[5].style.backgroundColor = '#ff5a51';
+                }
+            });
+
+            campo_nombre.addEventListener('input', function() {
+                if (campo_nombre.value !== '') {
+                    container_checks[6].style.border = '2px #25d366 solid';
+                    check[6].style.backgroundColor = '#25d366';
+                } else {
+                    container_checks[6].style.border = '2px #ff5a51 solid';
+                    check[6].style.backgroundColor = '#ff5a51';
+                }
+            });
+
+            campo_cel.addEventListener('input', function() {
+                if (campo_cel.value !== '') {
+                    container_checks[7].style.border = '2px #25d366 solid';
+                    check[7].style.backgroundColor = '#25d366';
+                } else {
+                    container_checks[7].style.border = '2px #ff5a51 solid';
+                    check[7].style.backgroundColor = '#ff5a51';
+                }
+            });
+
+            campo_email.addEventListener('input', function() {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+                if (emailRegex.test(campo_email.value)) {
+                    container_checks[9].style.border = '2px #25d366 solid';
+                    check[9].style.backgroundColor = '#25d366';
+                }else {
+                    container_checks[9].style.border = '2px #ff5a51 solid';
+                    check[9].style.backgroundColor = '#ff5a51';
+                }
+
+                if(campo_email.value === ''){
+                    container_checks[9].style.border = '2px rgb(235, 234, 234) solid';
+                    check[9].style.backgroundColor = 'rgb(235, 234, 234)';
+                }
+            });
+
+
+            campo_departamento.addEventListener('change', function() {
+                if (campo_departamento.value !== '') {
+                    container_checks[10].style.border = '2px #25d366 solid';
+                    check[10].style.backgroundColor = '#25d366';
+                } else {
+                    container_checks[10].style.border = '2px #ff5a51 solid';
+                    check[10].style.backgroundColor = '#ff5a51';
+                }
+            });
+
+            campo_municipio.addEventListener('change', function() {
+                if (campo_municipio.value !== '') {
+                    container_checks[11].style.border = '2px #25d366 solid';
+                    check[11].style.backgroundColor = '#25d366';
+                } else {
+                    container_checks[11].style.border = '2px #ff5a51 solid';
+                    check[11].style.backgroundColor = '#ff5a51';
+                }
+            });
+
+            changeTab1();
         </script>
 
         <script>
@@ -1041,10 +1406,8 @@
                 let textPais = document.getElementById('text-pais');
                 let container_dep = document.getElementById('contenedor_departamento');
                 let departamento = document.getElementById('departamento');
-                let numero_dep = document.getElementById('numero_campo_departamento');
                 let container_muni = document.getElementById('contenedor_municipio');
                 let municipio = document.getElementById('municipio');
-                let numero_muni = document.getElementById('numero_campo_municipio');
 
                 // Establece los campos como obligatorios
                 departamento.setAttribute('required', true);
@@ -1062,7 +1425,7 @@
                     } else if (codigo.value == '+56') {
                         cel.value = cel.value.slice(0, 9);
                     } else if (codigo.value == '+593') {
-                        cel.value = cel.value.slice(0, 10);
+                        cel.value = cel.value.slice(0, 9);
                     } else if (codigo.value == '+594') {
                         cel.value = cel.value.slice(0, 9);
                     } else if (codigo.value == '+592') {
@@ -1104,11 +1467,18 @@
                 function updateVisibility() {
                     sessionStorage.setItem('codigo', codigo.value);
 
-                    if (codigo.value == '+54') {
+                    if(codigo.value != '+57'){
                         departamento.classList.add('hide');
                         municipio.classList.add('hide');
                         pais.classList.remove('hide');
 
+                        departamento.removeAttribute('required');
+                        municipio.removeAttribute('required');
+                        container_dep.classList.add('hide');
+                        container_muni.classList.add('hide');
+                    }
+
+                    if (codigo.value == '+54') {
                         if (isNaN(cel.value) || cel.value.length != 10) {
                             cel.setCustomValidity("El número de celular debe tener 10 dígitos");
                         } else {
@@ -1116,18 +1486,7 @@
                         }
 
                         textPais.textContent = 'Argentina';
-
-                        departamento.removeAttribute('required');
-                        municipio.removeAttribute('required');
-                        numero_dep.classList.add('hide');
-                        numero_muni.classList.add('hide');
-                        container_dep.classList.add('hide');
-                        container_muni.classList.add('hide');
                     } else if (codigo.value == '+591') {
-                        departamento.classList.add('hide');
-                        municipio.classList.add('hide');
-                        pais.classList.remove('hide');
-
 
                         if (isNaN(cel.value) || cel.value.length != 8) {
                             cel.setCustomValidity("El número de celular debe tener 8 dígitos");
@@ -1137,16 +1496,7 @@
 
                         textPais.textContent = 'Bolivia';
 
-                        departamento.removeAttribute('required');
-                        municipio.removeAttribute('required');
-                        numero_dep.classList.add('hide');
-                        numero_muni.classList.add('hide');
-                        container_dep.classList.add('hide');
-                        container_muni.classList.add('hide');
                     } else if (codigo.value == '+55') {
-                        departamento.classList.add('hide');
-                        municipio.classList.add('hide');
-                        pais.classList.remove('hide');
 
                         if (isNaN(cel.value) || cel.value.length != 11) {
                             cel.setCustomValidity("El número de celular debe tener 11 dígitos");
@@ -1156,16 +1506,7 @@
 
                         textPais.textContent = 'Brasil';
 
-                        departamento.removeAttribute('required');
-                        municipio.removeAttribute('required');
-                        numero_dep.classList.add('hide');
-                        numero_muni.classList.add('hide');
-                        container_dep.classList.add('hide');
-                        container_muni.classList.add('hide');
                     } else if (codigo.value == '+56') {
-                        departamento.classList.add('hide');
-                        municipio.classList.add('hide');
-                        pais.classList.remove('hide');
 
                         if (isNaN(cel.value) || cel.value.length != 9) {
                             cel.setCustomValidity("El número de celular debe tener 9 dígitos");
@@ -1174,34 +1515,18 @@
                         }
                         textPais.textContent = 'Chile';
 
-                        departamento.removeAttribute('required');
-                        municipio.removeAttribute('required');
-                        numero_dep.classList.add('hide');
-                        numero_muni.classList.add('hide');
-                        container_dep.classList.add('hide');
-                        container_muni.classList.add('hide');
                     } else if (codigo.value == '+593') {
-                        departamento.classList.add('hide');
-                        municipio.classList.add('hide');
-                        pais.classList.remove('hide');
-                        if (isNaN(cel.value) || cel.value.length != 10) {
-                            cel.setCustomValidity("El número de celular debe tener 10 dígitos");
+
+                        if (isNaN(cel.value) || cel.value.length != 9) {
+                            cel.setCustomValidity("El número de celular debe tener 9 dígitos");
                         } else {
                             cel.setCustomValidity("");
                         }
 
                         textPais.textContent = 'Ecuador';
 
-                        departamento.removeAttribute('required');
-                        municipio.removeAttribute('required');
-                        numero_dep.classList.add('hide');
-                        numero_muni.classList.add('hide');
-                        container_dep.classList.add('hide');
-                        container_muni.classList.add('hide');
                     } else if (codigo.value == '+594') {
-                        departamento.classList.add('hide');
-                        municipio.classList.add('hide');
-                        pais.classList.remove('hide');
+
                         if (isNaN(cel.value) || cel.value.length != 9) {
                             cel.setCustomValidity("El número de celular debe tener 9 dígitos");
                         } else {
@@ -1210,16 +1535,8 @@
 
                         textPais.textContent = 'Guayana Francesa';
 
-                        departamento.removeAttribute('required');
-                        municipio.removeAttribute('required');
-                        numero_dep.classList.add('hide');
-                        numero_muni.classList.add('hide');
-                        container_dep.classList.add('hide');
-                        container_muni.classList.add('hide');
                     } else if (codigo.value == '+592') {
-                        departamento.classList.add('hide');
-                        municipio.classList.add('hide');
-                        pais.classList.remove('hide');
+
                         if (isNaN(cel.value) || cel.value.length != 7) {
                             cel.setCustomValidity("El número de celular debe tener 7 dígitos");
                         } else {
@@ -1228,35 +1545,19 @@
 
                         textPais.textContent = 'Guyana';
 
-                        departamento.removeAttribute('required');
-                        municipio.removeAttribute('required');
-                        numero_dep.classList.add('hide');
-                        numero_muni.classList.add('hide');
-                        container_dep.classList.add('hide');
-                        container_muni.classList.add('hide');
                     } else if (codigo.value == '+595') {
-                        departamento.classList.add('hide');
-                        municipio.classList.add('hide');
-                        pais.classList.remove('hide');
+
                         if (isNaN(cel.value) || cel.value.length != 9) {
                             cel.setCustomValidity("El número de celular debe tener 9 dígitos");
                         } else {
                             cel.setCustomValidity("");
                         }
 
-
                         textPais.textContent = 'Paraguay';
 
-                        departamento.removeAttribute('required');
-                        municipio.removeAttribute('required');
-                        numero_dep.classList.add('hide');
-                        numero_muni.classList.add('hide');
-                        container_dep.classList.add('hide');
-                        container_muni.classList.add('hide');
+
                     } else if (codigo.value == '+51') {
-                        departamento.classList.add('hide');
-                        municipio.classList.add('hide');
-                        pais.classList.remove('hide');
+
                         if (isNaN(cel.value) || cel.value.length != 9) {
                             cel.setCustomValidity("El número de celular debe tener 9 dígitos");
                         } else {
@@ -1266,16 +1567,8 @@
 
                         textPais.textContent = 'Perú';
 
-                        departamento.removeAttribute('required');
-                        municipio.removeAttribute('required');
-                        numero_dep.classList.add('hide');
-                        numero_muni.classList.add('hide');
-                        container_dep.classList.add('hide');
-                        container_muni.classList.add('hide');
                     } else if (codigo.value == '+597') {
-                        departamento.classList.add('hide');
-                        municipio.classList.add('hide');
-                        pais.classList.remove('hide');
+
                         if (isNaN(cel.value) || cel.value.length != 7) {
                             cel.setCustomValidity("El número de celular debe tener 7 dígitos");
                         } else {
@@ -1284,16 +1577,8 @@
 
                         textPais.textContent = 'Surinam';
 
-                        departamento.removeAttribute('required');
-                        municipio.removeAttribute('required');
-                        numero_dep.classList.add('hide');
-                        numero_muni.classList.add('hide');
-                        container_dep.classList.add('hide');
-                        container_muni.classList.add('hide');
                     } else if (codigo.value == '+598') {
-                        departamento.classList.add('hide');
-                        municipio.classList.add('hide');
-                        pais.classList.remove('hide');
+
                         if (isNaN(cel.value) || cel.value.length != 8) {
                             cel.setCustomValidity("El número de celular debe tener 8 dígitos");
                         } else {
@@ -1302,16 +1587,8 @@
 
                         textPais.textContent = 'Uruguay';
 
-                        departamento.removeAttribute('required');
-                        municipio.removeAttribute('required');
-                        numero_dep.classList.add('hide');
-                        numero_muni.classList.add('hide');
-                        container_dep.classList.add('hide');
-                        container_muni.classList.add('hide');
                     } else if (codigo.value == '+58') {
-                        departamento.classList.add('hide');
-                        municipio.classList.add('hide');
-                        pais.classList.remove('hide');
+
                         if (isNaN(cel.value) || cel.value.length != 10) {
                             cel.setCustomValidity("El número de celular debe tener 10 dígitos");
                         } else {
@@ -1319,13 +1596,6 @@
                         }
                         textPais.textContent = 'Venezuela';
 
-                        // Elimina el atributo 'required'
-                        departamento.removeAttribute('required');
-                        municipio.removeAttribute('required');
-                        numero_dep.classList.add('hide');
-                        numero_muni.classList.add('hide');
-                        container_dep.classList.add('hide');
-                        container_muni.classList.add('hide');
                     } else if (codigo.value == '+57') {
                         departamento.classList.remove('hide');
                         municipio.classList.remove('hide');
@@ -1340,14 +1610,10 @@
                         // Establece los campos como obligatorios
                         departamento.setAttribute('required', true);
                         municipio.setAttribute('required', true);
-                        numero_dep.classList.remove('hide');
-                        numero_muni.classList.remove('hide');
                         container_dep.classList.remove('hide');
                         container_muni.classList.remove('hide');
                     } else if (codigo.value == '+1') {
-                        departamento.classList.add('hide');
-                        municipio.classList.add('hide');
-                        pais.classList.remove('hide');
+
                         if (isNaN(cel.value) || cel.value.length != 10) {
                             cel.setCustomValidity("El número de celular debe tener 10 dígitos");
                         } else {
@@ -1355,16 +1621,8 @@
                         }
                         textPais.textContent = 'Estados Unidos';
 
-                        departamento.removeAttribute('required');
-                        municipio.removeAttribute('required');
-                        numero_dep.classList.add('hide');
-                        numero_muni.classList.add('hide');
-                        container_dep.classList.add('hide');
-                        container_muni.classList.add('hide');
                     } else if (codigo.value == '+506') {
-                        departamento.classList.add('hide');
-                        municipio.classList.add('hide');
-                        pais.classList.remove('hide');
+
                         if (isNaN(cel.value) || cel.value.length != 8) {
                             cel.setCustomValidity("El número de celular debe tener 8 dígitos");
                         } else {
@@ -1372,16 +1630,8 @@
                         }
                         textPais.textContent = 'Costa Rica';
 
-                        departamento.removeAttribute('required');
-                        municipio.removeAttribute('required');
-                        numero_dep.classList.add('hide');
-                        numero_muni.classList.add('hide');
-                        container_dep.classList.add('hide');
-                        container_muni.classList.add('hide');
                     } else if (codigo.value == '+503') {
-                        departamento.classList.add('hide');
-                        municipio.classList.add('hide');
-                        pais.classList.remove('hide');
+
                         if (isNaN(cel.value) || cel.value.length != 8) {
                             cel.setCustomValidity("El número de celular debe tener 8 dígitos");
                         } else {
@@ -1389,16 +1639,8 @@
                         }
                         textPais.textContent = 'El Salvador';
 
-                        departamento.removeAttribute('required');
-                        municipio.removeAttribute('required');
-                        numero_dep.classList.add('hide');
-                        numero_muni.classList.add('hide');
-                        container_dep.classList.add('hide');
-                        container_muni.classList.add('hide');
                     } else if (codigo.value == '+502') {
-                        departamento.classList.add('hide');
-                        municipio.classList.add('hide');
-                        pais.classList.remove('hide');
+
                         if (isNaN(cel.value) || cel.value.length != 8) {
                             cel.setCustomValidity("El número de celular debe tener 8 dígitos");
                         } else {
@@ -1406,16 +1648,8 @@
                         }
                         textPais.textContent = 'Guatemala';
 
-                        departamento.removeAttribute('required');
-                        municipio.removeAttribute('required');
-                        numero_dep.classList.add('hide');
-                        numero_muni.classList.add('hide');
-                        container_dep.classList.add('hide');
-                        container_muni.classList.add('hide');
                     } else if (codigo.value == '+504') {
-                        departamento.classList.add('hide');
-                        municipio.classList.add('hide');
-                        pais.classList.remove('hide');
+
                         if (isNaN(cel.value) || cel.value.length != 8) {
                             cel.setCustomValidity("El número de celular debe tener 8 dígitos");
                         } else {
@@ -1424,16 +1658,8 @@
 
                         textPais.textContent = 'Honduras';
 
-                        departamento.removeAttribute('required');
-                        municipio.removeAttribute('required');
-                        numero_dep.classList.add('hide');
-                        numero_muni.classList.add('hide');
-                        container_dep.classList.add('hide');
-                        container_muni.classList.add('hide');
                     } else if (codigo.value == '+52') {
-                        departamento.classList.add('hide');
-                        municipio.classList.add('hide');
-                        pais.classList.remove('hide');
+
                         if (isNaN(cel.value) || cel.value.length != 10) {
                             cel.setCustomValidity("El número de celular debe tener 10 dígitos");
                         } else {
@@ -1441,16 +1667,8 @@
                         }
                         textPais.textContent = 'México';
 
-                        departamento.removeAttribute('required');
-                        municipio.removeAttribute('required');
-                        numero_dep.classList.add('hide');
-                        numero_muni.classList.add('hide');
-                        container_dep.classList.add('hide');
-                        container_muni.classList.add('hide');
                     } else if (codigo.value == '+505') {
-                        departamento.classList.add('hide');
-                        municipio.classList.add('hide');
-                        pais.classList.remove('hide');
+
                         if (isNaN(cel.value) || cel.value.length != 8) {
                             cel.setCustomValidity("El número de celular debe tener 8 dígitos");
                         } else {
@@ -1458,16 +1676,8 @@
                         }
                         textPais.textContent = 'Nicaragua';
 
-                        departamento.removeAttribute('required');
-                        municipio.removeAttribute('required');
-                        numero_dep.classList.add('hide');
-                        numero_muni.classList.add('hide');
-                        container_dep.classList.add('hide');
-                        container_muni.classList.add('hide');
                     } else if (codigo.value == '+507') {
-                        departamento.classList.add('hide');
-                        municipio.classList.add('hide');
-                        pais.classList.remove('hide');
+
                         if (isNaN(cel.value) || cel.value.length != 8) {
                             cel.setCustomValidity("El número de celular debe tener 8 dígitos");
                         } else {
@@ -1475,12 +1685,6 @@
                         }
                         textPais.textContent = 'Panamá';
 
-                        departamento.removeAttribute('required');
-                        municipio.removeAttribute('required');
-                        numero_dep.classList.add('hide');
-                        numero_muni.classList.add('hide');
-                        container_dep.classList.add('hide');
-                        container_muni.classList.add('hide');
                     }
                 }
 

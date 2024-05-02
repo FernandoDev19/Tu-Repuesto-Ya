@@ -7,32 +7,32 @@
     class="navbar navbar-expand navbar-light bg-white shadow topbar static-top d-flex justify-content-center">
 
     <!-- Topbar Navbar -->
-    <ul class="navbar-nav" style="font-size: 1.3rem;">
+    <ul id="lista-nav-items" class="navbar-nav" style="font-size: 1.3rem;">
 
         <li class="nav-item">
             <a class="nav-link" style="color: var(--gray); padding: 0 .50rem; gap: 3px;" href="{{ route('dashboard') }}">
-                <i class="fas fa-fw fa-tachometer-alt"> </i>
+                <i class="fas fa-fw fa-tachometer-alt icon-sidebar"> </i>
                 <span class="nav-items-cel-small"> Panel</span></a>
         </li>
 
         @can('providers.loadProviders')
         <li class="nav-item">
             <a href="{{ route('loadProviders') }}" class="nav-link" style="color: var(--gray); padding: 0 .50rem; gap: 3px;"><i
-                    class="fas fa-users"> </i><span class="nav-items-cel-small">Proveedores</span> </a>
+                    class="fas fa-users icon-sidebar"> </i><span class="nav-items-cel-small">Proveedores</span> </a>
         </li>
         @endcan
 
         @can('solicitudes.view')
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('viewSolicitudes') }}" style="color: var(--gray); padding: 0 .50rem; gap: 3px;"><i
-                        class="fas fa-file-alt"> </i> <span class="nav-items-cel-small">Solicitudes</span></a>
+                        class="fas fa-file-alt icon-sidebar"> </i> <span class="nav-items-cel-small">Solicitudes</span></a>
             </li>
         @endcan
 
         @can('answers.view')
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('viewRespuestas') }}" style="padding: 0 .50rem; color:#4e73df; gap: 3px;"><i
-                        class="fas fa-reply"> </i><span class="nav-items-cel-small">Respuestas</span> </a>
+                        class="fas fa-reply icon-sidebar"> </i><span class="nav-items-cel-small">Respuestas</span> </a>
             </li>
         @endcan
 
@@ -144,6 +144,10 @@
 
                                                 $array_de_repuestos_soli = json_decode($respuesta->solicitud->repuesto, true);
                                                 $repuesto_for_soli = is_array($array_de_repuestos_soli) ? implode(', ', $array_de_repuestos_soli) : $array_de_repuestos_soli;
+
+                                                $array_de_categorias = json_decode($respuesta->solicitud->categoria, true);
+                                                $categoria_for_soli = is_array($array_de_categorias) ? implode(', ', $array_de_categorias) : $array_de_categorias;
+
                                             @endphp
                                                 <tr>
                                                 <td style="padding:10px 10px; margin:0; text-align:center;" data-campo="id"
@@ -328,59 +332,144 @@
 
                                                             <div class="modal-body d-flex justify-content-between">
                                                                 <div id="{{ $respuesta->id }}" class="text-wrap">
-                                                                    <strong>NIT:</strong>
-                                                                    {{ $respuesta->proveedor->nit_empresa }}<br>
-                                                                    <strong>Razón Social:</strong>
-                                                                    {{ $respuesta->proveedor->razon_social }}<br>
-                                                                    <strong>Pais:</strong>
-                                                                    {{ $respuesta->proveedor->pais }}<br>
-                                                                    <strong>Departamento:</strong>
-                                                                    {{ $respuesta->proveedor->departamento }}<br>
-                                                                    <strong>Municipio:</strong>
-                                                                    {{ $respuesta->proveedor->municipio }}
-                                                                    <br>
-                                                                    <strong>Direccion:</strong>
-                                                                    {{ $respuesta->proveedor->direccion }}
-                                                                    <br>
-                                                                    <strong>Celular:</strong>
-                                                                    {{ $respuesta->proveedor->celular }}
-                                                                    <br>
-                                                                    <strong>Telefono:</strong>
-                                                                    {{ $respuesta->proveedor->telefono }}
-                                                                    <br>
-                                                                    <strong>Representante Legal:</strong>
-                                                                    {{ $respuesta->proveedor->representante_legal }}
-                                                                    <br>
-                                                                    <strong>Contacto Principal:</strong>
-                                                                    {{ $respuesta->proveedor->contacto_principal }}
-                                                                    <br>
-                                                                    <strong>Preferencia de Marcas:</strong>
-                                                                    @if (isset($preferencias_de_marcas[$respuesta->proveedor->id]))
-                                                                        {{ implode(', ', $preferencias_de_marcas[$respuesta->proveedor->id]) }}
-                                                                    @else
-                                                                        No hay preferencias de marcas para este proveedor.
-                                                                    @endif
-                                                                    <br>
-                                                                    <strong>Email:</strong>
-                                                                    {{ $respuesta->proveedor->email }} <br>
-                                                                    <strong>Email Secundario:</strong>
-                                                                    {{ $respuesta->proveedor->email_secundario }} <br>
-                                                                    @php
-                                                                        $especialidades[$respuesta->proveedor->id] = json_decode($respuesta->proveedor->especialidad, true);
-                                                                    @endphp
-                                                                    <strong>Especialidad:</strong>
-                                                                    @if (isset($especialidades[$respuesta->proveedor->id]))
-                                                                        {{ implode(', ', $especialidades[$respuesta->proveedor->id]) }}
-                                                                    @else
-                                                                        No hay preferencias de marcas para este proveedor.
-                                                                    @endif
-                                                                    <br>
-
-                                                                    <strong>RUT:</strong>
-                                                                    {{ $respuesta->proveedor->rut }} <br>
-                                                                    <strong>Camara de
-                                                                        comercio:</strong>
-                                                                    {{ $respuesta->proveedor->camara_comercio }}
+                                                                    <ul style="padding-left: 2rem;">
+                                                                        <fieldset>
+                                                                            <legend style="text-align: center;">
+                                                                                <strong>Información Básica:</strong>
+                                                                            </legend>
+                                                                            <li><strong>NIT:
+                                                                                </strong>{{ $respuesta->proveedor->nit_empresa }}
+                                                                            </li>
+    
+                                                                            <li><strong>Nombre Establecimiento: </strong>
+                                                                                {{ $respuesta->proveedor->nombre_comercial }}
+                                                                            </li>
+    
+                                                                            <li><strong>Razón Social:
+                                                                                </strong>{{ $respuesta->proveedor->razon_social }}
+                                                                            </li>
+    
+                                                                            <li><strong>Gerente: </strong>{{ $respuesta->proveedor->gerente }}</li>
+                                                                            <li><strong>Administrador: </strong>{{ $respuesta->proveedor->administrador }}</li>
+    
+                                                                            <li><strong>Pais:
+                                                                                </strong>{{ $respuesta->proveedor->pais }}</li>
+    
+                                                                            <li><strong>Departamento:
+                                                                                </strong>{{ $respuesta->proveedor->departamento }}
+                                                                            </li>
+    
+                                                                            <li> <strong>Municipio:
+                                                                                </strong>{{ $respuesta->proveedor->municipio }}</li>
+    
+                                                                            <li><strong>Direccion:
+                                                                                </strong>{{ $respuesta->proveedor->direccion }}</li>
+                                                                        </fieldset>
+    
+                                                                        <hr>
+    
+                                                                        <fieldset>
+                                                                            <legend style="text-align: center;">
+                                                                                <strong>Información de Contacto:</strong>
+                                                                            </legend>
+                                                                            <li><strong>Celular:</strong>
+                                                                                <a title="Contactar"
+                                                                                        data-toggle="modal" class="text-primary"
+                                                                                        data-target="#contactarClienteCelModal{{$respuesta->proveedor->id}}"
+                                                                                        style="cursor: pointer;">{{ $respuesta->proveedor->celular }}</a>
+                                                                            </li>
+                                                                            <li><strong>Celular 2°:
+                                                                                </strong><a title="Contactar"
+                                                                                data-toggle="modal" class="text-primary"
+                                                                                data-target="#contactarClienteTelModal{{$respuesta->proveedor->id}}"
+                                                                                style="cursor: pointer;">{{ $respuesta->proveedor->telefono }}</a></li>
+    
+                                                                            <li><strong>Representante Legal:
+                                                                                </strong>{{ $respuesta->proveedor->representante_legal }}
+                                                                            </li>
+    
+                                                                            <li><strong>Contacto Principal:
+                                                                                </strong>{{ $respuesta->proveedor->contacto_principal }}
+                                                                            </li>
+    
+                                                                            <li><strong>Email:</strong>
+                                                                                <a href="mailto:{{$respuesta->proveedor->email}}" target="_blank">{{ $respuesta->proveedor->email }}</a>
+                                                                            </li>
+    
+                                                                            <li><strong>Email Secundario:</strong>
+                                                                                <a href="mailto:{{$respuesta->proveedor->email_secundario}}" target="_blank">{{ $respuesta->proveedor->email_secundario }}</a>
+                                                                            </li>
+                                                                        </fieldset>
+    
+                                                                        <hr>
+    
+                                                                        <fieldset>
+                                                                            <legend style="text-align: center;">
+                                                                                <strong>Información Legal:</strong>
+                                                                            </legend>
+                                                                            <li><strong>RUT: </strong>
+                                                                                <a title="Ver RUT"
+                                                                                    rel="noopener noreferrer"
+                                                                                    id="rut"
+                                                                                    style="color: #858796; text-decoration: underline;"
+                                                                                    href="{{ route('mostrarArchivo', ['filename' => 'RUT_' . $respuesta->proveedor->nit_empresa . '.pdf']) }}"
+                                                                                    target="_blank">{{ $respuesta->proveedor->rut }}</a>
+                                                                            </li>
+    
+                                                                            <li><strong>Camara de comercio: </strong>
+                                                                                <a title="Ver camara de comercio"
+                                                                                    style="color: #858796; text-decoration: underline;"
+                                                                                    id="camara"
+                                                                                    rel="noopener noreferrer"
+                                                                                    href="{{ route('mostrarArchivo', 'Camara_de_comercio_' . $respuesta->proveedor->nit_empresa . '.pdf') }}"
+                                                                                    target="_blank">{{ $respuesta->proveedor->camara_comercio }}</a>
+                                                                            </li>
+                                                                        </fieldset>
+    
+                                                                        <hr>
+    
+                                                                        <fieldset>
+                                                                            <legend style="text-align: center;">
+                                                                                <strong>Otros Detalles:</strong>
+                                                                            </legend>
+                                                                            <li>
+                                                                                <strong>Preferencia de Marcas:</strong>
+                                                                                @if (isset($preferencias_de_marcas[$respuesta->proveedor->id]))
+                                                                                    {{ implode(', ', $preferencias_de_marcas[$respuesta->proveedor->id]) }}
+                                                                                @else
+                                                                                    No hay preferencias de marcas para este proveedor.
+                                                                                @endif
+                                                                            </li>
+                                                                            
+                                                                            <li>
+                                                                                <strong>Especialidad:</strong>
+                                                                                @if (isset($especialidades[$respuesta->proveedor->id]))
+                                                                                    {{ implode(', ', $especialidades[$respuesta->proveedor->id]) }}
+                                                                                @else
+                                                                                    No hay preferencias de marcas para este proveedor.
+                                                                                @endif
+                                                                            </li>
+                                                                            
+                                                                            <li><strong>Sesión: </strong>@if ($respuesta->proveedor->sesion)
+                                                                                <i title="Sesión Activa" class="fas fa-circle" style="color:#12e912;"> Activa</i>
+                                                                            @else
+                                                                                <i title="Sesión Inactiva" class="fas fa-circle" style="color:#ff5a51;"> Inactiva</i>
+                                                                            @endif</li>
+                                                                            <li><strong>¿Ha cotizado?: </strong>@if ($respuesta->proveedor->ha_cotizado)
+                                                                                <i title="Sí ha cotizado" class="fas fa-circle" style="color:#12e912;"> Sí ha cotizado</i>
+                                                                            @else
+                                                                                <i title="No ha cotizado" class="fas fa-circle" style="color:#ff5a51;"> No ha cotizado</i>
+                                                                            @endif</li>
+                                                                            <li><strong>Estado: </strong>@if ($respuesta->proveedor->estado)
+                                                                                <i title="Estado activo" class="fas fa-circle" style="color:#12e912;"> Activo</i>
+                                                                            @else
+                                                                                <i title="Estado inactivo" class="fas fa-circle" style="color:#ff5a51;"> Inactivo</i>
+                                                                            @endif</li>
+                                                                            <li><strong>Fecha de creación: </strong>{{ $respuesta->proveedor->created_at }}</li>
+                                                                            <li><strong>Última edición: </strong>{{ $respuesta->proveedor->updated_at }}</li>
+                                                                        </fieldset>
+                                                                        <br>
+                                                                    </ul>
                                                                 </div>
                                                             </div>
 
@@ -474,38 +563,39 @@
                                                                                 <strong>Información General:</strong>
                                                                             </legend>
                                                                             <li><strong>ID:
-                                                                                </strong>{{ $respuesta->solicitud->id }}
-                                                                            </li>
+                                                                                </strong>{{ $respuesta->solicitud->id }}</li>
 
                                                                             <li><strong>Estado de solicitud:</strong>
                                                                                 @if ($respuesta->solicitud->estado)
-                                                                                    Activa
+                                                                                    <i title="Estado activo" class="fas fa-circle" style="color:#12e912;"> Activa</i>
                                                                                 @else
-                                                                                    Inactiva
+                                                                                    <i title="Estado inactivo" class="fas fa-circle" style="color:#ff5a51;"> Inactiva</i>
                                                                                 @endif
                                                                             </li>
                                                                             <li><strong>Respuestas:</strong>
-                                                                                {{ $respuesta->solicitud->respuestas }}
+                                                                                <a data-toggle="modal" data-target="#respuestasModal{{ $respuesta->solicitud->id }}" href="#">
+                                                                                    {{ $respuesta->solicitud->respuestas }}
+                                                                                </a>
                                                                             </li>
+                                                                            <li><strong>Fecha:</strong>
+                                                                                {{ $respuesta->solicitud->created_at }}</li>
                                                                         </fieldset>
 
                                                                         <hr>
 
                                                                         <fieldset>
                                                                             <legend style="text-align: center;">
-                                                                                <strong>Detalles de la Solicitud:</strong>
-                                                                            </legend>
+                                                                                <strong>Detalles de la
+                                                                                    Solicitud:</strong></legend>
                                                                             <li><strong>Marca:
-                                                                                </strong>{{ $respuesta->solicitud->marca }}
-                                                                            </li>
+                                                                                </strong>{{ $respuesta->solicitud->marca }}</li>
 
                                                                             <li><strong>Referencia:
                                                                                 </strong>{{ $respuesta->solicitud->referencia }}
                                                                             </li>
 
                                                                             <li><strong>Modelo:
-                                                                                </strong>{{ $respuesta->solicitud->modelo }}
-                                                                            </li>
+                                                                                </strong>{{ $respuesta->solicitud->modelo }}</li>
 
                                                                             <li><strong>Transmisión:
                                                                                 </strong>{{ $respuesta->solicitud->tipo_de_transmision }}
@@ -513,6 +603,7 @@
 
                                                                             <li><strong>Repuesto:
                                                                                 </strong>{{ $repuesto_for_soli }}</li>
+                                                                            <li><strong>Categoria: </strong>{{ $categoria_for_soli }}</li>
 
                                                                             <li><strong>Imagen del repuesto: </strong>
                                                                                 @if (is_array($nombres) && in_array('No se subió ningun archivo', $nombres))
@@ -525,7 +616,8 @@
                                                                                         Imagen</a>
                                                                                 @endif
                                                                             </li>
-                                                                            <li><strong>Comentarios del cliente: </strong>
+                                                                            <li><strong>Comentarios del cliente:
+                                                                                </strong>
                                                                                 @if ($respuesta->solicitud->comentario)
                                                                                     {{ $respuesta->solicitud->comentario }}
                                                                                 @else
@@ -538,8 +630,8 @@
 
                                                                         <fieldset>
                                                                             <legend style="text-align: center;">
-                                                                                <strong>Información de Contacto:</strong>
-                                                                            </legend>
+                                                                                <strong>Información de
+                                                                                    Contacto:</strong></legend>
                                                                             <li><strong>Nombre:</strong>
                                                                                 {{ $respuesta->solicitud->nombre }} </li>
 
@@ -547,7 +639,11 @@
                                                                                 {{ $respuesta->solicitud->correo }} </li>
 
                                                                             <li><strong>Celular:</strong>
-                                                                                {{ $respuesta->solicitud->numero }} </li>
+                                                                                <a title="Contactar"
+                                                                                    data-toggle="modal" class="text-primary"
+                                                                                    data-target="#contactarClienteModal{{$respuesta->solicitud->id}}"
+                                                                                    style="cursor: pointer;">{{ $respuesta->solicitud->numero }}</a>
+                                                                            </li>
                                                                         </fieldset>
 
                                                                         <hr>
@@ -555,13 +651,26 @@
                                                                         <fieldset>
                                                                             <legend style="text-align: center;">
                                                                                 <strong>Ubicación:</strong></legend>
+                                                                            <li><strong>País: </strong>{{ $respuesta->solicitud->pais }}</li>
                                                                             <li><strong>Departamento:</strong>
-                                                                                {{ $respuesta->solicitud->departamento }}
-                                                                            </li>
+                                                                                {{ $respuesta->solicitud->departamento }} </li>
 
                                                                             <li><strong>Municipio:</strong>
-                                                                                {{ $respuesta->solicitud->municipio }}
-                                                                            </li>
+                                                                                {{ $respuesta->solicitud->municipio }} </li>
+
+                                                                        </fieldset>
+
+                                                                        <hr>
+
+                                                                        <fieldset>
+                                                                            <legend style="text-align: center;">
+                                                                                <strong>Mensajes recibidos:</strong></legend>
+                                                                                @foreach ($viewMessages as $messagess)
+                                                                                    @if ($messagess->celular == $respuesta->solicitud->numero)
+                                                                                        <li><strong>{{$messagess->created_at}}</strong>: {{ $messagess->mensaje }}</li>
+                                                                                    @endif   
+                                                                                @endforeach
+                                                                                
                                                                         </fieldset>
 
                                                                     </ul>

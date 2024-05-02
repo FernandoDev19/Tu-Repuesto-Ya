@@ -22,6 +22,7 @@ use App\Models\Answer;
 use App\Models\Geolocation;
 use App\Models\Country_code;
 use App\Models\Category;
+use App\Models\message;
 
 use App\Mail\SolicitudClienteMail;
 use App\Mail\SolicitudRepuestoMail;
@@ -92,7 +93,7 @@ class HomeController extends Controller
                 'referencia' => 'required|max: 50',
                 'modelo' => 'required|numeric|digits: 4',
                 'tipo' => 'required',
-                'json_repuestos' => 'required',
+                // 'json_repuestos' => 'required',
                 // 'json_categorias' => 'required',
                 'img_repuesto.*' => 'file|mimes:png,jpg,jpeg|max:5024',
                 'comentario' => 'max:500',
@@ -129,7 +130,15 @@ class HomeController extends Controller
         $solicitud = new Solicitude();
 
         $categories = Category::with('keyword')->get();
-        $repuestos_array = json_decode($request->json_repuestos);
+        if ($request->filled('json_repuestos')) {
+            $repuestos_array = json_decode($request->json_repuestos, true);
+        } else {
+            if ($request->filled('repuesto') && $request->filled('cantidad')) {
+                $repuestos_array = [$request->cantidad . ' ' . $request->repuesto];
+            } else {
+                $repuestos_array = [];
+            }
+        }
 
         // Función para quitar tildes y caracteres especiales
         $quitarTildes = function ($string) {
@@ -191,7 +200,75 @@ class HomeController extends Controller
         $solicitud->referencia = $request->referencia;
         $solicitud->modelo = $request->modelo;
         $solicitud->tipo_de_transmision = $request->tipo;
-        $solicitud->repuesto = $request->json_repuestos;
+        if($request->has('json_repuestos') && $request->filled('json_repuestos')){
+
+            $repuestos = json_decode($request->json_repuestos, true);
+
+            if ($request->filled('repuesto') && $request->filled('cantidad')) {
+
+                $definicion = [];
+
+                if ($request->filled('check_izquierdo') && $request->check_izquierdo === 'on') {
+                    $definicion[] = 'izquierdo';
+                }
+
+                if ($request->filled('check_derecho') && $request->check_derecho === 'on') {
+                    $definicion[] = 'derecho';
+                }
+
+                if ($request->filled('check_trasero') && $request->check_trasero === 'on') {
+                    $definicion[] = 'trasero';
+                }
+
+                if ($request->filled('check_delantero') && $request->check_delantero === 'on') {
+                    $definicion[] = 'delantero';
+                }
+
+                $nuevoRepuesto = $request->cantidad . ' ' . $request->repuesto;
+
+                if (!empty($definicion)) {
+                    $nuevoRepuesto .= ' ' . implode(', ', $definicion);
+                }
+
+                $repuestos[] = $nuevoRepuesto;
+
+                $jsonActualizado = json_encode($repuestos);
+
+                $request->merge(['json_repuestos' => $jsonActualizado]);
+                $solicitud->repuesto = $jsonActualizado;
+            } else {
+                $solicitud->repuesto = $request->json_repuestos;
+            }
+        }else{
+            if(($request->has('repuesto') && $request->has('cantidad')) && ($request->filled('repuesto') && $request->filled('cantidad'))){
+                $definicion = [];
+
+                if ($request->filled('check_izquierdo') && $request->check_izquierdo === 'on') {
+                    $definicion[] = 'izquierdo';
+                }
+
+                if ($request->filled('check_derecho') && $request->check_derecho === 'on') {
+                    $definicion[] = 'derecho';
+                }
+
+                if ($request->filled('check_trasero') && $request->check_trasero === 'on') {
+                    $definicion[] = 'trasero';
+                }
+
+                if ($request->filled('check_delantero') && $request->check_delantero === 'on') {
+                    $definicion[] = 'delantero';
+                }
+
+                $nuevoRepuesto = $request->cantidad . ' ' . $request->repuesto;
+
+                if (!empty($definicion)) {
+                    $nuevoRepuesto .= ' ' . implode(', ', $definicion);
+                }
+                $solicitud->repuesto = json_encode($nuevoRepuesto);
+            }else{
+                $solicitud->repuesto = $request->json_repuestos;
+            }
+        }
 
         $maximoImagenes = 3;
 
@@ -235,7 +312,12 @@ class HomeController extends Controller
         $request->comentario = $request->comentario ?? 'No hay comentarios';
         $solicitud->comentario = $request->comentario ?? 'No hay comentarios';
         $solicitud->nombre = $request->nombre;
-        $solicitud->correo = $request->email;
+        if($request->has('email') && $request->filled('email')){
+            $solicitud->correo = $request->email;
+        }else{
+            $solicitud->correo = null;
+        }
+
         $solicitud->numero = $request->codigo_cel . $request->cel;
 
         $paises = [
@@ -348,6 +430,28 @@ class HomeController extends Controller
 
             $telefono = $numeroC;
 
+            $new_message = new message();
+            $new_message->celular = '+573053238666';
+            $new_message->mensaje = '*HOLA '. $nombre_cliente .'*👋
+
+¡Gracias por hacer tu solicitud en *TU REPUESTO YA!* 🛒
+
+Vas a recibir cotizaciones de diferentes proveedores. Tendrás la libertad de elegir.
+
+*No olvides revisar tus mensajes* 📥
+
+Si tienes alguna pregunta o necesitas asistencia adicional, comunícate con nuestro equipo de soporte 📲
+
+http://bit.ly/3NWN2Sr
+
+*¡Estamos aquí para ayudarte!* 🙌
+
+Saludos,
+⚙ *TU REPUESTO YA* ⚙';
+            $new_message->tipo = 'enviado';
+            $new_message->enviado_a = $telefono;
+            $new_message->save();
+
             $mensajeData = [
                 'messaging_product' => 'whatsapp',
                 'recipient_type' => 'individual',
@@ -401,8 +505,6 @@ class HomeController extends Controller
 
             curl_close($curl);
 
-            Log::info('Mensaje enviado:', $mensajeData);
-
             $proveedores = Provider::all()->where('estado', 1);
 
             if (is_array($categoriasEncontradas) && in_array('No sé', $categoriasEncontradas)) {
@@ -410,8 +512,15 @@ class HomeController extends Controller
                 $user = User::where('role', 'Admin')->first();
                 $celular = $user->cel;
 
-                $repuesto = is_array($request->json_repuestos) ? implode(',', $request->json_repuestos) : $request->json_repuestos;
+                $repuesto = is_array($solicitud->repuesto) ? implode(',', $solicitud->repuesto) : $solicitud->repuesto;
                 $repuesto = str_replace(array("[", "]", "\"", ","), array("", "", "", ", "), $repuesto);
+
+                $new_message = new message();
+                $new_message->celular = '+573053238666';
+                $new_message->mensaje = $message . ': ' . $repuesto;
+                $new_message->tipo = 'enviado';
+                $new_message->enviado_a = $celular;
+                $new_message->save();
 
                 $mensajeData = [
                     'messaging_product' => 'whatsapp',
@@ -518,7 +627,7 @@ class HomeController extends Controller
                     $categoriaRepuesto = $categoriasEncontradas;
 
                     if (is_array($marcasGuardadasArray) && is_array($categoriasGuardadasArray)) {
-                        if ((in_array($marcaCliente, $marcasGuardadasArray) || in_array('Todas las marcas', $marcasGuardadasArray) || in_array($request['marca_otro'], $marcasGuardadasArray)) && (array_intersect($categoriaRepuesto, $categoriasGuardadasArray) || in_array('Todas las especialidades', $categoriasGuardadasArray))) {
+                        if ((in_array($marcaCliente, $marcasGuardadasArray) || in_array('Todas las marcas', $marcasGuardadasArray) || in_array($request->marca_otro, $marcasGuardadasArray)) && (array_intersect($categoriaRepuesto, $categoriasGuardadasArray) || in_array('Todas las especialidades', $categoriasGuardadasArray))) {
                             $celular = $proveedor->celular;
                             $telefono = $proveedor->telefono;
 
@@ -527,7 +636,6 @@ class HomeController extends Controller
                                 WhatsAppMessageJob::dispatch(
                                     $proveedor,
                                     $celular,
-                                    $request->json_repuestos,
                                     $request->marca,
                                     $request->referencia,
                                     $request->modelo,
@@ -545,7 +653,6 @@ class HomeController extends Controller
                                 WhatsAppMessageJob::dispatch(
                                     $proveedor,
                                     $telefono,
-                                    $request->json_repuestos,
                                     $request->marca,
                                     $request->referencia,
                                     $request->modelo,
@@ -586,6 +693,13 @@ class HomeController extends Controller
             $url = 'https://graph.facebook.com/v17.0/196744616845968/messages';
             $admin = User::where('role', 'Admin')->first();
             $celular = $admin->cel;
+
+            $new_message = new message();
+            $new_message->celular = '+573053238666';
+            $new_message->mensaje = 'Error al enviar una solicitud. ' . $e->getMessage();
+            $new_message->tipo = 'enviado';
+            $new_message->enviado_a = $celular;
+            $new_message->save();
 
             $mensajeData = [
                 'messaging_product' => 'whatsapp',
@@ -757,6 +871,15 @@ class HomeController extends Controller
             return redirect()->back()->withInput()->with('error', 'Ya has respondido a esta solicitud previamente');
         }
 
+        $tieneRespuestas = Answer::where('idProveedor', $proveedor->id)->exists();
+        if($tieneRespuestas){
+            $proveedor->ha_cotizado = true;
+            $proveedor->save();
+        }else{
+            $proveedor->ha_cotizado = false;
+            $proveedor->save();
+        }
+
         // Crear una nueva respuesta
         $answer = new Answer();
         $answer->idSolicitud = $solicitud->id;
@@ -825,6 +948,34 @@ class HomeController extends Controller
         $telefono = $solicitud->numero;
 
         if (count(json_decode($answer->repuesto)) == 1) {
+            $new_message = new message();
+            $new_message->celular = '+573053238666';
+            $new_message->mensaje = '*¡'. $nombre_cliente .'!*
+
+            Te llegó la *cotización N°'.$solicitud->respuestas.'* de parte de uno de nuestros proveedores, por favor revísala y ponte en contacto con el proveedor.
+
+            Aquí tienes todos los detalles:
+
+            📝 *REPUESTO:*
+            *-Repuesto:* '. $repuesto[0] .' 🔩
+            *-Precio:* ' . $precio[0] . ' (COP)
+
+            📍 *INFORMACIÓN DEL PROVEEDOR:*
+            *-Nombre:* '. $almacen .'
+            *-País:* '.$pais.'
+            *-Ciudad:* '.$ciudad.'
+            *-Número 1:* '.$numero_celular.' 📞
+            *-Número 2:* '.$numero_celular2.' 📞
+
+            '.$comentarios.'
+
+            Recuerda contactar al proveedor para aclarar dudas o realizar la compra de *Tu Repuesto*.
+
+            Estamos aquí para ayudarte en todo momento.';
+            $new_message->tipo = 'enviado';
+            $new_message->enviado_a = $telefono;
+            $new_message->save();
+
             $mensajeData = [
                 'messaging_product' => 'whatsapp',
                 'recipient_type' => 'individual',
@@ -842,6 +993,10 @@ class HomeController extends Controller
                                 [
                                     'type' => 'text',
                                     'text' => $nombre_cliente,
+                                ],
+                                [
+                                    'type' => 'text',
+                                    'text' => $solicitud->respuestas,
                                 ],
                                 [
                                     'type' => 'text',
@@ -881,6 +1036,37 @@ class HomeController extends Controller
                 ],
             ];
         } else if (count(json_decode($answer->repuesto)) == 2) {
+            $new_message = new message();
+            $new_message->celular = '+573053238666';
+            $new_message->mensaje = '*¡'. $nombre_cliente .'!*
+
+            Te llegó la *cotización N°'.$solicitud->respuestas.'* de parte de uno de nuestros proveedores, por favor revísala y ponte en contacto con el proveedor.
+
+            Aquí tienes todos los detalles:
+
+            📝 *REPUESTO 1:*
+            *-Repuesto:* '. $repuesto[0] .' 🔩
+            *-Precio:* ' . $precio[0] . ' (COP)
+
+            📝 *REPUESTO 2:*
+            *-Repuesto:* '. $repuesto[1] .' 🔩
+            *-Precio:* ' . $precio[1] . ' (COP)
+
+            📍 *INFORMACIÓN DEL PROVEEDOR:*
+            *-Nombre:* '. $almacen .'
+            *-País:* '.$pais.'
+            *-Ciudad:* '.$ciudad.'
+            *-Número 1:* '.$numero_celular.' 📞
+            *-Número 2:* '.$numero_celular2.' 📞
+
+            '.$comentarios.'
+
+            Recuerda contactar al proveedor para aclarar dudas o realizar la compra de *Tu Repuesto*.
+
+            Estamos aquí para ayudarte en todo momento.';
+            $new_message->tipo = 'enviado';
+            $new_message->enviado_a = $telefono;
+            $new_message->save();
             $mensajeData = [
                 'messaging_product' => 'whatsapp',
                 'recipient_type' => 'individual',
@@ -898,6 +1084,10 @@ class HomeController extends Controller
                                 [
                                     'type' => 'text',
                                     'text' => $nombre_cliente,
+                                ],
+                                [
+                                    'type' => 'text',
+                                    'text' => $solicitud->respuestas,
                                 ],
                                 [
                                     'type' => 'text',
@@ -945,6 +1135,41 @@ class HomeController extends Controller
                 ],
             ];
         } else if (count(json_decode($answer->repuesto)) == 3) {
+            $new_message = new message();
+            $new_message->celular = '+573053238666';
+            $new_message->mensaje = '*¡'. $nombre_cliente .'!*
+
+            Te llegó la *cotización N°'.$solicitud->respuestas.'* de parte de uno de nuestros proveedores, por favor revísala y ponte en contacto con el proveedor.
+
+            Aquí tienes todos los detalles:
+
+            📝 *REPUESTO 1:*
+            *-Repuesto:* '. $repuesto[0] .' 🔩
+            *-Precio:* ' . $precio[0] . ' (COP)
+
+            📝 *REPUESTO 2:*
+            *-Repuesto:* '. $repuesto[1] .' 🔩
+            *-Precio:* ' . $precio[1] . ' (COP)
+
+            📝 *REPUESTO 3:*
+            *-Repuesto:* '. $repuesto[2] .' 🔩
+            *-Precio:* ' . $precio[2] . ' (COP)
+
+            📍 *INFORMACIÓN DEL PROVEEDOR:*
+            *-Nombre:* '. $almacen .'
+            *-País:* '.$pais.'
+            *-Ciudad:* '.$ciudad.'
+            *-Número 1:* '.$numero_celular.' 📞
+            *-Número 2:* '.$numero_celular2.' 📞
+
+            '.$comentarios.'
+
+            Recuerda contactar al proveedor para aclarar dudas o realizar la compra de *Tu Repuesto*.
+
+            Estamos aquí para ayudarte en todo momento.';
+            $new_message->tipo = 'enviado';
+            $new_message->enviado_a = $telefono;
+            $new_message->save();
             $mensajeData = [
                 'messaging_product' => 'whatsapp',
                 'recipient_type' => 'individual',
@@ -962,6 +1187,10 @@ class HomeController extends Controller
                                 [
                                     'type' => 'text',
                                     'text' => $nombre_cliente,
+                                ],
+                                [
+                                    'type' => 'text',
+                                    'text' => $solicitud->respuestas,
                                 ],
                                 [
                                     'type' => 'text',
@@ -1017,6 +1246,45 @@ class HomeController extends Controller
                 ],
             ];
         } else if (count(json_decode($answer->repuesto)) == 4) {
+            $new_message = new message();
+            $new_message->celular = '+573053238666';
+            $new_message->mensaje = '*¡'. $nombre_cliente .'!*
+
+            Te llegó la *cotización N°'.$solicitud->respuestas.'* de parte de uno de nuestros proveedores, por favor revísala y ponte en contacto con el proveedor.
+
+            Aquí tienes todos los detalles:
+
+            📝 *REPUESTO 1:*
+            *-Repuesto:* '. $repuesto[0] .' 🔩
+            *-Precio:* ' . $precio[0] . ' (COP)
+
+            📝 *REPUESTO 2:*
+            *-Repuesto:* '. $repuesto[1] .' 🔩
+            *-Precio:* ' . $precio[1] . ' (COP)
+
+            📝 *REPUESTO 3:*
+            *-Repuesto:* '. $repuesto[2] .' 🔩
+            *-Precio:* ' . $precio[2] . ' (COP)
+
+            📝 *REPUESTO 4:*
+            *-Repuesto:* '. $repuesto[3] .' 🔩
+            *-Precio:* ' . $precio[3] . ' (COP)
+
+            📍 *INFORMACIÓN DEL PROVEEDOR:*
+            *-Nombre:* '. $almacen .'
+            *-País:* '.$pais.'
+            *-Ciudad:* '.$ciudad.'
+            *-Número 1:* '.$numero_celular.' 📞
+            *-Número 2:* '.$numero_celular2.' 📞
+
+            '.$comentarios.'
+
+            Recuerda contactar al proveedor para aclarar dudas o realizar la compra de *Tu Repuesto*.
+
+            Estamos aquí para ayudarte en todo momento.';
+            $new_message->tipo = 'enviado';
+            $new_message->enviado_a = $telefono;
+            $new_message->save();
             $mensajeData = [
                 'messaging_product' => 'whatsapp',
                 'recipient_type' => 'individual',
@@ -1034,6 +1302,10 @@ class HomeController extends Controller
                                 [
                                     'type' => 'text',
                                     'text' => $nombre_cliente,
+                                ],
+                                [
+                                    'type' => 'text',
+                                    'text' => $solicitud->respuestas,
                                 ],
                                 [
                                     'type' => 'text',
@@ -1097,6 +1369,49 @@ class HomeController extends Controller
                 ],
             ];
         } else if (count(json_decode($answer->repuesto)) == 5) {
+            $new_message = new message();
+            $new_message->celular = '+573053238666';
+            $new_message->mensaje = '*¡'. $nombre_cliente .'!*
+
+            Te llegó la *cotización N°'.$solicitud->respuestas.'* de parte de uno de nuestros proveedores, por favor revísala y ponte en contacto con el proveedor.
+
+            Aquí tienes todos los detalles:
+
+            📝 *REPUESTO 1:*
+            *-Repuesto:* '. $repuesto[0] .' 🔩
+            *-Precio:* ' . $precio[0] . ' (COP)
+
+            📝 *REPUESTO 2:*
+            *-Repuesto:* '. $repuesto[1] .' 🔩
+            *-Precio:* ' . $precio[1] . ' (COP)
+
+            📝 *REPUESTO 3:*
+            *-Repuesto:* '. $repuesto[2] .' 🔩
+            *-Precio:* ' . $precio[2] . ' (COP)
+
+            📝 *REPUESTO 4:*
+            *-Repuesto:* '. $repuesto[3] .' 🔩
+            *-Precio:* ' . $precio[3] . ' (COP)
+
+            📝 *REPUESTO 5:*
+            *-Repuesto:* '. $repuesto[4] .' 🔩
+            *-Precio:* ' . $precio[4] . ' (COP)
+
+            📍 *INFORMACIÓN DEL PROVEEDOR:*
+            *-Nombre:* '. $almacen .'
+            *-País:* '.$pais.'
+            *-Ciudad:* '.$ciudad.'
+            *-Número 1:* '.$numero_celular.' 📞
+            *-Número 2:* '.$numero_celular2.' 📞
+
+            '.$comentarios.'
+
+            Recuerda contactar al proveedor para aclarar dudas o realizar la compra de *Tu Repuesto*.
+
+            Estamos aquí para ayudarte en todo momento.';
+            $new_message->tipo = 'enviado';
+            $new_message->enviado_a = $telefono;
+            $new_message->save();
             $mensajeData = [
                 'messaging_product' => 'whatsapp',
                 'recipient_type' => 'individual',
@@ -1114,6 +1429,10 @@ class HomeController extends Controller
                                 [
                                     'type' => 'text',
                                     'text' => $nombre_cliente,
+                                ],
+                                [
+                                    'type' => 'text',
+                                    'text' => $solicitud->respuestas,
                                 ],
                                 [
                                     'type' => 'text',

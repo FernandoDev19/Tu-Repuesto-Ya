@@ -12,7 +12,7 @@ class ProveedorExport implements FromCollection, WithHeadings, WithMapping
 {
     public function collection()
     {
-        return Provider::select('id', 'nit_empresa', 'razon_social', 'pais','departamento', 'municipio', 'direccion', 'celular', 'telefono', 'representante_legal', 'contacto_principal', 'marcas_preferencias', 'email', 'email_secundario', 'especialidad', 'rut', 'camara_comercio', 'estado')->get();
+        return Provider::select('id', 'nit_empresa', 'nombre_comercial', 'razon_social', 'gerente', 'administrador', 'pais','departamento', 'municipio', 'direccion', 'celular', 'telefono', 'representante_legal', 'contacto_principal', 'marcas_preferencias', 'email', 'email_secundario', 'especialidad', 'rut', 'camara_comercio', 'ha_cotizado', 'sesion', 'estado')->get();
     }
 
     public function headings(): array
@@ -20,7 +20,10 @@ class ProveedorExport implements FromCollection, WithHeadings, WithMapping
         return [
             'ID',
             'NIT',
+            'Nombre comercial',
             'Razon social',
+            'Gerente',
+            'Administrador',
             'pais',
             'Departamento',
             'Municipio',
@@ -35,6 +38,8 @@ class ProveedorExport implements FromCollection, WithHeadings, WithMapping
             'Especialidad/es',
             'RUT',
             'Camara de comercio',
+            '¿Ha cotizado?',
+            'Sesión',
             'Estado'
         ];
     }
@@ -44,7 +49,10 @@ class ProveedorExport implements FromCollection, WithHeadings, WithMapping
         return [
             $provider->id,
             $provider->nit_empresa,
+            $provider->nombre_comercial,
             $provider->razon_social,
+            $provider->gerente,
+            $provider->administrador,
             $provider->pais,
             $provider->departamento,
             $provider->municipio,
@@ -59,7 +67,9 @@ class ProveedorExport implements FromCollection, WithHeadings, WithMapping
             json_decode($provider->especialidad),
             $provider->rut ? 'Sí' : 'No',
             $provider->camara_comercio ? 'Sí' : 'No',
-            $provider->estado ? 'activo' : 'inactivo'
+            $provider->ha_cotizado ? 'Sí ha cotizado' : 'No ha cotizado',
+            $provider->sesion ? 'Sesión activa' : 'Sesión inactiva',
+            $provider->estado ? 'Estado activo' : 'Estado inactivo'
         ];
     }
 }

@@ -1,18 +1,29 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+
+//Controladores
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\CategoriasController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProveedorController;
+use App\Http\Controllers\WaController;
+use App\Http\Controllers\ProvidersController;
+use App\Http\Controllers\SolicitudesController;
+use App\Http\Controllers\RespuestasController;
+
+
+use App\Jobs\NoticiaWhatsappJob;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Log;
-use App\Jobs\NoticiaWhatsappJob;
 use App\Mail\NoticiasProveedores;
-use App\Models\Answer;
+
+//Modelos
 use App\Models\Category;
+use App\Models\Answer;
 use App\Models\Provider;
-use App\Models\User;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,16 +36,11 @@ use App\Models\User;
 |
 */
 
-/*Route::get('/', function(){
-   return view('mantenimiento');
-});*/
-
 Route::controller(HomeController::class)->group(function () {
     Route::get('/', 'index')->name("servicios");
     Route::get('/formulario-cliente', 'modalUrlView')->name('vistaFormulario');
     Route::post('/validacion', 'validation')->name("validation");
     Route::get('/gracias', 'graciasView')->name('graciasView');
-
 });
 
 Route::controller(UsersController::class)->group(function () {
@@ -49,49 +55,74 @@ Route::controller(UsersController::class)->group(function () {
     Route::post("/cambiar/verificacion", "changePasswordVerification")->name("change-password");
 });
 
-Route::middleware(['auth', 'checkProveedor'])->group(function () {
-    Route::get('/proveedor/{idSoli}/{idNoti}', [ProveedorController::class, 'verSolicitudNoti'])->name('verSolicitudNoti')->middleware('can:notifications.viewNotifications');
+Route::controller(WaController::class)->group(function () {
+    route::get('/webhook', 'webhook');
+    route::post('/webhook', 'recibe');
+    route::post('/send/{telefono}/{message_content}', 'send')->name('sendMessage');
 });
 
 Route::middleware('auth')->group(function () {
+
+    Route::controller(AdminController::class)->group(function(){
+        Route::get('/administrador/panel', 'index')->name("dashboard")->middleware('can:dashboard');
+        Route::get('/registro-de-actividades', 'activityLogView')->name('activityLog');
+        Route::post('/administrador/cerrar-sesion', 'logout')->name("logout");
+    });
+
+    Route::controller(ProfileController::class)->group(function(){
+        Route::get('administrador/perfil', 'index')->name('profile');
+        Route::put('administrador/perfil/actualizar/{id?}', 'update')->name('profileUpdate');
+    });
+
+    Route::controller(WaController::class)->group(function(){
+        Route::get('/administrador/chat-whatsapp-api', 'index')->name('chatView')->middleware(('can:providers.loadProviders'));
+    });
+
+    Route::controller(ProvidersController::class)->group(function(){
+        Route::get('/administrador/proveedores', 'index')->name("loadProviders")->middleware('can:providers.loadProviders');
+        Route::get('/administrador/proveedor/{nit}/{notificationId}', 'show')->name('verProveedor')->middleware('can:notifications.viewNotifications');
+        Route::post('/administrador/proveedores/crear', 'store')->name("createProvider")->middleware('can:providers.loadProviders');
+        Route::put('/administrador/proveedores/editar', 'update')->name('editarProveedor')->middleware('can:providers.edit');
+        Route::delete('/administrador/proveedor/borrar/{id}', 'destroy')->name('eliminarProveedor')->middleware('can:providers.delete');
+        Route::get('/administrador/ver-archivo/{filename}', 'viewFiles')->name('mostrarArchivo')->middleware('can:view.files');
+        Route::get('/administrador/proveedores/exportar-excel-providers', 'exportExcel')->name('proveedores.excel')->middleware('can:providers.exportExcel');
+    });
+
+    Route::controller(SolicitudesController::class)->group(function(){
+        Route::get('/administrador/solicitudes', 'index')->name('viewSolicitudes')->middleware('can:solicitudes.view');
+        Route::get('/proveedor/{idSoli}/{idNoti}', 'show')->name('verSolicitudNoti')->middleware('can:notifications.viewNotifications');
+        Route::delete('/administrador/solicitud/borrar/{id}', 'destroy')->name('eliminarSolicitud')->middleware('can:solicitudes.delete');
+        Route::get('/administrador/solicitudes/exportar-excel-solicitudes', 'exportExcel')->name('solicitudes.excel')->middleware('can:solicitudes.exportExcel');
+    });
+
+    Route::controller(RespuestasController::class)->group(function(){
+        Route::get('/administrador/respuestas', 'index')->name('viewRespuestas')->middleware('can:answers.view');
+        Route::get('/administrador/respuestas/exportar-excel-respuestas', 'exportExcel')->name('respuestas.excel')->middleware('can:answers.exportExcel');
+    });
+
+    Route::controller(CategoriasController::class)->group(function(){
+        Route::get('/categorias', 'index')->name('keywords')->middleware('can:providers.loadProviders');
+        Route::post('/categorias/nueva-categoria', 'store')->name('saveCategory')->middleware('can:providers.loadProviders');
+        Route::get('/categorias/{categoria}/{id}', function ($categoria, $id) {
+            $category = Category::with('keyword')->get();
+            return view('admin.keywords.keyword', compact('id', 'categoria', 'category'));
+        })->middleware('can:providers.loadProviders');
+        Route::delete('/categorias/{categoria}/{id}/eliminar', 'destroy')->middleware('can:providers.loadProviders');
+        Route::post('/palabras-claves/crear/{id}', 'store_keyword')->name('saveKeyword')->middleware('can:providers.loadProviders');
+        Route::get('/administrador/categorias/exportar-excel-categorias', 'exportExcels')->name('categorias.excel')->middleware('can:providers.exportExcel');
+
+    });
+
     Route::controller(HomeController::class)->group(function () {
         Route::post('/validacion/{codigo}', 'storeDP')->name("validationDP");
         Route::get('/solicitud/{codigo}/{id?}', 'solicitudRepuesto')->name('solicitud');
         Route::get('/solicitud/{filename}', 'verImagenSolicitud')->name('verImagen');
     });
-
-    Route::get('/categorias', [AdminController::class, 'categoriesView'])->name('keywords');
-    Route::get('/categorias/{categoria}/{id}', function($categoria, $id){
-        $category = Category::with('keyword')->get();
-        return view('admin.keywords.keyword', compact('id', 'categoria', 'category'));
-    });
-
-    Route::post('/palabras-claves/crear/{id}', [AdminController::class, 'saveKeyword'])->name('saveKeyword');
-
-    Route::get('/registro-de-actividades', [AdminController::class, 'activityLogView'])->name('activityLog');
-
-    Route::post('/categorias/nueva-categoria', [AdminController::class, 'saveCategory'])->name('saveCategory');
-
-    Route::get('/administrador/panel', [AdminController::class, 'index'])->name("dashboard")->middleware('can:dashboard');
-    Route::get('administrador/perfil', [AdminController::class, 'profile'])->name('profile');
-    Route::post('administrador/perfil/actualizar/{id?}', [AdminController::class, 'profileUpdate'])->name('profileUpdate');
-    Route::get('/administrador/proveedor/{nit}/{notificationId}', [AdminController::class, 'verProveedor'])->name('verProveedor')->middleware('can:notifications.viewNotifications');
-    Route::get('/administrador/marcar-todo-como-leido', function (){
+   
+    Route::get('/administrador/marcar-todo-como-leido', function () {
         auth()->user()->unreadNotifications->markAsRead();
         return redirect()->back();
     })->name('marcarLeidas')->middleware('can:notifications.readNotifications');
-    Route::get('/administrador/solicitudes', [AdminController::class, 'viewSolicitudes'])->name('viewSolicitudes')->middleware('can:solicitudes.view');
-    Route::get('/administrador/solicitudes/exportar-excel-solicitudes', [AdminController::class, 'exportExcelSolicitudes'])->name('solicitudes.excel')->middleware('can:solicitudes.exportExcel');
-    Route::delete('/administrador/solicitud/borrar/{id}', [AdminController::class, 'eliminarSolicitud'])->name('eliminarSolicitud')->middleware('can:solicitudes.delete');
-    Route::get('/administrador/respuestas', [AdminController::class, 'viewAnswers'])->name('viewRespuestas')->middleware('can:answers.view');
-    Route::get('/administrador/respuestas/exportar-excel-respuestas', [AdminController::class, 'exportExcelRespuestas'])->name('respuestas.excel')->middleware('can:answers.exportExcel');
-    Route::post('/administrador/proveedores/crear', [AdminController::class, 'createProvider'])->name("createProvider")->middleware('can:providers.loadProviders');
-    Route::get('/administrador/proveedores', [AdminController::class, 'loadProviders'])->name("loadProviders")->middleware('can:providers.loadProviders');
-    Route::get('/administrador/proveedores/exportar-excel-providers', [AdminController::class, 'exportExcel'])->name('proveedores.excel')->middleware('can:providers.exportExcel');
-    Route::post('/administrador/proveedores/editar', [AdminController::class, 'edit'])->name('editarProveedor')->middleware('can:providers.edit');
-    Route::delete('/administrador/proveedor/borrar/{id}', [AdminController::class, 'delete'])->name('eliminarProveedor')->middleware('can:providers.delete');
-    Route::get('/administrador/ver-archivo/{filename}', [AdminController::class, 'mostrarArchivo'])->name('mostrarArchivo')->middleware('can:view.files');
-    Route::post('/administrador/cerrar-sesion', [AdminController::class, 'logout'])->name("logout");
 });
 
 Route::get('public/img/logo_whatsapp.png', function () {
@@ -103,8 +134,17 @@ Route::get('public/img/logo_whatsapp.png', function () {
     ]);
 })->name('video');
 
-Route::get('/politica-de-privacidad', function(){
-     $name = null;
+// Route::get('public/movies/video_trya.mp4', function () {
+//     $videoPath = public_path('movies/video_trya.mp4');
+
+//     return Response::make(file_get_contents($videoPath), 200, [
+//         'Content-Type' => 'video/mp4',
+//         'Content-Disposition' => 'inline; filename=video_trya.mp4',
+//     ]);
+// })->name('video_trya');
+
+Route::get('/politica-de-privacidad', function () {
+    $name = null;
 
     if (auth()->check()) {
         $name = auth()->user()->name;
@@ -113,22 +153,25 @@ Route::get('/politica-de-privacidad', function(){
     return view('privacy-policy', compact('name'));
 })->name('privacy-policy');
 
-// Route::get('/enviar-mensajes', function(){
+// Route::get('/enviar-mensajes', function () {
 //     $proveedores = Provider::all()->where('estado', 1);
 
-//     foreach($proveedores as $proveedor){
+//     foreach ($proveedores as $proveedor) {
 //         $answer = Answer::where('idProveedor', $proveedor->id)->exists();
 
-//         if(!$answer){
-//             $email = $proveedor->email;
+//         if (!$answer) {
+//             NoticiaWhatsappJob::dispatch(
+//                 $proveedor,
+//                 $proveedor->celular
+//             );
+//             Log::info('Enviado a ' . $proveedor->razon_social);
 
 //             $data = [
 //                 'email' => $proveedor->email,
+//                 'celular' => $proveedor->celular
 //             ];
 
-//             Mail::to($email)->cc($proveedor->email_secundario)->queue(new NoticiasProveedores($data));
-//             Log::info('Enviado a '. $proveedor->email);
+//             Mail::to($proveedor->email)->cc($proveedor->email_secundario)->queue(new NoticiasProveedores($data));
 //         }
 //     }
 // });
-

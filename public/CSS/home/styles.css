@@ -17,7 +17,8 @@
 }
 
 .paso_activo{
-    font-weight: 600; color: var(--color-primary) !important;
+    background-color: #0d6efd !important;
+    color: white !important;
 }
 
 .numeros_campos{
@@ -221,7 +222,6 @@ header y navegador */
 
 .nav_e1 {
     text-decoration: none;
-    color: #b3b3b3 !important;
     height: auto;
     text-wrap: nowrap;
     color: white !important;
@@ -247,6 +247,7 @@ header y navegador */
     width: 100%;
     box-sizing: border-box;
     align-content: center;
+    /* height: 100%; */
 }
 
 .container_flex {
@@ -912,7 +913,6 @@ footer {
 
     .btn:hover{
         background-color: #71a3e8 !important;
-        margin: 0 3% 0 0;
     }
 
     .btn:active{
@@ -2529,12 +2529,6 @@ height: 10%;
     }
 }
 
-
-input#repuesto {
-    font-weight: 700;
-}
-
-
 div#container-img-cuentanos {
     width: 50%;
 }
@@ -2558,4 +2552,202 @@ select:user-invalid {
 input#nombre:invalid {
     border: 1px solid red !important;
     box-shadow: none;
+}
+
+.nav-link {
+    color: white !important;
+    font-weight: 500;
+    border-radius: .375rem;
+    padding: .4rem .7rem;
+    text-wrap: nowrap;
+    font-size: 1rem;
+}
+
+li.nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+}
+
+.circular-checkbox {
+    padding: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    max-width: 20px;
+    height: 20px;
+    max-height: 20px;
+    border-radius: 50%;
+    transition: background-color 0.3s ease;
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-right: .7rem;
+}
+
+.circular-checkbox:checked {
+    background-color: #007bff;
+}
+
+.circular-checkbox input[type="checkbox"] {
+    display: none;
+  }
+
+img.img-nav-link {
+    height: 95px;
+    width: 100px;
+}
+
+label#btn {
+    height: max-content !important;
+}
+
+label#btn img{
+    height: 70px !important;
+}
+
+ul.aclaraciones-list li small{
+    font-size: .8em;
+    letter-spacing: -.2px;
+}
+
+@media screen and (max-width: 325px) {
+    img.img-nav-link {
+        height: 65px;
+        width: 70px;
+    }
+    .parts{
+        font-size: .65rem;
+    }
+
+    .form-label{
+        font-size: .85rem;
+    }
+
+    input.form-control{
+        font-size: .8rem;
+    }
+    select.form-control{
+        font-size: .8rem;
+    }
+    span.form-control{
+        padding-left: 0.15rem;
+        padding-right: 0.15rem;
+    }
+    select#codigo-cel{
+        font-size: .7rem;
+    }
+    button.btn{
+        font-size: .8rem;
+    }
+    textarea.form-control{
+        font-size: .8rem;
+    }
+    h6#aclaraciones-title{
+        font-size: .85rem;
+    }
+    ul.aclaraciones-list{
+        padding-left: 0 !important;
+    }
+    ul.aclaraciones-list li{
+        font-size: .8rem;
+        margin-bottom: .2rem;
+    }
+
+    #title-checks-container{
+        font-size: .85rem;
+    }
+
+}
+@media screen and (min-width: 326px) and (max-width: 400px) {
+    img.img-nav-link {
+        height: 65px;
+        width: 70px;
+    }
+    .parts{
+        font-size: .8rem;
+    }
+
+    span.form-control{
+        padding-left: 0.15rem;
+        padding-right: 0.15rem;
+    }
+
+    ul.aclaraciones-list{
+        padding-left: 0 !important;
+    }
+
+    ul.aclaraciones-list li{
+        font-size: .9rem;
+        margin-bottom: .2rem;
+    }
+
+    #title-checks-container{
+        font-size: .85rem;
+    }
+
+}
+
+@media screen and (max-width: 475px) {
+    label#btn img{
+        height: 40px !important;
+    }
+
+}
+
+.checksContainer{
+    display: flex;
+    margin-top: 1rem;
+    justify-content: center;
+    gap: 3rem;
+}
+
+.checksContainer .flex-container .contenedor-checksbox {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    width: 100%;
+}
+
+@media screen and (max-width: 400px){
+
+    .checksContainer{
+        justify-content: space-between !important;
+    }
+
+}
+
+@media screen and (max-width: 510px) {
+
+    .checksContainer {
+        justify-content: space-around;
+    }
+
+    .checksContainer .flex-container .contenedor-checksbox {
+        flex-direction: column;
+        gap: .4rem;
+    }
+
+    .checksContainer .flex-container#flex-container-2{
+        align-items: flex-end;
+    }
+}
+
+ul.aclaraciones-list {
+    list-style-type: none;
+    padding-left: 0rem;
+    margin: 0;
+}
+
+ul.aclaraciones-list li::before {
+    content: "- ";
+}
+
+div.active.paso_activo .parts {
+    color: white !important;
+}
+
+span.parts{
+    color: var(--color-primary) !important;
 }

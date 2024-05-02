@@ -36,7 +36,7 @@ Hola, sómos <strong><h3>¡TU REPUESTO YA!</h3></strong> <br>
 <strong><h2>PASOS PARA ACTIVAR TU ALMACÉN Y EMPEZAR A DAR RESPUESTAS A LAS SOLICITUDES</h2></strong>
 
 <ul>
-    <li><strong>Paso 1: </strong>Ubique el dispositivo donde esta este Whatsapp {{1}}, que  actualmente lo tenemos asignado al almacen  y  allí recibirás las cotizaciones.</li>
+    <li><strong>Paso 1: </strong>Ubique el dispositivo donde esta este Whatsapp {{$data['celular']}}, que  actualmente lo tenemos asignado al almacen  y  allí recibirás las cotizaciones.</li>
     <li><strong>Paso 2: </strong>Mantén a mano, Usuario y Contraseña  asignados temporalmente para que puedas iniciar sesión. <br>
         <strong>Usuario</strong> y <strong>Contraseña</strong> para iniciar sesión:
 
@@ -46,7 +46,7 @@ Hola, sómos <strong><h3>¡TU REPUESTO YA!</h3></strong> <br>
         <strong>Contraseñas Temporales (Predeterminadas):</strong> <br>
         demo12345 <br> Demo12345 <br><br>Si ninguna de las dos funciona, por favor restablece la contraseña: <br><a href="https://turepuestoya.co/restablecer">Restablecer contraseña</a>
     </li>
-    <li><strong>Paso 3: </strong>Ahora, en ese celular donde esta el {{4}} ingresa a esta dirección URL: <br> <br>
+    <li><strong>Paso 3: </strong>Ahora, en ese celular donde esta el {{$data['celular']}} ingresa a esta dirección URL: <br> <br>
         <a href="https://turepuestoya.co/iniciar-sesion">Iniciar sesión</a> <br><br>
         Recuerda que esta clave es *temporal*, la puedes cambiar cuando quieras desde este enlace: <br><br>
         <a href="https://turepuestoya.co/restablecer">Restablecer contraseña</a>

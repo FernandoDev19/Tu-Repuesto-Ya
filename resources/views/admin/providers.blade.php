@@ -48,40 +48,76 @@
     .item_selected:hover .btn_borrar_item {
         color: black;
     }
+    .overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        z-index: 9999;
+        justify-content: center;
+        align-items: center;
+        display: flex;
+    }
+
+    .loader {
+        border: 4px solid #f3f3f3;
+        border-top: 4px solid #3498db;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        animation: spin 2s linear infinite;
+    }
+
+    @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
 </style>
 
 <!-- Sidebar -->
 @section('sidebar')
+<div id="overlay" class="overlay" style="display:flex; flex-direction:column;">
+    <div class="loader"></div>
+    <div style="margin-top: 10px; color: white; font-size:15px;"><small>Cargando...</small></div>
+</div>
     <nav
     class="navbar navbar-expand navbar-light bg-white shadow topbar static-top d-flex justify-content-center">
 
     <!-- Topbar Navbar -->
-    <ul class="navbar-nav" style="font-size: 1.3rem;">
+    <ul id="lista-nav-items" class="navbar-nav" style="font-size: 1.3rem;">
 
         <li class="nav-item">
             <a class="nav-link" style="color: var(--gray); padding: 0 .50rem; gap: 3px;" href="{{ route('dashboard') }}">
-                <i class="fas fa-fw fa-tachometer-alt"> </i>
+                <i class="fas fa-fw fa-tachometer-alt icon-sidebar"> </i>
                 <span class="nav-items-cel-small"> Panel</span></a>
         </li>
 
         @can('providers.loadProviders')
             <li class="nav-item">
                 <a href="{{ route('loadProviders') }}" class="nav-link" style="padding: 0 .50rem; color:#4e73df; gap: 3px;"><i
-                        class="fas fa-users"> </i><span class="nav-items-cel-small">Proveedores</span> </a>
+                        class="fas fa-users icon-sidebar"> </i><span class="nav-items-cel-small">Proveedores</span> </a>
             </li>
         @endcan
 
         @can('solicitudes.view')
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('viewSolicitudes') }}" style="color: var(--gray); padding: 0 .50rem; gap: 3px;"><i
-                        class="fas fa-file-alt"> </i> <span class="nav-items-cel-small">Solicitudes</span></a>
+                        class="fas fa-file-alt icon-sidebar"> </i> <span class="nav-items-cel-small">Solicitudes</span></a>
             </li>
         @endcan
 
         @can('answers.view')
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('viewRespuestas') }}" style="color: var(--gray); padding: 0 .50rem; gap: 3px;"><i
-                        class="fas fa-reply"> </i><span class="nav-items-cel-small">Respuestas</span> </a>
+                        class="fas fa-reply icon-sidebar"> </i><span class="nav-items-cel-small">Respuestas</span> </a>
             </li>
         @endcan
 
@@ -89,6 +125,7 @@
     </nav>
 @endsection
 @section('content')
+
     <div class="container-fluid h-100">
         <div class="row h-100 justify-content-center">
             <div class="col-lg-12 mb-4">
@@ -98,12 +135,26 @@
                                 <div class="p-3">
                                     <h2 class="header-title font-weight-bold text-primary">Lista de proveedores</h2>
                                     <form method="GET" class="form-inline">
-                                        <div class="form-group mb-2">
-                                            <div class="input-group mb-3">
+                                        <div class="form-group">
+                                            <div class="input-group">
                                                 <input type="text" class="form-control" id="search" name="search" wire:model.live="search"
                                                     placeholder="Buscar...">
-                                                <button class="btn btn-outline-primary" type="submit"
-                                                    id="btn_search">Buscar</button>
+                                                <button class="btn btn-outline-primary" type="submit" id="btn_search">Buscar</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <form id="form-paginacion" method="GET" class="form-inline">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <select name="paginacion" class="form-control" id="paginacion">
+                                                    <option value="" disabled selected>Mostrando {{$paginacion}}</option>
+                                                    <option value="15">Mostrar 15</option>
+                                                    <option value="25">Mostrar 25</option>
+                                                    <option value="50">Mostrar 50</option>
+                                                    <option value="100">Mostrar 100</option>
+                                                    <option value="250">Mostrar 250</option>
+                                                    <option value="500">Mostrar 500</option>
+                                                </select>
                                             </div>
                                         </div>
                                     </form>
@@ -128,22 +179,22 @@
                                 <table class="table table-borderless table-hover" id="proveedoresTable">
                                     <thead>
                                         <tr>
-                                            <th class="text-muted" wire:click="order('nit_empresa')"
+                                            <th class="text-muted"
                                                 style="padding:10px 5px; text-align:center; font-size: 14px;">NIT
                                             </th>
-                                            <th class="text-muted" wire:click="order('nombre_comercial')" style="padding: 10px 5px; text-align: center; font-size: 14px;">
+                                            <th class="text-muted" style="padding: 10px 5px; text-align: center; font-size: 14px;">
                                                 Nombre Establecimiento
                                             </th>
-                                            <th class="text-muted" wire:click="order('razon_social')"
+                                            <th class="text-muted"
                                                 style="padding:10px 5px; text-align:center; font-size: 14px;">Razón
                                                 Social</th>
-                                            <th class="text-muted" wire:click="order('celular')"
+                                            <th class="text-muted"
                                                 style="padding:10px 5px; text-align:center; font-size: 14px;">
                                                 Celular</th>
-                                            <th class="text-muted" wire:click="order('departamento')"
+                                            <th class="text-muted"
                                                 style="padding:10px 5px; text-align:center; font-size: 14px;">
                                                 Departamento</th>
-                                            <th class="text-muted" wire:click="order('municipio')"
+                                            <th class="text-muted"
                                                 style="padding:10px 5px; text-align:center; font-size: 14px;">
                                                 Municipio </th>
                                             <th class="text-muted"
@@ -152,9 +203,9 @@
                                             <th class="text-muted"
                                                 style="padding:10px 5px; text-align:center; font-size: 14px;">C.
                                                 Comercio</th>
-                                                <th class="text-muted" style="padding: 10px 5px; text-align:center; font-size: 14px;">¿Sesión activa?</th>
+                                            <th class="text-muted" style="padding: 10px 5px; text-align:center; font-size: 14px;">¿Sesión activa?</th>
                                             <th class="text-muted" style="padding: 10px 5px; text-align:center; font-size: 14px;">¿Ha cotizado?</th>
-                                            <th class="text-muted" wire:click="order('estado')"
+                                            <th class="text-muted"
                                                 style="padding:10px 5px; text-align:center; font-size: 14px;">
                                                 Estado</th>
                                             <th class="text-muted"
@@ -260,37 +311,20 @@
                                                             href="{{ route('mostrarArchivo', 'Camara_de_comercio_' . $proveedores->nit_empresa . '.pdf') }}"
                                                             target="_blank">C. Comercio</a>
                                                     </td>
-                                                    @php
-                                                        $sesion_activa = false;
-
-                                                        $sesions = $sesion->where('idProveedor', $proveedores->id)->first();
-
-                                                        if($sesions){
-                                                             if($sesions->sesiones > 0){
-                                                                $sesion_activa = true;
-                                                            }else{
-                                                                $sesion_activa = false;
-                                                            }
-                                                        }
-
-                                                    @endphp
                                                     <td style="padding:10px 10px; margin:0; text-align:center; font-size: 14;"
                                                         data-campo="sesion" id="sesion_{{ $proveedores->id }}"
-                                                        data-valor="{{ $sesion_activa ? 'Sí' : 'No' }}">
-                                                        @if ($sesion_activa)
-                                                            <i title="Sesión Activa" class="fas fa-circle" style="color:#12e912;;"></i>
+                                                        data-valor="{{ $proveedores->sesion ? 'Sí' : 'No' }}">
+                                                        @if ($proveedores->sesion)
+                                                            <i title="Sesión Activa" class="fas fa-circle" style="color:#12e912;"></i>
                                                         @else
                                                             <i title="Sesión Inactiva" class="fas fa-circle" style="color:#ff5a51;"></i>
                                                         @endif
                                                     </td>
-                                                    @php
-                                                        $tieneRespuestas = $tieneRespuesta->where('idProveedor', $proveedores->id)->first();
-                                                    @endphp
                                                     <td style="padding:10px 10px; margin:0; text-align:center; font-size: 14;"
                                                         data-campo="respuestas" id="respuestas_{{ $proveedores->id }}"
-                                                        data-valor="{{ $tieneRespuestas ? 'Sí' : 'No' }}">
-                                                        @if ($tieneRespuestas)
-                                                            <i title="Sí ha cotizado" class="fas fa-circle" style="color:#12e912;;"></i>
+                                                        data-valor="{{ $proveedores->ha_cotizado ? 'Sí' : 'No' }}">
+                                                        @if ($proveedores->ha_cotizado)
+                                                            <i title="Sí ha cotizado" class="fas fa-circle" style="color:#12e912;"></i>
                                                         @else
                                                             <i title="No ha cotizado" class="fas fa-circle" style="color:#ff5a51;"></i>
                                                         @endif
@@ -299,7 +333,7 @@
                                                         data-campo="estado" id="estado_{{ $proveedores->id }}"
                                                         data-valor="{{ $proveedores->estado ? 'Activo' : 'Inactivo' }}">
                                                         @if ($proveedores->estado)
-                                                            <i title="Activo" class="fas fa-circle" style="color:#12e912;;"></i>
+                                                            <i title="Activo" class="fas fa-circle" style="color:#12e912;"></i>
                                                         @else
                                                             <i title="Inactivo" class="fas fa-circle" style="color:#ff5a51;"></i>
                                                         @endif
@@ -352,6 +386,9 @@
                                                                                 <li><strong>Razón Social:
                                                                                     </strong>{{ $proveedores->razon_social }}
                                                                                 </li>
+
+                                                                                <li><strong>Gerente: </strong>{{ $proveedores->gerente }}</li>
+                                                                                <li><strong>Administrador: </strong>{{ $proveedores->administrador }}</li>
 
                                                                                 <li><strong>Pais:
                                                                                     </strong>{{ $proveedores->pais }}</li>
@@ -449,6 +486,26 @@
                                                                                         proveedor.
                                                                                     @endif
                                                                                 </li>
+                                                                                <li><strong>Sesión: </strong>@if ($proveedores->sesion)
+                                                                                    <i title="Sesión Activa" class="fas fa-circle" style="color:#12e912;"> Activa</i>
+                                                                                @else
+                                                                                    <i title="Sesión Inactiva" class="fas fa-circle" style="color:#ff5a51;"> Inactiva</i>
+                                                                                @endif</li>
+                                                                                <li><strong>¿Ha cotizado?: </strong>@if ($proveedores->ha_cotizado)
+                                                                                    <i title="Sí ha cotizado" class="fas fa-circle" style="color:#12e912;"> Sí ha cotizado</i>
+                                                                                @else
+                                                                                    <i title="No ha cotizado" class="fas fa-circle" style="color:#ff5a51;"> No ha cotizado</i>
+                                                                                @endif</li>
+                                                                                <li><strong>Estado: </strong>@if ($proveedores->estado)
+                                                                                    <i title="Estado activo" class="fas fa-circle" style="color:#12e912;"> Activo</i>
+                                                                                @else
+                                                                                    <i title="Estado inactivo" class="fas fa-circle" style="color:#ff5a51;"> Inactivo</i>
+                                                                                @endif</li>
+                                                                                <li><strong>Fecha de creación: </strong>{{ $proveedores->created_at }}</li>
+                                                                                <li><strong>Última edición: </strong>{{ $proveedores->updated_at }}</li>
+                                                                                @if($proveedores->observaciones != null)
+                                                                                    <li><strong>Observaciones: </strong>{{$proveedores->observaciones}}</li>
+                                                                                @endif
                                                                             </fieldset>
                                                                             <br>
                                                                         </ul>
@@ -560,6 +617,7 @@
                                                                             action="{{ route('editarProveedor') }}"
                                                                             method="POST" enctype="multipart/form-data">
                                                                             @csrf
+                                                                            @method('PUT')
 
                                                                             <input type="hidden" name="id"
                                                                             value="{{ $proveedores->id }}">
@@ -609,6 +667,32 @@
                                                                                                 class="text-danger text-xs pt-1">{{ $message }}</small>
                                                                                         @else
                                                                                             <small id="razon-edit-error{{$proveedores->id}}" class="text-danger text-xs pt-1"></small>
+                                                                                        @enderror
+                                                                                    </div>
+
+                                                                                    <div class="form-group">
+                                                                                        <label for="gerente_edit{{$proveedores->id}}">Gerente:</label>
+                                                                                        <input class="form-control" type="text"
+                                                                                            id="gerente_edit{{ $proveedores->id }}"
+                                                                                            name="gerente_edit"
+                                                                                            placeholder="{{ $proveedores->gerente }}"
+                                                                                            value="{{ $proveedores->gerente }}" maxlength="100"
+                                                                                            autocomplete="on">
+                                                                                        @error('gerente_edit')
+                                                                                            <small class="text-danger text-xs pt-1">{{ $message }}</small>
+                                                                                        @enderror
+                                                                                    </div>
+
+                                                                                    <div class="form-group">
+                                                                                        <label for="administrador_edit{{$proveedores->id}}">Administrador:</label>
+                                                                                        <input class="form-control" type="text"
+                                                                                            id="administrador_edit{{ $proveedores->id }}"
+                                                                                            name="administrador_edit"
+                                                                                            placeholder="{{ $proveedores->administrador }}"
+                                                                                            value="{{ $proveedores->administrador }}" maxlength="100"
+                                                                                            autocomplete="on">
+                                                                                        @error('administrador_edit')
+                                                                                            <small class="text-danger text-xs pt-1">{{ $message }}</small>
                                                                                         @enderror
                                                                                     </div>
 
@@ -1063,6 +1147,11 @@
                                                                                                 elijas!.</div>
                                                                                         @enderror
                                                                                     </div>
+                                                                                </div>
+
+                                                                                <div class="form-group">
+                                                                                    <label for="observaciones{{$proveedores->id}}">Observaciones: </label>
+                                                                                    <textarea class="form-control" name="observaciones" id="observaciones{{$proveedores->id}}" cols="30" rows="10" placeholder="{{$proveedores->observaciones}}"></textarea>
                                                                                 </div>
 
                                                                                 <div
@@ -2502,7 +2591,7 @@
                                                     </div>
 
                                                     <div class="flex flex-col mb-3">
-                                                        <label for="administrador"><span class="text-danger">*</span>Aministrador:</label>
+                                                        <label for="administrador"><span class="text-danger">*</span>Administrador:</label>
                                                         <input type="text" name="administrador_create" id="administrador" class="form-control"
                                                             placeholder="*Administrador" aria-label="Administrador"
                                                             value="{{ old('administrador') }}" maxlength="120" required>
@@ -2855,6 +2944,24 @@
                                         </div>
                                     </div>
                                 </div>
+
+                                <script>
+                                    const overlay = document.getElementById('overlay');
+
+                                    hideLoadingOverlay();
+
+                                    document.addEventListener('submit', function() {
+                                        showLoadingOverlay();
+                                    });
+
+                                    function showLoadingOverlay() {
+                                        overlay.style.display = 'flex'; // Mostrar superposición
+                                    }
+
+                                    function hideLoadingOverlay() {
+                                        overlay.style.display = 'none'; // Ocultar superposición
+                                    }
+                                </script>
 
                                 <script>
                                     document.addEventListener('DOMContentLoaded', function() {
@@ -3763,6 +3870,14 @@
                         <!-- Botones de paginación -->
                         {{ $proveedor->links() }}
 
+                        <script>
+                            let paginacion = document.getElementById('paginacion');
+                            let form = document.getElementById('form-paginacion');
+
+                            paginacion.addEventListener('change', function(){
+                                form.submit();
+                            });
+                        </script>
                 </div>
             </div>
         </div>

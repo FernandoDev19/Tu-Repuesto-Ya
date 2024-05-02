@@ -408,8 +408,6 @@
                                                             style="display: none;">
                                                         @error('rut')
                                                             <div class="text-danger text-xs pt-1">{{ $message }}</div>
-                                                        @else
-                                                            <div class="text-danger text-xs pt-1">*El RUT es obligatorio</div>
                                                         @enderror
                                                     </div>
                                                     <div class="flex flex-col" style="width: 49%;">
