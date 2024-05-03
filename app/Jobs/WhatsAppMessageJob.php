@@ -81,8 +81,13 @@ class WhatsAppMessageJob implements ShouldQueue
         $departamento = $this->departamento;
         $municipio = $this->municipio;
         $solicitud = $this->solicitud;
-        $token = $this->token;
-        $url = $this->url;
+        $token = 'EAAyaksOlpN4BO64MEL1cjlEGMvDQb6liWd3oCOIhvnUZBMeF5tbhAvjZABvBnnaYh9V9waBGZCBJW0LnCFaDcUQMZArNbLSKCUEL1MLmgdoRpQHyvEGdAC0CYOxt3l5N2u2Wi0yAlVFE7mCRtHVkZCSOyZAXyVtbrxxeOjkJqOkFDjloKrVuZBLXJUF4S1KG3u7';
+        $url = 'https://graph.facebook.com/v17.0/196744616845968/messages';
+
+        $agotado = [
+            'idProveedor' => $proveedor->id,
+            'idSolicitud' => $solicitud->id
+        ];
 
         if ($proveedor) {
             $numeroP = $celular;
@@ -186,6 +191,10 @@ class WhatsAppMessageJob implements ShouldQueue
                                 ],
                                 [
                                     'type' => 'text',
+                                    'text' => $solicitud->tipo_de_transmision,
+                                ],
+                                [
+                                    'type' => 'text',
                                     'text' => $comentario,
                                 ],
                                 [
@@ -224,7 +233,18 @@ class WhatsAppMessageJob implements ShouldQueue
                             "parameters" => [
                               [
                                 "type" => "payload",
-                                "payload" => $solicitud->codigo,
+                                "payload" => $new_message->id,
+                              ]
+                            ]
+                        ],
+                        [
+                            "type" => "button",
+                            "sub_type" => "quick_reply",
+                            "index" => "2",
+                            "parameters" => [
+                              [
+                                "type" => "payload",
+                                "payload" => 'No es de mi categoria: ' . $solicitud->id,
                               ]
                             ]
                         ],
@@ -251,6 +271,7 @@ class WhatsAppMessageJob implements ShouldQueue
             curl_close($curl);
 
             Log::info('Mensaje enviado:', $mensajeData);
+            Log::info('Respuesta:', $response);
         }
     }
 }

@@ -324,7 +324,7 @@ class ProvidersController extends Controller
 
         $proveedor->pais = $paises[$request->codigo_cel_create];
         $proveedor->celular = $request->codigo_cel_create . $request->cel_create;
-        if ($request->has('tel_create')) {
+        if ($request->has('tel_create') && $request->has('codigo_cel_create')) {
             $proveedor->telefono = $request->codigo_cel_create . $request->tel_create;
         }
 
@@ -462,6 +462,7 @@ class ProvidersController extends Controller
         $newUser = new User();
         $newUser->name = $proveedor->razon_social;
         $newUser->cel = $proveedor->celular;
+
         $newUser->tel = $proveedor->telefono;
         $newUser->email = $proveedor->email;
         if ($request->has('email_2_create')) {
@@ -525,7 +526,7 @@ class ProvidersController extends Controller
 
             curl_close($curl);
 
-            return redirect()->back()->wihtErrors()->withInput()->with('error', '¡Ha ocurrido un error!' . $e->getMessage());
+            return redirect()->back()->withErrors($validator)->withInput()->with('error', '¡Ha ocurrido un error!' . $e->getMessage());
         }
 
         // Redirigir a la página de inicio con un mensaje de éxito

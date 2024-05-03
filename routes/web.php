@@ -118,7 +118,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/solicitud/{codigo}/{id?}', 'solicitudRepuesto')->name('solicitud');
         Route::get('/solicitud/{filename}', 'verImagenSolicitud')->name('verImagen');
     });
-   
+
     Route::get('/administrador/marcar-todo-como-leido', function () {
         auth()->user()->unreadNotifications->markAsRead();
         return redirect()->back();
@@ -175,3 +175,8 @@ Route::get('/politica-de-privacidad', function () {
 //         }
 //     }
 // });
+
+Route::controller(WaController::class)->group(function(){
+    Route::get('/send_message_template/{$messageId}', 'sendToClient');
+});
+

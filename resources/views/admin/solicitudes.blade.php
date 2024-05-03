@@ -84,11 +84,15 @@
                                     <tr>
                                         <th class="text-muted" style="padding:10px 5px; text-align:center;">Id
                                         </th>
+
                                          @if (auth()->user()->hasRole('Admin'))
-                                            <th class="text-muted" style="padding:10px 5px; text-align:center;">
+                                            <th class="text-muted" style="padding: 10px 5px; text-align: center;">Enviado</th>
+                                            <th class="text-muted" style="color: #12e912 !important; padding:10px 5px; text-align:center;">
                                                 Respuestas
                                             </th>
+                                            <th class="text-muted" style="color: #ff5a51 !important; padding: 10px 5px; text-align: center;">Agotado</th>
                                         @endif
+
                                         <th class="text-muted" style="padding:10px 5px; text-align:center;">
                                             Marca</th>
                                         <th class="text-muted" style="padding:10px 5px; text-align:center;">
@@ -131,6 +135,12 @@
                                             <td style="padding:10px 10px; margin:0; text-align:center; line-height: 1;">
                                                 No hay registros
                                             </td>
+                                            <td style="padding:10px 10px; margin:0; text-align:center; line-height: 1;">
+                                                No hay registros
+                                            </td>
+                                            <td style="padding:10px 10px; margin:0; text-align:center; line-height: 1;">
+                                                No hay registros
+                                            </td>
                                         </tr>
                                     @else
                                         @if (auth()->user()->hasRole('Admin'))
@@ -146,9 +156,43 @@
                                                             id="id_{{ $solicitud->id }}">{{ $solicitud->id }}</span>
                                                     </td>
                                                     <td style="padding:10px 10px; margin:0; text-align:center;"
+                                                        data-campo="enviado" data-valor="enviado{{$solicitud->id}}">
+                                                        @if($messages)
+                                                            @php
+                                                                $usuariosUnicos = [];
+                                                                $contadorUsuarios = 0;
+                                                            @endphp
+                                                            @foreach ($messages as $message)
+                                                                @if ($message->idSolicitud == $solicitud->id && !in_array($message->idUser, $usuariosUnicos))
+                                                                    @php
+                                                                        $usuariosUnicos[] = $message->idUser;
+                                                                        $contadorUsuarios++;
+                                                                    @endphp
+                                                                @endif
+                                                            @endforeach
+                                                            <a style="font-size: 14; cursor: pointer;" data-toggle="modal" class="text-primary" data-target="#mostrarDestinatarios{{$solicitud->id}}">{{ $contadorUsuarios }}</a>
+                                                        @endif
+                                                    </td>
+                                                    <td style="padding:10px 10px; margin:0; text-align:center;"
                                                         data-campo="respuestas" data-valor="{{ $solicitud->respuestas }}">
                                                         <a style="font-size: 14;" data-toggle="modal" data-target="#respuestasModal{{ $solicitud->id }}" href="#"
                                                             id="respuestas_{{ $solicitud->respuestas }}">{{ $solicitud->respuestas }}</a>
+                                                    </td>
+                                                    <td style="padding: 10px; margin: 0; text-align: center;" data-campo="agotado" data-valor="agotado{{$solicitud->id}}">
+                                                        @if (is_array(json_decode($solicitud->agotado, true)))
+                                                            @php
+                                                                $countAgotado = 0;
+                                                            @endphp
+                                                            @foreach (json_decode($solicitud->agotado, true) as $agotado)
+                                                                @php
+                                                                    $countAgotado++;
+                                                                @endphp
+                                                            @endforeach
+                                                            <a style="font-size: 14;" data-toggle="modal" data-target="#agotadosModal{{ $solicitud->id }}" href="#"
+                                                                id="agotado">{{ $countAgotado }}</a>
+                                                        @else
+                                                            No hay datos
+                                                        @endif
                                                     </td>
                                                     <td style="padding:10px 10px; margin:0; text-align:center;"
                                                         data-campo="marca" data-valor="{{ $solicitud->marca }}">
@@ -267,7 +311,6 @@
                                                                                         @endforeach
                                                                                         <a  data-toggle="modal" class="text-primary" data-target="#mostrarDestinatarios{{$solicitud->id}}" style="cursor: pointer;">{{ $contadorUsuarios }}</a>
                                                                                     @endif
-
                                                                                 </li>
                                                                                 <li><strong>Fecha:</strong>
                                                                                     {{ $solicitud->created_at }}</li>
@@ -395,7 +438,7 @@
                                                             <div class="modal-content">
                                                                 <div class="modal-header">
                                                                     <h5 class="modal-title" id="destinatariosModalLabel">
-                                                                        <strong>Respuestas (Nombres)</strong>
+                                                                        <strong>Destinatarios (Nombres)</strong>
                                                                     </h5>
                                                                     <button id="close-modal-destinatarios{{ $solicitud->id }}" class="close" type="button"
                                                                         data-dismiss="modal" aria-label="Close">
@@ -568,6 +611,197 @@
                                                                                     @endif
 
                                                                                 @endforeach
+                                                                            @endif
+                                                                        </ul>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="modal-footer">
+                                                                    <button class="btn btn-secondary" type="button"
+                                                                        data-dismiss="modal">Cerrar</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    {{-- Mostrar proveedores con los repuestos agotados --}}
+                                                    <div class="modal fade" id="agotadosModal{{ $solicitud->id }}"
+                                                        tabindex="-1" role="dialog" aria-labelledby="agotadosModalLabel"
+                                                        aria-hidden="true">
+                                                        <div class="modal-dialog" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title">
+                                                                        <strong>Respuestas (Nombres)</strong>
+                                                                    </h5>
+                                                                    <button id="close-modal-agotados{{ $solicitud->id }}" class="close" type="button"
+                                                                        data-dismiss="modal" aria-label="Close">
+                                                                        <span aria-hidden="true">×</span>
+                                                                    </button>
+                                                                </div>
+
+                                                                <div class="modal-body d-flex justify-content-between">
+                                                                    <div class="text-wrap w-100">
+
+                                                                        <ul class="mt-2" style="padding-left: 2rem;">
+                                                                            @if (is_array(json_decode($solicitud->agotado, true)))
+                                                                                @php
+                                                                                    $countAgotado = 0;
+                                                                                @endphp
+                                                                                @foreach (json_decode($solicitud->agotado, true) as $agotado)
+                                                                                    @php
+                                                                                        $nombre_proveedor = $proveedores->where('id', $agotado)->first();
+                                                                                    @endphp
+                                                                                    <a style="font-size: 14;" data-toggle="modal" data-target="#infoProveedorAgotadosModal{{ $nombre_proveedor->id }}" href="#"
+                                                                                        id="agotado">{{ $nombre_proveedor->razon_social }}</a>
+
+                                                                                        <div class="modal fade" id="infoProveedorAgotadosModal{{ $nombre_proveedor->id}}"
+                                                                                            tabindex="-2" role="dialog" aria-labelledby="infoProveedorModalLabel"
+                                                                                            aria-hidden="true" >
+                                                                                            <div class="modal-dialog" role="document" >
+                                                                                                <div class="modal-content" >
+                                                                                                    <div class="modal-header">
+                                                                                                        <h5 class="modal-title"
+                                                                                                            id="infoProveedorAgotadosModalLabel">
+                                                                                                            <strong>Información
+                                                                                                                del Proveedor</strong>
+                                                                                                        </h5>
+                                                                                                        <button id="close-modal-providers{{ $nombre_proveedor->id }}" class="close" type="button"
+                                                                                                            data-dismiss="modal" aria-label="Close proveedor modal">
+                                                                                                            <span aria-hidden="true">×</span>
+                                                                                                        </button>
+                                                                                                    </div>
+                                                                                                    <div class="modal-body d-flex justify-content-between"
+                                                                                                        style="overflow-y: auto;">
+                                                                                                        <div class="text-wrap w-100">
+                                                                                                            @php
+                                                                                                                $especialidades[$nombre_proveedor->id] = json_decode($nombre_proveedor->especialidad, true);
+                                                                                                                $preferencias_de_marcas[$nombre_proveedor->id] = json_decode($nombre_proveedor->marcas_preferencias, true);
+                                                                                                            @endphp
+                                                                                                            <ul style="padding-left: 2rem;">
+                                                                                                                <fieldset>
+                                                                                                                    <legend style="text-align: center;">
+                                                                                                                        <strong>Información Básica:</strong>
+                                                                                                                    </legend>
+                                                                                                                    <li><strong>NIT:
+                                                                                                                        </strong>{{ $nombre_proveedor->nit_empresa }}
+                                                                                                                    </li>
+
+                                                                                                                    <li><strong>Nombre Establecimiento: </strong>
+                                                                                                                        {{ $nombre_proveedor->nombre_comercial }}
+                                                                                                                    </li>
+
+                                                                                                                    <li><strong>Razón Social:
+                                                                                                                        </strong>{{ $nombre_proveedor->razon_social }}
+                                                                                                                    </li>
+
+                                                                                                                    <li><strong>Pais:
+                                                                                                                        </strong>{{ $nombre_proveedor->pais }}</li>
+
+                                                                                                                    <li><strong>Departamento:
+                                                                                                                        </strong>{{ $nombre_proveedor->departamento }}
+                                                                                                                    </li>
+
+                                                                                                                    <li> <strong>Municipio:
+                                                                                                                        </strong>{{ $nombre_proveedor->municipio }}</li>
+
+                                                                                                                    <li><strong>Direccion:
+                                                                                                                        </strong>{{ $nombre_proveedor->direccion }}</li>
+                                                                                                                </fieldset>
+
+                                                                                                                <hr>
+
+                                                                                                                <fieldset>
+                                                                                                                    <legend style="text-align: center;">
+                                                                                                                        <strong>Información de Contacto:</strong>
+                                                                                                                    </legend>
+                                                                                                                    <li><strong>Celular:</strong>
+                                                                                                                        <a title="Contactar" target="_blank" href="https://api.whatsapp.com/send?phone={{ substr($nombre_proveedor->celular, 1) }}" style="cursor: pointer;">{{ $nombre_proveedor->celular }}</a>
+                                                                                                                    </li>
+                                                                                                                    <li><strong>Celular 2°:
+                                                                                                                        </strong><a title="Contactar" target="_blank" href="https://api.whatsapp.com/send?phone={{ substr($nombre_proveedor->celular, 1) }}" style="cursor: pointer;">{{ $nombre_proveedor->telefono }}</a></li>
+
+                                                                                                                    <li><strong>Representante Legal:
+                                                                                                                        </strong>{{ $nombre_proveedor->representante_legal }}
+                                                                                                                    </li>
+
+                                                                                                                    <li><strong>Contacto Principal:
+                                                                                                                        </strong>{{ $nombre_proveedor->contacto_principal }}
+                                                                                                                    </li>
+
+                                                                                                                    <li><strong>Email:</strong>
+                                                                                                                        <a href="mailto:{{$nombre_proveedor->email}}" target="_blank">{{ $nombre_proveedor->email }}</a>
+                                                                                                                    </li>
+
+                                                                                                                    <li><strong>Email Secundario:</strong>
+                                                                                                                        <a href="mailto:{{$nombre_proveedor->email_secundario}}" target="_blank">{{ $nombre_proveedor->email_secundario }}</a>
+                                                                                                                    </li>
+                                                                                                                </fieldset>
+
+                                                                                                                <hr>
+
+                                                                                                                <fieldset>
+                                                                                                                    <legend style="text-align: center;">
+                                                                                                                        <strong>Información Legal:</strong>
+                                                                                                                    </legend>
+                                                                                                                    <li><strong>RUT: </strong>
+                                                                                                                        <a title="Ver RUT"
+                                                                                                                            rel="noopener noreferrer"
+                                                                                                                            id="rut"
+                                                                                                                            style="color: #858796; text-decoration: underline;"
+                                                                                                                            href="{{ route('mostrarArchivo', ['filename' => 'RUT_' . $nombre_proveedor->nit_empresa . '.pdf']) }}"
+                                                                                                                            target="_blank">{{ $nombre_proveedor->rut }}</a>
+                                                                                                                    </li>
+
+                                                                                                                    <li><strong>Camara de comercio: </strong>
+                                                                                                                        <a title="Ver camara de comercio"
+                                                                                                                            style="color: #858796; text-decoration: underline;"
+                                                                                                                            id="camara"
+                                                                                                                            rel="noopener noreferrer"
+                                                                                                                            href="{{ route('mostrarArchivo', 'Camara_de_comercio_' . $nombre_proveedor->nit_empresa . '.pdf') }}"
+                                                                                                                            target="_blank">{{ $nombre_proveedor->camara_comercio }}</a>
+                                                                                                                    </li>
+                                                                                                                </fieldset>
+
+                                                                                                                <hr>
+
+                                                                                                                <fieldset>
+                                                                                                                    <legend style="text-align: center;">
+                                                                                                                        <strong>Otros Detalles:</strong>
+                                                                                                                    </legend>
+                                                                                                                    <li><strong>Preferencia de Marcas: </strong>
+                                                                                                                        @if (isset($preferencias_de_marcas[$nombre_proveedor->id]))
+                                                                                                                            {{ implode(', ', $preferencias_de_marcas[$nombre_proveedor->id]) }}
+                                                                                                                        @else
+                                                                                                                            No hay preferencias de marcas para este
+                                                                                                                            proveedor.
+                                                                                                                        @endif
+                                                                                                                    </li>
+                                                                                                                    <li><strong>Especialidad: </strong>
+                                                                                                                        @if (isset($especialidades[$nombre_proveedor->id]))
+                                                                                                                            {{ implode(', ', $especialidades[$nombre_proveedor->id]) }}
+                                                                                                                        @else
+                                                                                                                            No hay preferencias de marcas para este
+                                                                                                                            proveedor.
+                                                                                                                        @endif
+                                                                                                                    </li>
+                                                                                                                </fieldset>
+                                                                                                                <br>
+                                                                                                            </ul>
+
+                                                                                                        </div>
+
+                                                                                                    </div>
+
+                                                                                                    <div class="modal-footer">
+                                                                                                        <button class="btn btn-secondary btnCloseModalDetalles" type="button"
+                                                                                                            data-dismiss="modal">Cerrar</button>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                @endforeach
+
                                                                             @endif
                                                                         </ul>
                                                                     </div>

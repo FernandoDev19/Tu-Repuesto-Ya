@@ -611,8 +611,6 @@ Saludos,
                 $status_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 
                 curl_close($curl);
-
-                Log::info('Mensaje no se encuentran categorias (Enviado):', $mensajeData);
             } else {
                 foreach ($proveedores as $proveedor) {
                     $jsonMarcasGuardadas = $proveedor->marcas_preferencias;
@@ -681,8 +679,6 @@ Saludos,
 
                             if ($proveedor->email || $proveedor->email_secundario) {
                                 Mail::to($proveedor->email)->cc($proveedor->email_secundario)->queue(new SolicitudRepuestoMail($data));
-                                $i = 1;
-                                Log::info('Correo ' . $i++ . ' enviado a ' . $proveedor->razon_social);
                             }
                         }
                     }
@@ -1542,7 +1538,6 @@ Saludos,
         // Eliminar las imágenes del servidor
         foreach ($imagenes as $imagen) {
             Storage::delete('public/' . $imagen);
-            Log::info('Se eliminó la imagen: ' . $imagen);
         }
     }
 }
