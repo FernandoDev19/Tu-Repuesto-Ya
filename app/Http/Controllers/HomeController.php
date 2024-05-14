@@ -140,19 +140,11 @@ class HomeController extends Controller
             }
         }
 
-        // Función para quitar tildes y caracteres especiales
-        $quitarTildes = function ($string) {
-            $string = strtr($string, 'áéíóúüÁÉÍÓÚÜ', 'aeiouuAEIOUU');
-            $string = preg_replace('/[^A-Za-z0-9\-]/', '', $string);
-            $string = iconv('UTF-8', 'ASCII//TRANSLIT', $string);
-            return $string;
-        };
-
         foreach ($categories as $categoria) {
             $palabras = $categoria->keyword->pluck('palabra_clave');
 
             // Reemplazar las palabras clave en el array
-            $palabrasClave[$categoria->nombre_categoria] = array_map($quitarTildes, array_map('strtolower', $palabras->toArray()));
+            $palabrasClave[$categoria->nombre_categoria] =  array_map('strtolower', $palabras->toArray());
         }
 
         // Inicializar un array para almacenar categorías
@@ -160,14 +152,14 @@ class HomeController extends Controller
 
         foreach ($repuestos_array as $repuestoSeleccionado) {
             // Convertir elementos del subarray y el repuesto a minúsculas y quitar tildes
-            $repuestoSeleccionado = $quitarTildes(strtolower($repuestoSeleccionado));
+            $repuestoSeleccionado = strtolower($repuestoSeleccionado);
 
             // Variable booleana para indicar si se encontró coincidencia en alguna categoría
             $encontrado = false;
 
             foreach ($palabrasClave as $categoria => $palabras) {
                 // Convertir elementos del subarray a minúsculas y quitar tildes
-                $palabras = array_map($quitarTildes, array_map('strtolower', $palabras));
+                $palabras = array_map('strtolower', $palabras);
 
                 foreach ($palabras as $palabra) {
                     if (stripos($repuestoSeleccionado, $palabra) !== false) {
@@ -200,12 +192,10 @@ class HomeController extends Controller
         $solicitud->referencia = $request->referencia;
         $solicitud->modelo = $request->modelo;
         $solicitud->tipo_de_transmision = $request->tipo;
-        if($request->has('json_repuestos') && $request->filled('json_repuestos')){
-
+        if ($request->has('json_repuestos') && $request->filled('json_repuestos')) {
             $repuestos = json_decode($request->json_repuestos, true);
 
             if ($request->filled('repuesto') && $request->filled('cantidad')) {
-
                 $definicion = [];
 
                 if ($request->filled('check_izquierdo') && $request->check_izquierdo === 'on') {
@@ -231,16 +221,14 @@ class HomeController extends Controller
                 }
 
                 $repuestos[] = $nuevoRepuesto;
-
                 $jsonActualizado = json_encode($repuestos);
-
                 $request->merge(['json_repuestos' => $jsonActualizado]);
                 $solicitud->repuesto = $jsonActualizado;
             } else {
                 $solicitud->repuesto = $request->json_repuestos;
             }
-        }else{
-            if(($request->has('repuesto') && $request->has('cantidad')) && ($request->filled('repuesto') && $request->filled('cantidad'))){
+        } else {
+            if ($request->has('repuesto') && $request->has('cantidad') && $request->filled('repuesto') && $request->filled('cantidad')) {
                 $definicion = [];
 
                 if ($request->filled('check_izquierdo') && $request->check_izquierdo === 'on') {
@@ -264,11 +252,13 @@ class HomeController extends Controller
                 if (!empty($definicion)) {
                     $nuevoRepuesto .= ' ' . implode(', ', $definicion);
                 }
+
                 $solicitud->repuesto = json_encode($nuevoRepuesto);
-            }else{
+            } else {
                 $solicitud->repuesto = $request->json_repuestos;
             }
         }
+
 
         $maximoImagenes = 3;
 
@@ -880,7 +870,8 @@ Saludos,
         $answer = new Answer();
         $answer->idSolicitud = $solicitud->id;
         $answer->idProveedor = $proveedor->id;
-        $answer->repuesto = $request->json_repuestos;
+        $repuestos = $request->json_repuestos;
+        $answer->repuesto = $repuestos;
         $preciosArray = $request->precio;
 
         // Agrega el símbolo a cada elemento del array
@@ -888,8 +879,49 @@ Saludos,
             return "$" . $precio;
         }, $preciosArray);
 
+        $json_answer = [];
+
+        for ($i = 0; $i < count($preciosArray); $i++) {
+
+            if($request->has('tiempo_entrega') && $request->filled('tiempo_entrega')){
+                if($request->has('descripcion') && $request->filled('descripcion')){
+                    $json_answer['r' . ($i + 1)] = [
+                        'requerimiento' => $repuestos[$i],
+                        'precio' => $preciosArray[$i], 
+                        'tipo_repuesto' => $request->tipo_repuesto[$i], 
+                        'tiempo_entrega' => $request->tiempo_entrega[$i],
+                        'descripcion' => $request->descripcion[$i]
+                    ];
+                }else{
+                    $json_answer['r' . ($i + 1)] = [
+                        'requerimiento' => $repuestos[$i],
+                        'precio' => $preciosArray[$i], 
+                        'tipo_repuesto' => $request->tipo_repuesto[$i], 
+                        'tiempo_entrega' => $request->tiempo_entrega[$i]
+                    ];
+                }
+                
+            }else{
+                if($request->has('descripcion') && $request->filled('descripcion')){
+                    $json_answer['r' . ($i + 1)] = [
+                        'requerimiento' => $repuestos[$i], 
+                        'precio' => $preciosArray[$i], 
+                        'tipo_repuesto' => $request->tipo_repuesto[$i],
+                        'descripcion' => $request->descripcion[$i]
+                    ];
+                }else{
+                    $json_answer['r' . ($i + 1)] = [
+                        'requerimiento' => $repuestos[$i], 
+                        'precio' => $preciosArray[$i], 
+                        'tipo_repuesto' => $request->tipo_repuesto[$i]
+                    ];
+                }
+            }
+            
+        }
+        
         // Guarda el array con símbolos en formato JSON
-        $answer->precio = json_encode($preciosConSimbolo);
+        $answer->precio = json_encode($json_answer);
 
         if ($request->comentarioP) {
             $answer->comentarios = 'Además, el proveedor ha compartido algunos comentarios: \n "*_' . $request->comentarioP . '_*"';
@@ -939,8 +971,8 @@ Saludos,
         // $garantia = json_decode($answer->garantia, true);
         // $tipo_repuesto = json_decode($answer->tipo_repuesto, true);
 
-        $token = 'EAAyaksOlpN4BO64MEL1cjlEGMvDQb6liWd3oCOIhvnUZBMeF5tbhAvjZABvBnnaYh9V9waBGZCBJW0LnCFaDcUQMZArNbLSKCUEL1MLmgdoRpQHyvEGdAC0CYOxt3l5N2u2Wi0yAlVFE7mCRtHVkZCSOyZAXyVtbrxxeOjkJqOkFDjloKrVuZBLXJUF4S1KG3u7';
-        $url = 'https://graph.facebook.com/v17.0/196744616845968/messages';
+        $token = env('TOKEN_VERIFICATION_API');
+        $url = env('URL_API_WHATSAPP');
         $telefono = $solicitud->numero;
 
         if (count(json_decode($answer->repuesto)) == 1) {
@@ -1177,6 +1209,17 @@ Saludos,
                         'code' => 'es',
                     ],
                     'components' => [
+                        // [
+                        //     'type' => 'header',
+                        //     'parameters' => [
+                        //         [
+                        //             'type' => 'image',
+                        //             'image' => [
+                        //                 'link' => 'https://turepuestoya.co/public/profile/' . $proveedor->id,
+                        //             ]
+                        //         ],
+                        //     ],
+                        // ],
                         [
                             'type' => 'body',
                             'parameters' => [
@@ -1518,9 +1561,6 @@ Saludos,
         $status_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 
         curl_close($curl);
-
-        Log::info('Mensaje enviado:', $mensajeData);
-        Log::info('Detalles del mensaje:', $response);
 
         if (auth()->check()) {
             return redirect()->route('viewSolicitudes')->with('message', 'La respuesta se ha enviado exitosamente');

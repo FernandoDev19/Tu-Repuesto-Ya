@@ -60,19 +60,26 @@ Si necesitas comunicarte con servicio al cliente llama o escribe a esta línea: 
 
 *Saludos!*
 *Tu Repuesto Ya*';
-$mensajeData = [
-    'messaging_product' => 'whatsapp',
-     'recipient_type' => 'individual',
-     'to' => '+573163529832',
-     'type' => 'text',
-     'text' => [
-        'preview_url' => false,
-         'body' =>  "*Mensaje recibido*
+
+            $mensajeForAdmins = "*Mensaje recibido*
+Nombre: " . $response['entry'][0]['changes'][0]['value']['contacts'][0]['profile']['name'] . "
 Telefono:".  $phone .
-"Mensaje: " . $message
-     ],
-];
-            $this->sendToAdmin($message, $mensajeData);
+"Mensaje: " . $message;
+
+            $mensajeData = [
+                'messaging_product' => 'whatsapp',
+                'recipient_type' => 'individual',
+                'to' => '+573163529832',
+                'type' => 'text',
+                'text' => [
+                    'preview_url' => false,
+                    'body' => $mensajeForAdmins
+                ],
+            ];
+
+            $this->send('+5730532386666', $mensajeForAdmins);
+            $this->send('+573015014223', $mensajeForAdmins);
+            $this->send('+573005442580', $mensajeForAdmins);
             $this->send($phone, $message_content);
 
         }
@@ -85,18 +92,15 @@ Telefono:".  $phone .
                 $provider = Provider::where('id', $message_table->idUser)->first();
                 $solicitud = Solicitude::where('id', $message_table->idSolicitud)->first();
 
-                if($provider && $solicitud){
+                if ($provider && $solicitud) {
                     $agotadoArray = json_decode($solicitud->agotado, true);
 
-                    $agotadoArray[0][] = $provider->id;
-
-                    $agotadoArray = array_merge(...$agotadoArray);
+                    $agotadoArray[] = $provider->id;
 
                     $solicitud->agotado = json_encode($agotadoArray);
-
                     $solicitud->save();
-
                 }
+
 
                 $this->sendToClient($message);
             }else if($response['entry'][0]['changes'][0]['value']['messages'][0]['button']['text'] == 'No es de mi categoría'){
@@ -108,23 +112,25 @@ Si necesitas comunicarte con servicio al cliente llama o escribe a esta línea: 
 
 *Saludos!*
 *Tu Repuesto Ya*';
-                $this->sendToProvider($phone, $message_content);
+                $message_table = message::where('id', $message)->first();
+
+                $provider = Provider::where('id', $message_table->idUser)->first();
+                $solicitud = Solicitude::where('id', $message_table->idSolicitud)->first();
+
+                if($provider && $solicitud){
+                     $respuesta_del_proveedor = '*No es de mi categoría:*
+*ID del proveedor:* ' . $provider->id .
+'
+*Nombre del proveedor:* ' . $provider->razon_social .
+'
+*ID de la solicitud:* ' . $solicitud->id;
+                    $this->send('+5730532386666',  $respuesta_del_proveedor);
+                    $this->send('+573015014223',  $respuesta_del_proveedor);
+                    $this->send('+573005442580',  $respuesta_del_proveedor);
+                }
+
+                $this->send($phone, $message_content);
             }
-
-            $mensajeData = [
-                'messaging_product' => 'whatsapp',
-                 'recipient_type' => 'individual',
-                 'to' => '+573163529832',
-                 'type' => 'text',
-                 'text' => [
-                     'preview_url' => false,
-                     'body' =>  "*Respuesta de proveedor:*
-Telefono:".  $phone .
-"Mensaje: No es de mi categoría la solicitud con el codigo " . $message
-                 ],
-             ];
-
-             $this->sendToAdmin($message, $mensajeData);
         }
 
         // Save to the database
@@ -132,81 +138,6 @@ Telefono:".  $phone .
         $messageModel->celular = $phone;
         $messageModel->mensaje = $message;
         $messageModel->save();
-    }
-
-    public function sendToAdmin($message, $mensajeData){
-        $new_message = new message();
-        $new_message->celular = 'API';
-        $new_message->mensaje = $message;
-        $new_message->tipo = 'enviado';
-        $new_message->enviado_a = 'Administrador (Juan)';
-        $new_message->save();
-
-        $token = 'EAAyaksOlpN4BO64MEL1cjlEGMvDQb6liWd3oCOIhvnUZBMeF5tbhAvjZABvBnnaYh9V9waBGZCBJW0LnCFaDcUQMZArNbLSKCUEL1MLmgdoRpQHyvEGdAC0CYOxt3l5N2u2Wi0yAlVFE7mCRtHVkZCSOyZAXyVtbrxxeOjkJqOkFDjloKrVuZBLXJUF4S1KG3u7';
-        $url = 'https://graph.facebook.com/v17.0/196744616845968/messages';
-
-        //Mensaje para el administrador
-
-        $mensaje = json_encode($mensajeData);
-
-        $header = [
-            "Authorization: Bearer " . $token,
-            "Content-Type: application/json",
-        ];
-        $curl = curl_init();
-        curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt($curl, CURLOPT_POSTFIELDS, $mensaje);
-        curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-
-        $response = json_decode(curl_exec($curl), true);
-
-        $status_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-
-        curl_close($curl);
-    }
-
-    public function sendToProvider($telefono, $message_content)
-    {
-        $new_message = new message();
-        $new_message->celular = '+573053238666';
-        $new_message->mensaje = $message_content;
-        $new_message->tipo = 'enviado';
-        $new_message->enviado_a = $telefono;
-        $new_message->save();
-
-        $token = env('TOKEN_VERIFICATION_API');
-        $url = env('URL_API_WHATSAPP');
-
-        $mensajeData = [
-            'messaging_product' => 'whatsapp',
-            'recipient_type' => 'individual',
-            'to' => $telefono,
-            'type' => 'text',
-            'text' => [
-                'preview_url' => false,
-                'body' =>  $message_content
-            ],
-        ];
-
-        $mensaje = json_encode($mensajeData);
-
-        $header = [
-            "Authorization: Bearer " . $token,
-            "Content-Type: application/json",
-        ];
-        $curl = curl_init();
-        curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt($curl, CURLOPT_POSTFIELDS, $mensaje);
-        curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-
-        $response = json_decode(curl_exec($curl), true);
-
-        $status_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-
-        curl_close($curl);
-
     }
 
     public function sendToClient($messageId){

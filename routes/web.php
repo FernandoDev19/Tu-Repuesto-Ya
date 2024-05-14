@@ -24,6 +24,7 @@ use App\Mail\NoticiasProveedores;
 use App\Models\Category;
 use App\Models\Answer;
 use App\Models\Provider;
+use Illuminate\Foundation\Auth\User;
 
 /*
 |--------------------------------------------------------------------------
@@ -133,6 +134,33 @@ Route::get('public/img/logo_whatsapp.png', function () {
         'Content-Disposition' => 'inline; filename=logo_whatsapp.png',
     ]);
 })->name('video');
+
+Route::get('public_html/storage/nacho_repuestos.jpg', function($id){
+    $user = User::find($id);
+
+    if($user){
+        $imgPath = public_path('../public_html/storage/nacho_repuestos.jpg');
+
+        $extension = pathinfo($imgPath, PATHINFO_EXTENSION);
+
+        $contentType = 'image/jpeg';
+
+        if ($extension === 'png') {
+            $contentType = 'image/png';
+        } elseif ($extension === 'gif') {
+            $contentType = 'image/gif';
+        }elseif ($extension === 'jpg'){
+            $contentType = 'image/jpg';
+        }
+
+        return Response::make(file_get_contents($imgPath), 200, [
+            'Content-Type' => $contentType,
+            'Content-Disposition' => 'inline; filename=nacho_repuestos.jpg',
+        ]);
+    }
+
+
+});
 
 // Route::get('public/movies/video_trya.mp4', function () {
 //     $videoPath = public_path('movies/video_trya.mp4');

@@ -20,14 +20,12 @@
 @stack('js')
 
 <script>
-
-    const form = document.getElementById('form_client');
     const overlay = document.getElementById('overlay');
 
     // Ocultar el loader inicialmente
     hideLoadingOverlay();
 
-    form.addEventListener('submit', function() {
+    document.addEventListener('submit', function() {
         showLoadingOverlay(); // Mostrar superposición y icono de carga
     });
 

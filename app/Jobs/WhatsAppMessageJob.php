@@ -244,7 +244,7 @@ class WhatsAppMessageJob implements ShouldQueue
                             "parameters" => [
                               [
                                 "type" => "payload",
-                                "payload" => 'No es de mi categoria: ' . $solicitud->id,
+                                "payload" => $new_message->id,
                               ]
                             ]
                         ],

@@ -506,15 +506,15 @@
                                                 <input type="text" name="repuesto" id="repuesto"
                                                     style="border-radius: 0.375rem; border-color: transparent; background-color: rgb(235, 234, 234); border-radius: .375rem;"
                                                     class="form-control" list="lista_repuestos"
-                                                    placeholder="Eje. Llantas"
+                                                    placeholder="Eje. Amortiguadores"
                                                     aria-label="Repuesto" value="{{ old('repuesto') }}">
-                                                    <datalist id="lista_repuestos">
+                                                    {{-- <datalist id="lista_repuestos">
                                                         <option value="" selected disabled>Ejemplos:</option>
                                                         <?php
-                                                        echo implode("\n", $options);
+                                                            //echo implode("\n", $options);
                                                         ?>
 
-                                                    </datalist>
+                                                    </datalist> --}}
                                             </div>
                                         </div>
 
@@ -527,7 +527,7 @@
                                                 <input type="number" name="cantidad" id="cantidad"
                                                     style="border-radius: 0.375rem; border-color: transparent; background-color: rgb(235, 234, 234); border-radius: .375rem;"
                                                     class="form-control"
-                                                    placeholder="Ejemplo: 5"
+                                                    placeholder="Ejemplo: 2"
                                                     aria-label="Repuesto" value="{{ old('cantidad') }}">
                                             </div>
                                         </div>

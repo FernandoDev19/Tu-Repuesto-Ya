@@ -2,85 +2,7 @@
 
 @section('title', 'Proveedores | Tu Repuesto Ya')
 
-<style>
-    .hide {
-        display: none !important;
-    }
-
-    .paso_activo{
-    font-weight: 600; color: #5593E8 !important;
-}
-
-    .items_container {
-        min-height: 50px;
-        height: auto !important;
-        width: 100%;
-        display: flex;
-        justify-content: flex-start;
-        flex-wrap: wrap;
-        gap: 2%;
-    }
-
-    .item_selected {
-        min-width: 70px;
-        height: max-content;
-        border-radius: .25rem;
-        border: 1px solid lightgray;
-        margin: 3px;
-        font-weight: 600;
-        padding: 1.5% 5%;
-        background-color: lightgray;
-        text-align: center;
-        transition: all 0.3s ease;
-    }
-
-    .btn_borrar_item {
-        color: lightgray;
-        transform: translate(10px, 0);
-        transition: all 300ms ease;
-        display: inline-block;
-    }
-
-    .item_selected:hover {
-        border: 1px solid gray;
-    }
-
-    .item_selected:hover .btn_borrar_item {
-        color: black;
-    }
-    .overlay {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.7);
-        z-index: 9999;
-        justify-content: center;
-        align-items: center;
-        display: flex;
-    }
-
-    .loader {
-        border: 4px solid #f3f3f3;
-        border-top: 4px solid #3498db;
-        border-radius: 50%;
-        width: 50px;
-        height: 50px;
-        animation: spin 2s linear infinite;
-    }
-
-    @keyframes spin {
-        0% {
-            transform: rotate(0deg);
-        }
-
-        100% {
-            transform: rotate(360deg);
-        }
-    }
-</style>
+<link rel="stylesheet" href="{{asset('css/providersStyle.css')}}">
 
 <!-- Sidebar -->
 @section('sidebar')
@@ -131,7 +53,7 @@
             <div class="col-lg-12 mb-4">
                 <div class="card shadow mb-4">
                         <div class="card-header">
-                            <div style="display: flex; justify-content: space-between;">
+                            <div id="container-flex">
                                 <div class="p-3">
                                     <h2 class="header-title font-weight-bold text-primary">Lista de proveedores</h2>
                                     <form method="GET" class="form-inline">
@@ -161,11 +83,11 @@
                                 </div>
                                 <div style="display: flex; align-items: center;">
                                     <div class="d-sm-flex align-items-center justify-content-between mb-4" style="flex-direction: column; gap: .5rem;">
-                                        <a title="Crear Nuevo Proveedor" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" data-toggle="modal" id="create_provider" data-target="#createModal">
+                                        <a title="Crear Nuevo Proveedor" class="btn btn-sm btn-primary shadow-sm" data-toggle="modal" id="create_provider" data-target="#createModal">
                                             Crear
                                         </a>
                                         <a title="Descargar lista de proveedores" href="{{ route('proveedores.excel') }}"
-                                            class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+                                            class="btn btn-sm btn-primary shadow-sm">
                                             <i class="fas fa-download fa-sm text-white-50"></i> Descargar
                                         </a>
                                     </div>

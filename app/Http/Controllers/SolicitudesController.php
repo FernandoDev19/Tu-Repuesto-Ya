@@ -68,7 +68,6 @@ class SolicitudesController extends Controller
         $answer2 = null;
         $messages = null;
 
-
         foreach ($solicitudes as $solicitud) {
             $answer2 = Answer::with('proveedor')->get();
             $messages = message::where('idSolicitud', '!=', null)->get();

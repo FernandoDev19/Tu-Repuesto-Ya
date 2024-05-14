@@ -166,7 +166,13 @@
                                                                 @if ($message->idSolicitud == $solicitud->id && !in_array($message->idUser, $usuariosUnicos))
                                                                     @php
                                                                         $usuariosUnicos[] = $message->idUser;
-                                                                        $contadorUsuarios++;
+
+                                                                        if( $proveedores->where('id', $message->idUser)->first() && $proveedores->where('id', $message->idUser)->first()->ha_cotizado != null){
+                                                                            $contadorUsuarios++;
+                                                                            if($proveedores->where('id', $message->idUser)->first()->id == 245 || $proveedores->where('id', $message->idUser)->first()->id == 202 || $proveedores->where('id', $message->idUser)->first()->id == 190){
+                                                                                $contadorUsuarios--;
+                                                                            }
+                                                                        }
                                                                     @endphp
                                                                 @endif
                                                             @endforeach
@@ -459,11 +465,11 @@
                                                                                     @php
                                                                                         $proveedor = $proveedores->where('id', $message->idUser)->first();
                                                                                     @endphp
-                                                                                    <li><a data-toggle="modal" class="text-primary" data-target="#infoProveedorModal{{ $message->idUser}}" @if($proveedor->ha_cotizado)style="cursor: pointer; color: #12e912 !important;" @else style="cursor: pointer; color: #ff5a51 !important;" @endif>{{ $proveedor->razon_social }}</a></li>
+                                                                                    <li><a data-toggle="modal" class="text-primary" data-target="#infoProveedorModal{{ $message->idUser}}" @if($proveedor && $proveedor->ha_cotizado)style="cursor: pointer; color: #12e912 !important;" @else style="cursor: pointer; color: #ff5a51 !important;" @endif>{{ $proveedor? $proveedor->razon_social: 'Proveedor eliminado' }}</a></li>
                                                                                         @php
                                                                                             $idsVistos[] = $message->idUser;
                                                                                         @endphp
-                                                                                         <div class="modal fade" id="infoProveedorModal{{ $message->idUser}}"
+                                                                                        <div class="modal fade" id="infoProveedorModal{{ $message->idUser}}"
                                                                                             tabindex="-2" role="dialog" aria-labelledby="infoProveedorModalLabel"
                                                                                             aria-hidden="true" >
                                                                                             <div class="modal-dialog" role="document" >
@@ -483,118 +489,123 @@
                                                                                                         style="overflow-y: auto;">
                                                                                                         <div class="text-wrap w-100">
                                                                                                             @php
-                                                                                                                $especialidades[$proveedor->id] = json_decode($proveedor->especialidad, true);
-                                                                                                                $preferencias_de_marcas[$proveedor->id] = json_decode($proveedor->marcas_preferencias, true);
+                                                                                                                if($proveedor){
+                                                                                                                    $especialidades[$proveedor->id] = json_decode($proveedor->especialidad, true);
+                                                                                                                    $preferencias_de_marcas[$proveedor->id] = json_decode($proveedor->marcas_preferencias, true);
+                                                                                                                }
                                                                                                             @endphp
                                                                                                             <ul style="padding-left: 2rem;">
-                                                                                                                <fieldset>
-                                                                                                                    <legend style="text-align: center;">
-                                                                                                                        <strong>Información Básica:</strong>
-                                                                                                                    </legend>
-                                                                                                                    <li><strong>NIT:
-                                                                                                                        </strong>{{ $proveedor->nit_empresa }}
-                                                                                                                    </li>
+                                                                                                                @if ($proveedor)
+                                                                                                                    <fieldset>
+                                                                                                                        <legend style="text-align: center;">
+                                                                                                                            <strong>Información Básica:</strong>
+                                                                                                                        </legend>
+                                                                                                                        <li><strong>NIT:
+                                                                                                                            </strong>{{ $proveedor->nit_empresa }}
+                                                                                                                        </li>
 
-                                                                                                                    <li><strong>Nombre Establecimiento: </strong>
-                                                                                                                        {{ $proveedor->nombre_comercial }}
-                                                                                                                    </li>
+                                                                                                                        <li><strong>Nombre Establecimiento: </strong>
+                                                                                                                            {{ $proveedor->nombre_comercial }}
+                                                                                                                        </li>
 
-                                                                                                                    <li><strong>Razón Social:
-                                                                                                                        </strong>{{ $proveedor->razon_social }}
-                                                                                                                    </li>
+                                                                                                                        <li><strong>Razón Social:
+                                                                                                                            </strong>{{ $proveedor->razon_social }}
+                                                                                                                        </li>
 
-                                                                                                                    <li><strong>Pais:
-                                                                                                                        </strong>{{ $proveedor->pais }}</li>
+                                                                                                                        <li><strong>Pais:
+                                                                                                                            </strong>{{ $proveedor->pais }}</li>
 
-                                                                                                                    <li><strong>Departamento:
-                                                                                                                        </strong>{{ $proveedor->departamento }}
-                                                                                                                    </li>
+                                                                                                                        <li><strong>Departamento:
+                                                                                                                            </strong>{{ $proveedor->departamento }}
+                                                                                                                        </li>
 
-                                                                                                                    <li> <strong>Municipio:
-                                                                                                                        </strong>{{ $proveedor->municipio }}</li>
+                                                                                                                        <li> <strong>Municipio:
+                                                                                                                            </strong>{{ $proveedor->municipio }}</li>
 
-                                                                                                                    <li><strong>Direccion:
-                                                                                                                        </strong>{{ $proveedor->direccion }}</li>
-                                                                                                                </fieldset>
+                                                                                                                        <li><strong>Direccion:
+                                                                                                                            </strong>{{ $proveedor->direccion }}</li>
+                                                                                                                    </fieldset>
 
-                                                                                                                <hr>
+                                                                                                                    <hr>
 
-                                                                                                                <fieldset>
-                                                                                                                    <legend style="text-align: center;">
-                                                                                                                        <strong>Información de Contacto:</strong>
-                                                                                                                    </legend>
-                                                                                                                    <li><strong>Celular:</strong>
-                                                                                                                        <a title="Contactar" target="_blank" href="https://api.whatsapp.com/send?phone={{ substr($proveedor->celular, 1) }}" style="cursor: pointer;">{{ $proveedor->celular }}</a>
-                                                                                                                    </li>
-                                                                                                                    <li><strong>Celular 2°:
-                                                                                                                        </strong><a title="Contactar" target="_blank" href="https://api.whatsapp.com/send?phone={{ substr($proveedor->celular, 1) }}" style="cursor: pointer;">{{ $proveedor->telefono }}</a></li>
+                                                                                                                    <fieldset>
+                                                                                                                        <legend style="text-align: center;">
+                                                                                                                            <strong>Información de Contacto:</strong>
+                                                                                                                        </legend>
+                                                                                                                        <li><strong>Celular:</strong>
+                                                                                                                            <a title="Contactar" target="_blank" href="https://api.whatsapp.com/send?phone={{ substr($proveedor->celular, 1) }}" style="cursor: pointer;">{{ $proveedor->celular }}</a>
+                                                                                                                        </li>
+                                                                                                                        <li><strong>Celular 2°:
+                                                                                                                            </strong><a title="Contactar" target="_blank" href="https://api.whatsapp.com/send?phone={{ substr($proveedor->celular, 1) }}" style="cursor: pointer;">{{ $proveedor->telefono }}</a></li>
 
-                                                                                                                    <li><strong>Representante Legal:
-                                                                                                                        </strong>{{ $proveedor->representante_legal }}
-                                                                                                                    </li>
+                                                                                                                        <li><strong>Representante Legal:
+                                                                                                                            </strong>{{ $proveedor->representante_legal }}
+                                                                                                                        </li>
 
-                                                                                                                    <li><strong>Contacto Principal:
-                                                                                                                        </strong>{{ $proveedor->contacto_principal }}
-                                                                                                                    </li>
+                                                                                                                        <li><strong>Contacto Principal:
+                                                                                                                            </strong>{{ $proveedor->contacto_principal }}
+                                                                                                                        </li>
 
-                                                                                                                    <li><strong>Email:</strong>
-                                                                                                                        <a href="mailto:{{$proveedor->email}}" target="_blank">{{ $proveedor->email }}</a>
-                                                                                                                    </li>
+                                                                                                                        <li><strong>Email:</strong>
+                                                                                                                            <a href="mailto:{{$proveedor->email}}" target="_blank">{{ $proveedor->email }}</a>
+                                                                                                                        </li>
 
-                                                                                                                    <li><strong>Email Secundario:</strong>
-                                                                                                                        <a href="mailto:{{$proveedor->email_secundario}}" target="_blank">{{ $proveedor->email_secundario }}</a>
-                                                                                                                    </li>
-                                                                                                                </fieldset>
+                                                                                                                        <li><strong>Email Secundario:</strong>
+                                                                                                                            <a href="mailto:{{$proveedor->email_secundario}}" target="_blank">{{ $proveedor->email_secundario }}</a>
+                                                                                                                        </li>
+                                                                                                                    </fieldset>
 
-                                                                                                                <hr>
+                                                                                                                    <hr>
 
-                                                                                                                <fieldset>
-                                                                                                                    <legend style="text-align: center;">
-                                                                                                                        <strong>Información Legal:</strong>
-                                                                                                                    </legend>
-                                                                                                                    <li><strong>RUT: </strong>
-                                                                                                                        <a title="Ver RUT"
-                                                                                                                            rel="noopener noreferrer"
-                                                                                                                            id="rut"
-                                                                                                                            style="color: #858796; text-decoration: underline;"
-                                                                                                                            href="{{ route('mostrarArchivo', ['filename' => 'RUT_' . $proveedor->nit_empresa . '.pdf']) }}"
-                                                                                                                            target="_blank">{{ $proveedor->rut }}</a>
-                                                                                                                    </li>
+                                                                                                                    <fieldset>
+                                                                                                                        <legend style="text-align: center;">
+                                                                                                                            <strong>Información Legal:</strong>
+                                                                                                                        </legend>
+                                                                                                                        <li><strong>RUT: </strong>
+                                                                                                                            <a title="Ver RUT"
+                                                                                                                                rel="noopener noreferrer"
+                                                                                                                                id="rut"
+                                                                                                                                style="color: #858796; text-decoration: underline;"
+                                                                                                                                href="{{ route('mostrarArchivo', ['filename' => 'RUT_' . $proveedor->nit_empresa . '.pdf']) }}"
+                                                                                                                                target="_blank">{{ $proveedor->rut }}</a>
+                                                                                                                        </li>
 
-                                                                                                                    <li><strong>Camara de comercio: </strong>
-                                                                                                                        <a title="Ver camara de comercio"
-                                                                                                                            style="color: #858796; text-decoration: underline;"
-                                                                                                                            id="camara"
-                                                                                                                            rel="noopener noreferrer"
-                                                                                                                            href="{{ route('mostrarArchivo', 'Camara_de_comercio_' . $proveedor->nit_empresa . '.pdf') }}"
-                                                                                                                            target="_blank">{{ $proveedor->camara_comercio }}</a>
-                                                                                                                    </li>
-                                                                                                                </fieldset>
+                                                                                                                        <li><strong>Camara de comercio: </strong>
+                                                                                                                            <a title="Ver camara de comercio"
+                                                                                                                                style="color: #858796; text-decoration: underline;"
+                                                                                                                                id="camara"
+                                                                                                                                rel="noopener noreferrer"
+                                                                                                                                href="{{ route('mostrarArchivo', 'Camara_de_comercio_' . $proveedor->nit_empresa . '.pdf') }}"
+                                                                                                                                target="_blank">{{ $proveedor->camara_comercio }}</a>
+                                                                                                                        </li>
+                                                                                                                    </fieldset>
 
-                                                                                                                <hr>
+                                                                                                                    <hr>
 
-                                                                                                                <fieldset>
-                                                                                                                    <legend style="text-align: center;">
-                                                                                                                        <strong>Otros Detalles:</strong>
-                                                                                                                    </legend>
-                                                                                                                    <li><strong>Preferencia de Marcas: </strong>
-                                                                                                                        @if (isset($preferencias_de_marcas[$proveedor->id]))
-                                                                                                                            {{ implode(', ', $preferencias_de_marcas[$proveedor->id]) }}
-                                                                                                                        @else
-                                                                                                                            No hay preferencias de marcas para este
-                                                                                                                            proveedor.
-                                                                                                                        @endif
-                                                                                                                    </li>
-                                                                                                                    <li><strong>Especialidad: </strong>
-                                                                                                                        @if (isset($especialidades[$proveedor->id]))
-                                                                                                                            {{ implode(', ', $especialidades[$proveedor->id]) }}
-                                                                                                                        @else
-                                                                                                                            No hay preferencias de marcas para este
-                                                                                                                            proveedor.
-                                                                                                                        @endif
-                                                                                                                    </li>
-                                                                                                                </fieldset>
-                                                                                                                <br>
+                                                                                                                    <fieldset>
+                                                                                                                        <legend style="text-align: center;">
+                                                                                                                            <strong>Otros Detalles:</strong>
+                                                                                                                        </legend>
+                                                                                                                        <li><strong>Preferencia de Marcas: </strong>
+                                                                                                                            @if (isset($preferencias_de_marcas[$proveedor->id]))
+                                                                                                                                {{ implode(', ', $preferencias_de_marcas[$proveedor->id]) }}
+                                                                                                                            @else
+                                                                                                                                No hay preferencias de marcas para este
+                                                                                                                                proveedor.
+                                                                                                                            @endif
+                                                                                                                        </li>
+                                                                                                                        <li><strong>Especialidad: </strong>
+                                                                                                                            @if (isset($especialidades[$proveedor->id]))
+                                                                                                                                {{ implode(', ', $especialidades[$proveedor->id]) }}
+                                                                                                                            @else
+                                                                                                                                No hay preferencias de marcas para este
+                                                                                                                                proveedor.
+                                                                                                                            @endif
+                                                                                                                        </li>
+                                                                                                                    </fieldset>
+                                                                                                                    <br>
+                                                                                                                @endif
+
                                                                                                             </ul>
 
                                                                                                         </div>
@@ -632,7 +643,7 @@
                                                             <div class="modal-content">
                                                                 <div class="modal-header">
                                                                     <h5 class="modal-title">
-                                                                        <strong>Respuestas (Nombres)</strong>
+                                                                        <strong>Agotados (Nombres)</strong>
                                                                     </h5>
                                                                     <button id="close-modal-agotados{{ $solicitud->id }}" class="close" type="button"
                                                                         data-dismiss="modal" aria-label="Close">
@@ -652,154 +663,157 @@
                                                                                     @php
                                                                                         $nombre_proveedor = $proveedores->where('id', $agotado)->first();
                                                                                     @endphp
-                                                                                    <a style="font-size: 14;" data-toggle="modal" data-target="#infoProveedorAgotadosModal{{ $nombre_proveedor->id }}" href="#"
-                                                                                        id="agotado">{{ $nombre_proveedor->razon_social }}</a>
+                                                                                        @if ($nombre_proveedor)
+                                                                                            <li><a style="font-size: 14;" data-toggle="modal" data-target="#infoProveedorAgotadosModal{{ $nombre_proveedor->id }}" href="#"
+                                                                                                id="agotado">{{ $nombre_proveedor->razon_social }}</a></li>
 
-                                                                                        <div class="modal fade" id="infoProveedorAgotadosModal{{ $nombre_proveedor->id}}"
-                                                                                            tabindex="-2" role="dialog" aria-labelledby="infoProveedorModalLabel"
-                                                                                            aria-hidden="true" >
-                                                                                            <div class="modal-dialog" role="document" >
-                                                                                                <div class="modal-content" >
-                                                                                                    <div class="modal-header">
-                                                                                                        <h5 class="modal-title"
-                                                                                                            id="infoProveedorAgotadosModalLabel">
-                                                                                                            <strong>Información
-                                                                                                                del Proveedor</strong>
-                                                                                                        </h5>
-                                                                                                        <button id="close-modal-providers{{ $nombre_proveedor->id }}" class="close" type="button"
-                                                                                                            data-dismiss="modal" aria-label="Close proveedor modal">
-                                                                                                            <span aria-hidden="true">×</span>
-                                                                                                        </button>
-                                                                                                    </div>
-                                                                                                    <div class="modal-body d-flex justify-content-between"
-                                                                                                        style="overflow-y: auto;">
-                                                                                                        <div class="text-wrap w-100">
-                                                                                                            @php
-                                                                                                                $especialidades[$nombre_proveedor->id] = json_decode($nombre_proveedor->especialidad, true);
-                                                                                                                $preferencias_de_marcas[$nombre_proveedor->id] = json_decode($nombre_proveedor->marcas_preferencias, true);
-                                                                                                            @endphp
-                                                                                                            <ul style="padding-left: 2rem;">
-                                                                                                                <fieldset>
-                                                                                                                    <legend style="text-align: center;">
-                                                                                                                        <strong>Información Básica:</strong>
-                                                                                                                    </legend>
-                                                                                                                    <li><strong>NIT:
-                                                                                                                        </strong>{{ $nombre_proveedor->nit_empresa }}
-                                                                                                                    </li>
+                                                                                            <div class="modal fade" id="infoProveedorAgotadosModal{{ $nombre_proveedor->id}}"
+                                                                                                tabindex="-2" role="dialog" aria-labelledby="infoProveedorModalLabel"
+                                                                                                aria-hidden="true" >
+                                                                                                <div class="modal-dialog" role="document" >
+                                                                                                    <div class="modal-content" >
+                                                                                                        <div class="modal-header">
+                                                                                                            <h5 class="modal-title"
+                                                                                                                id="infoProveedorAgotadosModalLabel">
+                                                                                                                <strong>Información
+                                                                                                                    del Proveedor</strong>
+                                                                                                            </h5>
+                                                                                                            <button id="close-modal-providers{{ $nombre_proveedor->id }}" class="close" type="button"
+                                                                                                                data-dismiss="modal" aria-label="Close proveedor modal">
+                                                                                                                <span aria-hidden="true">×</span>
+                                                                                                            </button>
+                                                                                                        </div>
+                                                                                                        <div class="modal-body d-flex justify-content-between"
+                                                                                                            style="overflow-y: auto;">
+                                                                                                            <div class="text-wrap w-100">
+                                                                                                                @php
+                                                                                                                    $especialidades[$nombre_proveedor->id] = json_decode($nombre_proveedor->especialidad, true);
+                                                                                                                    $preferencias_de_marcas[$nombre_proveedor->id] = json_decode($nombre_proveedor->marcas_preferencias, true);
+                                                                                                                @endphp
+                                                                                                                <ul style="padding-left: 2rem;">
+                                                                                                                    <fieldset>
+                                                                                                                        <legend style="text-align: center;">
+                                                                                                                            <strong>Información Básica:</strong>
+                                                                                                                        </legend>
+                                                                                                                        <li><strong>NIT:
+                                                                                                                            </strong>{{ $nombre_proveedor->nit_empresa }}
+                                                                                                                        </li>
 
-                                                                                                                    <li><strong>Nombre Establecimiento: </strong>
-                                                                                                                        {{ $nombre_proveedor->nombre_comercial }}
-                                                                                                                    </li>
+                                                                                                                        <li><strong>Nombre Establecimiento: </strong>
+                                                                                                                            {{ $nombre_proveedor->nombre_comercial }}
+                                                                                                                        </li>
 
-                                                                                                                    <li><strong>Razón Social:
-                                                                                                                        </strong>{{ $nombre_proveedor->razon_social }}
-                                                                                                                    </li>
+                                                                                                                        <li><strong>Razón Social:
+                                                                                                                            </strong>{{ $nombre_proveedor->razon_social }}
+                                                                                                                        </li>
 
-                                                                                                                    <li><strong>Pais:
-                                                                                                                        </strong>{{ $nombre_proveedor->pais }}</li>
+                                                                                                                        <li><strong>Pais:
+                                                                                                                            </strong>{{ $nombre_proveedor->pais }}</li>
 
-                                                                                                                    <li><strong>Departamento:
-                                                                                                                        </strong>{{ $nombre_proveedor->departamento }}
-                                                                                                                    </li>
+                                                                                                                        <li><strong>Departamento:
+                                                                                                                            </strong>{{ $nombre_proveedor->departamento }}
+                                                                                                                        </li>
 
-                                                                                                                    <li> <strong>Municipio:
-                                                                                                                        </strong>{{ $nombre_proveedor->municipio }}</li>
+                                                                                                                        <li> <strong>Municipio:
+                                                                                                                            </strong>{{ $nombre_proveedor->municipio }}</li>
 
-                                                                                                                    <li><strong>Direccion:
-                                                                                                                        </strong>{{ $nombre_proveedor->direccion }}</li>
-                                                                                                                </fieldset>
+                                                                                                                        <li><strong>Direccion:
+                                                                                                                            </strong>{{ $nombre_proveedor->direccion }}</li>
+                                                                                                                    </fieldset>
 
-                                                                                                                <hr>
+                                                                                                                    <hr>
 
-                                                                                                                <fieldset>
-                                                                                                                    <legend style="text-align: center;">
-                                                                                                                        <strong>Información de Contacto:</strong>
-                                                                                                                    </legend>
-                                                                                                                    <li><strong>Celular:</strong>
-                                                                                                                        <a title="Contactar" target="_blank" href="https://api.whatsapp.com/send?phone={{ substr($nombre_proveedor->celular, 1) }}" style="cursor: pointer;">{{ $nombre_proveedor->celular }}</a>
-                                                                                                                    </li>
-                                                                                                                    <li><strong>Celular 2°:
-                                                                                                                        </strong><a title="Contactar" target="_blank" href="https://api.whatsapp.com/send?phone={{ substr($nombre_proveedor->celular, 1) }}" style="cursor: pointer;">{{ $nombre_proveedor->telefono }}</a></li>
+                                                                                                                    <fieldset>
+                                                                                                                        <legend style="text-align: center;">
+                                                                                                                            <strong>Información de Contacto:</strong>
+                                                                                                                        </legend>
+                                                                                                                        <li><strong>Celular:</strong>
+                                                                                                                            <a title="Contactar" target="_blank" href="https://api.whatsapp.com/send?phone={{ substr($nombre_proveedor->celular, 1) }}" style="cursor: pointer;">{{ $nombre_proveedor->celular }}</a>
+                                                                                                                        </li>
+                                                                                                                        <li><strong>Celular 2°:
+                                                                                                                            </strong><a title="Contactar" target="_blank" href="https://api.whatsapp.com/send?phone={{ substr($nombre_proveedor->celular, 1) }}" style="cursor: pointer;">{{ $nombre_proveedor->telefono }}</a></li>
 
-                                                                                                                    <li><strong>Representante Legal:
-                                                                                                                        </strong>{{ $nombre_proveedor->representante_legal }}
-                                                                                                                    </li>
+                                                                                                                        <li><strong>Representante Legal:
+                                                                                                                            </strong>{{ $nombre_proveedor->representante_legal }}
+                                                                                                                        </li>
 
-                                                                                                                    <li><strong>Contacto Principal:
-                                                                                                                        </strong>{{ $nombre_proveedor->contacto_principal }}
-                                                                                                                    </li>
+                                                                                                                        <li><strong>Contacto Principal:
+                                                                                                                            </strong>{{ $nombre_proveedor->contacto_principal }}
+                                                                                                                        </li>
 
-                                                                                                                    <li><strong>Email:</strong>
-                                                                                                                        <a href="mailto:{{$nombre_proveedor->email}}" target="_blank">{{ $nombre_proveedor->email }}</a>
-                                                                                                                    </li>
+                                                                                                                        <li><strong>Email:</strong>
+                                                                                                                            <a href="mailto:{{$nombre_proveedor->email}}" target="_blank">{{ $nombre_proveedor->email }}</a>
+                                                                                                                        </li>
 
-                                                                                                                    <li><strong>Email Secundario:</strong>
-                                                                                                                        <a href="mailto:{{$nombre_proveedor->email_secundario}}" target="_blank">{{ $nombre_proveedor->email_secundario }}</a>
-                                                                                                                    </li>
-                                                                                                                </fieldset>
+                                                                                                                        <li><strong>Email Secundario:</strong>
+                                                                                                                            <a href="mailto:{{$nombre_proveedor->email_secundario}}" target="_blank">{{ $nombre_proveedor->email_secundario }}</a>
+                                                                                                                        </li>
+                                                                                                                    </fieldset>
 
-                                                                                                                <hr>
+                                                                                                                    <hr>
 
-                                                                                                                <fieldset>
-                                                                                                                    <legend style="text-align: center;">
-                                                                                                                        <strong>Información Legal:</strong>
-                                                                                                                    </legend>
-                                                                                                                    <li><strong>RUT: </strong>
-                                                                                                                        <a title="Ver RUT"
-                                                                                                                            rel="noopener noreferrer"
-                                                                                                                            id="rut"
-                                                                                                                            style="color: #858796; text-decoration: underline;"
-                                                                                                                            href="{{ route('mostrarArchivo', ['filename' => 'RUT_' . $nombre_proveedor->nit_empresa . '.pdf']) }}"
-                                                                                                                            target="_blank">{{ $nombre_proveedor->rut }}</a>
-                                                                                                                    </li>
+                                                                                                                    <fieldset>
+                                                                                                                        <legend style="text-align: center;">
+                                                                                                                            <strong>Información Legal:</strong>
+                                                                                                                        </legend>
+                                                                                                                        <li><strong>RUT: </strong>
+                                                                                                                            <a title="Ver RUT"
+                                                                                                                                rel="noopener noreferrer"
+                                                                                                                                id="rut"
+                                                                                                                                style="color: #858796; text-decoration: underline;"
+                                                                                                                                href="{{ route('mostrarArchivo', ['filename' => 'RUT_' . $nombre_proveedor->nit_empresa . '.pdf']) }}"
+                                                                                                                                target="_blank">{{ $nombre_proveedor->rut }}</a>
+                                                                                                                        </li>
 
-                                                                                                                    <li><strong>Camara de comercio: </strong>
-                                                                                                                        <a title="Ver camara de comercio"
-                                                                                                                            style="color: #858796; text-decoration: underline;"
-                                                                                                                            id="camara"
-                                                                                                                            rel="noopener noreferrer"
-                                                                                                                            href="{{ route('mostrarArchivo', 'Camara_de_comercio_' . $nombre_proveedor->nit_empresa . '.pdf') }}"
-                                                                                                                            target="_blank">{{ $nombre_proveedor->camara_comercio }}</a>
-                                                                                                                    </li>
-                                                                                                                </fieldset>
+                                                                                                                        <li><strong>Camara de comercio: </strong>
+                                                                                                                            <a title="Ver camara de comercio"
+                                                                                                                                style="color: #858796; text-decoration: underline;"
+                                                                                                                                id="camara"
+                                                                                                                                rel="noopener noreferrer"
+                                                                                                                                href="{{ route('mostrarArchivo', 'Camara_de_comercio_' . $nombre_proveedor->nit_empresa . '.pdf') }}"
+                                                                                                                                target="_blank">{{ $nombre_proveedor->camara_comercio }}</a>
+                                                                                                                        </li>
+                                                                                                                    </fieldset>
 
-                                                                                                                <hr>
+                                                                                                                    <hr>
 
-                                                                                                                <fieldset>
-                                                                                                                    <legend style="text-align: center;">
-                                                                                                                        <strong>Otros Detalles:</strong>
-                                                                                                                    </legend>
-                                                                                                                    <li><strong>Preferencia de Marcas: </strong>
-                                                                                                                        @if (isset($preferencias_de_marcas[$nombre_proveedor->id]))
-                                                                                                                            {{ implode(', ', $preferencias_de_marcas[$nombre_proveedor->id]) }}
-                                                                                                                        @else
-                                                                                                                            No hay preferencias de marcas para este
-                                                                                                                            proveedor.
-                                                                                                                        @endif
-                                                                                                                    </li>
-                                                                                                                    <li><strong>Especialidad: </strong>
-                                                                                                                        @if (isset($especialidades[$nombre_proveedor->id]))
-                                                                                                                            {{ implode(', ', $especialidades[$nombre_proveedor->id]) }}
-                                                                                                                        @else
-                                                                                                                            No hay preferencias de marcas para este
-                                                                                                                            proveedor.
-                                                                                                                        @endif
-                                                                                                                    </li>
-                                                                                                                </fieldset>
-                                                                                                                <br>
-                                                                                                            </ul>
+                                                                                                                    <fieldset>
+                                                                                                                        <legend style="text-align: center;">
+                                                                                                                            <strong>Otros Detalles:</strong>
+                                                                                                                        </legend>
+                                                                                                                        <li><strong>Preferencia de Marcas: </strong>
+                                                                                                                            @if (isset($preferencias_de_marcas[$nombre_proveedor->id]))
+                                                                                                                                {{ implode(', ', $preferencias_de_marcas[$nombre_proveedor->id]) }}
+                                                                                                                            @else
+                                                                                                                                No hay preferencias de marcas para este
+                                                                                                                                proveedor.
+                                                                                                                            @endif
+                                                                                                                        </li>
+                                                                                                                        <li><strong>Especialidad: </strong>
+                                                                                                                            @if (isset($especialidades[$nombre_proveedor->id]))
+                                                                                                                                {{ implode(', ', $especialidades[$nombre_proveedor->id]) }}
+                                                                                                                            @else
+                                                                                                                                No hay preferencias de marcas para este
+                                                                                                                                proveedor.
+                                                                                                                            @endif
+                                                                                                                        </li>
+                                                                                                                    </fieldset>
+                                                                                                                    <br>
+                                                                                                                </ul>
+
+                                                                                                            </div>
 
                                                                                                         </div>
 
-                                                                                                    </div>
-
-                                                                                                    <div class="modal-footer">
-                                                                                                        <button class="btn btn-secondary btnCloseModalDetalles" type="button"
-                                                                                                            data-dismiss="modal">Cerrar</button>
+                                                                                                        <div class="modal-footer">
+                                                                                                            <button class="btn btn-secondary btnCloseModalDetalles" type="button"
+                                                                                                                data-dismiss="modal">Cerrar</button>
+                                                                                                        </div>
                                                                                                     </div>
                                                                                                 </div>
                                                                                             </div>
-                                                                                        </div>
+                                                                                        @endif
+
                                                                                 @endforeach
 
                                                                             @endif

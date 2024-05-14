@@ -324,7 +324,7 @@ class ProvidersController extends Controller
 
         $proveedor->pais = $paises[$request->codigo_cel_create];
         $proveedor->celular = $request->codigo_cel_create . $request->cel_create;
-        if ($request->has('tel_create') && $request->has('codigo_cel_create')) {
+        if ($request->has('tel_create') && $request->has('codigo_cel_create') && $request->filled('tel_create') && $request->filled('codigo_cel_create')) {
             $proveedor->telefono = $request->codigo_cel_create . $request->tel_create;
         }
 
